@@ -1,0 +1,60 @@
+Q2. What are non-functional requirements, and how do they 
+differ from functional requirements?
+
+=> Non-functional requirements define how a system performs its 
+functions, rather than what the system does. They describe the 
+qualities, constraints, or standards the system must meet.
+
+They answer the question:
+“How well should the system perform its functions?”
+
+🔹 Key Characteristics of NFRs
+
+Quality-focused – They specify performance, reliability, 
+security, usability, etc.
+
+Constraint-driven – They often impose limits or standards 
+(e.g., “must respond in under 2 seconds”).
+
+Not about specific functionality – They don’t tell the system 
+what to do, but how it should behave.
+
+Critical for user experience and scalability – Even if a 
+system works, poor non-functional qualities can make it 
+unusable.
+
+🔹 Examples
+
+Performance – The system must handle 10,000 concurrent users.
+
+Reliability – The system must have 99.99% uptime.
+
+Security – All user passwords must be encrypted.
+
+Scalability – The system must be able to scale horizontally 
+to accommodate increased traffic.
+
+Usability – The system interface should be intuitive enough 
+for a new user to complete registration within 2 minutes.
+
+🔹 Difference
+
+Functional requirements describe what the system should do — 
+the specific actions, tasks, or features it must provide. For 
+example, “Users can log in,” “Users can add items to a 
+shopping cart,” or “The system can send confirmation emails.” 
+They define the behavior and functionality of the system.
+
+Non-functional requirements, on the other hand, describe how 
+the system should perform those actions. They focus on 
+qualities like speed, reliability, security, scalability, or 
+usability. For instance, “The system must respond to login 
+requests within 2 seconds,” or “The system must be available 
+99.99% of the time.” They don’t tell you what the system does, 
+only how well it should do it.
+
+In short:
+
+Functional = what the system does
+
+Non-functional = how well the system does it
