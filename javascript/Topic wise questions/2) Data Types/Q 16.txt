@@ -1,0 +1,50 @@
+Q16. Why is issue with null never fixed?
+
+=> The reason typeof null still returns "object" is mostly 
+backward compatibility. Here’s the breakdown:
+
+1. Historical Reason
+
+In the very first version of JavaScript (1995), values were 
+stored in a way that the type tag for objects included null.
+
+So typeof null returned "object"—it was essentially an 
+implementation bug.
+
+By the time people realized it was wrong, millions of scripts 
+on the web relied on this behavior.
+
+2. Why it wasn’t fixed
+
+Fixing it would break existing websites.
+Imagine a site doing something like:
+
+if (typeof x === "object") { /* handle objects */ }
+
+
+If they fixed typeof null, suddenly the code could break for 
+all null checks.
+
+JavaScript prioritizes web compatibility over “correctness” in
+these cases.
+
+3. How we handle it today
+
+Developers just know the quirk and check null explicitly:
+
+if (x === null) {
+  console.log("This is null");
+}
+
+
+Or use more robust checks for objects:
+
+if (typeof x === "object" && x !== null) {
+  console.log("This is a real object");
+}
+
+
+💡 Takeaway:
+JavaScript has many quirks like this. typeof null will probably
+never be fixed, because fixing it now would break countless 
+websites. It’s a historical artifact we just live with.

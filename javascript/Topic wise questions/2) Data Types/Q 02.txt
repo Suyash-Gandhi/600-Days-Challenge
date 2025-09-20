@@ -1,0 +1,18 @@
+Q2. How does JavaScript differentiate between primitive types 
+and reference types?
+
+=> 1. Primitive Types
+
+These are immutable (cannot be changed once created).
+
+Stored directly in the stack memory.
+
+Compared by value.
+
+2. Reference Types
+
+These are mutable (can be changed after creation).
+
+Stored in heap memory, while the stack stores a reference to the object.
+
+Compared by reference (memory location), not by value.

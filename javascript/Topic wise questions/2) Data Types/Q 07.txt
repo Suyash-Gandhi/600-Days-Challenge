@@ -1,0 +1,54 @@
+Q7. What is the difference between Number, BigInt, and 
+parseInt/parseFloat usage in JavaScript?
+
+=> 1. Number
+
+The Number type in JavaScript represents floating-point numbers.
+
+It can store integers and decimals but has a precision limit 
+(about 15–16 digits).
+
+Maximum safe integer: Number.MAX_SAFE_INTEGER → 2^53 - 1.
+
+If you go beyond this limit, precision errors occur.
+
+Example:
+
+let a = 999999999999999;  // 15 digits → precise
+let b = 9999999999999999; // 16+ digits → not precise
+
+2. BigInt
+
+Introduced in ES2020 to handle very large integers beyond the 
+safe limit of Number.
+
+Declared by appending n at the end or using BigInt().
+
+Only works with integers (not decimals).
+
+Cannot mix with normal Number type directly.
+
+Example:
+
+let big = 123456789012345678901234567890n;
+let sum = big + 10n;  // works
+// big + 10 → ❌ TypeError (mixing BigInt with Number)
+
+3. parseInt() and parseFloat()
+
+Both are functions that convert strings into numbers.
+
+parseInt() → Converts to integer, stops reading when it hits a 
+non-digit.
+
+parseFloat() → Converts to floating-point number, supports 
+decimals.
+
+Useful when dealing with user input (strings).
+
+Examples:
+
+parseInt("42");       // 42
+parseInt("42px");     // 42 (stops at 'p')
+parseFloat("3.14");   // 3.14
+parseFloat("3.14abc");// 3.14

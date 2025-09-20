@@ -1,0 +1,36 @@
+Q5. What is the result of the following expressions, and why?
+
+=> 1. typeof null
+typeof null  // "object"
+
+
+Expected: many think it should be "null".
+
+Reality: It returns "object".
+
+Why: This is a legacy bug in JavaScript from its first version.
+null is actually a primitive type, but typeof incorrectly 
+reports it as "object".
+
+2. typeof NaN
+
+typeof NaN  // "number"
+
+Explanation: NaN stands for “Not-a-Number,” but ironically it 
+is a special numeric value in JavaScript.
+
+Any arithmetic operation that fails to produce a valid number 
+results in NaN.
+
+So typeof NaN returns "number".
+
+3. typeof []
+
+typeof []  // "object"
+
+Explanation: Arrays in JavaScript are technically objects, so 
+typeof reports "object".
+
+How to check if it’s really an array:
+
+Array.isArray([]) 
