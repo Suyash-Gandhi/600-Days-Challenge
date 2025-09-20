@@ -1,0 +1,22 @@
+Q10. What is the difference between global variables in 
+browsers and Node.js?
+
+In Browsers → the global object is window (or self in Web Workers).
+Every global variable declared with var (outside any function) 
+automatically becomes a property of the window object.
+
+In browsers, a top-level variable declared with var is 
+both global scope and attached to window.
+
+var x = 10;
+console.log(window.x); // 10
+
+In Node.js → the global object is global, not window.
+However, variables declared with var, let, or const at the top 
+level do not become properties of global.
+
+In Node.js, top-level variables are actually scoped to the 
+module, not the global object.
+
+var x = 10;
+console.log(global.x); // undefined

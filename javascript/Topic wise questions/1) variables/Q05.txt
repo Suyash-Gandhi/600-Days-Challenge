@@ -1,0 +1,32 @@
+Q5. What happens if you declare a variable without var, let, or 
+const in JavaScript?
+
+=> 1. Behavior in Non-Strict Mode (Default JS)
+
+If you assign a value to a variable without declaring it 
+(var, let, or const), JavaScript implicitly creates a global 
+variable.
+
+This variable is attached to the global object 
+(window in browsers, global in Node.js).
+
+function test() {
+  x = 50; // no var/let/const
+}
+test();
+
+console.log(x); // 50
+console.log(window.x); // 50 (in browsers)
+
+2. Behavior in Strict Mode ("use strict")
+
+In strict mode, assigning a value to an undeclared variable 
+throws a ReferenceError instead of creating a global variable.
+
+"use strict";
+
+function test() {
+  y = 100; // not declared
+}
+
+test(); // ReferenceError: y is not defined

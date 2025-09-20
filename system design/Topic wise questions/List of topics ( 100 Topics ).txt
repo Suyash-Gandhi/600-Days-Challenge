@@ -1,0 +1,156 @@
+
+
+# 🏗️ 100 System Design Topics for Interviews
+
+---
+
+## 1. Fundamentals (Junior → Early Intermediate)
+
+1. What is system design & why it matters
+2. Functional vs non-functional requirements
+3. Monolith vs microservices architecture
+4. Latency vs throughput
+5. Consistency vs availability (CAP theorem)
+6. Horizontal vs vertical scaling
+7. Stateless vs stateful services
+8. Load testing, stress testing, benchmarking
+9. Single point of failure (SPOF)
+10. High availability (HA) basics
+
+---
+
+## 2. Networking Basics
+
+11. HTTP/HTTPS fundamentals
+12. REST vs gRPC vs GraphQL
+13. WebSockets & long polling
+14. DNS resolution
+15. CDN basics & edge caching
+16. TCP vs UDP trade-offs
+17. API gateways
+18. Reverse proxies
+19. Forward proxies
+20. Nginx/HAProxy basics
+
+---
+
+## 3. Storage & Databases
+
+21. Relational databases (MySQL, PostgreSQL)
+22. NoSQL databases (MongoDB, Cassandra, DynamoDB)
+23. Column vs document vs key-value stores
+24. Database indexing (B-tree, hash, bitmap)
+25. Database sharding strategies
+26. Database replication (master-slave, leader-follower)
+27. Strong vs eventual consistency
+28. ACID vs BASE properties
+29. CAP theorem applications in DBs
+30. SQL vs NoSQL trade-offs
+
+---
+
+## 4. Caching & Performance
+
+31. What caching is & why it’s used
+32. Client-side caching (browser, CDN)
+33. Server-side caching (Redis, Memcached)
+34. Write-through, write-around, write-back caching
+35. Cache eviction policies (LRU, LFU, FIFO)
+36. Cache invalidation strategies
+37. CDN edge caching vs origin caching
+38. Hotspot problem in caching
+39. Bloom filters & use cases
+40. Rate limiting with caching
+
+---
+
+## 5. Message Queues & Streaming
+
+41. Message queues basics (Kafka, RabbitMQ, SQS)
+42. Publish-subscribe pattern
+43. At-most-once, at-least-once, exactly-once delivery
+44. Dead-letter queues
+45. Event-driven architecture
+46. Kafka partitions & offsets
+47. Consumer groups & scaling consumers
+48. Stream processing basics (Flink, Spark, Kinesis)
+49. Event sourcing
+50. CQRS (Command Query Responsibility Segregation)
+
+---
+
+## 6. Scalability & Reliability
+
+51. Load balancing (round robin, least connections)
+52. Global load balancers (GeoDNS, Anycast)
+53. Rate limiting strategies
+54. Circuit breakers & retries
+55. Service discovery (Consul, Eureka)
+56. Heartbeat & health checks
+57. Leader election algorithms (Raft, Paxos)
+58. Failover strategies
+59. Consensus protocols in distributed systems
+60. Quorum-based writes/reads
+
+---
+
+## 7. Distributed Systems Concepts
+
+61. Distributed transactions (2PC, 3PC)
+62. Distributed locks (Zookeeper, Redis Redlock)
+63. Idempotency in APIs
+64. Clock synchronization (NTP, Lamport timestamps)
+65. Vector clocks
+66. Gossip protocol
+67. Partition tolerance in practice
+68. Data replication strategies (sync vs async)
+69. CAP theorem real-world examples (DynamoDB, Cassandra)
+70. Consistent hashing
+
+---
+
+## 8. Security & Authentication
+
+71. HTTPS & TLS handshake
+72. OAuth 2.0 & OpenID Connect
+73. JWT authentication
+74. API keys & HMAC signatures
+75. Role-based access control (RBAC)
+76. Attribute-based access control (ABAC)
+77. Rate limiting for security (DoS protection)
+78. CSRF protection
+79. XSS prevention
+80. SQL injection prevention
+
+---
+
+## 9. Monitoring & Observability
+
+81. Logging best practices (structured logs)
+82. Metrics & time-series databases (Prometheus)
+83. Distributed tracing (Jaeger, Zipkin)
+84. Centralized log management (ELK stack)
+85. SLOs, SLIs, SLAs
+86. Alerting & incident response (PagerDuty)
+87. Error budgets in reliability engineering
+88. Canary releases
+89. Blue-green deployments
+90. Chaos engineering basics
+
+---
+
+## 10. Advanced System Design (Senior Level)
+
+91. Designing a URL shortener (Bitly)
+92. Designing a rate limiter
+93. Designing a social media feed (Twitter/FB)
+94. Designing a chat/messaging app (WhatsApp)
+95. Designing a video streaming service (YouTube/Netflix)
+96. Designing an e-commerce system (Amazon-like)
+97. Designing a ride-hailing service (Uber, Lyft)
+98. Designing a distributed search engine (Google-lite)
+99. Designing a payment system (Stripe, PayPal)
+100. Designing large-scale microservices orchestration (Kubernetes-level thinking)
+
+---
+

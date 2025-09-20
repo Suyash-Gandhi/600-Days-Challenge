@@ -1,0 +1,14 @@
+Q4. Explain the difference between function scope and block scope in JavaScript
+
+=> 1. Function Scope
+
+A variable has function scope when it is accessible only 
+inside the function where it was declared.
+Variables declared with var are function-scoped.
+They are not restricted by { } blocks like if, for, or while.
+
+2. Block Scope
+
+A variable has block scope when it is accessible only inside 
+the nearest { } block (if, for, while, etc.).
+Variables declared with let and const are block-scoped.

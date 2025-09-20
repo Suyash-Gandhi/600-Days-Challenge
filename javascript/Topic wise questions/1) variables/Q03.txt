@@ -1,0 +1,8 @@
+Q3. What is the default value of an uninitialized variable in JavaScript?
+
+=> var: undefined
+ 
+   let & const: They are in the Temporal Dead Zone (TDZ) until 
+                the declaration line.
+                Accessing them before assignment results in a 
+                ReferenceError.

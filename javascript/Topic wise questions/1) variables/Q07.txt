@@ -1,0 +1,51 @@
+Q7. Can you reassign values to a const variable? What if the 
+variable stores an object or array?
+
+=> In Primitive type you cannot reassign a value to a variable,
+but in Reference type (array, object, functions) you can change the value
+
+The reference (memory address) stored in the variable is 
+constant, so you cannot make it point to a different object or
+array.
+
+But the contents inside the object or array can still be 
+modified, because the object itself is mutable.
+
+In Primitive the value is directly mapped to memory block but in
+Reference type we have large arrays and objects that have dynamic
+sizes so they cannot fit in a single block. Thus for Reference
+type a reference (pointer/address) to where the object/array 
+lives in memory is stored in a variable. We have made only that 
+address constant not the whole data
+
+const arr = [1, 2, 3];
+
+arr holds a memory address (say 0xA12) where [1, 2, 3] is stored.
+
+When you do arr.push(4), you’re modifying the data inside the 
+memory block at 0xA12. That will work as The stack slot size 
+is constant → it only needs enough space to store a reference 
+(address/pointer).
+That reference points to the heap, where the actual data can 
+grow or shrink dynamically.
+
+const arr = [1, 2, 3];
+arr.push(4);  // Heap array expands
+
+The stack slot (reference) didn’t change in size — it’s still 
+just holding an address.
+What changed was the heap data structure.
+
+const arr = [1, 2, 3];
+arr = [5, 6]; // ❌ TypeError
+
+But if you try arr = [5, 6], you’re telling arr to point to a 
+new memory block, which is not allowed if arr was declared 
+with const.Here, you’re not trying to “access” [5, 6].
+You’re trying to reassign the entire variable arr so that 
+it points to a brand-new array in the heap.
+Since arr was declared with const, the reference (address) in 
+the stack is locked → JavaScript immediately throws an error 
+before even evaluating the new value.
+
+👉 This is a reassignment error.
