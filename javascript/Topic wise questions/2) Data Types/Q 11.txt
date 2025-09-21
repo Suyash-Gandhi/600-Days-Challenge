@@ -1,0 +1,111 @@
+Q11. What will be the output of the following, and why?
+
+typeof NaN
+typeof null
+typeof function() {}
+typeof class {}
+typeof new String("hello")
+
+
+(Explain quirks in typeof.)
+
+=> 1. typeof NaN
+
+✅ Output: "number"
+
+NaN literally means Not-a-Number.
+
+Despite the name, in JavaScript it is still a special numeric 
+value (used to represent invalid math like 0/0).
+
+So typeof NaN is "number".
+
+2. typeof null
+
+✅ Output: "object"
+
+This is a well-known bug in JavaScript from its early implementation.
+
+In low-level representation, null was stored as a null pointer 
+(0x00), which resembled an “object reference.”
+
+This mistake is kept for backward compatibility, so typeof 
+null always returns "object".
+
+The correct way to check for null is:
+
+value === null
+
+3. typeof function() {}
+
+✅ Output: "function"
+
+Functions in JavaScript are actually objects (first-class 
+citizens).
+
+But typeof treats them specially and returns "function" 
+instead of "object".
+
+This was introduced so developers can easily distinguish 
+between normal objects and callable functions.
+
+4. typeof class {}
+
+✅ Output: "function"
+
+In JavaScript, class is just syntactic sugar for constructor 
+functions.
+
+Example:
+
+class A {}
+typeof A // "function"
+
+
+Internally, classes are special kinds of functions that 
+produce objects.
+
+5. typeof new String("hello")
+
+✅ Output: "object"
+
+new String("hello") creates a String object (wrapper), not a 
+primitive string.
+
+Primitives → "hello" has typeof "hello" → "string".
+
+Wrappers → new String("hello") → "object".
+
+//EXTRA
+
+6. Object wrappers
+
+typeof new String("abc") // "object"
+typeof "abc"             // "string"
+
+Quirk: Wrappers (new String, new Number, new Boolean) are 
+objects, not primitives.
+
+Can cause weird behavior in comparisons:
+
+new String("abc") === "abc" // false
+
+7. Special numeric values
+
+typeof Infinity // "number"
+typeof -Infinity // "number"
+
+Infinity values are numbers, not a separate type.
+
+💡 Interview Tip:
+Whenever you see typeof questions, remember these patterns:
+
+null → "object" (bug)
+
+Arrays → "object", use Array.isArray()
+
+Functions → "function"
+
+Wrapper objects → "object"
+
+NaN → "number"
