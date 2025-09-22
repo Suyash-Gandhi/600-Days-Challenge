@@ -29,7 +29,7 @@ So typeof NaN returns "number".
 typeof []  // "object"
 
 Explanation: Arrays in JavaScript are technically objects, so 
-typeof reports "object".
+typeof reports "object"
 
 How to check if it’s really an array:
 

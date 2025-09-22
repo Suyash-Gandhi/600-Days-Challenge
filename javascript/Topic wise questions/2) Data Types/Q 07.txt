@@ -42,7 +42,7 @@ parseInt() → Converts to integer, stops reading when it hits a
 non-digit.
 
 parseFloat() → Converts to floating-point number, supports 
-decimals.
+decimals
 
 Useful when dealing with user input (strings).
 

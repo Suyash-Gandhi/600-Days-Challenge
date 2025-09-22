@@ -22,7 +22,7 @@ Compares two values without type coercion.
 
 Both value and type must match to return true.
 
-Safer and more predictable.
+Safer and more predictable
 
 Examples:
 

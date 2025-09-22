@@ -1,0 +1,86 @@
+Q3. What are potential pitfalls of using truthy/falsy values 
+in conditional checks? Give examples from real-world code.
+
+=> In JavaScript, values are automatically coerced to a 
+Boolean when evaluated in conditional statements. While this 
+feature makes code concise, it can also create subtle bugs. 
+The pitfalls arise when values that are valid but falsy 
+(like 0, "", or null) are mistakenly treated as absence of 
+data, leading to unintended behavior.
+
+1. Misinterpreting 0 as "No Value"
+
+Problem: The number 0 is falsy, but in many contexts, it is a 
+valid value.
+
+Example:
+
+function calculateDiscount(price) {
+  if (!price) return "Invalid price";
+  return price * 0.1;
+}
+console.log(calculateDiscount(0)); // "Invalid price" ❌
+
+Here, a price of 0 might represent a free product, but the 
+logic wrongly flags it as invalid.
+
+2. Empty String vs. Missing Data
+
+Problem: An empty string "" is falsy, but it may legitimately 
+represent user input.
+
+Example:
+
+function greet(userName) {
+  if (!userName) return "Guest";
+  return `Hello, ${userName}`;
+}
+console.log(greet("")); // "Guest" ❌ (instead of showing 
+blank input)
+
+This causes the application to replace valid but empty input 
+with a fallback value.
+
+3. Null and Undefined Confusion
+
+Problem: Both null and undefined are falsy, but they have 
+different meanings (null = intentional absence, undefined = not
+assigned). Treating them the same may cause data 
+interpretation issues.
+
+Example:
+
+let user = { middleName: null };
+if (!user.middleName) {
+  console.log("No middle name provided");
+}
+// True for null ❌ but also true if property was missing or 
+undefined
+
+4. NaN and False Equivalence
+
+Problem: NaN is falsy, but it means "not a number" rather than 
+just false.
+
+Example:
+
+let value = parseInt("abc"); // NaN
+if (!value) {
+  console.log("No value"); // Misleading ❌ — it's not 
+  "no value", it's invalid input
+}
+
+5. Wrapper Objects (Unexpected Truthy Behavior)
+
+Problem: Objects, even when holding falsy primitives, are 
+always truthy.
+
+Example:
+
+if (new Boolean(false)) {
+  console.log("Runs"); // ✅ Always runs, object is truthy
+}
+
+
+This can lead to logical contradictions if developers forget 
+the distinction.

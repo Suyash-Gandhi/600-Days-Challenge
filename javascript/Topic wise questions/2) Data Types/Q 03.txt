@@ -10,4 +10,4 @@ Represents the intentional absence of any value. You explicitly
  
  Represents a variable that has been declared but not assigned 
  a value or a function that doesn’t return anything. This is of
- type undefined
+ type undefined.

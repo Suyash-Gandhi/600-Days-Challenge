@@ -15,4 +15,4 @@ These are mutable (can be changed after creation).
 
 Stored in heap memory, while the stack stores a reference to the object.
 
-Compared by reference (memory location), not by value.
+Compared by reference (memory location), not by value

@@ -32,4 +32,4 @@ Defining private or internal properties that shouldn’t be
 accidentally accessed or overwritten.
 
 Implementing well-known symbols like Symbol.iterator for 
-custom iteration behavior.
+custom iteration behavior

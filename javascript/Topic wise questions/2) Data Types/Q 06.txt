@@ -58,4 +58,4 @@ Harder Debugging – A variable’s type may change unexpectedly
 in large projects.
 
 Maintainability Issues – Team projects become tricky when 
-developers assume different types.
+developers assume different types

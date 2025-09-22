@@ -1,0 +1,81 @@
+Q1. Explain the concept of truthy and falsy values in JavaScript. 
+Can you give examples beyond the standard ones (0, "", null, 
+undefined, NaN, false)?
+
+=> In JavaScript, every value can be evaluated in a Boolean 
+context (for example, inside an if statement). Based on this 
+evaluation, values are categorized as truthy or falsy.
+
+Falsy values: Values that evaluate to false when converted to Boolean.
+
+Truthy values: Values that evaluate to true when converted to Boolean.
+
+This concept is fundamental in JavaScript because of its 
+reliance on type coercion and dynamic typing.
+
+1. Standard Falsy Values
+
+There are exactly seven standard falsy values in JavaScript:
+
+false
+0 (number zero)
+-0 (negative zero)
+"" (empty string)
+null
+undefined
+NaN
+
+Any value outside of these is considered truthy.
+
+2. Truthy Values
+
+Everything not falsy becomes truthy. Common truthy values 
+include:
+
+Non-zero numbers → 1, -1, 3.14
+Non-empty strings → "hello", "0", "false"
+Objects and arrays → [], {}
+Functions → function() {}
+Dates → new Date()
+
+ 
+Examples Beyond Standard Ones
+
+Now let’s go beyond the usual list to demonstrate deeper 
+understanding:
+
+Empty Array []
+
+if ([]) console.log("Runs"); // ✅ truthy
+
+Even though it looks "empty," an array is an object → truthy.
+
+Empty Object {}
+
+if ({}) console.log("Runs"); // ✅ truthy
+
+All objects are truthy, regardless of content.
+
+String with Whitespace " "
+
+if (" ") console.log("Runs"); // ✅ truthy
+
+Although visually "empty," a space is still a character.
+
+String "0"
+
+if ("0") console.log("Runs"); // ✅ truthy
+
+Important distinction: the number 0 is falsy, but the string 
+"0" is truthy.
+
+Wrapper Objects like new Boolean(false)
+
+if (new Boolean(false)) console.log("Runs"); // ✅ truthy
+
+Even though its internal value is false, objects are truthy.
+
+Special Case: document.all
+In older browsers, document.all was treated as a falsy value 
+despite being an object. This is a quirky exception in 
+JavaScript’s history.
