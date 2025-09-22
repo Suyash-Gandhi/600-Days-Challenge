@@ -1,0 +1,36 @@
+Q3. Is “user authentication” a functional or non-functional 
+requirement? Why?
+
+“User authentication” is a functional requirement. Functional 
+requirements define what a system should do, i.e., the 
+specific actions or behaviors the system must perform. In this 
+case, user authentication specifies that the system must 
+verify the identity of users before granting access to 
+protected resources or features.
+
+This requirement is crucial because it ensures that only 
+authorized users can access the system, maintaining the system’s
+integrity and security. While authentication contributes to the
+overall security (a non-functional aspect), the act of 
+performing authentication itself — checking credentials, 
+allowing login, restricting access — is a specific 
+functionality of the system.
+
+Example: When a user enters a username and password, the 
+system must validate these credentials and either grant or 
+deny access. This is a clearly defined action, which is why 
+it is functional, not non-functional.
+
+Summary: Functional requirements = what the system does;
+non-functional requirements = how well the system performs 
+those actions. User authentication falls under functional 
+because it specifies an essential system action.
+
+
+1 LINE INTERVIEW ANSWER:
+
+“User authentication” is a functional requirement because it 
+defines a specific system action — verifying a user’s identity 
+before granting access. While it supports security, the 
+authentication process itself is a clearly defined 
+functionality of the system.

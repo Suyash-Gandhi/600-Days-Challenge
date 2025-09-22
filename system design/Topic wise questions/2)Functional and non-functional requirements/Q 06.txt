@@ -1,0 +1,4 @@
+Q6. How do non-functional requirements impact architecture 
+choices (e.g., monolithic vs microservices)?
+
+=> 

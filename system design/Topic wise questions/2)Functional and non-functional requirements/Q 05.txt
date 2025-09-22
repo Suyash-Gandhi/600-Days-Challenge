@@ -1,0 +1,29 @@
+Q5. In a banking system, how would you classify requirements 
+related to transaction accuracy and system uptime of 99.99%?
+
+=> 1. Transaction Accuracy:
+
+This is a functional requirement because it defines a 
+specific system action — ensuring that financial transactions 
+are processed correctly.
+
+Example: When a user transfers ₹10,000 from Account A to 
+Account B, the system must debit exactly ₹10,000 from A and 
+credit exactly ₹10,000 to B.
+
+Reason: Functional requirements specify what the system must 
+do, and processing transactions accurately is a core system 
+function in banking.
+
+2. System Uptime of 99.99%:
+
+This is a non-functional requirement because it defines how 
+well the system performs rather than what it does.
+
+Example: 99.99% uptime means the system should be available 
+and operational almost all the time, allowing customers to 
+access their accounts, make transactions, and check balances 
+reliably.
+
+Reason: Non-functional requirements specify quality attributes 
+like availability, reliability, and performance.

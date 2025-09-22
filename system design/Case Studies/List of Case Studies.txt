@@ -1,0 +1,223 @@
+
+ 🟢 Junior-Level System Design Case Studies (1–50)
+
+1. Design a URL Shortener (e.g., Bitly)
+2. Design a Rate Limiter
+3. Design a Key-Value Store
+4. Design a Cache System
+5. Design a Content Delivery Network (CDN)
+6. Design a Logging System
+7. Design a Notification System
+8. Design a Session Management System
+9. Design a Search Autocomplete System
+10. Design a File Upload Service
+11. Design a Chat Application
+12. Design a Voting System
+13. Design a To-Do List Application
+14. Design a URL Redirector
+15. Design a Weather Forecasting System
+16. Design a Blog Platform
+17. Design a Real-Time Collaboration Tool
+18. Design a Calendar Application
+19. Design a Bookmarking Service
+20. Design a News Aggregator
+21. Design a Polling System
+22. Design a Contact Management System
+23. Design a Task Scheduler
+24. Design a Video Streaming Service
+25. Design an Image Gallery
+26. Design a Music Streaming Service
+27. Design a Video Conferencing System
+28. Design a Social Media Feed
+29. Design a Notification Aggregator
+30. Design a Document Management System
+31. Design a File Compression Tool
+32. Design a Currency Converter
+33. Design a Unit Converter
+34. Design a QR Code Generator
+35. Design a Barcode Scanner
+36. Design a PDF Generator
+37. Design a Markdown to HTML Converter
+38. Design a Spell Checker
+39. Design a Grammar Checker
+40. Design a Text Formatter
+41. Design a Code Formatter
+42. Design a Syntax Highlighter
+43. Design a Code Linter
+44. Design a Code Profiler
+45. Design a Code Formatter
+46. Design a Code Minifier
+47. Design a Code Beautifier
+48. Design a Code Obfuscator
+49. Design a Code Deobfuscator
+50. Design a Code Analyzer
+
+---
+
+ 🟡 Mid-Level System Design Case Studies (51–150)
+
+51. Design a URL Shortener with Analytics
+52. Design a Distributed Cache System
+53. Design a Content Delivery Network with Edge Caching
+54. Design a Distributed Logging System
+55. Design a Notification System with Push Notifications
+56. Design a Session Management System with Redis
+57. Design a Search Autocomplete System with Elasticsearch
+58. Design a File Upload Service with Multipart Support
+59. Design a Chat Application with WebSockets
+60. Design a Voting System with Real-Time Results
+61. Design a To-Do List Application with Prioritization
+62. Design a URL Redirector with Analytics
+63. Design a Weather Forecasting System with Microservices
+64. Design a Blog Platform with Markdown Support
+65. Design a Real-Time Collaboration Tool with Operational Transformation
+66. Design a Calendar Application with Event Reminders
+67. Design a Bookmarking Service with Tagging
+68. Design a News Aggregator with Personalized Feeds
+69. Design a Polling System with Real-Time Results
+70. Design a Contact Management System with Grouping
+71. Design a Task Scheduler with Cron Jobs
+72. Design a Video Streaming Service with Adaptive Bitrate
+73. Design an Image Gallery with Lazy Loading
+74. Design a Music Streaming Service with Playlists
+75. Design a Video Conferencing System with Screen Sharing
+76. Design a Social Media Feed with Infinite Scrolling
+77. Design a Notification Aggregator with Prioritization
+78. Design a Document Management System with Versioning
+79. Design a File Compression Tool with Multiple Formats
+80. Design a Currency Converter with Real-Time Rates
+81. Design a Unit Converter with Custom Units
+82. Design a QR Code Generator with Customization
+83. Design a Barcode Scanner with Multiple Formats
+84. Design a PDF Generator with Templates
+85. Design a Markdown to HTML Converter with Extensions
+86. Design a Spell Checker with Custom Dictionaries
+87. Design a Grammar Checker with Contextual Suggestions
+88. Design a Text Formatter with Custom Styles
+89. Design a Code Formatter with Multiple Languages
+90. Design a Syntax Highlighter with Themes
+91. Design a Code Linter with Custom Rules
+92. Design a Code Profiler with Performance Metrics
+93. Design a Code Formatter with Prettier Integration
+94. Design a Code Minifier with UglifyJS
+95. Design a Code Beautifier with BeautifyJS
+96. Design a Code Obfuscator with JavaScript Obfuscator
+97. Design a Code Deobfuscator with JSNice
+98. Design a Code Analyzer with SonarQube
+99. Design a Code Review Tool with GitHub Integration
+100. Design a Code Search Engine with Sourcegraph
+101. Design a Code Documentation Generator with JSDoc
+102. Design a Code Snippet Manager with Tagging
+103. Design a Code Metrics Dashboard with Grafana
+104. Design a Code Coverage Tool with Istanbul
+105. Design a Code Security Scanner with Snyk
+106. Design a Code Dependency Analyzer with Dependabot
+107. Design a Code License Checker with FOSSA
+108. Design a Code Vulnerability Scanner with OWASP Dependency-Check
+109. Design a Code Quality Dashboard with Code Climate
+110. Design a Code Build System with Jenkins
+111. Design a Code Deployment Pipeline with GitLab CI/CD
+112. Design a Code Artifact Repository with Nexus
+113. Design a Code Package Manager with npm
+114. Design a Code Versioning System with Git
+115. Design a Code Branching Strategy with GitFlow
+116. Design a Code Merge Conflict Resolver with Git Mergetool
+117. Design a Code Rebase Tool with Git Rebase
+118. Design a Code Cherry-Pick Tool with Git Cherry-Pick
+119. Design a Code Stash Tool with Git Stash
+120. Design a Code Patch Generator with Git Format-Patch
+121. Design a Code Commit Message Formatter with Commitizen
+122. Design a Code Commit Linter with Commitlint
+123. Design a Code Commit Hook with Husky
+124. Design a Code Version Tagging System with Git Tags
+125. Design a Code Release Manager with GitHub Releases
+126. Design a Code Deployment Manager with Kubernetes
+127. Design a Code Monitoring System with Prometheus
+128. Design a Code Alerting System with Alertmanager
+129. Design a Code Logging System with ELK Stack
+130. Design a Code Metrics Collector with StatsD
+131. Design a Code Tracing System with OpenTelemetry
+132. Design a Code Profiling System with pprof
+133. Design a Code Debugging Tool with GDB
+134. Design a Code Benchmarking Tool with Benchmark.js
+135. Design a Code Performance Testing Tool with Lighthouse
+136. Design a Code Load Testing Tool with Artillery
+137. Design a Code Stress Testing Tool with k6
+138. Design a Code Chaos Engineering Tool with Gremlin
+139. Design a Code Continuous Integration Tool with Travis CI
+140. Design a Code Continuous Delivery Tool with Spinnaker
+141. Design a Code Artifact Management Tool with Artifactory
+142. Design a Code Containerization Tool with Docker
+143. Design a Code Orchestration Tool with Kubernetes
+144. Design a Code Service Mesh with Istio
+145. Design a Code API Gateway with Kong
+146. Design a Code API Management Tool with Apigee
+147. Design a Code API Documentation Tool with Swagger
+148. Design a Code API Testing Tool with Postman
+149. Design a Code API Mocking Tool with WireMock
+150. Design a Code API Versioning Strategy with Semantic Versioning
+
+---
+
+ 🔵 Senior-Level System Design Case Studies (151–200)
+
+151. Design a Distributed File System
+152. Design a Distributed Key-Value Store
+153. Design a Distributed Messaging System
+154. Design a Distributed Database
+155. Design a Distributed Cache System
+156. Design a Distributed Search Engine
+157. Design a Distributed Logging System
+158. Design a Distributed Monitoring System
+159. Design a Distributed Tracing System
+160. Design a Distributed Queue System
+161. Design a Distributed Scheduler
+162. Design a Distributed Transaction System
+163. Design a Distributed Consensus System
+164. Design a Distributed File Synchronization System
+165. Design a Distributed Content Delivery Network (CDN)
+166. Design a Distributed Video Streaming Service
+167. Design a Distributed Audio Streaming Service
+168. Design a Distributed Image Processing System
+169. Design a Distributed Machine Learning Pipeline
+170. Design a Distributed Data Warehouse
+171. Design a Distributed Data Lake
+172. Design a Distributed Data Pipeline
+173. Design a Distributed Event Sourcing System
+174. Design a Distributed Command Query Responsibility Segregation (CQRS) System
+175. Design a Distributed Event-Driven Architecture
+176. Design a Distributed Microservices Architecture
+177. Design a Distributed Serverless Architecture
+178. Design a Distributed Edge Computing System
+179. Design a Distributed Blockchain System
+180. Design a Distributed Cryptocurrency Exchange
+181. Design a Distributed Payment Gateway
+182. Design a Distributed Identity Management System
+183. Design a Distributed Access Control System
+184. Design a Distributed Authentication System
+185. Design a Distributed Authorization System
+186. Design a Distributed Single Sign-On (SSO) System
+187. Design a Distributed Multi-Factor Authentication (MFA) System
+188. Design a Distributed Role-Based Access Control (RBAC) System
+189. Design a Distributed Attribute-Based Access Control (ABAC) System
+190. Design a Distributed Public Key Infrastructure (PKI) System
+191. Design a Distributed Secure File Sharing System
+192. Design a Distributed Secure Messaging System
+193. Design a Distributed Secure Email System
+194. Design a Distributed Secure Video Conferencing System
+195. Design a Distributed Secure Social Media Platform
+196. Design a Distributed Secure E-Commerce Platform
+197. Design a Distributed Secure E-Commerce Platform
+198. Design a Distributed Secure Online Banking System
+199. Design a Distributed IoT Data Management System
+200. Design a Distributed Real-Time Analytics Platform
+
+---
+
+These case studies cover almost every domain an interviewer 
+might ask about and can be used as practice prompts for 
+designing systems on paper or whiteboard.
+
+---
+
+

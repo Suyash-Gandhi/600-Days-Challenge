@@ -1,0 +1,137 @@
+1. Python
+
+Why learn: Python is the most important language for cybersecurity. It’s used for automation, penetration testing, scripting attacks, writing security tools, malware analysis, and data manipulation.
+
+What you can do with it:
+
+Write scripts to automate scanning or monitoring
+
+Create exploits for penetration testing
+
+Analyze logs or malware
+
+Interact with APIs of security tools
+
+Difficulty: Easy → Intermediate
+
+Roles: Penetration tester, Security Analyst, Threat Hunter, Malware Analyst
+
+2. Bash / Shell Scripting
+
+Why learn: Most servers run Linux; Bash is crucial for automating tasks, monitoring, and managing systems.
+
+What you can do with it:
+
+Automate system scans
+
+Write scripts to check vulnerabilities
+
+Handle server logs
+
+Difficulty: Easy
+
+Roles: System Security Engineer, SOC Analyst, Cloud Security
+
+3. JavaScript
+
+Why learn: Web security is huge, and many attacks target web apps (XSS, CSRF, injection). JavaScript helps you understand and exploit web vulnerabilities.
+
+What you can do with it:
+
+Test web applications
+
+Understand browser-based attacks
+
+Write payloads for ethical hacking
+
+Difficulty: Easy → Intermediate
+
+Roles: Web Application Security, Penetration Tester
+
+4. C / C++
+
+Why learn: These are low-level languages. Understanding them helps in:
+
+Exploit development
+
+Reverse engineering malware
+
+Buffer overflow attacks
+
+What you can do with it:
+
+Analyze malware binaries
+
+Develop proof-of-concept exploits
+
+Understand system-level vulnerabilities
+
+Difficulty: Intermediate → Hard
+
+Roles: Malware Analyst, Exploit Developer, Reverse Engineer
+
+5. SQL
+
+Why learn: Most attacks exploit databases (SQL Injection, privilege escalation). Knowing SQL is mandatory for database security.
+
+What you can do with it:
+
+Identify SQL injection vulnerabilities
+
+Audit database permissions
+
+Extract and manipulate data for testing
+
+Difficulty: Easy → Intermediate
+
+Roles: Web Security, Pen Tester, Database Security Specialist
+
+6. PowerShell (Windows Security)
+
+Why learn: Windows dominates enterprise networks. PowerShell is used for administration, automation, and attacks.
+
+What you can do with it:
+
+Automate tasks and reporting
+
+Write scripts for penetration testing
+
+Detect or deploy attacks on Windows networks
+
+Difficulty: Easy → Intermediate
+
+Roles: SOC Analyst, Red Team, Incident Response
+
+7. Assembly / Reverse Engineering Languages
+
+Why learn: For advanced malware analysis and exploit development, understanding assembly (x86/x64) is crucial.
+
+What you can do with it:
+
+Analyze malware binaries
+
+Debug exploits
+
+Reverse engineer software
+
+Difficulty: Hard
+
+Roles: Malware Analyst, Exploit Developer, Advanced Threat Researcher
+
+Optional but useful
+
+Go / Rust: Used in modern cybersecurity tools, malware, or exploits. Learning these helps in building high-performance security tools.
+
+Ruby: Still used in some pentesting frameworks (Metasploit).
+
+Recommended Learning Path for Cybersecurity
+
+Python + Bash + SQL → Core scripting and automation
+
+JavaScript → Web security
+
+PowerShell → Windows security
+
+C/C++ + Assembly → Advanced exploitation & malware analysis
+
+Optional: Go / Rust / Ruby for specialized roles
