@@ -1,7 +1,6 @@
-const arr=[1,2,3]
-console.log(arr);
-
-arr.push(4)
-
-console.log(arr);
-
+let a=1
+let b= a++
+console.log(a,b);
+setTimeout(()=>{
+console.log(b);
+},1000)

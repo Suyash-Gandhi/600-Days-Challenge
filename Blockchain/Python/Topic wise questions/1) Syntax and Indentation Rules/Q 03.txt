@@ -1,0 +1,60 @@
+Q3. Discuss the role of the IndentationError and TabError in 
+Python. Why does Python disallow mixing tabs and spaces, and 
+how do PEP 8 guidelines attempt to mitigate these issues?
+
+=> 1. IndentationError in Python:
+
+An IndentationError is raised when Python encounters 
+inconsistent indentation within a block of code. This can 
+happen when the number of spaces or tabs used for indentation 
+varies within a block. Python’s interpreter expects each block 
+of code (whether in a loop, function, or class) to be uniformly 
+indented. The error typically arises when:
+
+  The indentation level is inconsistent (mixing spaces with 
+  tabs or varying the number of spaces).
+
+  There is no indentation where it is required (e.g., in the 
+  body of a loop or function).
+
+Example:
+if True:
+print("Hello, World!")
+
+
+This would raise an IndentationError because the print 
+statement inside the if block is not properly indented.
+
+2. TabError in Python:
+
+The TabError occurs when a tab character (\t) is used in one 
+part of the program while spaces are used in another, within 
+the same block of code. This is a result of inconsistent 
+indentation where a tab is mixed with spaces, even though both 
+are meant to achieve the same purpose — indenting a block of 
+code. Python cannot distinguish between the two visually, and 
+this can lead to errors that are difficult to detect.
+
+Example:
+if True:
+    print("Hello, World!")  # This line uses spaces
+	print("Indented with tab!")  # This line uses a tab character
+
+
+The above code would raise a TabError because a tab character 
+is used in one line, while spaces are used in the other. 
+Although both appear to be indented visually, Python treats 
+them as different, leading to an error.
+
+Why Does Python Disallow Mixing Tabs and Spaces?
+
+Python disallows the mixing of tabs and spaces in indentation 
+due to Ambiguity in Code Representation:
+
+Tabs and spaces are visually distinct when viewed in an editor, 
+but they have different internal representations. A tab 
+character typically represents 8 spaces in most editors, which 
+can cause inconsistencies in how the code appears across 
+different environments, editors, or platforms. Mixing tabs and 
+spaces can make the indentation look correct visually but 
+result in unexpected behavior or errors when executed.

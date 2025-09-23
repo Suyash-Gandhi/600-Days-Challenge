@@ -1,0 +1,78 @@
+Q7. How would you handle conflicting non-functional 
+requirements, for example high security vs high performance?
+
+=> Non-functional requirements (NFRs) describe the quality 
+attributes of a system such as performance, security, 
+scalability, usability, and availability. Sometimes, these 
+requirements can conflict. For instance, implementing high 
+security often requires techniques like encryption, 
+multi-factor authentication, and frequent validations, which 
+may reduce performance by increasing computational overhead.
+
+2. Nature of the Conflict
+
+High Security: Demands strict authentication, encryption, 
+access control, and monitoring.
+
+High Performance: Demands low latency, fast response time, and 
+high throughput.
+
+Conflict: More security measures → more processing time → slower 
+performance.
+
+Example: Encrypting all database queries ensures security but 
+slows query execution speed.
+
+3. Approaches to Handle the Conflict
+
+(a) Prioritization & Trade-off Analysis
+
+Use frameworks like MoSCoW (Must, Should, Could, Won’t) or 
+Kano model to rank requirements.
+
+If the system is financial or healthcare → prioritize security.
+
+If it’s a gaming or streaming platform → prioritize performance 
+with “adequate” security.
+
+(b) Architectural Solutions
+
+Caching: Store decrypted frequently used data temporarily for 
+faster access.
+
+Load Balancing: Distribute workload to minimize performance 
+drops caused by security checks.
+
+Asynchronous Security Checks: Perform certain validations in 
+the background without blocking the main request.
+
+(c) Optimization Techniques
+
+Use efficient encryption algorithms (e.g., AES over RSA in 
+some cases for bulk data).
+
+Employ hardware acceleration (TPM chips, SSL accelerators) to 
+reduce latency.
+
+Apply scalable infrastructure (CDNs, microservices) to offset 
+performance penalties.
+
+(d) Contextual Decision-making
+
+Perform risk analysis: What happens if performance suffers vs. 
+if security suffers?
+
+In banking apps, sacrificing some performance is acceptable for 
+strong encryption.
+
+In real-time video streaming, a lighter security model may be 
+chosen to maintain user experience.
+
+4. Example Case
+
+Banking App: All transactions must be encrypted → choose high 
+security at the cost of slightly slower performance.
+
+Online Game: Real-time speed is critical → prioritize 
+performance but still apply adequate security like token-based 
+authentication

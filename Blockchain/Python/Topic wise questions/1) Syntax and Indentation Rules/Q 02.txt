@@ -1,0 +1,95 @@
+Q2.  How do multiline constructs in Python (like function 
+definitions, list comprehensions, or lambda functions) 
+interact with indentation? Discuss differences between using 
+implicit line continuation (inside [], {}, ()) and explicit 
+line continuation (\).
+
+=> 1. Multiline constructs and indentation
+
+Python allows breaking long statements across multiple lines 
+in several contexts:
+
+Function definitions:
+
+def calculate_area(length, width,
+                   height=0):
+    return length * width if height == 0 else length * width * height
+
+
+The arguments are split over multiple lines.
+
+Indentation after the opening parenthesis () signals 
+continuation, and Python expects the subsequent lines to align 
+properly for readability.
+
+The function body must still be indented relative to def.
+
+List comprehensions / generator expressions:
+
+squares = [
+    x**2
+    for x in range(10)
+    if x % 2 == 0
+]
+
+
+Each line inside the list comprehension aligns visually under 
+the opening [ for clarity.
+
+Python interprets the code as a single statement until the 
+closing bracket ].
+
+Lambda functions:
+
+add = lambda x, y: (
+    x + y
+)
+
+
+Parentheses allow splitting the expression across multiple lines.
+
+Indentation helps readability but does not change the scope or 
+logic.
+
+2. Implicit line continuation
+
+Implicit continuation occurs inside brackets [], braces {}, or 
+parentheses ().
+
+Python automatically understands that the statement is 
+incomplete until the closing delimiter is reached.
+
+Advantages:
+
+Cleaner and more readable; no extra syntax required.
+
+Works naturally with nested structures.
+
+Example:
+
+data = [
+    {"name": "Alice", "age": 25},
+    {"name": "Bob", "age": 30},
+    {"name": "Charlie", "age": 35}
+]
+
+3. Explicit line continuation
+
+Explicit continuation uses the backslash \ to indicate the 
+line continues:
+
+total = 1 + 2 + 3 + \
+        4 + 5 + 6
+
+
+Rules and caveats:
+
+Nothing (not even a comment or space) should follow the 
+backslash on the same line.
+
+Errors are common if indentation is inconsistent after \.
+
+Less visually clean compared to implicit continuation.
+
+Best practice: Prefer implicit continuation wherever possible; 
+use \ only when necessary (e.g., outside brackets).

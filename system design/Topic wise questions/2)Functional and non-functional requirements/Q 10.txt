@@ -1,0 +1,6 @@
+Q10. In large-scale systems, functional requirements define 
+what a system does, while non-functional requirements define 
+how well it does it. Can you provide an example where both 
+interact and create a trade-off?
+
+=> 

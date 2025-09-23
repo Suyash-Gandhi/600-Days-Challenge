@@ -1,0 +1,151 @@
+
+
+# 🐍 Python Interview Master List (100 Topics)
+
+---
+
+1. Core Fundamentals (Junior Level)
+
+1. Python syntax & indentation rules
+2. Variables & constants
+3. Data types (int, float, str, bool, complex)
+4. Type casting (implicit & explicit)
+5. Truthy & falsy values in Python
+6. Operators (arithmetic, comparison, logical, bitwise)
+7. String basics & string methods (`split`, `join`, `strip`, slicing)
+8. List basics & list methods (`append`, `extend`, `pop`, slicing)
+9. Tuples & immutability
+10. Dictionaries (hash maps) & methods (`get`, `items`, `keys`)
+11. Sets & frozensets
+12. Control flow (`if`, `for`, `while`, `break`, `continue`)
+13. Functions (`def`, return values, arguments)
+14. Default, keyword, and variable-length arguments (`*args`, `kwargs`)
+15. Scope rules (LEGB: Local, Enclosing, Global, Built-in)
+
+---
+
+2. Intermediate Python
+
+16. List comprehensions & generator expressions
+17. Dictionary & set comprehensions
+18. Lambda functions
+19. Map, filter, reduce
+20. Iterators (`iter`, `next`)
+21. Generators & `yield`
+22. Decorators (function-based & class-based)
+23. Closures in Python
+24. Modules & importing
+25. The `__name__ == "__main__"` idiom
+26. Packages & `__init__.py`
+27. Virtual environments (`venv`, `pipenv`)
+28. Python package management (`pip`, PyPI)
+29. F-strings & string formatting
+30. Exception handling (`try`, `except`, `finally`, `else`)
+
+---
+
+3. Object-Oriented Python
+
+31. Classes & objects basics
+32. Instance vs class vs static methods
+33. Attributes: instance vs class attributes
+34. Constructors (`__init__`)
+35. Dunder/magic methods (`__str__`, `__repr__`, `__len__`, `__eq__`)
+36. Operator overloading
+37. Inheritance (single, multiple, multilevel)
+38. Method overriding & `super()`
+39. Abstract classes (`abc` module)
+40. Interfaces & duck typing
+41. Encapsulation (private & protected members)
+42. Polymorphism in Python
+43. Metaclasses basics (`type`)
+
+---
+
+4. Data Structures & Algorithms in Python
+
+44. Stack, Queue, Deque with `collections`
+45. PriorityQueue & heapq
+46. Linked lists implementation in Python
+47. Binary tree basics (using classes)
+48. Graph representation in Python
+49. Sorting with `sorted()` and custom keys
+50. Searching algorithms (linear & binary search)
+51. Pythonic implementations of common algorithms (Kadane, Two Pointers)
+52. Built-in libraries for DSA (`bisect`, `itertools`)
+
+---
+
+5. Functional & Advanced Features
+
+53. First-class functions
+54. Higher-order functions
+55. Currying & partial application (`functools.partial`)
+56. Memoization (`functools.lru_cache`)
+57. Context managers (`with`, `__enter__`, `__exit__`)
+58. Custom context managers (`contextlib`)
+59. Itertools module (product, permutations, combinations, groupby)
+60. Collections module (Counter, defaultdict, OrderedDict, deque)
+61. Dataclasses (`@dataclass`)
+62. Typing & type hints (`typing` module)
+
+---
+
+6. Asynchronous Python
+
+63. Multithreading basics (`threading`)
+64. Global Interpreter Lock (GIL) & its implications
+65. Multiprocessing (`multiprocessing` module)
+66. AsyncIO basics (`async`, `await`)
+67. Async tasks (`asyncio.create_task`, `gather`)
+68. Event loops in asyncio
+69. Futures & coroutines
+70. Third-party async libraries (Trio, Curio, Aiohttp)
+
+---
+
+7. File Handling & OS Interactions
+
+71. File operations (read, write, append)
+72. File context managers (`with open`)
+73. CSV & JSON parsing (`csv`, `json`)
+74. OS module basics (`os.path`, `os.environ`)
+75. Glob & pathlib for file paths
+76. Shutil for file operations
+77. Pickle for object serialization
+78. Logging with `logging` module
+
+---
+
+8. Testing, Debugging & Best Practices
+
+79. Unit testing (`unittest`)
+80. Pytest basics
+81. Mocking & patching in tests
+82. Debugging with `pdb`
+83. Profiling code (`cProfile`, `timeit`)
+84. Writing clean code (PEP 8, naming conventions)
+85. Type checking with `mypy`
+86. Linting with Flake8/Pylint
+87. Dependency management with `requirements.txt` / Pipenv / Poetry
+
+---
+
+9. Senior-Level & Ecosystem Knowledge
+
+88. Memory management & garbage collection in Python
+89. Weak references (`weakref`)
+90. Performance optimization (Cython, Numba, multiprocessing pools)
+91. Packaging Python projects (`setup.py`, `pyproject.toml`)
+92. Virtualenvs vs Conda environments
+93. REST APIs with Flask/FastAPI basics
+94. Web frameworks overview (Flask, Django, FastAPI)
+95. ORM basics (SQLAlchemy, Django ORM)
+96. Data science stack overview (NumPy, Pandas, Matplotlib)
+97. Machine learning basics with scikit-learn
+98. Async web frameworks (FastAPI, Aiohttp)
+99. Security best practices in Python (dependency scanning, avoiding `eval`)
+100. Deploying Python apps (Docker, Gunicorn, WSGI, ASGI)
+
+---
+
