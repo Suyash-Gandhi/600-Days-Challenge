@@ -1,137 +1,149 @@
-1. Python
-
-Why learn: Python is the most important language for cybersecurity. It’s used for automation, penetration testing, scripting attacks, writing security tools, malware analysis, and data manipulation.
-
-What you can do with it:
-
-Write scripts to automate scanning or monitoring
-
-Create exploits for penetration testing
-
-Analyze logs or malware
-
-Interact with APIs of security tools
-
-Difficulty: Easy → Intermediate
-
-Roles: Penetration tester, Security Analyst, Threat Hunter, Malware Analyst
-
-2. Bash / Shell Scripting
-
-Why learn: Most servers run Linux; Bash is crucial for automating tasks, monitoring, and managing systems.
-
-What you can do with it:
-
-Automate system scans
-
-Write scripts to check vulnerabilities
-
-Handle server logs
-
-Difficulty: Easy
-
-Roles: System Security Engineer, SOC Analyst, Cloud Security
-
-3. JavaScript
-
-Why learn: Web security is huge, and many attacks target web apps (XSS, CSRF, injection). JavaScript helps you understand and exploit web vulnerabilities.
-
-What you can do with it:
-
-Test web applications
-
-Understand browser-based attacks
-
-Write payloads for ethical hacking
-
-Difficulty: Easy → Intermediate
-
-Roles: Web Application Security, Penetration Tester
-
-4. C / C++
-
-Why learn: These are low-level languages. Understanding them helps in:
-
-Exploit development
-
-Reverse engineering malware
-
-Buffer overflow attacks
-
-What you can do with it:
-
-Analyze malware binaries
-
-Develop proof-of-concept exploits
-
-Understand system-level vulnerabilities
-
-Difficulty: Intermediate → Hard
-
-Roles: Malware Analyst, Exploit Developer, Reverse Engineer
-
-5. SQL
-
-Why learn: Most attacks exploit databases (SQL Injection, privilege escalation). Knowing SQL is mandatory for database security.
-
-What you can do with it:
-
-Identify SQL injection vulnerabilities
-
-Audit database permissions
-
-Extract and manipulate data for testing
-
-Difficulty: Easy → Intermediate
-
-Roles: Web Security, Pen Tester, Database Security Specialist
-
-6. PowerShell (Windows Security)
-
-Why learn: Windows dominates enterprise networks. PowerShell is used for administration, automation, and attacks.
-
-What you can do with it:
-
-Automate tasks and reporting
-
-Write scripts for penetration testing
-
-Detect or deploy attacks on Windows networks
-
-Difficulty: Easy → Intermediate
-
-Roles: SOC Analyst, Red Team, Incident Response
-
-7. Assembly / Reverse Engineering Languages
-
-Why learn: For advanced malware analysis and exploit development, understanding assembly (x86/x64) is crucial.
-
-What you can do with it:
-
-Analyze malware binaries
-
-Debug exploits
-
-Reverse engineer software
-
-Difficulty: Hard
-
-Roles: Malware Analyst, Exploit Developer, Advanced Threat Researcher
-
-Optional but useful
-
-Go / Rust: Used in modern cybersecurity tools, malware, or exploits. Learning these helps in building high-performance security tools.
-
-Ruby: Still used in some pentesting frameworks (Metasploit).
-
-Recommended Learning Path for Cybersecurity
-
-Python + Bash + SQL → Core scripting and automation
-
-JavaScript → Web security
-
-PowerShell → Windows security
-
-C/C++ + Assembly → Advanced exploitation & malware analysis
-
-Optional: Go / Rust / Ruby for specialized roles
+   🌐 Domain 1: Networking & Infrastructure Security
+
+1. Networking Fundamentals (IP, TCP/UDP, DNS, routing, HTTP/HTTPS, Firewalls, NAT)
+2. Ports, Protocols & Packet Structure
+3. Security Models in Networking (CIA Triad, Defense-in-Depth)
+4. Secure Communication Protocols (SSH, SFTP, HTTPS, TLS/SSL, DNSSEC, IPsec)
+5. Advanced Networking Security (VPNs, IDS/IPS, Zero Trust Architecture)
+6. Wireless Security (WPA2/WPA3, Evil Twin Attacks & Defenses)
+7. Network Segmentation & VLAN Security
+8. Threat Hunting in Networks (Packet Analysis, Flow Logs, NetFlow)
+9. Advanced Network Defense (Honeypots, Deception Tech, Anomaly Detection)
+10. Blockchain P2P Protocol Security & Gossip Protocols
+11. DDoS Mitigation in Blockchain Networks
+12. BGP Hijacking & Routing Attacks in Blockchain
+13. DNS Spoofing & Poisoning Risks
+14. Secure Node Configuration (Firewalls, Peers, Hardening)
+15. Onion Routing/Tor & Privacy in Blockchain
+
+---
+
+   💻 Domain 2: Operating Systems & Endpoint Security
+
+16. OS Fundamentals (Processes, Memory, System Calls)
+17. File Systems & Permissions
+18. Linux Basics (File Permissions, Bash, SSH)
+19. Log Monitoring & System Auditing
+20. Authentication & Authorization (Passwords, MFA, SSO, IAM basics)
+21. Endpoint Security (Antivirus, EDR basics, Patching)
+22. Linux Security Administration (SELinux, iptables, auditing)
+23. Windows Security Administration (Active Directory, Group Policies, Logs)
+24. Virtualization & Sandboxing (VMs, Malware Testing)
+25. Insider Threat Management (Behavioral Detection, DLP Integration)
+
+---
+
+   🔏 Domain 3: Cryptography & Secure Communication
+
+26. Introduction to Cryptography (Hashes, Symmetric vs Asymmetric Encryption)
+27. Public/Private Key Cryptography (RSA, ECC)
+28. Digital Signatures (ECDSA, EdDSA)
+29. Hash Functions (SHA-256, Keccak-256)
+30. Merkle Trees & Patricia Tries in Blockchain
+31. Random Number Generation (Entropy, PRNG)
+32. Commitment Schemes
+33. Certificates & PKI (SSL/TLS, X.509)
+34. Secure Email & Messaging Protocols (PGP, S/MIME, Signal)
+35. Advanced Cryptography (Elliptic Curve, ZKPs, Multi-Signature Auth)
+36. Homomorphic Encryption Basics
+37. Zero-Knowledge Proofs (zk-SNARKs, zk-STARKs)
+38. Post-Quantum Cryptography (Lattice-based, Quantum-Safe)
+
+---
+
+   ⛓️ Domain 4: Blockchain Security Fundamentals
+
+39. Blockchain Architecture (Blocks, Transactions, State)
+40. Consensus Mechanisms (PoW, PoS, PBFT, Hybrid)
+41. Double-Spending Problem & Solutions
+42. 51% Attacks & Mitigations
+43. Selfish Mining & Variants
+44. Long-Range PoS Attacks
+45. Forks & Chain Reorganizations
+46. Sybil Attacks in Blockchain Networks
+47. Block Withholding Attacks
+48. Network-Level Attacks (Eclipse, Partitioning)
+49. Node Security (Full Nodes vs Light Nodes)
+50. Blockchain Privacy Models (Mixers, Tornado Cash, Ring Signatures)
+
+---
+
+   ⚙️ Domain 5: Smart Contract Security (EVM/Solidity Focus)
+
+51. Reentrancy Attacks
+52. Integer Overflow/Underflow
+53. Gas Limit & Denial-of-Service (DoS) Attacks
+54. Front-Running & MEV Exploits
+55. Delegatecall & Call Vulnerabilities
+56. Selfdestruct Misuse
+57. Storage Collision in Proxy Contracts
+58. Fallback Function Exploits
+59. Block Timestamp Manipulation
+60. DoS via Revert/Unexpected Conditions
+61. Logic Bugs & Misconfigured Access Controls
+
+---
+
+   🧩 Domain 6: Secure Smart Contract Design Patterns
+
+62. Checks-Effects-Interactions (CEI) Pattern
+63. Pull vs Push Payments
+64. Access Control with Modifiers
+65. Circuit Breakers & Rate Limiting
+66. Upgradeable Contract Patterns (Proxy Security)
+67. Oracle Manipulation & Mitigation
+68. Multisig Wallet Best Practices
+69. Timelocks & Governance Delays
+70. Emergency Stop Pattern
+71. Gas Optimization vs Security Trade-offs
+
+---
+
+   🌍 Domain 7: Web, Application & API Security (for DApps)
+
+72. Secure Software Development Basics (Input Validation, XSS, SQLi Intro)
+73. OWASP Top 10 (XSS, SQLi, CSRF, SSRF, etc.)
+74. API Security (OAuth2, JWTs, Token Attacks, API Gateways)
+75. Secure Coding Practices (Defensive Programming, Least Privilege)
+76. Application Security Testing (SAST, DAST, IAST, SCA)
+77. JSON Web Token (JWT) Security in DApps
+78. HTTPS/TLS for DApps
+79. Phishing Attacks on Wallets/DApps
+80. Malicious Browser Extensions in Web3
+81. Signature Spoofing Attacks
+82. CORS & Content Security Policy in DApps
+83. Secure UI/UX for Signing Transactions
+
+---
+
+   🛠️ Domain 8: Security Tools & Auditing for Blockchain
+
+84. Wireshark (Network Analysis)
+85. Nmap (Network Scanning)
+86. Burp Suite (Web Pentesting)
+87. OpenSSL/GPG (Crypto Testing)
+88. Blockchain Analysis Tools (Etherscan, Tenderly, Block Explorers)
+89. Smart Contract Static Analysis (Slither, Mythril)
+90. Dynamic Testing (Echidna, Foundry)
+91. Symbolic Execution (Manticore, Oyente)
+92. Fuzzing Smart Contracts
+93. Formal Verification (Certora, KEVM, Scribble)
+94. Debugging with Hardhat/Truffle
+95. Threat Modeling for Blockchain (STRIDE, Attack Trees)
+
+---
+
+   📊 Domain 9: Governance, Risk & Compliance (GRC)
+
+96. CIA Triad (Confidentiality, Integrity, Availability) in Blockchain
+97. AAA Model (Authentication, Authorization, Accounting)
+98. Non-Repudiation in Blockchain Systems
+99. Smart Contract Standards (ERCs, EIPs, Token Standards)
+100. GDPR & Data Privacy in Blockchain
+101. AML/KYC & Crypto Compliance
+102. Security Auditing Frameworks (ISO, NIST, SOC 2 for Blockchain)
+103. Incident Response Planning in Blockchain
+104. Blockchain Forensics & Fund Tracing
+105. DAO Governance & Security Risks
+
+---
