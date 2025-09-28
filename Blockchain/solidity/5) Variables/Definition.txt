@@ -1,0 +1,92 @@
+1. Introduction
+
+In Solidity, variables are used to store data temporarily or 
+permanently within a smart contract. They play a vital role in 
+defining the behavior and state of the contract. Solidity 
+supports three main types of variables: state variables, local 
+variables, and global variables. Each has a different scope, 
+lifetime, and storage location.
+
+2. State Variables
+
+Definition: Variables declared inside a contract but outside any function.
+
+Storage: Stored permanently on the blockchain in contract storage.
+
+Lifetime: Persist for the entire life of the contract.
+
+Gas Usage: Reading is cheap, writing/modifying costs gas since it changes blockchain state.
+
+Example:
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count = 0;  // State variable
+
+    function increment() public {
+        count += 1; // modifies state variable (costs gas)
+    }
+}
+
+
+Use Case: Keeping track of balances, ownership, contract state, etc.
+
+3. Local Variables
+
+Definition: Variables declared inside functions.
+
+Storage: Stored temporarily in memory or stack (not on blockchain).
+
+Lifetime: Exist only during function execution, destroyed afterward.
+
+Gas Usage: Cheaper than state variables; do not incur permanent storage costs.
+
+Example:
+
+contract Example {
+    function sum(uint a, uint b) public pure returns (uint) {
+        uint result = a + b; // Local variable
+        return result;
+    }
+}
+
+
+Use Case: Intermediate calculations, temporary values.
+
+4. Global Variables
+
+Definition: Special variables provided by Solidity that give 
+information about the blockchain, transaction, or execution 
+context.
+
+Storage: Predefined by the Ethereum Virtual Machine (EVM).
+
+Lifetime: Available globally during contract execution.
+
+Examples:
+
+block.timestamp → current block’s timestamp
+
+msg.sender → address of the caller
+
+msg.value → amount of Ether sent with the call
+
+block.number → current block number
+
+Example:
+
+contract Example {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender; // global variable (caller’s address)
+    }
+
+    function getBlockInfo() public view returns (uint) {
+        return block.timestamp; // global variable (block time)
+    }
+}
+
+
+Use Case: Transaction handling, authentication, accessing blockchain metadata.

@@ -11,7 +11,7 @@
 5. Variables (state, local, global)
 6. Data types: uint, int, bool, string, address
 7. Arrays (fixed & dynamic)
-8. Structs and Enums
+8. Structs and Enums 
 9. Mappings and nested mappings
 10. Storage vs Memory vs Calldata
 11. Functions (declaration, visibility, modifiers: public, private, internal, external)
