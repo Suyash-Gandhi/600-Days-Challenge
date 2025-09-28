@@ -1,0 +1,112 @@
+
+
+# 1. Unsigned Integer ( uint )
+
+ Represents non-negative integers only (≥ 0).
+ By default,  uint  is the same as  uint256 .
+ Can range from  0  to  2^256 - 1 .
+
+Example:
+
+ solidity
+uint public age = 25;   // Stores positive whole numbers
+ 
+
+✅ Use case: tracking balances, counters, timestamps.
+⚠️ Avoid for values that can go negative.
+
+---
+
+# 2. Signed Integer ( int )
+
+ Represents both positive and negative integers.
+ By default,  int  is the same as  int256 .
+ Range:  -2^255  to  2^255 - 1 .
+
+Example:
+
+ solidity
+int public temperature = -15;  // Allows negative numbers
+ 
+
+✅ Use case: cases where negative values are meaningful (e.g., profit/loss).
+⚠️ Avoid when only positive values are required (gas optimization).
+
+---
+
+# 3. Boolean ( bool )
+
+ Stores true or false values.
+ Used for decision-making in conditions ( if ,  require , etc.).
+
+Example:
+
+ solidity
+bool public isActive = true;   // Simple true/false flag
+ 
+
+✅ Use case: enabling/disabling features, access control checks.
+⚠️ Using multiple  bool  variables separately is gas-costly; better to pack them if many are needed.
+
+---
+
+# 4. String ( string )
+
+ Stores textual data (UTF-8 encoded).
+ Dynamic in size (no fixed length).
+ More expensive in terms of gas compared to numbers.
+
+Example:
+
+ solidity
+string public name = "Satoshi Nakamoto";
+ 
+
+✅ Use case: metadata, names, messages.
+⚠️ Avoid heavy string operations in smart contracts (better to store hashes or IDs).
+
+---
+
+# 5. Address ( address )
+
+ Stores a 20-byte Ethereum address.
+ Can represent an Externally Owned Account (EOA) or a Smart Contract.
+ Comes in two forms:
+
+    address  → basic (cannot send/receive Ether directly).
+    address payable  → extended, allows sending Ether with  .transfer()  or  .send() .
+
+Example:
+
+ solidity
+address public owner = 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835c83;  
+
+// Payable address
+address payable public wallet = payable(owner);
+ 
+
+✅ Use case: ownership, payments, contract interactions.
+⚠️ Always check validity of addresses before transferring funds.
+
+---
+
+ Comparison Table
+
+| Type      | Range / Value    | Default Size   | Example Usage             |
+| --------- | ---------------- | -------------- | ------------------------- |
+|  uint     | 0 → 2^256-1      | 256 bits       | balances, counters        |
+|  int      | -2^255 → 2^255-1 | 256 bits       | profit/loss, temperatures |
+|  bool     | true/false       | 1 bit          | flags, conditions         |
+|  string   | Dynamic UTF-8    | Variable       | names, metadata           |
+|  address  | 20-byte hex      | Fixed 160 bits | accounts, contracts       |
+
+---
+
+ Best Practices
+
+1. Use  uint  instead of  int  when negatives are not needed → saves gas.
+2. Use  address payable  for Ether transfers, plain  address  otherwise.
+3. Minimize string usage inside contracts (prefer storing hashes or IDs).
+4. Keep booleans packed together in structs or mappings to save gas.
+
+---

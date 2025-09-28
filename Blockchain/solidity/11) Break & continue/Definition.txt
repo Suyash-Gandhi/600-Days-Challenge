@@ -1,0 +1,95 @@
+
+
+## 1. Break Statement
+
+ Definition:
+  The break statement is used to immediately exit a loop (for, while, or do…while) before it naturally finishes all iterations.
+ Effect:
+
+   Control jumps out of the loop completely.
+   The program continues with the first statement after the loop.
+
+### Example:
+
+
+pragma solidity ^0.8.0;
+
+contract BreakExample {
+    function testBreak() public pure returns (uint) {
+        uint sum = 0;
+        for (uint i = 0; i < 10; i++) {
+            if (i == 5) {
+                break; // Exit loop when i == 5
+            }
+            sum += i;
+        }
+        return sum; // Returns 0+1+2+3+4 = 10
+    }
+}
+
+
+👉 Here, the loop stops at i = 5, even though the condition allows up to i < 10.
+
+---
+
+## 2. Continue Statement
+
+ Definition:
+  The continue statement is used to skip the current iteration of the loop and move directly to the next iteration.
+ Effect:
+
+   The rest of the code in that iteration is ignored.
+   The loop does not exit; it simply moves to the next cycle.
+
+### Example:
+
+
+pragma solidity ^0.8.0;
+
+contract ContinueExample {
+    function testContinue() public pure returns (uint) {
+        uint sum = 0;
+        for (uint i = 0; i < 10; i++) {
+            if (i % 2 == 0) {
+                continue; // Skip even numbers
+            }
+            sum += i;
+        }
+        return sum; // Returns 1+3+5+7+9 = 25
+    }
+}
+
+
+👉 Here, when i is even, the loop skips the addition and moves to the next number.
+
+---
+
+## 3. Comparison Between Break and Continue
+
+| Feature            | break                                                    | continue                                                        |
+| ------------------ | ---------------------------------------------------------- | ----------------------------------------------------------------- |
+| Purpose        | Exits the loop entirely                                    | Skips the current iteration                                       |
+| Execution Flow | Control moves to the first statement after the loop        | Control jumps to the next iteration of the loop                   |
+| Use Case       | When a certain condition makes further looping unnecessary | When certain iterations need to be skipped but loop must continue |
+
+---
+
+## 4. Best Practices in Solidity
+
+ Avoid excessive use of break and continue, as they can make loops harder to read.
+ Be mindful of gas consumption:
+
+   Loops themselves are expensive in Solidity.
+   Adding conditions with continue or break can slightly optimize gas usage if they help terminate unnecessary iterations early.
+ Use them mainly in bounded loops (where max iterations are known) to avoid high gas costs.
+
+---
+
+✅ In short:
+
+ break → Ends the loop completely.
+ continue → Skips the current iteration and moves to the next one.
+
+
+
+

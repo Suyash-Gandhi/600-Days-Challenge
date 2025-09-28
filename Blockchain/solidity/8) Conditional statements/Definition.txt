@@ -1,0 +1,121 @@
+
+ 1. Definition
+
+Conditional statements in Solidity allow a program to make 
+decisions based on certain conditions. They control the flow of 
+execution by executing specific blocks of code when logical or 
+comparison expressions evaluate to true or false.
+
+---
+
+ 2. Types of Conditional Statements
+
+ a) if Statement
+
+ The simplest form.
+ Executes a block of code only if a condition is true.
+ Syntax:
+
+  
+  if (condition) {
+      // code executes if condition is true
+  }
+  
+
+ b) if...else Statement
+
+ Provides two possible paths.
+ If the condition is true → first block executes, else → second block executes.
+ Syntax:
+
+  
+  if (condition) {
+      // executes when condition is true
+  } else {
+      // executes when condition is false
+  }
+  
+
+ c) if...else if...else Ladder
+
+ Used when multiple conditions need to be checked in sequence.
+ Only the first true condition’s block executes.
+ Syntax:
+
+  
+  if (condition1) {
+      // executes if condition1 is true
+  } else if (condition2) {
+      // executes if condition2 is true
+  } else {
+      // executes if none are true
+  }
+  
+
+ d) ternary operator (?:)
+
+ A shorthand for simple if...else.
+ Syntax:
+
+  
+  variable = (condition) ? valueIfTrue : valueIfFalse;
+  
+
+---
+
+ 3. Example in Solidity
+
+
+pragma solidity ^0.8.0;
+
+contract Voting {
+    function checkAge(uint age) public pure returns (string memory) {
+        if (age < 18) {
+            return "Not eligible to vote";
+        } else if (age >= 18 && age < 60) {
+            return "Eligible to vote";
+        } else {
+            return "Eligible with senior priority";
+        }
+    }
+
+    function quickCheck(uint age) public pure returns (string memory) {
+        return (age >= 18) ? "Eligible" : "Not Eligible";
+    }
+}
+
+
+---
+
+ 4. Explanation of Example
+
+ checkAge:
+
+   If age < 18 → returns Not eligible.
+   If age between 18 and 59 → returns Eligible.
+   If age ≥ 60 → returns Eligible with senior priority.
+
+ quickCheck:
+
+   Uses the ternary operator for a compact eligibility check.
+
+---
+
+ 5. Best Practices
+
+ Keep conditions clear and concise to avoid logical errors.
+ Avoid deeply nested if statements → they reduce readability.
+ Use require() or revert() for input validation instead of plain if, because they save gas by reverting transactions early.
+
+  
+  require(age >= 18, "Must be 18 or older to vote");
+  
+
+---
+
+ 6. Comparison with Traditional Languages
+
+ Similar to C, C++, and Java.
+ No switch statement in Solidity (unlike Java or C).
+ Emphasis on gas optimization, so logic must be efficient.
+

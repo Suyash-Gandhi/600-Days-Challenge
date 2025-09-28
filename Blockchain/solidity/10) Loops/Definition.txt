@@ -1,0 +1,116 @@
+
+ 1. Introduction
+
+A loop is a control structure that allows repeating a block of 
+code multiple times until a certain condition is met. Solidity,
+like most programming languages, supports loops for iteration 
+and repetition, which are useful when performing repeated tasks
+such as traversing arrays, summing numbers, or executing logic 
+multiple times.
+
+---
+
+ 2. Types of Loops in Solidity
+
+Solidity supports the same common loops you find in languages like C++ or JavaScript:
+
+1. for loop
+
+    Used when the number of iterations is known in advance.
+    Syntax is similar to JavaScript.
+
+   
+   for (uint i = 0; i < 10; i++) {
+       // Code executes 10 times
+   }
+   
+
+2. while loop
+
+    Used when the number of iterations is not fixed, but depends on a condition.
+    Runs as long as the condition evaluates to true.
+
+   
+   uint j = 0;
+   while (j < 5) {
+       j++;
+   }
+   
+
+3. do...while loop
+
+    Similar to while, but executes the code at least once before checking the condition.
+
+   
+   uint k = 0;
+   do {
+       k++;
+   } while (k < 3);
+   
+
+---
+
+ 3. Control Statements inside Loops
+
+ break → Immediately exits the loop.
+ continue → Skips the current iteration and moves to the next one.
+
+Example:
+
+
+for (uint i = 0; i < 10; i++) {
+    if (i == 5) {
+        break;  // exits loop when i = 5
+    }
+}
+
+
+---
+
+ 4. Gas Considerations in Solidity Loops
+
+Unlike traditional programming, loops in Solidity cost gas because each iteration is a transaction computation.
+
+ Long or infinite loops can consume too much gas and cause the transaction to fail.
+ It’s recommended to avoid unbounded loops (like looping over an array without knowing its length).
+ Instead, consider batch processing or mapping structures.
+
+---
+
+ 5. Example – Summing Numbers
+
+
+pragma solidity ^0.8.0;
+
+contract LoopExample {
+    function sum(uint n) public pure returns (uint) {
+        uint total = 0;
+        for (uint i = 1; i <= n; i++) {
+            total += i;
+        }
+        return total;
+    }
+}
+
+
+ If n = 5, the function returns 15.
+ But if n is very large, it might consume excessive gas.
+
+---
+
+ 6. Best Practices
+
+1. Avoid unbounded loops (loops that depend on array size or user input).
+2. If iteration is necessary, use smaller batches instead of a single large loop.
+3. Use events or mappings as alternatives to tracking data via loops.
+4. When traversing arrays, prefer off-chain computation (frontend handles looping, smart contract only stores data).
+
+---
+
+ 7. Comparison with Other Languages
+
+ Similar syntax to C/C++/JavaScript.
+ But unlike those, gas cost makes loops risky in Solidity.
+ Infinite loops are impossible on-chain since transactions will run out of gas.
+
+---

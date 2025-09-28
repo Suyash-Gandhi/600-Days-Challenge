@@ -1,0 +1,206 @@
+
+ 1. Function Declaration in Solidity
+
+A function in Solidity is a block of code designed to perform a specific task. The general syntax is:
+
+
+function functionName(parameters) visibility modifiers returns (returnType) {
+    // Function body
+}
+
+
+# Components:
+
+1. function – Keyword to declare a function.
+2. functionName – Name of the function (cannot be the same as the contract name).
+3. parameters – Input values passed to the function (optional).
+4. visibility – Who can call this function (explained below).
+5. modifiers – Optional keywords like `pure`, `view`, `payable`.
+6. returns – If the function returns a value, specify its type.
+
+Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count;
+
+    // Function to increment count
+    function increment(uint value) public {
+        count += value;
+    }
+
+    // Function that returns count
+    function getCount() public view returns (uint) {
+        return count;
+    }
+}
+
+
+---
+
+ 2. Function Visibility in Solidity
+
+Visibility defines who can call a function. Solidity has four visibility types:
+
+| Visibility | Can be called by                               | Notes                                                                                                    |
+| ---------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `public`   | Inside & outside the contract                  | Also creates a getter if the function affects a state variable.                                          |
+| `external` | Only from outside the contract                 | Cheaper than public when called externally. Cannot be called internally with `f()`; must use `this.f()`. |
+| `internal` | Only inside the contract and derived contracts | Default visibility for functions in Solidity.                                                            |
+| `private`  | Only inside the contract                       | Cannot be accessed by derived contracts.                                                                 |
+
+# Examples:
+
+
+pragma solidity ^0.8.0;
+
+contract VisibilityExample {
+    uint private privateData = 10;
+    uint internal internalData = 20;
+    uint public publicData = 30;
+
+    // Public function: callable from anywhere
+    function publicFunction() public view returns (uint) {
+        return publicData;
+    }
+
+    // External function: callable only from outside
+    function externalFunction() external view returns (uint) {
+        return publicData;
+    }
+
+    // Internal function: callable only inside this contract or derived contracts
+    function internalFunction() internal view returns (uint) {
+        return internalData;
+    }
+
+    // Private function: callable only inside this contract
+    function privateFunction() private view returns (uint) {
+        return privateData;
+    }
+
+    // Example internal call
+    function callInternal() public view returns (uint) {
+        return internalFunction(); // valid
+    }
+
+    // Example private call
+    function callPrivate() public view returns (uint) {
+        return privateFunction(); // valid
+    }
+}
+
+
+---
+
+ 3. Important Notes
+
+ Default visibility: Functions without a visibility keyword default to `internal` in Solidity 0.7.0 and above.
+ External vs Public: `external` functions are more gas-efficient for external calls but cannot be called internally using the normal syntax.
+ State-modifying functions cost gas; view and pure functions do not modify state and can be called without a transaction.
+
+------------------
+
+ 1. Public
+
+ Who can call it: Anywhere — inside the contract, derived contracts, and externally (via other contracts or transactions).
+ Effect: Creates a callable function and allows access from outside.
+
+Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count;
+
+    function increment(uint value) public {
+        count += value;
+    }
+}
+
+
+ `increment()` can be called inside the contract or externally (e.g., through a transaction or another contract).
+
+---
+
+ 2. Private
+
+ Who can call it: Only within the same contract.
+ Effect: Hidden from derived contracts and external calls.
+
+Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint private count;
+
+    function increment(uint value) private {
+        count += value;
+    }
+
+    function callIncrement() public {
+        increment(5); // Valid: private function called inside contract
+    }
+}
+
+
+ Cannot be called from a derived contract or externally.
+
+---
+
+ 3. Internal
+
+ Who can call it: Inside the contract and any derived contracts.
+ Effect: Similar to `private`, but allows inheritance access.
+ Default: If you don’t specify visibility, functions are `internal` by default.
+
+Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Base {
+    uint internal count;
+
+    function increment(uint value) internal {
+        count += value;
+    }
+}
+
+contract Derived is Base {
+    function addValue() public {
+        increment(10); // Valid: internal function accessible in derived contract
+    }
+}
+
+
+---
+
+ 4. External
+
+ Who can call it: Only from outside the contract (via transactions or other contracts).
+ Effect: Cannot be called internally using `functionName()`, but you can use `this.functionName()`.
+ Gas efficiency: Cheaper for external calls compared to public functions.
+
+Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count;
+
+    function increment(uint value) external {
+        count += value;
+    }
+
+    function internalCall() public view returns(uint) {
+        // increment(5); // ❌ Error: cannot call externally from inside
+        return this.increment(0); // ✅ Works via this
+    }
+}

@@ -1,0 +1,111 @@
+
+
+ 1. Arithmetic Operators
+
+Arithmetic operators are used for performing basic mathematical calculations.
+
+ Addition (+) → Adds two operands.
+ Subtraction (-) → Subtracts the right operand from the left.
+ Multiplication (*) → Multiplies two operands.
+ Division (/) → Divides the left operand by the right (integer division for integers).
+ Modulo (%) → Returns the remainder after division.
+ Exponentiation () → Raises a number to the power of another.
+ Increment (++) → Increases value by 1.
+ Decrement (--) → Decreases value by 1.
+
+📌 Example:
+
+solidity
+uint a = 10;
+uint b = 3;
+uint c = a % b; // 1
+
+
+---
+
+ 2. Comparison (Relational) Operators
+
+These operators compare two values and return a boolean result (true or false).
+
+ Equal (==) → True if both are equal.
+ Not equal (!=) → True if they are not equal.
+ Greater than (>) → True if left is greater.
+ Less than (<) → True if left is smaller.
+ Greater than or equal (>=)
+ Less than or equal (<=)
+
+📌 Example:
+
+solidity
+uint x = 5;
+uint y = 10;
+bool result = x < y; // true
+
+
+---
+
+ 3. Logical Operators
+
+Logical operators are used to combine or invert boolean values.
+
+ AND (&&) → Returns true if both are true.
+ OR (||) → Returns true if at least one is true.
+ NOT (!) → Inverts the boolean value.
+
+📌 Example:
+
+solidity
+bool a = true;
+bool b = false;
+bool c = a && b; // false
+
+
+---
+
+ 4. Bitwise Operators
+
+Bitwise operators perform operations at the binary level (bit by bit).
+
+ AND (&) → 1 if both bits are 1.
+ OR (|) → 1 if at least one bit is 1.
+ XOR (^) → 1 if only one bit is 1.
+ NOT (~) → Inverts all bits.
+ Left Shift (<<) → Shifts bits to the left.
+ Right Shift (>>) → Shifts bits to the right.
+
+📌 Example:
+
+solidity
+uint8 a = 5;   // 0101 in binary
+uint8 b = 3;   // 0011 in binary
+uint8 c = a & b; // 0001 -> 1
+
+
+---
+
+ 🔑 Key Points / Best Practices
+
+1. Division with integers truncates decimals (e.g., 5 / 2 = 2).
+2. ++ and -- are rarely used in Solidity 0.8+ because of gas efficiency concerns.
+3. Overflow/underflow errors are automatically checked in Solidity ^0.8.0 (safe math).
+4. Logical operators are mainly used in require, if, and assert statements.
+5. Bitwise operators are useful in low-level programming like flags, permissions, and cryptographic applications.
+
+---
+In Solidity, there is no === or !== operator like in JavaScript.
+
+🔎 Why?
+
+In JavaScript,
+
+== → loose equality (does type coercion).
+
+=== → strict equality (no type coercion, checks type + value).
+
+In Solidity,
+
+Solidity is a statically typed language.
+
+Since every variable has a fixed type (e.g., uint, bool, address), there is no need for type coercion.
+
+Therefore, only == (equal) and != (not equal) are provided. They already act as strict comparison operators because mismatched types will not even compile.

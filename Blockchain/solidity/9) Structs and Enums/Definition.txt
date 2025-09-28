@@ -1,0 +1,159 @@
+1. Structs in Solidity
+
+A struct is a custom data type that allows grouping multiple variables under a single name.
+It’s used when you need to represent a more complex data model that cannot be captured with primitive types like uint or string.
+
+Key Points
+
+Structs can hold variables of different data types.
+
+They are often used to model entities (e.g., a user, a product, a vote).
+
+Structs can be stored in storage (state variables) or memory (temporary).
+
+You can create arrays or mappings of structs.
+
+Example
+pragma solidity ^0.8.0;
+
+contract StructExample {
+    struct Student {
+        uint id;
+        string name;
+        uint marks;
+    }
+
+    Student public student;  // state variable of type Student
+
+    function setStudent(uint _id, string memory _name, uint _marks) public {
+        student = Student(_id, _name, _marks);
+    }
+}
+
+
+Here:
+
+Student is a struct with id, name, and marks.
+
+The setStudent function assigns values to it.
+
+
+No worries — enums can feel confusing at first. Let me explain them step by step in simple words with relatable examples.
+
+---
+
+## 🔹 What is an Enum in Solidity?
+
+An enum (short for enumeration) is a way to give names to numbers.
+It is used to represent a fixed set of options or states.
+
+ Under the hood: An enum is stored as a number (uint), starting from 0.
+ But instead of writing 0, 1, 2... in your code, you give those numbers meaningful names like Pending, Shipped, Delivered.
+ This makes your code easier to read and less error-prone.
+
+---
+
+## 🔹 Basic Example: Without Enum
+
+Imagine an online order system.
+
+ 0 = Pending
+ 1 = Shipped
+ 2 = Delivered
+ 3 = Cancelled
+
+
+uint orderStatus;
+
+function shipOrder() public {
+    orderStatus = 1;  // Shipped
+}
+
+
+Problem:
+Numbers don’t explain themselves. If you see orderStatus = 1;, you need to remember that 1 means shipped. This is confusing.
+
+---
+
+## 🔹 Same Example: With Enum
+
+Instead of using numbers, we define an enum:
+
+
+enum Status { Pending, Shipped, Delivered, Cancelled }
+Status public orderStatus;
+
+
+Here:
+
+ Pending = 0
+ Shipped = 1
+ Delivered = 2
+ Cancelled = 3
+
+Now when we write:
+
+
+function shipOrder() public {
+    orderStatus = Status.Shipped;  // much clearer
+}
+
+
+It’s obvious what’s happening. No need to remember numbers.
+
+---
+
+## 🔹 How to Use Enum
+
+1. Define an enum
+
+
+enum Status { Pending, Shipped, Delivered, Cancelled }
+
+
+2. Create a variable
+
+
+Status public orderStatus;  // default is Pending (0)
+
+
+3. Change the state
+
+
+orderStatus = Status.Delivered;
+
+
+4. Read the state
+
+
+function getStatus() public view returns (Status) {
+    return orderStatus;
+}
+
+
+---
+
+## 🔹 Real-World Analogy
+
+Think of a traffic light:
+
+ Red = 0
+ Yellow = 1
+ Green = 2
+
+Instead of remembering numbers, we write:
+
+
+enum TrafficLight { Red, Yellow, Green }
+TrafficLight public light = TrafficLight.Red;
+
+
+Now when we set:
+
+
+light = TrafficLight.Green;
+
+
+It’s clear the light turned green, not just “set to 2.”
+
+---
