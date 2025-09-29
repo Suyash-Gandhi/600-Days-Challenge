@@ -1,0 +1,95 @@
+In Solidity, storage, memory, and calldata are three different places where data can be stored and manipulated. Each has distinct behavior, cost, and use cases. Let’s break it down carefully:
+
+---
+
+## 1. Storage
+
+ Where: Stored permanently on the blockchain (inside the contract’s state).
+ Lifetime: Exists for the life of the contract.
+ Cost: Expensive to read and especially to write because it involves changing the blockchain state.
+ Mutability: Can be read and modified.
+ Usage: Typically used for state variables.
+
+### Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count; // stored in storage
+
+    function increment() public {
+        count += 1; // modifies storage
+    }
+}
+
+
+ count is stored in storage because it’s a state variable.
+ Writing to storage costs gas, reading costs less but still more than memory.
+
+---
+
+## 2. Memory
+
+ Where: Temporary storage in RAM during contract execution.
+ Lifetime: Exists only for the duration of a function call.
+ Cost: Cheaper than storage, but still uses gas.
+ Mutability: Can be read and modified inside the function.
+ Usage: Typically used for temporary variables, arrays, or structs that do not need to persist.
+
+### Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    function double(uint x) public pure returns (uint) {
+        uint ; // stored in memory
+        tempArray[0] = x  2;
+        return tempArray[0];
+    }
+}
+
+
+ tempArray exists only during the function execution.
+ Once the function ends, it is discarded.
+
+---
+
+## 3. Calldata
+
+ Where: Special read-only location for function inputs.
+ Lifetime: Exists only during the function call.
+ Cost: Cheaper than memory because it does not allow copying and modification.
+ Mutability: Read-only, cannot modify data.
+ Usage: Used in external function parameters, especially for arrays, strings, or structs, to save gas.
+
+### Example:
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    function sum(uint[] calldata numbers) external pure returns (uint) {
+        uint total = 0;
+        for (uint i = 0; i < numbers.length; i++) {
+            total += numbers[i]; // read-only access
+        }
+        return total;
+    }
+}
+
+
+ numbers is in calldata, meaning it cannot be modified inside the function.
+ Efficient for large external arrays because it avoids copying into memory.
+
+---
+
+
+
+✅ Key Takeaways:
+
+1. Use storage for variables you need to persist on-chain.
+2. Use memory for temporary data within functions.
+3. Use calldata for external inputs that you don’t want to copy and modify, to save gas.
+

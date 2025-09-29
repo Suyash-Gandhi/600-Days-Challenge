@@ -1,0 +1,99 @@
+Alright, let’s break down function return types (single & multiple returns) in Solidity in a structured way — like a 12-mark university answer.
+
+---
+
+## 1. Introduction
+
+In Solidity, functions can return values after execution. These values are specified using the `returns` keyword in the function declaration. Solidity supports both single return types (like `uint`, `bool`, `string`) and multiple return values (like `(uint, string)`), making it flexible for smart contract design.
+
+---
+
+## 2. Syntax for Return Types
+
+### (a) Single Return
+
+
+function getValue() public pure returns (uint) {
+    return 10;
+}
+
+
+ `returns (uint)` → function will return an unsigned integer.
+ `return 10;` → returns the specified value.
+
+---
+
+### (b) Multiple Returns
+
+
+function getDetails() public pure returns (uint, string memory) {
+    return (1, "Solidity");
+}
+
+
+ `returns (uint, string memory)` → function will return a tuple (two values).
+ `return (1, "Solidity");` → both values must be returned together in a tuple.
+
+---
+
+## 3. Named Return Variables
+
+Instead of returning explicitly, Solidity allows named return variables:
+
+
+function add(uint a, uint b) public pure returns (uint sum) {
+    sum = a + b;  // sum acts like a local variable
+    // no need to write "return sum;" explicitly
+}
+
+
+This increases readability and is useful for multiple returns.
+
+---
+
+## 4. Returning Multiple Named Values
+
+
+function getStudent() public pure returns (uint id, string memory name) {
+    id = 101;
+    name = "Alice";
+}
+
+
+ Variables `id` and `name` are initialized.
+ No explicit `return (id, name);` required (though allowed).
+
+---
+
+## 5. Assigning Multiple Return Values
+
+When calling a function with multiple return values:
+
+
+(uint x, string memory y) = getDetails();
+
+
+You can also ignore certain values:
+
+
+(, string memory name) = getDetails(); // skip first return value
+
+
+---
+
+## 6. Key Points & Best Practices
+
+ Always declare return type(s) using `returns(...)`.
+ When multiple values are returned, use tuple assignment on the caller side.
+ Use named return variables for better readability in complex functions.
+ Avoid returning large dynamic data (e.g., huge arrays/strings) unnecessarily, as it increases gas costs.
+
+---
+
+✅ Example Summary
+
+ Single return: `function f() returns(uint)`
+ Multiple returns: `function f() returns(uint, string)`
+ Named returns: `function f() returns(uint sum)`
+ Tuple assignment on caller side to capture values.
+

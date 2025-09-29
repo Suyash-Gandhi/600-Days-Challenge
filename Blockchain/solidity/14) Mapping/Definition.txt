@@ -1,0 +1,165 @@
+
+ 1. What is a Mapping?
+
+A mapping in Solidity is like a dictionary in Python or an object in JavaScript. It stores key-value pairs. You provide a key, and it returns the corresponding value.
+
+Think of it like a locker system:
+
+ Key → locker number
+ Value → items inside that locker
+
+In Solidity:
+
+
+mapping(KeyType => ValueType) public mapName;
+
+
+ KeyType → type of key (like address, uint, bytes32)
+ ValueType → type of value (like uint, string, bool)
+ mapName → name of the mapping
+
+---
+
+ 2. Example of a Basic Mapping
+
+
+pragma solidity ^0.8.0;
+
+contract Example {
+    // Mapping from address to uint
+    mapping(address => uint) public balances;
+
+    // Set your balance
+    function setBalance(uint _balance) public {
+        balances[msg.sender] = _balance;
+    }
+
+    // Check balance of any address
+    function getBalance(address _addr) public view returns(uint) {
+        return balances[_addr];
+    }
+}
+
+
+Explanation:
+
+ balances stores a number (uint) for each address.
+ balances[msg.sender] = _balance; assigns a value to your address.
+ If you query an address that hasn’t been set yet, it returns 0 (default value).
+
+---
+
+ 3. Key Characteristics of Mappings
+
+1. Default Value:
+   Every key that is not set explicitly returns a default value (0 for uint, false for bool).
+
+2. No Iteration:
+   You cannot loop through all keys. To track keys, you need a separate array.
+
+3. Dynamic:
+   You don’t need to define how many keys will exist in advance. Keys can be added anytime.
+
+4. Efficient Storage:
+   Mappings are stored efficiently in the Ethereum blockchain and are very gas-friendly.
+
+---
+
+ 4. Example – Voting System
+
+
+pragma solidity ^0.8.0;
+
+contract Voting {
+    mapping(address => bool) public hasVoted;
+
+    function vote() public {
+        require(!hasVoted[msg.sender], "You already voted!");
+        hasVoted[msg.sender] = true;
+        // Voting logic...
+    }
+}
+
+
+Explanation:
+
+ Each address can vote only once.
+ The mapping hasVoted stores true if the user has voted, otherwise false.
+
+---
+
+✅ Summary:
+
+ Mapping = Key → Value storage
+ Very efficient for storing user-specific data
+ Cannot loop through keys, returns default value for unset keys
+ Can be nested for advanced data structures
+
+---
+
+2. Nested Mappings
+
+Sometimes, you need a mapping inside another mapping, for example, to track balances per token type per user.
+
+Syntax:
+
+mapping(_KeyType1 => mapping(_KeyType2 => _ValueType)) public nestedMap;
+
+
+Example 2 – Nested Mapping:
+
+pragma solidity ^0.8.0;
+
+contract NestedExample {
+    // Mapping: user => (token => balance)
+    mapping(address => mapping(string => uint)) public tokenBalances;
+
+    // Set balance for a user and token
+    function setTokenBalance(string memory token, uint _balance) public {
+        tokenBalances[msg.sender][token] = _balance;
+    }
+
+    // Get balance for a user and token
+    function getTokenBalance(address user, string memory token) public view returns(uint) {
+        return tokenBalances[user][token];
+    }
+}
+
+
+✅ Explanation:
+
+tokenBalances[user][token] allows you to store balances per token per user.
+
+Nested mappings are very common in DeFi projects, NFT marketplaces, or role-based access systems.
+
+3. Important Points About Mappings
+
+Default Values
+
+If you query a key that doesn’t exist, it returns the default value for the value type (0 for uint, false for bool, etc.).
+
+uint balance = balances[address(0)]; // returns 0 if not set
+
+
+Cannot Iterate
+
+Mappings are not iterable. You cannot loop through all keys.
+
+Usually, you maintain an array of keys alongside a mapping if iteration is needed.
+
+Nested Mapping Caveat
+
+Each mapping is automatically initialized, so you don’t need to initialize inner mappings explicitly.
+
+Use in Smart Contracts
+
+Mappings are gas efficient and are used for storing large sets of user-specific or token-specific data.
+
+4. Real-world Example – Allowances in ERC20
+
+ERC20 uses nested mappings:
+
+mapping(address => mapping(address => uint)) public allowance;
+
+
+allowance[owner][spender] → How many tokens spender is allowed to spend from owner’s account.
