@@ -1,0 +1,227 @@
+
+
+## Junior Level: Foundations (Beginner Rustacean)
+
+🔹 Rust Setup & Basics
+
+1. Installing Rust (rustup, toolchain)
+2. Cargo basics (package manager & build tool)
+3. Rust project structure
+
+🔹 Variables & Data Types
+4. Variables, constants, and mutability
+5. Data types: scalars, tuples, arrays, slices
+6. Functions, parameters, return values
+7. Expressions vs. statements
+
+🔹 Control Flow
+
+8. if, else, match
+9. Loops: loop, while, for
+
+🔹 Memory Safety & Ownership
+
+10. Ownership rules
+11. Borrowing (& references)
+12. Mutable vs. immutable references
+13. Lifetimes (introductory level)
+14. Stack vs heap memory
+15. Copy vs Move semantics
+
+🔹 Collections
+
+16. Vectors (Vec<T>)
+17. Strings (String, &str)
+18. HashMaps (HashMap<K,V>)
+19. Iterators (basic usage)
+20. BTreeMap and BTreeSet
+21. Double-ended iterators (rev())
+22. Iterator adapters: peekable, chain, enumerate, zip, flatten
+
+🔹 Error Handling
+
+23. Result<T, E>
+24. Option<T>
+25. unwrap, expect
+26. Pattern matching for errors
+27. Error propagation with ? operator
+28. Custom error types (implement std::error::Error)
+29. anyhow vs thiserror
+30. Contextual error handling (with_context)
+
+🔹 Modules & Crates
+
+31. Module system (modules & crates)
+32. Public vs private visibility
+33. use and pub keywords
+34. Adding external crates with Cargo
+
+---
+
+## Mid-Level: Systems Programming & Abstractions
+
+🔹 Advanced Ownership & Lifetimes
+
+35. Explicit lifetimes ('a)
+36. Lifetime annotations in functions
+37. Structs with lifetimes
+38. Borrow checker deep dive
+39. Lifetime elision rules
+40. 'static lifetime
+41. Complex lifetime scenarios in APIs
+
+🔹 Generics & Traits
+
+42. Generic types and functions
+43. Traits (interfaces)
+44. Trait bounds (where, : syntax)
+45. Deriving traits (Debug, Clone, etc.)
+46. Associated types in traits
+47. Trait objects (dyn Trait)
+48. Higher-ranked trait bounds (HRTBs)
+49. Operator overloading
+
+🔹 Enums & Pattern Matching
+
+50. Enums and data-carrying variants
+51. Pattern matching with enums
+52. if let and while let
+
+🔹 Closures & Functional Programming
+
+53. Closures (|x| x+1)
+54. Higher-order functions
+55. Monads (Option/Result combinators)
+56. Immutable data structures
+57. Chaining and composition of iterators
+58. Iterator adapters: map, filter, collect, fold
+59. Lazy evaluation with iterators
+
+🔹 Smart Pointers
+
+60. Box<T>
+61. Rc<T>
+62. Arc<T>
+63. RefCell<T> (interior mutability)
+64. Cow<T> (copy-on-write)
+
+🔹 Concurrency & Parallelism
+
+65. Threads (std::thread)
+66. Message passing (mpsc)
+67. Shared-state concurrency (Mutex, RwLock)
+68. Atomics
+69. tokio::sync primitives (Semaphore, Notify, Barrier)
+70. Async streams (Stream)
+71. Futures combinators (join!, select!)
+72. Actor model patterns (actix, riker)
+
+🔹 Macros & Metaprogramming
+
+73. Declarative macros (macro_rules!)
+74. Procedural macros (intro)
+75. Attribute macros (#[derive()])
+76. Function-like macros
+77. Writing custom derives
+78. Macro hygiene
+79. Code generation patterns using procedural macros ✅ (your addition)
+
+🔹 File I/O & Utilities
+
+80. File reading/writing (std::fs, std::io)
+81. Command-line arguments (std::env)
+
+🔹 Testing & Debugging
+
+82. Unit testing (#[test])
+83. Integration testing
+84. Running tests with cargo test
+85. Debugging with dbg! and logging
+86. Property-based testing (proptest, quickcheck)
+87. Benchmarking & regression testing
+88. Fuzz testing (cargo-fuzz)
+
+---
+
+## Senior Level: Expert Rustacean
+
+🔹 Unsafe Rust & Low-Level Memory
+
+89. Raw pointers
+90. unsafe blocks
+91. FFI (C interop)
+92. std::mem utilities
+93. Memory layout optimizations (repr(C), repr(packed))
+94. Avoiding unnecessary allocations
+95. Memory safety bugs & prevention ✅ (your addition)
+
+🔹 Async Programming
+
+96. async/await syntax
+97. Futures in Rust
+98. Async runtimes (tokio, async-std)
+99. Async channels & streams
+
+🔹 Performance & Optimization
+
+100. Zero-cost abstractions
+101. Profiling and benchmarking (cargo bench)
+102. Benchmarking with criterion
+103. Memory & performance patterns in collections
+104. Efficient allocation patterns
+105. Efficient collection patterns and performance tips ✅ (your addition)
+
+🔹 Ecosystem & Libraries
+
+106. Serialization (serde)
+107. HTTP requests (reqwest)
+108. Async programming (tokio)
+109. Databases (diesel / sqlx)
+110. Web APIs (actix-web / axum)
+111. Serialization for network data (bincode, prost)
+112. Secure serialization/deserialization ✅ (your addition)
+
+🔹 Project Architecture & Best Practices
+
+113. Modular project design
+114. Dependency management best practices
+115. Error handling (thiserror, anyhow)
+116. API design principles
+117. Safe Rust vs unsafe Rust pitfalls
+118. Race conditions and deadlocks
+
+🔹 Networking & Systems
+
+119. Low-level networking (std::net)
+120. TCP/UDP servers and clients
+121. Async networking patterns
+122. Distributed systems in Rust
+
+🔹 Embedded & WebAssembly
+
+123. no_std development
+124. Embedded programming (embedded-hal)
+125. Rust → WASM (wasm-bindgen, web-sys)
+
+🔹 Production Systems
+
+126. CLI tools (clap)
+127. Web services (Actix, Axum)
+128. Networking: async sockets, gRPC (tonic)
+
+🔹 Contributing to Rust & Open Source
+
+129. Reading Rust compiler (rustc) source
+130. Contributing to crates.io ecosystem
+131. Writing idiomatic, community-accepted Rust
+
+🔹 Tooling & Productivity
+
+132. Cargo workspaces for multi-crate projects
+133. Clippy for linting
+134. Rustfmt for formatting
+135. Rust Analyzer tips
+136. Continuous integration (GitHub Actions + Rust)
+
+---
+

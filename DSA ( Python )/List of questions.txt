@@ -1,0 +1,195 @@
+
+
+ I. Junior Level (Foundations & Basics)
+
+Goal: Build strong fundamentals of programming, logic, and simple data structures.
+
+🔹 Programming & Math Foundations
+
+1. Time & Space Complexity (Big-O, Big-Theta, Big-Omega)
+2. Recursion basics (factorial, Fibonacci, gcd)
+3. Iterative vs Recursive solutions
+4. Mathematical problems (prime numbers, GCD/LCM, power, modulo, combinatorics basics)
+5. Amortized Analysis (dynamic arrays, union-find)
+6. Probabilistic Analysis (expected runtime, randomized hashing)
+
+🔹 Arrays & Strings
+
+7. Arrays basics (insertion, deletion, traversal)
+8. Searching: Linear Search, Binary Search
+9. Ternary Search (on unimodal functions)
+10. Sorting basics: Bubble, Selection, Insertion
+11. Merge Sort, QuickSort
+12. Counting Sort, Radix Sort, Bucket Sort
+13. Prefix sum, sliding window, two pointers
+14. String manipulation (palindrome, substring, anagram)
+
+🔹 Basic Data Structures
+
+15. Stacks (implementation, infix → postfix, balanced parentheses)
+16. Queues (linear, circular, deque)
+17. Hashing basics (hash tables, collisions, simple problems)
+
+---
+
+ II. Intermediate Level (Core DSA)
+
+Goal: Master standard data structures & classical algorithms.
+
+🔹 Advanced Arrays & Strings
+
+18. Kadane’s Algorithm (max subarray sum)
+19. Binary Search on Answer (allocation problems)
+20. String algorithms: KMP, Rabin-Karp, Z-algorithm
+
+🔹 Linked Lists
+
+21. Singly & Doubly Linked Lists
+22. Reversal, middle, cycle detection (Floyd’s algorithm)
+23. Merge two sorted linked lists
+24. LRU Cache (LinkedHashMap / custom)
+
+🔹 Trees
+
+25. Binary Trees (inorder, preorder, postorder traversals)
+26. Binary Search Tree (BST): insertion, deletion, searching
+27. Lowest Common Ancestor (LCA)
+28. Height, diameter, balanced trees
+
+🔹 Heaps & Priority Queue
+
+29. Min-Heap, Max-Heap construction
+30. Heap Sort
+31. Kth smallest/largest element
+32. Median in a stream
+
+🔹 Advanced Hashing
+
+33. HashMap / Unordered Map
+34. Frequency counting problems
+35. Subarray problems using hashing (sum = k, longest unique substring)
+
+---
+
+ III. Senior Level (Algorithmic Mastery)
+
+Goal: Learn advanced algorithms & graph problems.
+
+🔹 Graphs
+
+36. Representation: adjacency list, adjacency matrix
+37. Traversals: BFS, DFS
+38. Connected components, cycle detection
+39. Shortest Path: Dijkstra
+40. Shortest Path: Bellman-Ford
+41. Shortest Path: Floyd-Warshall
+42. Johnson’s Algorithm (all-pairs shortest path, sparse graphs)
+43. Minimum Spanning Tree: Kruskal
+44. Minimum Spanning Tree: Prim
+45. Topological Sorting (Kahn’s Algo, DFS method)
+46. Bipartite Graph check
+47. Matching in Bipartite Graphs (Hungarian, Hopcroft–Karp)
+48. Union-Find / DSU basics
+
+🔹 Advanced Trees
+
+49. Segment Tree (range sum, range min/max)
+50. Segment Tree with Lazy Propagation
+51. Fenwick Tree (Binary Indexed Tree)
+52. Tries (prefix trees for strings)
+53. AVL Trees / Red-Black Trees (conceptual)
+54. Tree Centroid Decomposition
+
+🔹 Dynamic Programming (DP)
+
+55. 1D DP: Fibonacci, climbing stairs, house robber
+56. 2D DP: grid paths, knapsack, coin change, subset sum
+57. DP on Strings: LCS, edit distance, palindrome partitioning
+58. DP on Trees (tree DP problems)
+59. DP on Graphs (shortest paths with DP)
+60. Matrix Chain Multiplication (MCM)
+61. DP on Intervals (burst balloons, matrix chain variants)
+62. Catalan Numbers DP (BST count, valid parentheses, polygon triangulation)
+
+🔹 Backtracking
+
+63. N-Queens
+64. Rat in a Maze
+65. Sudoku Solver
+66. Word Search
+
+---
+
+ IV. Expert / Advanced Level (Competitive & System Level)
+
+Goal: Tackle toughest problems asked in FAANG & competitive coding.
+
+🔹 Advanced Graphs
+
+67. Bridges & Articulation Points (Tarjan’s Algorithm)
+68. Strongly Connected Components (Kosaraju, Tarjan)
+69. Euler Tour / Hierholzer’s Algorithm
+70. Maximum Flow (Ford-Fulkerson, Edmonds-Karp)
+71. Minimum Cut, Network Flow problems
+
+🔹 Advanced DP
+
+72. Bitmask DP (Traveling Salesman Problem)
+73. Digit DP
+74. DP with states (stock buy & sell problems)
+75. DP optimizations (divide & conquer, convex hull trick)
+
+🔹 Strings (Advanced Algorithms)
+
+76. Manacher’s Algorithm (longest palindromic substring)
+77. Suffix Array
+78. Suffix Tree
+79. Suffix Automaton
+80. Aho-Corasick (multi-pattern matching)
+
+🔹 Geometry & Math in DSA
+
+81. Convex Hull (Graham Scan, Jarvis March)
+82. Closest Pair of Points (Divide & Conquer)
+83. Rotating Calipers (geometry optimization)
+84. Line sweep problems
+85. Modular arithmetic, fast exponentiation
+86. Modular Inverse & Extended Euclid
+87. Chinese Remainder Theorem (CRT)
+88. Number theory algorithms (Sieve of Eratosthenes, Miller-Rabin primality test)
+
+🔹 Advanced Data Structures
+
+89. Disjoint Set Union with path compression (advanced)
+90. Treap
+91. Splay Trees
+92. Heavy-Light Decomposition
+93. K-D Trees (spatial search, nearest neighbor)
+94. Order Statistics Tree (rank & select queries)
+
+---
+
+ V. Mastery Level (Real-World & Competitive)
+
+🔹 Problem-Solving Patterns
+
+95. Greedy algorithms (activity selection, Huffman coding)
+96. Divide & Conquer advanced (Strassen’s algorithm, Matrix multiplication optimizations)
+97. Meet in the Middle technique
+
+🔹 Randomized & Approximation
+
+98. Randomized Algorithms (QuickSelect, Randomized QuickSort)
+99. Approximation Algorithms
+
+🔹 Game Theory
+
+100. Nim Game, Grundy Numbers
+
+🔹 Practical System-Level DS & Real-World Applications
+
+101. LRU Cache
+102. Skip List
+103. Bloom Filters
+
+---
