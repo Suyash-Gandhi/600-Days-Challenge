@@ -1,0 +1,144 @@
+
+
+#  Express.js Interview Master List (90 Topics)
+
+---
+
+### 1. Core Express Fundamentals (Junior Level)
+
+1. What Express.js is & why it's used
+2. Installing & setting up a basic Express server
+3. `app.listen()` and ports
+4. Middleware concept (req, res, next)
+5. Built-in middleware (`express.json()`, `express.urlencoded()`)
+6. Serving static files (`express.static`)
+7. Creating simple routes (`app.get`, `app.post`, etc.)
+8. Route parameters (`req.params`)
+9. Query parameters (`req.query`)
+10. Sending responses (`res.send`, `res.json`, `res.status`)
+11. Handling different HTTP methods (GET, POST, PUT, DELETE, PATCH)
+12. Difference between `req.body`, `req.query`, and `req.params`
+13. Router-level middleware (`express.Router()`)
+14. Chaining middleware functions
+15. Error handling basics (`next(err)`)
+
+---
+
+### 2. Middleware & Request Lifecycle
+
+16. Application-level middleware
+17. Built-in vs third-party middleware
+18. Custom middleware creation
+19. Request logging middleware (morgan, custom logger)
+20. Error-handling middleware (4 parameters: err, req, res, next)
+21. Order of middleware execution
+22. Body parsing with `express.json()`
+23. Cookie parsing (`cookie-parser`)
+24. Serving file uploads (`multer`)
+25. Rate limiting middleware (`express-rate-limit`)
+
+---
+
+### 3. Routing
+
+26. Route chaining (`app.route`)
+27. Nested routes with `express.Router()`
+28. Route modularization (splitting into separate files)
+29. Handling optional route parameters
+30. Handling multiple callbacks in routes
+31. Mounting routers with path prefixes
+32. Handling 404 routes (default route)
+33. Versioning APIs with routes
+
+---
+
+### 4. Request & Response Objects
+
+34. `req.headers` and setting custom headers
+35. Working with `res.set` and `res.get`
+36. File downloads with `res.download`
+37. File sending with `res.sendFile`
+38. Redirects with `res.redirect`
+39. JSON responses & pretty print (`res.json`, `res.jsonp`)
+40. Caching headers with `res.set`
+
+---
+
+### 5. Templating & Views
+
+41. Template engines overview (EJS, Pug, Handlebars)
+42. Setting view engine (`app.set('view engine')`)
+43. Rendering dynamic HTML (`res.render`)
+44. Layouts & partials in template engines
+45. Passing data from controller to views
+
+---
+
+### 6. Databases & Persistence
+
+46. Connecting Express with MongoDB (Mongoose)
+47. CRUD operations in Express with a database
+48. Connection pooling basics
+49. Using PostgreSQL/MySQL with Express
+50. Using an ORM/ODM (Mongoose, Sequelize, Prisma)
+51. Error handling with async DB operations
+52. Pagination in API routes
+53. Search & filtering in API endpoints
+
+---
+
+### 7. Authentication & Authorization
+
+54. Sessions in Express (`express-session`)
+55. Cookies - signed vs unsigned
+56. JWT-based authentication
+57. OAuth 2.0 with Passport.js
+58. Role-based access control (RBAC)
+59. Refresh tokens & token expiration
+60. Protecting routes with middleware
+61. Rate limiting per user/IP
+62. CSRF protection (`csurf` middleware)
+
+---
+
+### 8. Security
+
+63. Helmet.js - setting secure headers
+64. CORS - enabling and configuring
+65. Preventing XSS with sanitization libraries
+66. SQL injection prevention with parameterized queries
+67. NoSQL injection protection
+68. Brute-force attack prevention with rate limiting
+69. HTTPS enforcement (redirecting to secure routes)
+70. API key-based authentication
+
+---
+
+### 9. Advanced Express Patterns
+
+71. MVC architecture in Express
+72. Service layer & controller separation
+73. Dependency injection in Express apps
+74. Async error handling (try/catch vs express-async-errors)
+75. Request validation with Joi/Zod/express-validator
+76. Centralized error handling pattern
+77. Logging with Winston & structured logs
+78. Using environment variables with dotenv
+79. Multi-tenancy handling in Express apps
+80. Modularizing large Express projects
+
+---
+
+### 10. Performance & Scalability
+
+81. Caching responses with Redis/memory
+82. Compression middleware (`compression`)
+83. Gzip vs Brotli compression
+84. Clustering Express apps with Node cluster module
+85. Load balancing Express servers
+86. Handling large file uploads efficiently
+87. Rate limiting APIs globally and per user
+88. Graceful shutdown of Express apps
+89. Horizontal vs vertical scaling strategies
+90. Best practices for production-grade Express apps
+

@@ -1,0 +1,41 @@
+Q4. What happens if you indent the first line of your Python 
+program unnecessarily?
+
+=> SyntaxError occurs
+
+Python expects the first line at the top-level scope 
+(no indentation). If you start with an indented line, the 
+interpreter thinks you are inside a block, but no such block 
+exists.
+
+Example:
+
+    print("Hello World")
+
+
+Output/Error:
+
+IndentationError: unexpected indent
+
+2. Reason
+
+Python uses indentation to group statements into blocks (for 
+functions, loops, conditionals, classes).
+
+The first line of a script is always considered top-level, so 
+any leading spaces or tabs are invalid unless it’s part of a 
+multiline construct.
+
+Unlike languages like C++/Java, Python does not allow 
+standalone indentation at the global level.
+
+3. Exception
+
+Indentation is allowed at the beginning if it’s inside a block, 
+for example:
+
+def greet():
+    print("Hello World")  # correct indentation
+
+
+But at the very top-level, it’s always an error.

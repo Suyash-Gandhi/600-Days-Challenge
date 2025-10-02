@@ -11,7 +11,7 @@ for (const val of arr) {
 
 /*
 The for...of loop in JavaScript is specifically used for 
-iterating over iterable objects such as arrays, strings, Maps, 
+iterating over values of iterable objects such as arrays, strings, Maps, 
 Sets, and other objects that implement the iterable protocol.
 
 It is not used for plain objects (you would use for...in for 

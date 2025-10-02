@@ -1,7 +1,11 @@
-let result = 0;
-for (let i = 1; i <= 5; i++) {
-  if (i % 2 === 0) continue;
-  result += i;
-console.log(result);
-}
-
+const multiply = (a, b) => {
+  if (b !== undefined) {
+    // Case 1: multiply(2, 3)
+    return a * b;
+  } else {
+    // Case 2: multiply(2)(3)
+    return (c) => a * c;
+  }
+};
+console.log(multiply(2, 3));   // 6
+console.log(multiply(2)(3));   // 6
