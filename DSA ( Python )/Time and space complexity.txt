@@ -1,0 +1,159 @@
+
+
+# Time & Space Complexity (Big-O, Big-Theta, Big-Omega) in DSA
+
+ 1. Introduction
+
+In Data Structures & Algorithms (DSA), complexity analysis is used to evaluate the efficiency of an algorithm.
+We mainly consider two aspects:
+
+1. Time Complexity → How execution time grows with input size.
+2. Space Complexity → How memory usage grows with input size.
+
+We express these complexities using asymptotic notations:
+
+ Big-O (O) → Worst-case growth rate.
+ Big-Theta (Θ) → Tight bound (average/balanced growth rate).
+ Big-Omega (Ω) → Best-case growth rate.
+
+---
+
+ 2. Asymptotic Notations
+
+1. Big-O (O): Upper Bound
+
+    Describes maximum time/space algorithm can take.
+    Example: If sorting algorithm takes at most `n²` steps, we say O(n²).
+
+2. Big-Theta (Θ): Tight Bound
+
+    Describes average/typical case.
+    If an algorithm always grows proportional to `n log n`, we write Θ(n log n).
+
+3. Big-Omega (Ω): Lower Bound
+
+    Describes best-case scenario.
+    Example: Linear search has Ω(1) (if element found at first index).
+
+---
+
+ 3. Common Complexities
+
+| Complexity | Example Operations                   |
+| ---------- | ------------------------------------ |
+| O(1)       | Accessing array element, hash lookup |
+| O(log n)   | Binary search                        |
+| O(n)       | Linear search, traversing array      |
+| O(n log n) | Merge Sort, Quick Sort (avg)         |
+| O(n²)      | Bubble Sort, Insertion Sort          |
+| O(2^n)     | Recursive Fibonacci                  |
+| O(n!)      | Traveling Salesman (brute force)     |
+
+---
+
+ 4. Python Examples
+
+# (a) Constant Time – O(1)
+
+
+def get_first_element(arr):
+    return arr[0]  # Always one operation
+
+
+ O(1) → Constant time (independent of `n`).
+
+---
+
+# (b) Linear Time – O(n)
+
+
+def print_all(arr):
+    for x in arr:
+        print(x)  # Runs n times
+
+
+ O(n) → Grows linearly with `n`.
+
+---
+
+# (c) Quadratic Time – O(n²)
+
+
+def print_pairs(arr):
+    for i in arr:
+        for j in arr:
+            print(i, j)
+
+
+ O(n²) → Two nested loops.
+
+---
+
+# (d) Logarithmic Time – O(log n)
+
+
+def binary_search(arr, target):
+    left, right = 0, len(arr)-1
+    while left <= right:
+        mid = (left + right)//2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+
+ O(log n) → Each step halves the search space.
+
+---
+
+# (e) Exponential Time – O(2^n)
+
+
+def fib(n):
+    if n <= 1:
+        return n
+    return fib(n-1) + fib(n-2)
+
+
+ O(2^n) → Recursive calls double each time.
+
+---
+
+ 5. Space Complexity
+
+ O(1): Uses fixed memory (e.g., swapping two numbers).
+ O(n): Memory grows with input (e.g., storing array).
+ O(n²): 2D matrix storage.
+
+Example in Python (space O(n)):
+
+
+def create_list(n):
+    return [i for i in range(n)]
+
+
+---
+
+ 6. Key Comparisons
+
+ Big-O (O): Worst-case → Ensures performance won’t be worse.
+ Big-Theta (Θ): Average-case → Balanced expectation.
+ Big-Omega (Ω): Best-case → Optimistic bound.
+
+Example (Linear Search):
+
+ Ω(1) → If element is at index 0.
+ Θ(n) → On average, traverse half the list.
+ O(n) → If element is at last index or not present.
+
+---
+
+ 7. Best Practices in DSA (Python)
+
+1. Always aim for O(log n) or O(n) algorithms when possible.
+2. Use built-in Python libraries (`bisect`, `heapq`, `collections`) as they are optimized.
+3. Watch out for hidden costs → e.g., string concatenation in Python is O(n).
+
