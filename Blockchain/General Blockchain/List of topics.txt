@@ -25,37 +25,37 @@
 
 # 2. Core Blockchain Concepts
 
-4. Blocks, Transactions & Chains
+1. Blocks, Transactions & Chains
 
-  4.1  Structure of a block (hash, timestamp, transactions, nonce)
-  4.2  Linking blocks (hash pointers, Merkle trees)
+  1.1  Structure of a block (hash, timestamp, transactions, nonce)
+  1.2  Linking blocks (hash pointers, Merkle trees)
 
-5. Consensus Mechanisms
+2. Consensus Mechanisms
 
-  5.1  Proof of Work (PoW)
-  5.2  Proof of Stake (PoS)
-  5.3  Delegated Proof of Stake (DPoS)
-  5.4  Practical Byzantine Fault Tolerance (PBFT) basics
+  2.1  Proof of Work (PoW)
+  2.2  Proof of Stake (PoS)
+  2.3  Delegated Proof of Stake (DPoS)
+  2.4  Practical Byzantine Fault Tolerance (PBFT) basics
 
-6. Nodes & Networks
+3. Nodes & Networks
 
-  6.1  Full node, light node, miners/validators
-  6.2  P2P networking in blockchain
+  3.1  Full node, light node, miners/validators
+  3.2  P2P networking in blockchain
 
 ---
 
 # 3. Cryptography in Blockchain
 
-7. Hash Functions
+1. Hash Functions
 
     SHA-256, Keccak (Ethereum), properties of hash
 
-8. Public-Key Cryptography
+2. Public-Key Cryptography
 
     Private vs. Public keys
     Digital signatures
 
-9. Wallets
+3. Wallets
 
     Hot wallets vs. cold wallets
     Mnemonic phrases & key management
@@ -64,10 +64,10 @@
 
 # 4. Bitcoin Fundamentals
 
-10. UTXO model (Unspent Transaction Outputs)
-11. Mining & difficulty adjustment
-12. Halving events
-13. Bitcoin scripting basics
+1. UTXO model (Unspent Transaction Outputs)
+2. Mining & difficulty adjustment
+3. Halving events
+4. Bitcoin scripting basics
 
 ---
 
