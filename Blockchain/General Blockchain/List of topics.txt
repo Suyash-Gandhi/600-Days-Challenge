@@ -36,6 +36,7 @@
   2.2  Proof of Stake (PoS)
   2.3  Delegated Proof of Stake (DPoS)
   2.4  Practical Byzantine Fault Tolerance (PBFT) basics
+  2.5  Proof of Authority (PoA)
 
 3. Nodes & Networks
 

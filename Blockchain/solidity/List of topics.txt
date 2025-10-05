@@ -24,10 +24,10 @@ Goal: Build strong fundamentals in Solidity & Ethereum basics
 18. Constructor functions
 19. Events & Emit
 20. Modifiers and custom function modifiers
-21. Payable keyword & Ether handling basics
+21. Ether handling basics
 22. `msg.sender`, `msg.value`, `block.timestamp`, `tx.origin`
 23. `require()`, `assert()`, `revert()`
-24. Pure vs View functions
+24. Pure vs View functions (not required as completed in functions)
 25. Gas basics (gas limit, gas price, refunds)
 26. Importing libraries & using OpenZeppelin basics
 27. ERC20 basics (token standard overview)

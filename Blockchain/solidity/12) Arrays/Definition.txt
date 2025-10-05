@@ -1,7 +1,10 @@
 
 ## 1. What is an Array in Solidity?
 
-An array is a collection of elements of the same type. In Solidity, arrays can be fixed-size or dynamic. Arrays are commonly used to store lists like numbers, addresses, strings, or structs.
+An array is a collection of elements of the same type. In 
+Solidity, arrays can be fixed-size or dynamic. Arrays are 
+commonly used to store lists like numbers, addresses, strings, 
+or structs.
 
 ---
 
@@ -131,9 +134,6 @@ uint ; // fixed size in memory
 
 3. State vs Local Arrays:
 
-Absolutely! Let’s dive deeply and clearly into State vs Local Arrays in Solidity. This is a crucial concept because it affects storage, gas cost, and lifetime of data.
-
----
 
 ## 1. State Arrays
 

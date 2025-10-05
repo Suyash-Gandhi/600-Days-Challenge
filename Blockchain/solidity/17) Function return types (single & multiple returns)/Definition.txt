@@ -1,6 +1,4 @@
-Alright, let’s break down function return types (single & multiple returns) in Solidity in a structured way — like a 12-mark university answer.
 
----
 
 ## 1. Introduction
 

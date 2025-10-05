@@ -15,7 +15,7 @@ function functionName(parameters) visibility modifiers returns (returnType) {
 2. functionName – Name of the function (cannot be the same as the contract name).
 3. parameters – Input values passed to the function (optional).
 4. visibility – Who can call this function (explained below).
-5. modifiers – Optional keywords like `pure`, `view`, `payable`.
+5. modifiers – Optional keywords like pure, view, payable.
 6. returns – If the function returns a value, specify its type.
 
 Example:
@@ -46,10 +46,10 @@ Visibility defines who can call a function. Solidity has four visibility types:
 
 | Visibility | Can be called by                               | Notes                                                                                                    |
 | ---------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `public`   | Inside & outside the contract                  | Also creates a getter if the function affects a state variable.                                          |
-| `external` | Only from outside the contract                 | Cheaper than public when called externally. Cannot be called internally with `f()`; must use `this.f()`. |
-| `internal` | Only inside the contract and derived contracts | Default visibility for functions in Solidity.                                                            |
-| `private`  | Only inside the contract                       | Cannot be accessed by derived contracts.                                                                 |
+| public   | Inside & outside the contract                  | Also creates a getter if the function affects a state variable.                                          |
+| external | Only from outside the contract                 | Cheaper than public when called externally. Cannot be called internally with f(); must use this.f(). |
+| internal | Only inside the contract and derived contracts | Default visibility for functions in Solidity.                                                            |
+| private  | Only inside the contract                       | Cannot be accessed by derived contracts.                                                                 |
 
 # Examples:
 
@@ -97,8 +97,8 @@ contract VisibilityExample {
 
  3. Important Notes
 
- Default visibility: Functions without a visibility keyword default to `internal` in Solidity 0.7.0 and above.
- External vs Public: `external` functions are more gas-efficient for external calls but cannot be called internally using the normal syntax.
+ Default visibility: Functions without a visibility keyword default to internal in Solidity 0.7.0 and above.
+ External vs Public: external functions are more gas-efficient for external calls but cannot be called internally using the normal syntax.
  State-modifying functions cost gas; view and pure functions do not modify state and can be called without a transaction.
 
 ------------------
@@ -122,7 +122,7 @@ contract Example {
 }
 
 
- `increment()` can be called inside the contract or externally (e.g., through a transaction or another contract).
+ increment() can be called inside the contract or externally (e.g., through a transaction or another contract).
 
 ---
 
@@ -156,8 +156,8 @@ contract Example {
  3. Internal
 
  Who can call it: Inside the contract and any derived contracts.
- Effect: Similar to `private`, but allows inheritance access.
- Default: If you don’t specify visibility, functions are `internal` by default.
+ Effect: Similar to private, but allows inheritance access.
+ Default: If you don’t specify visibility, functions are internal by default.
 
 Example:
 
@@ -184,7 +184,7 @@ contract Derived is Base {
  4. External
 
  Who can call it: Only from outside the contract (via transactions or other contracts).
- Effect: Cannot be called internally using `functionName()`, but you can use `this.functionName()`.
+ Effect: Cannot be called internally using functionName(), but you can use this.functionName().
  Gas efficiency: Cheaper for external calls compared to public functions.
 
 Example:
@@ -202,5 +202,198 @@ contract Example {
     function internalCall() public view returns(uint) {
         // increment(5); // ❌ Error: cannot call externally from inside
         return this.increment(0); // ✅ Works via this
+    }
+}
+
+3. Function modifiers
+
+
+In Solidity, the keywords pure, view, and payable are function modifiers that describe how a function interacts with the blockchain state and Ether (ETH).
+Let’s break them down one by one with clear examples and explanations 👇
+
+---
+
+## 🧠 1. view Modifier
+
+### 📘 Definition:
+
+A view function reads the blockchain state but does not modify it.
+
+It can access:
+
+ state variables
+ balance
+ block, msg, tx information
+  but cannot change any state variables.
+
+### ✅ Example:
+
+
+pragma solidity ^0.8.0;
+
+contract MyContract {
+    uint public number = 10;
+
+    // Only reads the state variable
+    function getNumber() public view returns (uint) {
+        return number;
+    }
+}
+
+
+### ⚙️ Explanation:
+
+ getNumber() only reads the value of number.
+ It cannot modify number or any other state variable.
+ No gas is used if called externally (not through a transaction).
+
+---
+
+## 💡 2. pure Modifier
+
+### 📘 Definition:
+
+A pure function neither reads nor modifies the blockchain state.
+
+It only works with its inputs and local variables — no interaction with storage, blockchain data, or Ether.
+
+### ✅ Example:
+
+
+pragma solidity ^0.8.0;
+
+contract MyContract {
+    // Only performs calculation, no state access
+    function add(uint a, uint b) public pure returns (uint) {
+        return a + b;
+    }
+}
+
+
+### ⚙️ Explanation:
+
+ add() doesn’t read any state variables like number.
+ It just uses the parameters a and b to compute and return a result.
+ No state interaction at all.
+
+---
+
+## 💰 3. payable Modifier
+
+### 📘 Definition:
+
+A payable function can receive Ether when it’s called.
+
+It enables the function to handle Ether transactions and access msg.value (the amount of Wei sent with the call).
+
+### ✅ Example:
+
+
+pragma solidity ^0.8.0;
+
+contract MyContract {
+    uint public balance;
+
+    // Function can receive Ether
+    function deposit() public payable {
+        balance += msg.value;
+    }
+
+    // Check contract's Ether balance
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+}
+
+
+### ⚙️ Explanation:
+
+ deposit() is payable, so it can receive ETH.
+ When someone calls deposit() and sends Ether,
+  that Ether is stored in the contract’s balance.
+ Without payable, sending ETH would revert (fail).
+
+---
+
+## 🧾 Summary Table
+
+| Modifier  | Reads State | Modifies State | Can Receive Ether | Example Use             |
+| --------- | ----------- | -------------- | ----------------- | ----------------------- |
+| pure    | ❌ No        | ❌ No           | ❌ No              | Math or logic functions |
+| view    | ✅ Yes       | ❌ No           | ❌ No              | Reading stored data     |
+| payable | ✅/❌ Depends | ✅/❌ Depends    | ✅ Yes             | Accepting ETH payments  |
+
+---
+
+## 🧩 Example Combining Them
+
+You can combine view and pure with visibility modifiers,
+but payable cannot be used with view or pure.
+
+
+function checkBalance() public view returns(uint) { ... }  
+function calculate(uint a, uint b) public pure returns(uint) { ... }  
+function sendEther() public payable { ... }
+
+
+## ⚡ Bonus Tip:
+
+A function can combine payable with others only under certain conditions:
+
+ payable can’t mix with view or pure — since sending Ether implies potential state change.
+  ✅ Example:
+
+  
+  function fund() public payable { }
+  
+
+  ❌ Invalid:
+
+  
+  function fund() public payable view { } // Not allowed
+  ---
+
+  This will show you exactly how they differ and how they work in real blockchain use.
+
+🏦 Mini Bank Example — Combining pure, view, and payable
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MiniBank {
+    // State variable to track each user's balance
+    mapping(address => uint) public balances;
+
+    // 🔹 1. PAYABLE FUNCTION — Deposit Ether into the contract
+    function deposit() public payable {
+        require(msg.value > 0, "Send some Ether!");
+        balances[msg.sender] += msg.value;  // modifies state
+    }
+
+    // 🔹 2. VIEW FUNCTION — Check your current balance
+    function getMyBalance() public view returns (uint) {
+        return balances[msg.sender];  // reads state, no modification
+    }
+
+    // 🔹 3. PURE FUNCTION — Simple calculation helper
+    function calculateInterest(uint principal, uint rate, uint time) 
+        public 
+        pure 
+        returns (uint) 
+    {
+        // Formula: (P * R * T) / 100
+        return (principal * rate * time) / 100;
+    }
+
+    // 🔹 4. NON-PAYABLE FUNCTION — Withdraw Ether from contract
+    function withdraw(uint amount) public {
+        require(balances[msg.sender] >= amount, "Not enough balance!");
+        balances[msg.sender] -= amount;  // modifies state
+        payable(msg.sender).transfer(amount);  // sends Ether
+    }
+
+    // 🔹 5. VIEW FUNCTION — Check total Ether stored in contract
+    function getContractBalance() public view returns (uint) {
+        return address(this).balance;  // reads blockchain data
     }
 }

@@ -45,7 +45,7 @@ pragma solidity ^0.8.0;
 contract Example {
     function double(uint x) public pure returns (uint) {
         uint ; // stored in memory
-        tempArray[0] = x  2;
+        tempArray[0] = x * 2;
         return tempArray[0];
     }
 }
