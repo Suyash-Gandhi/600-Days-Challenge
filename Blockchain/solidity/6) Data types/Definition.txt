@@ -87,6 +87,78 @@ address payable public wallet = payable(owner);
 
 ✅ Use case: ownership, payments, contract interactions.
 ⚠️ Always check validity of addresses before transferring funds.
+---
+
+Q why is the address i got from these two different
+
+function Address() public view returns(address) {
+
+        return address(this) ;
+    }
+    
+    function Addresss() public view returns(address) {
+
+        return msg.sender ;
+    }
+
+ 
+
+---
+
+## ⚙️ The Two Addresses You Got
+
+| Function     | Returned Address                             | Meaning                                                                      |
+| ------------ | -------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Address()`  | `0xf8e81D47203A594245E36C48e151709F0C19fBe8` | Contract address — where your smart contract is stored on the blockchain |
+| `Addresss()` | `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` | Caller’s address — the Ethereum account that executed the function       |
+
+---
+
+## 🧩 Why They Are Different
+
+### 1️⃣ `address(this)`
+
+ `this` in Solidity refers to the current contract instance.
+ Every time you deploy a contract, the Ethereum network assigns it a unique address.
+ That’s where your contract’s code and storage live permanently.
+
+So:
+`address(this)` → `0xf8e81D47203A594245E36C48e151709F0C19fBe8`
+means “this contract itself lives at that address”.
+
+---
+
+### 2️⃣ `msg.sender`
+
+ `msg.sender` refers to who is calling the function.
+ When you call the function from Remix, you’re using one of the test accounts provided (the “Account” dropdown in Remix).
+ That is why it shows:
+  `msg.sender = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
+  which is your wallet/account in Remix.
+
+---
+
+### 🧠 Simple Analogy
+
+Think of it like:
+
+ `address(this)` → the shop’s address (the contract)
+ `msg.sender` → the customer’s address (you calling it)
+
+So of course they’re different — you and the shop are not the same person.
+
+---
+
+### ✅ Quick Test
+
+Try this in Remix:
+
+1. Go to the “Account” dropdown (top right in “Deploy & Run Transactions” panel).
+2. Choose another account.
+3. Call `Addresss()` again.
+
+You’ll see a different `msg.sender`, but `address(this)` stays the same — because the contract doesn’t change, but the caller does.
+
 
 ---
 
