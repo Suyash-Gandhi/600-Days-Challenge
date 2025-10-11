@@ -31,7 +31,7 @@ contract Example {
 
     // Set your balance
     function setBalance(uint _balance) public {
-        balances[msg.sender] = _balance;
+        balances[msg.sender] = +_balance;
     }
 
     // Check balance of any address
