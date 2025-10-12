@@ -1,0 +1,221 @@
+In Python, data types define the kind of value a variable can hold and what operations can be performed on it. Python is dynamically typed, meaning you don’t need to declare the type of a variable explicitly — it’s determined automatically when you assign a value.
+
+Let’s explore all main data types in Python with clear explanations and examples 👇
+
+---
+
+## 🧩 1. Numeric Types
+
+These are used to store numbers.
+
+### 🔹 a) int (Integer)
+
+ Whole numbers, positive or negative, without decimals.
+
+
+a = 10
+b = -5
+
+
+Example operations:
+
+
+print(a + b)  # 5
+
+
+### 🔹 b) float (Floating-point)
+
+ Numbers with a decimal point.
+
+
+x = 3.14
+y = -0.5
+
+
+Example:
+
+
+print(x  2)  # 6.28
+
+
+### 🔹 c) complex (Complex numbers)
+
+ Numbers with a real and imaginary part.
+
+
+z = 2 + 3j
+print(z.real)  # 2.0
+print(z.imag)  # 3.0
+
+
+---
+
+## 🧵 2. Sequence Types
+
+Used to store multiple items in a single variable.
+
+### 🔹 a) str (String)
+
+ A sequence of characters enclosed in quotes.
+
+
+name = "Suyash"
+
+
+Example:
+
+
+print(name.upper())  # "SUYASH"
+
+
+### 🔹 b) list
+
+ Ordered, mutable (changeable) collection.
+
+
+fruits = ["apple", "banana", "cherry"]
+fruits.append("mango")
+
+
+Example:
+
+
+print(fruits[1])  # "banana"
+
+
+### 🔹 c) tuple
+
+ Ordered, immutable (unchangeable) collection.
+
+
+coordinates = (10, 20)
+
+
+Example:
+
+
+print(coordinates[0])  # 10
+
+
+---
+
+## 🧱 3. Set Types
+
+### 🔹 set
+
+ Unordered collection of unique elements.
+
+
+nums = {1, 2, 3, 2}
+print(nums)  # {1, 2, 3}
+
+
+### 🔹 frozenset
+
+ Immutable version of a set.
+
+
+fset = frozenset({1, 2, 3})
+
+
+---
+
+## 📘 4. Mapping Type
+
+### 🔹 dict (Dictionary)
+
+ Stores data as key–value pairs.
+
+
+person = {"name": "Suyash", "age": 21}
+print(person["name"])  # "Suyash"
+
+
+---
+
+## ⚙️ 5. Boolean Type
+
+### 🔹 bool
+
+ Represents logical values — either True or False.
+
+
+is_active = True
+print(5 > 3)  # True
+
+
+---
+
+## 🔎 6. Binary Types
+
+### 🔹 bytes
+
+ Immutable sequence of bytes.
+
+
+b = b"Hello"
+
+
+### 🔹 bytearray
+
+ Mutable version of bytes.
+
+
+ba = bytearray([65, 66, 67])
+
+
+### 🔹 memoryview
+
+ Memory view object that allows access to internal data of an object that supports the buffer protocol.
+
+
+mv = memoryview(b"Python")
+
+
+---
+
+## 🧮 7. None Type
+
+### 🔹 NoneType
+
+ Represents the absence of a value.
+
+
+value = None
+print(value)  # None
+
+
+---
+
+## ⚡ Type Checking and Conversion
+
+### Check a variable’s type:
+
+
+x = 10
+print(type(x))  # <class 'int'>
+
+
+### Type conversion:
+
+
+a = "5"
+b = int(a)      # Convert string to int
+c = float(b)    # Convert int to float
+print(c)        # 5.0
+
+
+---
+
+### ✅ Summary Table
+
+| Category | Data Type                          | Mutable                | Example                    |
+| -------- | ---------------------------------- | ---------------------- | -------------------------- |
+| Numeric  | int, float, complex                | No                     |       10, 3.14, 2+3j       |
+| Sequence | str, list, tuple                   | str ❌, list ✅, tuple ❌ |  "hi", [1,2,3], (4,5)  |
+| Set      | set, frozenset                     | set ✅, frozenset ❌  | {1,2,3}                     |
+| Mapping  | dict                               | ✅                     | {"name": "Suyash"}         |
+| Boolean  | bool                               | ❌                     | True, False                |
+| Binary   | bytes, bytearray, memoryview       | bytes ❌, bytearray ✅ | b"hi", bytearray([65])     |
+| None     | NoneType                           | ❌                     | None                       |
+

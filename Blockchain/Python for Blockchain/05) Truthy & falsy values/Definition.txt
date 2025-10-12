@@ -1,0 +1,104 @@
+
+
+## 🧠 Concept Overview
+
+In Python, every value has an inherent Boolean truth value — that is, it can evaluate to either True or False when used in a Boolean context (like an  if  statement or  while  loop).
+
+ Truthy values → Evaluate to  True 
+ Falsy values → Evaluate to  False 
+
+Python automatically determines this when evaluating conditions, even if you don’t explicitly use  True  or  False .
+
+---
+
+## ⚖️ Falsy Values in Python
+
+The following values are considered Falsy (they behave as  False ):
+
+| Type             | Example                                                              | Explanation                            |
+| ---------------- | -------------------------------------------------------------------- | -------------------------------------- |
+|  NoneType        |  None                                                                | Represents the absence of a value      |
+|  Boolean         |  False                                                               | The Boolean false value                |
+|  Numeric         |  0 ,  0.0 ,  0j                                                      | Any numeric zero (int, float, complex) |
+|  Sequence        |  '' ,  [] ,  ()                                                      | Empty string, list, or tuple           |
+|  Mapping         |  {}                                                                  | Empty dictionary                       |
+|  Set             |  set()                                                               | Empty set or frozenset                 |
+|  Custom Objects  | Any object with  __bool__()  or  __len__()  returning  False  or  0  | You can define your own falsy behavior |
+
+✅ Example:
+
+
+if not []:
+    print("Empty list is falsy")
+ 
+
+Output:
+
+ 
+Empty list is falsy
+ 
+
+---
+
+## 🌟 Truthy Values in Python
+
+Everything that is not falsy is automatically truthy.
+In simpler terms — any non-empty, non-zero, and non-None value is truthy.
+
+✅ Examples:
+
+
+if "Hello":
+    print("Non-empty string is truthy")
+
+if [1, 2, 3]:
+    print("Non-empty list is truthy")
+
+if 42:
+    print("Non-zero number is truthy")
+ 
+
+Output:
+
+ 
+Non-empty string is truthy
+Non-empty list is truthy
+Non-zero number is truthy
+ 
+
+---
+
+## 🧩 How Python Determines Truthiness
+
+Python uses two special methods internally:
+
+1.  __bool__(self)  → returns  True  or  False 
+2.  __len__(self)  → returns an integer (0 means falsy, non-zero means truthy)
+
+If neither is defined, the object is truthy by default.
+
+✅ Example:
+
+
+class Example:
+    def __len__(self):
+        return 0
+
+print(bool(Example()))  # False, because __len__ returns 0
+ 
+
+---
+
+## 🧮 Quick Summary Table
+
+| Category     | Truthy            | Falsy            |
+| ------------ | ----------------- | ---------------- |
+| Numbers      |  1 ,  3.14 ,  -5  |  0 ,  0.0 ,  0j  |
+| Strings      |  "Python" ,  " "  |  ""              |
+| Lists        |  [1, 2, 3]        |  []              |
+| Tuples       |  (10, 20)         |  ()              |
+| Dictionaries |  {"a":1}          |  {}              |
+| Sets         |  {1,2,3}          |  set()           |
+| Special      |  True             |  False ,  None   |
+
+---

@@ -1,0 +1,215 @@
+
+## 1️⃣ Introduction
+
+In Python, variables and constants are fundamental concepts used to store and manage data during program execution.
+They act as containers for values that can be used and manipulated throughout the code.
+
+---
+
+## 2️⃣ Variables in Python
+
+### Definition
+
+A variable is a name given to a memory location where data is stored.
+It allows programmers to store, retrieve, and modify values dynamically.
+
+### Example
+
+```python
+name = "Suyash"
+age = 21
+height = 5.9
+```
+
+Here:
+
+ `name` is a variable storing a string.
+ `age` is an integer variable.
+ `height` is a float variable.
+
+---
+
+## 3️⃣ Rules for Naming Variables
+
+Python has some rules and conventions when naming variables:
+
+| Rule                                         | Example                             |
+| -------------------------------------------- | ----------------------------------- |
+| Must start with a letter or underscore       | `user`, `_value`                    |
+| Cannot start with a number                   | ❌ `1user`                           |
+| Can contain letters, digits, and underscores | `user1`, `total_sum`                |
+| Case-sensitive                               | `Name` and `name` are different |
+| Should not use Python keywords               | ❌ `if`, `for`, `class`, etc.        |
+
+Example:
+
+```python
+name = "John"
+Name = "Doe"
+print(name)  # John
+print(Name)  # Doe
+```
+
+---
+
+## 4️⃣ Assigning Values to Variables
+
+Python uses the `=` operator to assign values.
+
+### Single Assignment
+
+```python
+x = 10
+```
+
+### Multiple Assignment
+
+```python
+x, y, z = 5, 10, 15
+```
+
+### Same Value to Multiple Variables
+
+```python
+a = b = c = 100
+```
+
+### Dynamic Typing
+
+Python is dynamically typed — you can change the type of a variable anytime.
+
+```python
+x = 10       # integer
+x = "Hello"  # now string
+```
+
+---
+
+## 5️⃣ Data Types of Variables
+
+Variables can hold values of different data types:
+
+| Type  | Example                  | Description          |
+| ----- | ------------------------ | -------------------- |
+| int   | `x = 10`                 | Integer numbers      |
+| float | `y = 10.5`               | Decimal numbers      |
+| str   | `name = "Alice"`         | Text data            |
+| bool  | `flag = True`            | Boolean values       |
+| list  | `nums = [1,2,3]`         | Ordered collection   |
+| tuple | `point = (3,4)`          | Immutable collection |
+| dict  | `user = {"name": "Bob"}` | Key-value pairs      |
+
+---
+
+## 6️⃣ Constants in Python
+
+### Definition
+
+A constant is a variable whose value should not change during the program’s execution.
+Python does not have built-in constant support, but by convention, constants are written in UPPERCASE letters.
+
+### Example
+
+```python
+PI = 3.14159
+GRAVITY = 9.8
+MAX_USERS = 100
+```
+
+While technically, you can change their values, you should not:
+
+```python
+PI = 3.14  # Allowed, but bad practice
+```
+
+---
+
+## 7️⃣ Using a Constant Module
+
+To create real constants, developers often use a separate file, e.g., `constants.py`:
+
+constants.py
+
+```python
+PI = 3.14159
+E = 2.71828
+```
+
+main.py
+
+```python
+import constants
+
+print(constants.PI)
+```
+
+This approach prevents accidental modification and improves code readability.
+
+---
+
+## 8️⃣ Difference Between Variables and Constants
+
+| Feature           | Variable                                       | Constant                         |
+| ----------------- | ---------------------------------------------- | -------------------------------- |
+| Definition        | A named memory location whose value can change | A named value that remains fixed |
+| Value             | Mutable (can change)                           | Immutable (should not change)    |
+| Syntax Convention | lowercase or mixedCase                         | UPPERCASE                        |
+| Example           | `name = "John"`                                | `PI = 3.14159`                   |
+
+---
+
+## 9️⃣ Example Program
+
+```python
+# Program to calculate area of a circle using constants
+PI = 3.14159
+
+radius = 5
+area = PI  radius ** 2
+
+print("Area of Circle:", area)
+```
+
+Output:
+
+```
+Area of Circle: 78.53975
+```
+
+---
+
+## 🔟 Best Practices
+
+1. ✅ Use meaningful variable names — `age`, `total_amount`, not `x`, `y`.
+2. ✅ Follow naming conventions: constants in `UPPERCASE`.
+3. ✅ Keep constants in a separate module for large projects.
+4. ✅ Avoid reassigning constants accidentally.
+5. ✅ Initialize variables before using them.
+
+---
+
+## 1️⃣ Real-World Example
+
+Imagine you’re writing a temperature conversion app:
+
+```python
+FAHRENHEIT_TO_CELSIUS_FACTOR = 5/9
+OFFSET = 32
+
+fahrenheit = 98.6
+celsius = (fahrenheit - OFFSET) * FAHRENHEIT_TO_CELSIUS_FACTOR
+
+print("Temperature in Celsius:", celsius)
+```
+
+Here, `FAHRENHEIT_TO_CELSIUS_FACTOR` and `OFFSET` are constants.
+
+---
+
+## 2️⃣ Conclusion
+
+ Variables provide flexibility — their values can change dynamically.
+ Constants provide stability — their values remain fixed to prevent errors.
+ Together, they form the backbone of any Python program, ensuring clarity, maintainability, and correctness.
+
+---
