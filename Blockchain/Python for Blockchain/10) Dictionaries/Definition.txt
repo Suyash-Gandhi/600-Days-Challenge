@@ -1,0 +1,133 @@
+
+
+## 1. What is a Dictionary?
+
+A dictionary in Python is an unordered collection of key-value pairs.
+
+ Each key must be unique and immutable (like strings, numbers, or tuples).
+ Each value can be of any data type and can repeat.
+
+Think of it like a real dictionary: the key is the “word,” and the value is the “definition.”
+
+---
+
+## 2. Creating Dictionaries
+
+### Empty dictionary
+
+```python
+my_dict = {}
+# or
+my_dict = dict()
+```
+
+### With initial values
+
+```python
+student = {
+    "name": "Suyash",
+    "age": 21,
+    "course": "Computer Science"
+}
+```
+
+---
+
+## 3. Accessing Values
+
+Use the key to get a value.
+
+```python
+print(student["name"])  # Output: Suyash
+```
+
+Safer method using `.get()` (returns `None` if key doesn’t exist):
+
+```python
+print(student.get("marks"))  # Output: None
+```
+
+---
+
+## 4. Adding or Updating Items
+
+```python
+# Adding a new key-value pair
+student["marks"] = 95
+
+# Updating an existing value
+student["age"] = 22
+```
+
+---
+
+## 5. Removing Items
+
+```python
+# Remove by key
+student.pop("course")  
+
+# Remove last inserted item (Python 3.7+)
+student.popitem()  
+
+# Remove all items
+student.clear()  
+```
+
+---
+
+## 6. Dictionary Methods
+
+| Method      | Description                               |
+| ----------- | ----------------------------------------- |
+| `.keys()`   | Returns all keys                          |
+| `.values()` | Returns all values                        |
+| `.items()`  | Returns key-value pairs as tuples         |
+| `.update()` | Update dictionary with another dictionary |
+| `.copy()`   | Returns a shallow copy of dictionary      |
+
+Example:
+
+```python
+student = {"name": "Suyash", "age": 21}
+print(student.keys())    # dict_keys(['name', 'age'])
+print(student.values())  # dict_values(['Suyash', 21])
+print(student.items())   # dict_items([('name', 'Suyash'), ('age', 21)])
+```
+
+---
+
+## 7. Looping Through a Dictionary
+
+```python
+for key in student:
+    print(key, student[key])
+
+# Or
+for key, value in student.items():
+    print(key, value)
+```
+
+---
+
+## 8. Nested Dictionaries
+
+Dictionaries can contain other dictionaries:
+
+```python
+students = {
+    "s1": {"name": "Suyash", "age": 21},
+    "s2": {"name": "Anjali", "age": 20}
+}
+
+print(students["s1"]["name"])  # Output: Suyash
+```
+
+---
+
+## 9. Key Points
+
+ Keys must be unique and immutable.
+ Values can be any type, including lists, tuples, or other dictionaries.
+ Dictionaries are unordered (though insertion order is preserved from Python 3.7+).
+

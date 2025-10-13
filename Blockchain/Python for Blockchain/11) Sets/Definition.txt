@@ -1,0 +1,223 @@
+
+## 1. What is a Set?
+
+A set is a built-in Python data type that represents an unordered collection of unique elements.
+
+ Unordered → elements do not have a specific order; indexing/slicing is not possible.
+ Unique elements → duplicates are automatically removed.
+ Mutable → you can add or remove elements (but elements themselves must be immutable).
+
+Example:
+
+```python
+my_set = {1, 2, 3, 4}
+print(my_set)  # Output: {1, 2, 3, 4}
+
+my_set_with_duplicates = {1, 2, 2, 3}
+print(my_set_with_duplicates)  # Output: {1, 2, 3}  (duplicates removed)
+```
+
+---
+
+## 2. Creating Sets
+
+You can create a set in Python in two ways:
+
+1. Using curly braces `{}`
+
+```python
+fruits = {"apple", "banana", "cherry"}
+```
+
+2. Using the `set()` constructor (useful for creating sets from lists, tuples, or strings)
+
+```python
+numbers = set([1, 2, 3, 4])
+letters = set("hello")
+print(letters)  # Output: {'h', 'e', 'l', 'o'}  (duplicates removed)
+```
+
+Empty set:
+
+```python
+empty_set = set()  # Cannot use {} because that creates an empty dictionary
+```
+
+---
+
+## 3. Set Operations
+
+Sets support mathematical operations like union, intersection, difference, and symmetric difference.
+
+```python
+A = {1, 2, 3, 4}
+B = {3, 4, 5, 6}
+
+# Union
+print(A | B)  # {1, 2, 3, 4, 5, 6}
+
+# Intersection
+print(A & B)  # {3, 4}
+
+# Difference
+print(A - B)  # {1, 2}
+
+# Symmetric Difference (elements in A or B but not both)
+print(A ^ B)  # {1, 2, 5, 6}
+```
+
+---
+
+## 4. Set Methods
+
+Here are some important methods:
+
+| Method            | Description                                            | Example                         |
+| ----------------- | ------------------------------------------------------ | ------------------------------- |
+| `add(x)`          | Adds element `x`                                       | `my_set.add(5)`                 |
+| `remove(x)`       | Removes element `x`; raises error if not found         | `my_set.remove(2)`              |
+| `discard(x)`      | Removes element `x`; does not raise error if not found | `my_set.discard(2)`             |
+| `pop()`           | Removes and returns a random element                   | `my_set.pop()`                  |
+| `clear()`         | Removes all elements                                   | `my_set.clear()`                |
+| `copy()`          | Returns a shallow copy                                 | `new_set = my_set.copy()`       |
+| `update(others)` | Adds elements from other sets or iterables             | `my_set.update({5, 6}, [7, 8])` |
+
+---
+
+## 5. Set Membership
+
+Check if an element exists in a set using `in` or `not in`:
+
+```python
+fruits = {"apple", "banana", "cherry"}
+print("apple" in fruits)    # True
+print("orange" not in fruits)  # True
+```
+
+---
+
+## 6. Advantages of Sets
+
+ Automatically removes duplicates.
+ Fast membership testing (`in` operator is very efficient).
+ Supports mathematical set operations (union, intersection, etc.).
+
+Example – Removing duplicates from a list:
+
+```python
+my_list = [1, 2, 2, 3, 4, 4]
+unique_list = list(set(my_list))
+print(unique_list)  # [1, 2, 3, 4]
+```
+
+---
+
+## 7. Important Notes
+
+ Sets cannot contain mutable elements like lists or dictionaries. Tuples are allowed.
+
+```python
+s = {1, 2, (3, 4)}  # ✅ valid
+s = {1, 2, [3, 4]}  # ❌ invalid
+```
+
+ Sets are unordered, so the order of elements may vary when printed.
+
+---
+
+
+## 1. What is a Frozen Set?
+
+A frozen set is basically an immutable version of a set.
+
+ Once created, you cannot add or remove elements.
+ Useful when you need a set that should not change, e.g., as dictionary keys.
+ Supports set operations like union, intersection, difference, and symmetric difference, but not modification methods (`add`, `remove`, etc.).
+
+---
+
+## 2. Creating a Frozen Set
+
+You create a frozen set using the `frozenset()` constructor:
+
+```python
+# From a list
+f_set = frozenset([1, 2, 3, 4])
+print(f_set)  # Output: frozenset({1, 2, 3, 4})
+
+# From a tuple
+f_set2 = frozenset((5, 6, 7))
+print(f_set2)  # Output: frozenset({5, 6, 7})
+```
+
+Note: You cannot create a frozen set using `{}`. `{}` always creates a regular set (or an empty dict).
+
+---
+
+## 3. Operations on Frozen Sets
+
+Frozen sets support non-modifying set operations:
+
+```python
+A = frozenset([1, 2, 3])
+B = frozenset([3, 4, 5])
+
+# Union
+print(A | B)  # frozenset({1, 2, 3, 4, 5})
+
+# Intersection
+print(A & B)  # frozenset({3})
+
+# Difference
+print(A - B)  # frozenset({1, 2})
+
+# Symmetric Difference
+print(A ^ B)  # frozenset({1, 2, 4, 5})
+```
+
+---
+
+## 4. Methods Supported
+
+Since frozen sets are immutable, modification methods like `add`, `remove`, `discard`, or `pop` are not available.
+
+They do support non-modifying methods:
+
+| Method                        | Description                                    |
+| ----------------------------- | ---------------------------------------------- |
+| `copy()`                      | Returns a shallow copy                         |
+| `union(others)`              | Returns the union of sets                      |
+| `intersection(others)`       | Returns intersection                           |
+| `difference(others)`         | Returns difference                             |
+| `symmetric_difference(other)` | Returns symmetric difference                   |
+| `isdisjoint(other)`           | Returns `True` if sets have no common elements |
+| `issubset(other)`             | Returns `True` if set is a subset of `other`   |
+| `issuperset(other)`           | Returns `True` if set is a superset of `other` |
+
+---
+
+## 5. Advantages of Frozen Sets
+
+1. Immutable → Can be used as dictionary keys or elements of other sets.
+2. Safe from accidental modification.
+3. Supports all read-only set operations.
+
+```python
+fs = frozenset([1, 2, 3])
+d = {fs: "value"}  # ✅ Works as dictionary key
+```
+
+---
+
+### 6. Key Differences: Set vs Frozen Set
+
+| Feature                            | Set       | Frozen Set    |
+| ---------------------------------- | --------- | ------------- |
+| Mutability                         | Mutable   | Immutable     |
+| Add/Remove elements                | Yes       | No            |
+| Use as dict key                    | No        | Yes           |
+| Methods like `add` / `remove`      | Available | Not available |
+| Operations like union/intersection | Available | Available     |
+
+---
+

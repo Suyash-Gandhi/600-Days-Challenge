@@ -1,0 +1,103 @@
+### 🐍 String Methods in Python (Comprehensive Guide)
+
+Strings in Python are sequences of characters enclosed in single quotes (`'`), double quotes (`"`), or triple quotes (`'''` / `"""`).
+Python provides many built-in methods to manipulate strings easily and efficiently.
+
+---
+
+## 🔹 1. Case Conversion Methods
+
+| Method         | Description                                          | Example                                            |
+| -------------- | ---------------------------------------------------- | -------------------------------------------------- |
+| `upper()`      | Converts all characters to uppercase.                | `'hello'.upper()` → `'HELLO'`                      |
+| `lower()`      | Converts all characters to lowercase.                | `'HELLO'.lower()` → `'hello'`                      |
+| `title()`      | Converts the first letter of each word to uppercase. | `'hello world'.title()` → `'Hello World'`          |
+| `capitalize()` | Capitalizes only the first letter of the string.     | `'python is fun'.capitalize()` → `'Python is fun'` |
+| `swapcase()`   | Swaps lowercase to uppercase and vice versa.         | `'PyThOn'.swapcase()` → `'pYtHoN'`                 |
+
+---
+
+## 🔹 2. Searching and Finding Methods
+
+| Method              | Description                                                   | Example                       |
+| ------------------- | ------------------------------------------------------------- | ----------------------------- |
+| `find(substring)`   | Returns the first index of `substring`, or `-1` if not found. | `'banana'.find('na')` → `2`   |
+| `rfind(substring)`  | Returns the last index of `substring`.                    | `'banana'.rfind('na')` → `4`  |
+| `index(substring)`  | Similar to `find()` but raises an error if not found.         | `'banana'.index('na')` → `2`  |
+| `rindex(substring)` | Returns the last occurrence; raises error if not found.       | `'banana'.rindex('na')` → `4` |
+| `count(substring)`  | Counts how many times `substring` appears.                    | `'banana'.count('na')` → `2`  |
+
+---
+
+## 🔹 3. Checking String Type (Boolean Methods)
+
+These methods return True or False.
+
+| Method                  | Description                                   | Example                              |
+| ----------------------- | --------------------------------------------- | ------------------------------------ |
+| `isalpha()`             | True if all characters are letters.           | `'abc'.isalpha()` → `True`           |
+| `isdigit()`             | True if all characters are digits.            | `'123'.isdigit()` → `True`           |
+| `isalnum()`             | True if all are letters or digits.            | `'abc123'.isalnum()` → `True`        |
+| `isspace()`             | True if all characters are whitespace.        | `'   '.isspace()` → `True`           |
+| `isupper()`             | True if all characters are uppercase.         | `'HELLO'.isupper()` → `True`         |
+| `islower()`             | True if all characters are lowercase.         | `'hello'.islower()` → `True`         |
+| `istitle()`             | True if each word starts with uppercase.      | `'Hello World'.istitle()` → `True`   |
+| `startswith(substring)` | Checks if string starts with given substring. | `'python'.startswith('py')` → `True` |
+| `endswith(substring)`   | Checks if string ends with given substring.   | `'python'.endswith('on')` → `True`   |
+
+---
+
+## 🔹 4. Modifying and Replacing Methods
+
+| Method                     | Description                                  | Example                                                       |
+| -------------------------- | -------------------------------------------- | ------------------------------------------------------------- |
+| `replace(old, new, count)` | Replaces `old` substring with `new`.         | `'hello world'.replace('world', 'Python')` → `'hello Python'` |
+| `strip()`                  | Removes whitespace from both ends.           | `'  hello  '.strip()` → `'hello'`                             |
+| `lstrip()`                 | Removes whitespace from the left side.       | `'  hello'.lstrip()` → `'hello'`                              |
+| `rstrip()`                 | Removes whitespace from the right side.      | `'hello  '.rstrip()` → `'hello'`                              |
+| `join(iterable)`           | Joins elements of an iterable into a string. | `'-'.join(['a','b','c'])` → `'a-b-c'`                         |
+
+---
+
+## 🔹 5. Splitting and Combining Methods
+
+| Method                 | Description                                           | Example                                                    |
+| ---------------------- | ----------------------------------------------------- | ---------------------------------------------------------- |
+| `split(separator)`     | Splits string into a list.                            | `'a,b,c'.split(',')` → `['a', 'b', 'c']`                   |
+| `rsplit(separator)`    | Splits from the right.                                | `'a,b,c'.rsplit(',', 1)` → `['a,b', 'c']`                  |
+| `splitlines()`         | Splits string at line breaks.                         | `'line1\nline2'.splitlines()` → `['line1', 'line2']`       |
+| `partition(separator)` | Splits into a 3-part tuple: before, separator, after. | `'hello world'.partition(' ')` → `('hello', ' ', 'world')` |
+
+---
+
+## 🔹 6. Formatting Methods
+
+| Method                | Description                  | Example                                                       |
+| --------------------- | ---------------------------- | ------------------------------------------------------------- |
+| `center(width, char)` | Centers string within width. | `'hi'.center(6, '')` → `'hi'`                            |
+| `ljust(width, char)`  | Left-aligns string.          | `'hi'.ljust(6, '')` → `'hi'`                             |
+| `rjust(width, char)`  | Right-aligns string.         | `'hi'.rjust(6, '')` → `'hi'`                             |
+| `zfill(width)`        | Pads with zeros on the left. | `'42'.zfill(5)` → `'00042'`                                   |
+| `format()`            | Formats using placeholders.  | `'My name is {}'.format('Alice')` → `'My name is Alice'`      |
+| `f-string`            | Modern formatting.           | `name = 'Alice'; f'My name is {name}'` → `'My name is Alice'` |
+
+---
+
+## 🔹 7. Encoding and Decoding Methods
+
+| Method             | Description                    | Example                                |
+| ------------------ | ------------------------------ | -------------------------------------- |
+| `encode(encoding)` | Converts string to bytes.      | `'hello'.encode('utf-8')` → `b'hello'` |
+| `decode(encoding)` | Converts bytes back to string. | `b'hello'.decode('utf-8')` → `'hello'` |
+
+---
+
+## 🔹 8. Miscellaneous Methods
+
+| Method                        | Description                            | Example                                              |
+| ----------------------------- | -------------------------------------- | ---------------------------------------------------- |
+| `expandtabs(tabsize)`         | Converts tabs to spaces.               | `'a\tb'.expandtabs(4)` → `'a   b'`                   |
+| `maketrans()` & `translate()` | For character mapping and translation. | `'abc'.translate(str.maketrans('a', 'x'))` → `'xbc'` |
+
+---
+
