@@ -1,0 +1,381 @@
+
+
+## 1. Conditional Statements
+
+Conditional statements allow the program to make decisions based on certain conditions.
+
+### a) if statement
+
+Executes a block of code only if a condition is true.
+
+
+age = 18
+if age >= 18:
+    print("You are an adult.")
+
+
+ Output: You are an adult.
+
+---
+
+### b) if-else statement
+
+Provides an alternative block of code if the condition is false.
+
+
+age = 16
+if age >= 18:
+    print("You are an adult.")
+else:
+    print("You are a minor.")
+
+
+ Output: You are a minor.
+
+---
+
+### c) if-elif-else statement
+
+Checks multiple conditions in sequence.
+
+
+marks = 75
+if marks >= 90:
+    print("Grade A")
+elif marks >= 75:
+    print("Grade B")
+elif marks >= 50:
+    print("Grade C")
+else:
+    print("Grade D")
+
+
+ Output: Grade B
+
+---
+
+## 2. Loops
+
+Loops allow you to repeat a block of code multiple times.
+
+### a) for loop
+
+Iterates over a sequence (like a list, tuple, string, or range).
+
+## 1. Iterating over a list
+
+
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+
+ Loops through each element of a list.
+
+---
+
+## 2. Iterating over a tuple
+
+
+numbers = (1, 2, 3)
+for num in numbers:
+    print(num)
+
+
+ Works the same as lists but with tuples (immutable sequences).
+
+---
+
+## 3. Iterating over a string
+
+
+word = "Python"
+for letter in word:
+    print(letter)
+
+
+ Loops through each character in a string.
+
+---
+
+## 4. Iterating using range()
+
+
+for i in range(5):
+    print(i)
+
+
+ Useful when you want to loop a specific number of times.
+
+
+for i in range(2, 10, 2):  # start, stop, step
+    print(i)
+
+
+---
+
+## 5. Iterating over a dictionary
+
+ Loop through keys, values, or key-value pairs.
+
+
+student = {"name": "Alice", "age": 20}
+for key in student:  # keys by default
+    print(key, student[key])
+
+for key, value in student.items():  # key-value pairs
+    print(key, value)
+
+
+---
+
+### Summary Table
+
+| Type       | Example                          | Notes                         |
+| ---------- | -------------------------------- | ----------------------------- |
+| List       | for item in [1,2,3]            | Iterates over list elements   |
+| Tuple      | for item in (1,2,3)            | Iterates over tuple elements  |
+| String     | for char in "abc"              | Iterates over characters      |
+| Range      | for i in range(5)              | Iterates over numbers         |
+| Dictionary | for key, value in dict.items() | Iterates over key-value pairs |
+
+---
+
+### b) while loop
+
+A while loop repeats a block of code as long as a condition is true.
+It’s ideal when you don’t know in advance how many times you need to loop.
+
+Syntax:
+
+
+while condition:
+    # code block to execute
+
+
+ condition → A boolean expression that controls the loop.
+ Loop continues as long as the condition is True.
+
+---
+
+## 2. Basic Example
+
+
+i = 1
+while i <= 5:
+    print(i)
+    i += 1  # increment to avoid infinite loop
+
+
+Output:
+
+
+1
+2
+3
+4
+5
+
+
+---
+
+## 3. Infinite while loop
+
+If the condition never becomes False, the loop runs forever:
+
+
+while True:
+    print("This will run forever")
+
+
+ Use with break statements to stop the loop.
+
+---
+
+## 4. Using break in while loop
+
+Stops the loop immediately, even if the condition is True.
+
+
+i = 1
+while True:
+    print(i)
+    if i == 3:
+        break  # exit the loop
+    i += 1
+
+
+Output: 1 2 3
+
+---
+
+## 5. Using continue in while loop
+
+Skips the current iteration and moves to the next one.
+
+
+i = 0
+while i < 5:
+    i += 1
+    if i == 3:
+        continue
+    print(i)
+
+
+Output: 1 2 4 5 (3 is skipped)
+
+---
+
+## 6. Using else with while loop
+
+Python allows an optional else block with a while loop, executed when the loop condition becomes False (but not when broken by break).
+
+
+i = 1
+while i <= 3:
+    print(i)
+    i += 1
+else:
+    print("Loop finished")
+
+
+Output:
+
+
+1
+2
+3
+Loop finished
+
+
+---
+
+## 7. Nested while loops
+
+You can put a while loop inside another while loop.
+
+
+i = 1
+while i <= 2:
+    j = 1
+    while j <= 3:
+        print(f"i={i}, j={j}")
+        j += 1
+    i += 1
+
+
+Output:
+
+
+i=1, j=1
+i=1, j=2
+i=1, j=3
+i=2, j=1
+i=2, j=2
+i=2, j=3
+
+
+---
+
+✅ Summary of while loop:
+
+| Feature       | Description                          |
+| ------------- | ------------------------------------ |
+| Basic loop    | Repeats as long as condition is True |
+| Infinite loop | Condition is always True             |
+| break         | Exits loop immediately               |
+| continue      | Skips current iteration              |
+| else          | Executes when loop ends normally     |
+| Nested        | Loop inside another loop             |
+
+
+---
+
+## 3. Control Statements in Loops
+
+These control the behavior of loops.
+
+### a) break
+
+Stops the loop completely.
+
+
+for i in range(5):
+    if i == 3:
+        break
+    print(i)
+
+
+ Output: 0 1 2
+
+---
+
+### b) continue
+
+Skips the current iteration and continues with the next.
+
+
+for i in range(5):
+    if i == 3:
+        continue
+    print(i)
+
+
+ Output: 0 1 2 4
+
+---
+
+### c) pass
+
+Does nothing; acts as a placeholder.
+
+
+for i in range(5):
+    if i == 3:
+        pass
+    print(i)
+
+
+ Output: 0 1 2 3 4
+
+---
+
+## 4. Example Combining Everything
+
+
+for i in range(1, 11):
+    if i % 2 == 0:
+        print(f"{i} is even")
+    else:
+        print(f"{i} is odd")
+
+
+ Output:
+
+
+1 is odd
+2 is even
+3 is odd
+4 is even
+5 is odd
+6 is even
+7 is odd
+8 is even
+9 is odd
+10 is even
+
+
+---
+
+✅ Summary of Control Flow Statements in Python:
+
+| Statement            | Purpose                                 |
+| -------------------- | --------------------------------------- |
+| if, elif, else       | Decision making based on conditions     |
+| for                  | Iterate over a sequence                 |
+| while                | Repeat as long as a condition is true   |
+| break                | Exit a loop immediately                 |
+| continue             | Skip the current iteration and continue |
+| pass                 | Placeholder; does nothing               |
+
+---

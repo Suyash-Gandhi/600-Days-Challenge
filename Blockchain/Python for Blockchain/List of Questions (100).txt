@@ -35,7 +35,7 @@
 22. Decorators (function-based & class-based)
 23. Closures in Python
 24. Modules & importing
-25. The `__name__ == "__main__"` idiom
+25. The __name__ == "__main__" idiom
 26. Packages & `__init__.py`
 27. Virtual environments (`venv`, `pipenv`)
 28. Python package management (`pip`, PyPI)
@@ -62,7 +62,7 @@
 
 ---
 
-4. Data Structures & Algorithms in Python
+4. Data Structures & Algorithms in Python (Done seprately in another folder)
 
 44. Stack, Queue, Deque with `collections`
 45. PriorityQueue & heapq
