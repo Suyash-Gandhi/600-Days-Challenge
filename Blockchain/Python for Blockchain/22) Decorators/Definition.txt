@@ -1,0 +1,283 @@
+### 🐍  Decorators in Python – Complete Explanation 
+
+---
+
+### 🔹  1. What is a Decorator? 
+
+A  decorator  in Python is a  function that modifies the behavior of another function or method  — without permanently changing its code.
+
+In simpler terms:
+
+> A decorator  “wraps”  another function to  add extra functionality  before or after it runs.
+
+---
+
+### 🔹  2. Why Use Decorators? 
+
+They are commonly used for:
+
+  Logging
+  Authentication
+  Performance measurement (timing functions)
+  Access control
+  Caching results
+  Validation
+
+---
+
+### 🔹  3. Basic Syntax 
+
+A decorator takes a function as input and returns a new function that adds something extra.
+
+```python
+def decorator_function(original_function):
+    def wrapper_function():
+        print("Before the original function runs")
+        original_function()
+        print("After the original function runs")
+    return wrapper_function
+```
+
+You can apply it to another function using `@` syntax:
+
+```python
+@decorator_function
+def say_hello():
+    print("Hello!")
+
+say_hello()
+```
+
+ Output: 
+
+```
+Before the original function runs
+Hello!
+After the original function runs
+```
+
+---
+
+### 🔹  4. How It Works Internally 
+
+This:
+
+```python
+@decorator_function
+def say_hello():
+    print("Hello!")
+```
+
+is equivalent to this:
+
+```python
+def say_hello():
+    print("Hello!")
+
+say_hello = decorator_function(say_hello)
+```
+
+So, the decorator  replaces  the original function with the wrapped version.
+
+---
+
+### 🔹  5. Decorator with Arguments 
+
+If the original function takes arguments, you can modify the wrapper to accept them too.
+
+```python
+def decorator_function(original_function):
+    def wrapper_function( args,  kwargs):
+        print("Before the function")
+        result = original_function( args,  kwargs)
+        print("After the function")
+        return result
+    return wrapper_function
+
+@decorator_function
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Suyash")
+```
+
+ Output: 
+
+```
+Before the function
+Hello, Suyash!
+After the function
+```
+
+---
+
+### 🔹  6. Using Multiple Decorators 
+
+You can apply more than one decorator — they’ll execute  from bottom to top .
+
+```python
+def decorator1(func):
+    def wrapper():
+        print("Decorator 1")
+        func()
+    return wrapper
+
+def decorator2(func):
+    def wrapper():
+        print("Decorator 2")
+        func()
+    return wrapper
+
+@decorator1
+@decorator2
+def display():
+    print("Inside function")
+
+display()
+```
+
+ Output: 
+
+```
+Decorator 1
+Decorator 2
+Inside function
+```
+
+---
+
+### 🔹  7. Function Metadata Issue 
+
+Decorators can hide the metadata (like name and docstring) of the original function.
+
+Example:
+
+```python
+print(greet.__name__)  # Output: wrapper_function
+```
+
+To fix this, use `functools.wraps`:
+
+```python
+from functools import wraps
+
+def decorator_function(original_function):
+    @wraps(original_function)
+    def wrapper_function( args,  kwargs):
+        print("Before the function")
+        return original_function( args,  kwargs)
+    return wrapper_function
+```
+
+Now, `greet.__name__` will return `"greet"` again.
+
+---
+
+### 🔹  8. Decorators with Parameters (Decorator Factory) 
+
+Sometimes, you want the decorator itself to take arguments.
+
+Example:
+
+```python
+def repeat(num_times):
+    def decorator_function(original_function):
+        def wrapper_function( args,  kwargs):
+            for _ in range(num_times):
+                original_function( args,  kwargs)
+        return wrapper_function
+    return decorator_function
+
+@repeat(3)
+def say_hi():
+    print("Hi!")
+
+say_hi()
+```
+
+ Output: 
+
+```
+Hi!
+Hi!
+Hi!
+```
+
+---
+
+### 🔹  9. Built-in Decorators in Python 
+
+Python includes some built-in decorators:
+
+| Decorator       | Used For                           |
+| --------------- | ---------------------------------- |
+| `@staticmethod` | Defines a static method in a class |
+| `@classmethod`  | Defines a class method             |
+| `@property`     | Converts a method into a property  |
+
+Example:
+
+```python
+class Student:
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+```
+
+---
+
+### 🔹  10. Real-Life Examples 
+
+#### ✅ Example 1: Logging
+
+```python
+def logger(func):
+    def wrapper( args,  kwargs):
+        print(f"Running {func.__name__} with {args} and {kwargs}")
+        return func( args,  kwargs)
+    return wrapper
+
+@logger
+def add(a, b):
+    return a + b
+
+print(add(3, 5))
+```
+
+#### ✅ Example 2: Timing Function Execution
+
+```python
+import time
+
+def timer(func):
+    def wrapper( args,  kwargs):
+        start = time.time()
+        result = func( args,  kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(2)
+
+slow_function()
+```
+
+---
+
+### 🧠  In Summary 
+
+| Concept               | Description                                       |
+| --------------------- | ------------------------------------------------- |
+|  Definition         | Function that modifies another function           |
+|  Purpose            | Add extra behavior (logging, timing, auth, etc.)  |
+|  Syntax             | `@decorator_name` above a function                |
+|  Wrapper Function   | Contains code to run before/after target function |
+|  `functools.wraps`  | Keeps original function metadata intact           |
+|  Advanced Use       | Decorator factories for dynamic behavior          |
+
