@@ -1,0 +1,314 @@
+List Comprehensions in Python
+
+---
+
+### 1. Introduction
+
+List comprehensions are a concise way to create lists in Python.
+They allow you to build a new list by applying an expression to each item in an existing iterable (like a list, tuple, or string), often with a condition.
+
+They make your code shorter, faster, and more readable compared to using traditional loops.
+
+---
+
+### 2. Syntax
+
+
+[expression for item in iterable if condition]
+
+
+Explanation:
+
+ expression → The value to be stored in the new list.
+ item → Variable representing each element from the iterable.
+ iterable → Any sequence (like list, tuple, range, etc.).
+ condition (optional) → A filter that decides which elements to include.
+
+---
+
+### 3. Example 1: Basic List Comprehension
+
+Convert a list of numbers into their squares:
+
+
+numbers = [1, 2, 3, 4, 5]
+squares = [n**2 for n in numbers]
+print(squares)
+
+
+Output:
+
+
+[1, 4, 9, 16, 25]
+
+
+---
+
+### 4. Example 2: Adding a Condition
+
+Get only the even numbers from a list:
+
+
+numbers = [1, 2, 3, 4, 5, 6]
+even_numbers = [n for n in numbers if n % 2 == 0]
+print(even_numbers)
+
+
+Output:
+
+
+[2, 4, 6]
+
+
+---
+
+### 5. Example 3: Using with Strings
+
+Extract vowels from a string:
+
+
+text = "Python Programming"
+vowels = [ch for ch in text if ch.lower() in 'aeiou']
+print(vowels)
+
+
+Output:
+
+
+['o', 'o', 'a', 'i']
+
+
+---
+
+### 6. Example 4: Applying Functions
+
+Convert a list of words to uppercase:
+
+
+words = ['hello', 'world', 'python']
+upper_words = [w.upper() for w in words]
+print(upper_words)
+
+
+Output:
+
+
+['HELLO', 'WORLD', 'PYTHON']
+
+
+---
+
+### 7. Example 5: Nested List Comprehensions
+
+Flatten a 2D list:
+
+
+matrix = [[1, 2], [3, 4], [5, 6]]
+flat = [num for row in matrix for num in row]
+print(flat)
+
+
+Output:
+
+
+[1, 2, 3, 4, 5, 6]
+
+
+---
+
+### 8. Example 6: Conditional Expression
+
+Replace odd numbers with "odd" and even numbers with "even":
+
+
+numbers = [1, 2, 3, 4, 5]
+labels = ["even" if n % 2 == 0 else "odd" for n in numbers]
+print(labels)
+
+
+Output:
+
+
+['odd', 'even', 'odd', 'even', 'odd']
+
+
+---
+
+### 9. Advantages
+
+✅ Shorter and more readable than traditional loops
+✅ Often faster due to optimized internal implementation
+✅ Great for one-line data transformations
+
+---
+
+Generator Expressions in Python
+
+---
+
+### 1. Introduction
+
+Generator expressions in Python are similar to list comprehensions, but instead of creating and storing the entire list in memory, they generate items one by one — only when needed.
+
+This makes them more memory-efficient and ideal for working with large datasets or infinite sequences.
+
+---
+
+### 2. Syntax
+
+
+(expression for item in iterable if condition)
+
+
+Note the parentheses () instead of square brackets [] used in list comprehensions.
+
+---
+
+### 3. How It Works
+
+ A list comprehension creates the entire list immediately in memory.
+ A generator expression creates a generator object, which yields items one at a time when you iterate over it.
+
+---
+
+### 4. Example 1: Basic Generator Expression
+
+
+numbers = [1, 2, 3, 4, 5]
+squares = (n2 for n in numbers)
+print(squares)
+
+
+Output:
+
+
+<generator object <genexpr> at 0x0000023A...>
+
+
+It doesn’t print the actual list — it creates a generator object.
+To get the values, you can use a loop or next() function.
+
+---
+
+### 5. Example 2: Iterating Through a Generator
+
+
+numbers = [1, 2, 3, 4, 5]
+squares = (n2 for n in numbers)
+
+for num in squares:
+    print(num)
+
+
+Output:
+
+
+1
+4
+9
+16
+25
+
+
+Each value is produced only when needed, not all at once.
+
+---
+
+### 6. Example 3: Using with Built-in Functions
+
+Generator expressions can be used directly inside functions like sum(), max(), min(), etc.
+
+
+numbers = [1, 2, 3, 4, 5]
+total = sum(n2 for n in numbers)
+print(total)
+
+
+Output:
+
+
+55
+
+
+> ✅ No need to create an intermediate list — faster and more memory-efficient.
+
+---
+
+### 7. Example 4: Adding a Condition
+
+
+numbers = range(10)
+even_squares = (n**2 for n in numbers if n % 2 == 0)
+
+for val in even_squares:
+    print(val)
+
+
+Output:
+
+
+0
+4
+16
+36
+64
+
+
+---
+
+### 8. Example 5: Comparing with List Comprehension
+
+| Feature            | List Comprehension        | Generator Expression      |
+| ------------------ | ------------------------- | ------------------------- |
+| Syntax             | [ ]                     | ( )                     |
+| Output             | List                      | Generator object          |
+| Memory Usage       | Stores all elements       | Produces one at a time    |
+| Speed (small data) | Faster                    | Slightly slower           |
+| Speed (large data) | Memory-heavy              | Much faster overall       |
+| Example            | [x2 for x in range(5)] | (x2 for x in range(5)) |
+
+---
+
+### 9. Example 6: Using next() to Get Values One by One
+
+
+gen = (n3 for n in range(1, 6))
+print(next(gen))  # 1
+print(next(gen))  # 8
+print(next(gen))  # 27
+
+
+Output:
+
+
+1
+8
+27
+
+
+After all elements are exhausted, calling next() again will raise a StopIteration error.
+
+---
+
+### 10. Advantages of Generator Expressions
+
+✅ Memory Efficient: Generates items on the fly.
+✅ Faster for Large Data: Doesn’t store data in RAM.
+✅ Clean Syntax: Works like list comprehensions.
+✅ Lazy Evaluation: Produces values only when needed.
+
+---
+
+### 11. Example 7: Real-World Use Case
+
+Reading a large file line by line:
+
+
+with open('large_file.txt', 'r') as file:
+    line_lengths = (len(line) for line in file)
+    print(sum(line_lengths))
+
+
+This reads one line at a time — avoiding loading the whole file into memory.
+
+---

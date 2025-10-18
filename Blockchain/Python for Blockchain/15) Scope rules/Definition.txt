@@ -1,0 +1,179 @@
+### Scope Rules in Python
+
+In Python, scope refers to the region of a program where a variable is recognized and can be accessed directly. Understanding scope is crucial because it helps avoid naming conflicts and ensures that variables are used correctly.
+
+---
+
+## 🔹 1. Types of Scope (LEGB Rule)
+
+Python follows a well-defined order of searching for variable names called the LEGB rule:
+
+| Order | Scope Type    | Description                                                                             |
+| :---- | :------------ | :-------------------------------------------------------------------------------------- |
+| L | Local     | Names defined inside a function (or lambda) — only accessible within that function.     |
+| E | Enclosing | Names in the local scope of enclosing (outer) functions (used in nested functions).     |
+| G | Global    | Names defined at the top level of a script or module, or declared global in a function. |
+| B | Built-in  | Names that are preloaded in Python (e.g., len(), print(), range(), etc.).         |
+
+---
+
+### 2. The LEGB Rule Explained with Example
+
+
+x = "global"
+
+def outer():
+    x = "enclosing"
+    
+    def inner():
+        x = "local"
+        print(x)
+    
+    inner()
+
+outer()
+
+
+Output:
+
+
+local
+
+
+📘 Explanation:
+
+ Python looks for x in this order: Local → Enclosing → Global → Built-in.
+ The inner() function defines its own x = "local", so that value is used.
+
+---
+
+## 🔹 3. Local Scope
+
+Variables declared inside a function are local to that function.
+
+
+def greet():
+    message = "Hello"
+    print(message)
+
+greet()
+# print(message)  # ❌ Error: NameError: name 'message' is not defined
+
+
+---
+
+## 🔹 4. Global Scope
+
+Variables declared outside any function are global and can be accessed anywhere in the file.
+
+
+name = "Suyash"
+
+def display():
+    print(name)  # ✅ Accessible inside function
+
+display()
+print(name)  # ✅ Accessible outside function
+
+
+---
+
+## 🔹 5. Enclosing Scope (Nested Functions)
+
+When a function is defined inside another, the inner function can access variables from the enclosing (outer) function.
+
+
+def outer():
+    greeting = "Hello"
+    
+    def inner():
+        print(greeting)  # ✅ Accessing enclosing variable
+    
+    inner()
+
+outer()
+
+
+---
+
+## 🔹 6. Built-in Scope
+
+These are names that Python automatically provides, such as:
+
+ print()
+ len()
+ type()
+ sum()
+
+You can view all built-in names using:
+
+
+import builtins
+print(dir(builtins))
+
+
+---
+
+## 🔹 7. Using global Keyword
+
+If you want to modify a global variable inside a function, you must declare it as global.
+
+
+count = 0
+
+def increment():
+    global count
+    count += 1  # modifies global variable
+
+increment()
+print(count)  # Output: 1
+
+
+Without the global keyword, Python would create a new local variable named count instead of modifying the global one.
+
+---
+
+## 🔹 8. Using nonlocal Keyword
+
+Used in nested functions to modify variables in the enclosing scope (but not global).
+
+
+def outer():
+    x = 10
+    def inner():
+        nonlocal x
+        x += 5
+        print("Inner:", x)
+    inner()
+    print("Outer:", x)
+
+outer()
+
+
+Output:
+
+
+Inner: 15
+Outer: 15
+
+
+---
+
+## 🔹 9. Summary Table
+
+| Keyword        | Affects Which Scope | Used For                                       |
+| :------------- | :------------------ | :--------------------------------------------- |
+| (no keyword) | Local               | Define new variable inside function            |
+| global       | Global              | Modify variable outside all functions          |
+| nonlocal     | Enclosing           | Modify variable in outer (non-global) function |
+
+---
+
+### ✅ Key Takeaways
+
+ Python searches for variables using LEGB (Local → Enclosing → Global → Built-in).
+ Use global when you want to modify a global variable inside a function.
+ Use nonlocal when working with nested functions and want to modify an outer variable.
+ Each function call creates a new local scope.
+
+---

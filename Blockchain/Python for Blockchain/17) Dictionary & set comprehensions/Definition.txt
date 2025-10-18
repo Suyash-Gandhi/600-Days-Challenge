@@ -1,0 +1,229 @@
+### Dictionary Comprehensions in Python
+
+Dictionary comprehensions are a concise and efficient way to create dictionaries in Python — similar to list comprehensions, but they use key-value pairs instead of single elements.
+
+---
+
+### 🧩 Basic Syntax
+
+{key_expression: value_expression for item in iterable if condition}
+
+
+Explanation:
+
+ key_expression → defines how to generate keys.
+ value_expression → defines how to generate values.
+ iterable → the sequence (like list, tuple, etc.) you’re looping through.
+ if condition (optional) → filters elements based on a condition.
+
+---
+
+### 🧠 Example 1: Basic Usage
+
+Create a dictionary where keys are numbers and values are their squares:
+
+squares = {x: x**2 for x in range(5)}
+print(squares)
+
+
+Output:
+
+{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+
+---
+
+### ⚙️ Example 2: Filtering Elements
+
+Include only even numbers:
+
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)
+
+
+Output:
+
+{0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+
+---
+
+### 🔄 Example 3: Swapping Keys and Values
+
+original = {'a': 1, 'b': 2, 'c': 3}
+swapped = {value: key for key, value in original.items()}
+print(swapped)
+
+
+Output:
+
+{1: 'a', 2: 'b', 3: 'c'}
+
+
+---
+
+### 📋 Example 4: Applying Conditions to Values
+
+Convert a dictionary of marks into pass/fail results:
+
+marks = {'John': 80, 'Jane': 45, 'Tom': 60}
+result = {name: ('Pass' if score >= 50 else 'Fail') for name, score in marks.items()}
+print(result)
+
+
+Output:
+
+{'John': 'Pass', 'Jane': 'Fail', 'Tom': 'Pass'}
+
+
+---
+
+### ⚡ Advantages
+
+✅ Shorter and more readable syntax
+✅ Reduces need for multiple loops
+✅ Useful for data transformation and filtering
+
+---
+
+### 🚫 When Not to Use
+
+Avoid dictionary comprehensions when:
+
+ The logic is too complex (it may hurt readability).
+ The operation involves nested loops with heavy computation.
+
+---
+
+### 🧭 Summary Table
+
+| Feature              | Description                         | Example                                                    |
+| -------------------- | ----------------------------------- | ---------------------------------------------------------- |
+| Basic form       | {key: value for item in iterable} | {x: x2 for x in range(5)}                              |
+| With condition   | Add if at end                     | {x: x2 for x in range(5) if x % 2 == 0}                |
+| Using .items() | Loop through dictionary             | {v: k for k, v in d.items()}                             |
+| With ternary     | Inline condition                    | {k: ('Even' if v%2==0 else 'Odd') for k, v in d.items()} |
+
+---
+
+### Set Comprehensions in Python
+
+Set comprehensions are a concise and elegant way to create sets in a single line — similar to list comprehensions, but they use curly braces {} and automatically remove duplicates.
+
+---
+
+### 🧩 Basic Syntax
+
+{expression for item in iterable if condition}
+
+
+Explanation:
+
+ expression → defines what element to include in the set.
+ iterable → the sequence you’re looping through.
+ if condition (optional) → filters which elements are added.
+
+---
+
+### 🧠 Example 1: Basic Set Comprehension
+
+Create a set of squares:
+
+squares = {x**2 for x in range(6)}
+print(squares)
+
+
+Output:
+
+{0, 1, 4, 9, 16, 25}
+
+
+> ✅ Unlike lists, sets automatically remove duplicates.
+
+---
+
+### ⚙️ Example 2: Filtering Elements
+
+Include only even numbers:
+
+even_numbers = {x for x in range(10) if x % 2 == 0}
+print(even_numbers)
+
+
+Output:
+
+{0, 2, 4, 6, 8}
+
+
+---
+
+### 🔄 Example 3: Working with Strings
+
+Find all unique letters in a word:
+
+letters = {char for char in "programming"}
+print(letters)
+
+
+Output:
+
+{'r', 'a', 'm', 'g', 'p', 'o', 'n', 'i'}
+
+
+---
+
+### 📋 Example 4: Using Expressions
+
+Convert a list with duplicates to a set of squares:
+
+nums = [1, 2, 2, 3, 4, 4, 5]
+unique_squares = {x**2 for x in nums}
+print(unique_squares)
+
+
+Output:
+
+{1, 4, 9, 16, 25}
+
+
+---
+
+### 💡 Difference Between Set and List Comprehensions
+
+| Feature         | List Comprehension                                     | Set Comprehension                   |
+| --------------- | ------------------------------------------------------ | ----------------------------------- |
+| Syntax      | [expression for item in iterable]                    | {expression for item in iterable} |
+| Output Type | List (ordered, allows duplicates)                      | Set (unordered, no duplicates)      |
+| Duplicates  | Allowed                                                | Automatically removed               |
+| Performance | Slightly slower for large data (because of duplicates) | Faster for membership checks        |
+
+---
+
+### ⚡ Advantages
+
+✅ Cleaner and shorter code
+✅ Automatically removes duplicates
+✅ Efficient for unique data processing
+
+---
+
+### 🚫 When Not to Use
+
+Avoid set comprehensions when:
+
+ You need to preserve order (sets are unordered).
+ You need duplicate elements in your output.
+
+---
+
+### 🧭 Summary Example
+
+numbers = [1, 2, 3, 4, 5, 6]
+result = {x for x in numbers if x % 2 == 0}
+print(result)
+
+
+Output:
+
+{2, 4, 6}
+

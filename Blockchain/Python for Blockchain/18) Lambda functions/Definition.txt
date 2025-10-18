@@ -1,0 +1,130 @@
+### Lambda Function in Python
+
+---
+
+#### 1. Introduction
+
+A lambda function in Python is a small, anonymous function that is defined using the keyword lambda instead of the usual def keyword.
+It is often used for short, simple operations where defining a full function would be unnecessary.
+
+---
+
+#### 2. Syntax
+
+
+lambda arguments: expression
+
+
+ lambda → keyword used to define an anonymous function.
+ arguments → input parameters (like in normal functions).
+ expression → a single line expression that is evaluated and returned automatically.
+
+> Note: You cannot use multiple statements or loops inside a lambda — it’s limited to a single expression.
+
+---
+
+#### 3. Example
+
+
+# Normal function
+def add(a, b):
+    return a + b
+
+# Lambda function
+add_lambda = lambda a, b: a + b
+
+print(add_lambda(5, 3))  # Output: 8
+
+
+Both versions perform the same task, but the lambda version is shorter and inline.
+
+---
+
+#### 4. When to Use Lambda Functions
+
+Lambda functions are usually used:
+
+ For short, throwaway functions.
+ As arguments to higher-order functions like map(), filter(), or sorted().
+ For inline operations that don’t need to be reused.
+
+---
+
+#### 5. Examples with Built-in Functions
+
+(a) Using with map()
+Applies a function to every item in an iterable.
+
+
+numbers = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x ** 2, numbers))
+print(squares)  # Output: [1, 4, 9, 16, 25]
+
+
+(b) Using with filter()
+Filters elements based on a condition.
+
+
+numbers = [1, 2, 3, 4, 5, 6]
+even = list(filter(lambda x: x % 2 == 0, numbers))
+print(even)  # Output: [2, 4, 6]
+
+
+(c) Using with sorted()
+Sorts elements with a custom key.
+
+
+names = ["John", "Alexander", "Bob"]
+sorted_names = sorted(names, key=lambda x: len(x))
+print(sorted_names)  # Output: ['Bob', 'John', 'Alexander']
+
+
+---
+
+#### 6. Comparison: Normal Function vs Lambda Function
+
+| Feature            | Normal Function              | Lambda Function           |
+| ------------------ | ---------------------------- | ------------------------- |
+| Definition keyword | def                        | lambda                  |
+| Name               | Has a name                   | Anonymous (optional name) |
+| Body               | Can have multiple statements | Only one expression       |
+| Use case           | Complex logic                | Small, short tasks        |
+| Example            | def square(x): return x2 | lambda x: x2          |
+
+---
+
+#### 7. Example: Inline Usage
+
+
+print((lambda x, y: x * y)(5, 6))  # Output: 30
+
+
+This defines and executes the lambda in one line.
+
+---
+
+#### 8. Key Points to Remember
+
+ Lambdas are anonymous (unnamed).
+ Can take any number of arguments but only one expression.
+ Automatically return the result (no return keyword needed).
+ Useful for functional programming patterns.
+
+---
+
+#### 9. Example with Multiple Arguments
+
+
+max_value = lambda a, b: a if a > b else b
+print(max_value(10, 20))  # Output: 20
+
+
+---
+
+#### 10. Example with map() and multiple lists
+
+
+a = [1, 2, 3]
+b = [4, 5, 6]
+result = list(map(lambda x, y: x + y, a, b))
+print(result)  # Output: [5, 7, 9]

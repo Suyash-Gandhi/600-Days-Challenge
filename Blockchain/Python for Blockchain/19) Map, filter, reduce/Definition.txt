@@ -1,0 +1,539 @@
+The map() function in Python is a built-in higher-order function that allows you to apply a specific function to each item in an iterable (like a list, tuple, or set) and returns a map object (which can be converted into a list, tuple, etc.).
+
+It’s commonly used for data transformation — applying the same operation to multiple items efficiently without writing explicit loops.
+
+---
+
+## 🔹 Syntax
+
+
+map(function, iterable)
+
+
+### Parameters:
+
+ function → The function to apply to each element of the iterable.
+ iterable → The sequence (like a list, tuple, or string) whose elements you want to process.
+
+### Returns:
+
+ A map object (an iterator) that can be converted to list/tuple using list() or tuple().
+
+---
+
+## 🔹 Example 1: Using Built-in Function
+
+
+numbers = [1, 2, 3, 4, 5]
+squared = map(pow, numbers, [2, 2, 2, 2, 2])
+print(list(squared))
+
+
+### ✅ Output:
+
+
+[1, 4, 9, 16, 25]
+
+
+Here, the pow() function is applied to each number with exponent 2.
+
+---
+
+## 🔹 Example 2: Using Custom Function
+
+
+def square(n):
+    return n  n
+
+nums = [1, 2, 3, 4]
+result = map(square, nums)
+print(list(result))
+
+
+### ✅ Output:
+
+
+[1, 4, 9, 16]
+
+
+---
+
+## 🔹 Example 3: Using lambda with map()
+
+This is the most common and compact use.
+
+
+nums = [1, 2, 3, 4, 5]
+doubled = map(lambda x: x * 2, nums)
+print(list(doubled))
+
+
+### ✅ Output:
+
+
+[2, 4, 6, 8, 10]
+
+
+---
+
+## 🔹 Example 4: Mapping Multiple Iterables
+
+You can pass multiple iterables, and the function must accept that many arguments.
+
+
+a = [1, 2, 3]
+b = [4, 5, 6]
+result = map(lambda x, y: x + y, a, b)
+print(list(result))
+
+
+### ✅ Output:
+
+
+[5, 7, 9]
+
+
+---
+
+## 🔹 Example 5: Converting Strings
+
+
+names = ["alice", "bob", "charlie"]
+capitalized = map(str.capitalize, names)
+print(list(capitalized))
+
+
+### ✅ Output:
+
+
+['Alice', 'Bob', 'Charlie']
+
+
+---
+
+## 🔹 Comparison: map() vs for loop
+
+| Feature         | map()                     | for Loop               |
+| --------------- | --------------------------- | ------------------------ |
+| Code length     | Short & functional          | Longer & imperative      |
+| Execution speed | Faster (uses iterator)      | Slightly slower          |
+| Readability     | Better for simple functions | Better for complex logic |
+
+---
+
+## 🔹 Converting the Result
+
+The result of map() is a map object (iterator):
+
+
+nums = [1, 2, 3]
+result = map(lambda x: x + 10, nums)
+print(result)         # Output: <map object at 0x...>
+print(list(result))   # Output: [11, 12, 13]
+
+
+---
+
+## 🔹 When to Use map():
+
+✅ When you want to apply a simple transformation to every element.
+✅ When performance and clean syntax matter.
+❌ Avoid for complex logic — use a loop or list comprehension instead.
+
+---
+
+## 🔹 Equivalent Using List Comprehension
+
+
+nums = [1, 2, 3, 4]
+doubled = [x * 2 for x in nums]
+
+
+Both do the same thing, but list comprehensions are often more readable.
+
+---
+
+The filter() function in Python is another built-in higher-order function, similar to map().
+While map() transforms data, filter() is used to select specific elements from an iterable based on a condition.
+
+---
+
+## 🔹 Definition
+
+> The filter() function filters elements of an iterable by applying a function that returns True or False for each element.
+
+---
+
+## 🔹 Syntax
+
+
+filter(function, iterable)
+
+
+### Parameters:
+
+ function → A function that tests each element and returns either True (keep it) or False (discard it).
+ iterable → The sequence (like a list, tuple, or string) to filter.
+
+### Returns:
+
+ A filter object (an iterator) — usually converted to list() or tuple() for readability.
+
+---
+
+## 🔹 Example 1: Filtering Even Numbers
+
+
+numbers = [1, 2, 3, 4, 5, 6]
+
+def is_even(n):
+    return n % 2 == 0
+
+result = filter(is_even, numbers)
+print(list(result))
+
+
+### ✅ Output:
+
+
+[2, 4, 6]
+
+
+---
+
+## 🔹 Example 2: Using lambda with filter()
+
+
+numbers = [10, 15, 20, 25, 30]
+even_nums = filter(lambda x: x % 2 == 0, numbers)
+print(list(even_nums))
+
+
+### ✅ Output:
+
+
+[10, 20, 30]
+
+
+---
+
+## 🔹 Example 3: Filtering Strings
+
+
+names = ["Alice", "", "Bob", "", "Charlie"]
+non_empty = filter(lambda name: name != "", names)
+print(list(non_empty))
+
+
+### ✅ Output:
+
+
+['Alice', 'Bob', 'Charlie']
+
+
+---
+
+## 🔹 Example 4: Filtering Based on Length
+
+
+words = ["cat", "elephant", "dog", "tiger"]
+long_words = filter(lambda w: len(w) > 3, words)
+print(list(long_words))
+
+
+### ✅ Output:
+
+
+['elephant', 'tiger']
+
+
+---
+
+## 🔹 Example 5: Filtering Truthy Values
+
+If the function is None, filter() automatically removes falsy values (0, '', False, None, [], etc.)
+
+
+values = [0, 1, "", "Hello", [], [5], None, True]
+filtered = filter(None, values)
+print(list(filtered))
+
+
+### ✅ Output:
+
+
+[1, 'Hello', [5], True]
+
+
+---
+
+## 🔹 Comparison: filter() vs map()
+
+| Feature          | map()                    | filter()                          |
+| ---------------- | -------------------------- | ----------------------------------- |
+| Purpose          | Transforms all elements    | Selects elements based on condition |
+| Function returns | Any value                  | True or False                   |
+| Output size      | Same as input              | May be smaller                      |
+| Example          | map(lambda x: x2, nums) | filter(lambda x: x>5, nums)       |
+
+---
+
+## 🔹 Equivalent Using List Comprehension
+
+
+numbers = [1, 2, 3, 4, 5, 6]
+even_nums = [n for n in numbers if n % 2 == 0]
+
+
+✅ This produces the same result as filter() but is often more readable.
+
+---
+
+## 🔹 Key Points
+
+ filter() does not modify the original iterable.
+ It returns an iterator (not a list).
+ Works well for data cleaning, validation, and conditional selection.
+
+---
+
+### 🔸 Example Use Case: Filtering Valid Emails
+
+
+emails = ["user@example.com", "invalid", "hello@domain.com", "123"]
+valid_emails = filter(lambda e: "@" in e and "." in e, emails)
+print(list(valid_emails))
+
+
+✅ Output:
+
+
+['user@example.com', 'hello@domain.com']
+
+
+---
+
+The reduce() function in Python is part of the functional programming toolkit — it’s used to apply a function cumulatively to all items in an iterable, reducing the iterable to a single cumulative value.
+
+It’s often used for tasks like summation, product calculation, finding maximum/minimum, etc.
+
+---
+
+## 🔹 Import Requirement
+
+Unlike map() and filter(), reduce() is not built-in — it’s available in the functools module.
+
+
+from functools import reduce
+
+
+---
+
+## 🔹 Syntax
+
+
+reduce(function, iterable[, initializer])
+
+
+### Parameters:
+
+ function → A function that takes two arguments and returns a single value.
+ iterable → A sequence like list, tuple, or set.
+ initializer (optional) → A starting value that’s used as the first argument to the function.
+
+---
+
+## 🔹 How It Works
+
+reduce() works like this:
+
+
+reduce(func, [a, b, c, d])
+= func(func(func(a, b), c), d)
+
+
+So it applies the function cumulatively from left to right.
+
+---
+
+## 🔹 Example 1: Sum of All Elements
+
+
+from functools import reduce
+
+numbers = [1, 2, 3, 4, 5]
+result = reduce(lambda x, y: x + y, numbers)
+print(result)
+
+
+### ✅ Output:
+
+
+15
+
+
+Explanation:
+
+
+(((1 + 2) + 3) + 4) + 5 = 15
+
+
+---
+
+## 🔹 Example 2: Product of All Elements
+
+
+from functools import reduce
+
+nums = [1, 2, 3, 4]
+product = reduce(lambda x, y: x * y, nums)
+print(product)
+
+
+### ✅ Output:
+
+
+24
+
+
+---
+
+## 🔹 Example 3: With initializer
+
+If an initializer is given, it is used as the first value, and reduction starts from there.
+
+
+from functools import reduce
+
+nums = [1, 2, 3]
+result = reduce(lambda x, y: x + y, nums, 10)
+print(result)
+
+
+### ✅ Output:
+
+
+16
+
+
+Explanation:
+10 (initializer) + 1 + 2 + 3 = 16
+
+---
+
+## 🔹 Example 4: Finding Maximum Value
+
+
+from functools import reduce
+
+nums = [10, 5, 8, 20, 3]
+maximum = reduce(lambda a, b: a if a > b else b, nums)
+print(maximum)
+
+
+### ✅ Output:
+
+
+20
+
+
+---
+
+## 🔹 Example 5: Concatenating Strings
+
+
+from functools import reduce
+
+words = ["Hello", "World", "Python"]
+sentence = reduce(lambda x, y: x + " " + y, words)
+print(sentence)
+
+
+### ✅ Output:
+
+
+Hello World Python
+
+
+---
+
+## 🔹 Example 6: Reducing to a Dictionary
+
+
+from functools import reduce
+
+pairs = [(1, 'a'), (2, 'b'), (3, 'c')]
+result = reduce(lambda acc, pair: {**acc, pair[0]: pair[1]}, pairs, {})
+print(result)
+
+
+### ✅ Output:
+
+
+{1: 'a', 2: 'b', 3: 'c'}
+
+
+---
+
+## 🔹 Comparison with map() and filter()
+
+| Function   | Purpose                                | Returns           |
+| ---------- | -------------------------------------- | ----------------- |
+| map()    | Applies a function to each element     | New iterable      |
+| filter() | Selects elements that meet a condition | Filtered iterable |
+| reduce() | Combines elements into a single result | Single value      |
+
+---
+
+## 🔹 Equivalent Using a Loop
+
+
+nums = [1, 2, 3, 4]
+result = 0
+for n in nums:
+    result += n
+print(result)
+
+
+✅ Output: 10
+
+reduce() just does the same thing in a functional and compact way.
+
+---
+
+## 🔹 When to Use reduce()
+
+✅ Ideal when you need to aggregate or combine values into one result.
+✅ Good for tasks like sum, product, min/max, factorial, or concatenation.
+❌ Avoid using it for complex logic — loops or comprehensions are clearer.
+
+---
+
+### 🔸 Example Use Case: Calculating Factorial
+
+
+from functools import reduce
+
+n = 5
+factorial = reduce(lambda x, y: x  y, range(1, n + 1))
+print(factorial)
+
+
+✅ Output:
+
+
+120
+
+
+---
+
+### Summary
+
+| Concept      | Description             | Example                         |
+| ------------ | ----------------------- | ------------------------------- |
+| map()    | Transforms all elements | map(lambda x: x2, data)      |
+| filter() | Selects elements        | filter(lambda x: x>10, data)  |
+| reduce() | Aggregates elements     | reduce(lambda x,y: x+y, data) |
+
+---
+

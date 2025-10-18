@@ -1,0 +1,206 @@
+###  Iterators in Python 
+
+---
+
+####  1. Introduction 
+
+In Python,  iterators  are objects that allow you to  iterate (loop)  over data, one element at a time. They are a fundamental part of Python’s iteration protocol and are widely used in loops, comprehensions, and generators.
+
+---
+
+####  2. The Iteration Protocol 
+
+The iteration protocol in Python involves  two main methods :
+
+| Method       | Description                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------------------- |
+| __iter__() | Returns the iterator object itself. This makes an object iterable.                             |
+| __next__() | Returns the next value from the iterator. Raises StopIteration when there are no more items. |
+
+An object is called:
+
+  Iterable  — if it implements the __iter__() method.
+  Iterator  — if it implements  both  __iter__() and __next__() methods.
+
+---
+
+####  3. Example of a Built-in Iterator 
+
+Python automatically creates iterators for iterable objects such as  lists, tuples, strings, etc. 
+
+
+numbers = [1, 2, 3]
+iterator = iter(numbers)  # Get iterator object from list
+
+print(next(iterator))  # Output: 1
+print(next(iterator))  # Output: 2
+print(next(iterator))  # Output: 3
+# next(iterator)  # Raises StopIteration
+
+
+Here:
+
+ iter(numbers) returns an iterator.
+ Each next(iterator) call retrieves the next element until all are exhausted.
+
+---
+
+####  4. Creating a Custom Iterator 
+
+You can create your own iterator class by defining the two methods.
+
+Example: 
+
+
+class CountUpTo:
+    def __init__(self, limit):
+        self.limit = limit
+        self.current = 1
+
+    def __iter__(self):
+        return self  # Iterator object itself
+
+    def __next__(self):
+        if self.current <= self.limit:
+            num = self.current
+            self.current += 1
+            return num
+        else:
+            raise StopIteration
+
+# Using custom iterator
+counter = CountUpTo(5)
+for num in counter:
+    print(num)
+
+
+Output: 
+
+
+1
+2
+3
+4
+5
+
+
+---
+
+####  5. Iterator vs Iterable 
+
+| Feature    | Iterable                              | Iterator                                 |
+| ---------- | ------------------------------------- | ---------------------------------------- |
+| Definition | Can return an iterator using iter() | Produces items one by one using next() |
+| Example    | List, tuple, string                   | Objects returned by iter()             |
+| Methods    | __iter__()                          | __iter__() and __next__()            |
+| Usage      | Can be used in for loops            | Drives the actual iteration process      |
+
+Example: 
+
+
+list1 = [1, 2, 3]
+iter1 = iter(list1)
+
+print(hasattr(list1, '__next__'))   # False → Iterable
+print(hasattr(iter1, '__next__'))   # True  → Iterator
+
+
+---
+
+####  6. Advantages of Iterators 
+
+  Memory Efficiency : They don’t store all elements in memory.
+  Lazy Evaluation : Values are generated one at a time.
+  Infinite Sequences : Useful for streams or continuous data sources.
+  Custom Behavior : You can define custom iteration logic.
+
+---
+
+####  7. Iterator Example: Infinite Sequence 
+
+
+class InfiniteEvenNumbers:
+    def __init__(self):
+        self.num = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.num += 2
+        return self.num
+
+even = InfiniteEvenNumbers()
+for i in range(5):
+    print(next(even))
+
+
+Output: 
+
+
+2
+4
+6
+8
+10
+
+
+---
+
+####  8. Iterator and For Loop Relationship 
+
+The for loop in Python  automatically uses  the iterator protocol:
+
+1. Calls iter() on the iterable.
+2. Calls next() repeatedly on the iterator.
+3. Stops when StopIteration is raised.
+
+So this code:
+
+
+for x in [1, 2, 3]:
+    print(x)
+
+
+is equivalent to:
+
+
+iterator = iter([1, 2, 3])
+while True:
+    try:
+        print(next(iterator))
+    except StopIteration:
+        break
+
+
+---
+
+####  9. Related Concept — Generators 
+
+ Generators are  special iterators  created using functions and the yield keyword.
+ They simplify writing iterators by managing __iter__() and __next__() automatically.
+
+Example:
+
+
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+for i in countdown(3):
+    print(i)
+
+
+---
+
+####  10. Summary 
+
+| Concept              | Description                               |
+| -------------------- | ----------------------------------------- |
+|  Iterable          | Object capable of returning an iterator   |
+|  Iterator          | Object that produces items using next() |
+|  Protocol          | Methods: __iter__(), __next__()       |
+|  Memory Efficient  | Generates values one at a time            |
+|  Used In           | Loops, comprehensions, generators, etc.   |
+
