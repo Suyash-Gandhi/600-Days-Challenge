@@ -4,18 +4,14 @@ pragma solidity ^0.8.0;
 
 pragma solidity ^0.8.0;
 
-contract counter{
-
-
-
- function no(uint a) public pure returns (uint) {
-    uint num=0;
-   for ( uint i = 1; i <= a; i++){
-     if(a%i==0){
- num+=1;
-     }
-    
-   }
-    return num;
- }
+contract counter {
+    function no(uint a) public pure returns (uint) {
+        uint num = 0;
+        for (uint i = 1; i <= a; i++) {
+            if (a % i == 0) {
+                num += 1;
+            }
+        }
+        return num;
+    }
 }
