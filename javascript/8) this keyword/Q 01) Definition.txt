@@ -1,0 +1,122 @@
+
+
+## 🔹 Concept Overview
+
+In JavaScript, the `this` keyword is a special identifier that dynamically refers to the execution context — i.e., the object that is currently “owning” or “calling” the function.
+
+However, what `this` points to depends entirely on how and where the function is called, not where it’s defined.
+
+When we talk about the global scope, we mean the top-level context (not inside any function or object).
+
+---
+
+## 🔹 Behavior of `this` in the Global Scope
+
+### 🧩 1. In Non-Strict Mode (`"use strict"` not used)
+
+ In non-strict mode, the global scope behaves differently between browser and Node.js, but the principle is the same:
+  `this` points to the global object.
+
+| Environment | Global Object | What `this` refers to |
+| ----------- | ------------- | --------------------- |
+| Browser     | `window`      | `this === window` ✅   |
+| Node.js     | `global`      | `this === global` ✅   |
+
+✅ Example (in browser)
+
+```js
+console.log(this); 
+```
+
+Output:
+
+```
+Window { ... }
+```
+
+Explanation:
+Here, the top-level `this` refers to the browser’s global object (`window`), which represents the environment where your code runs.
+
+✅ Example (in Node.js)
+
+```js
+console.log(this);
+```
+
+Output:
+
+```
+{}
+```
+
+⚠️ But note:
+In Node.js modules, the top-level `this` inside a file does not refer to `global`.
+It refers to an empty object (`{}`) because Node wraps your file inside a function module.
+However, if you explicitly run code in the REPL (Node shell), then `this` points to the global object.
+
+---
+
+### 🧩 2. In Strict Mode (`"use strict"` enabled)
+
+When `"use strict"` is enabled, JavaScript stops automatically binding `this` to the global object for better security and clarity.
+
+✅ Example
+
+```js
+"use strict";
+console.log(this);
+```
+
+Output:
+
+```
+undefined
+```
+
+Explanation:
+Strict mode disables default binding of `this` to the global object.
+So if you use `this` in the global scope or inside a function not bound to anything, it becomes `undefined`, preventing accidental modification of the global scope.
+
+---
+
+## 🔹 Summary Table
+
+| Mode        | Environment | Value of `this` in Global Scope    |
+| ----------- | ----------- | ---------------------------------- |
+| Non-Strict  | Browser     | `window`                           |
+| Non-Strict  | Node.js     | `global` (or `{}` inside a module) |
+| Strict Mode | Browser     | `undefined`                        |
+| Strict Mode | Node.js     | `undefined`                        |
+
+---
+
+## 🔹 Real-World Implications
+
+ Using `"use strict"` is a best practice, as it avoids accidental pollution of the global object.
+ For example, in non-strict mode:
+
+  ```js
+  function test() {
+    this.x = 10; // modifies global object!
+  }
+  test();
+  console.log(window.x); // 10 (in browser)
+  ```
+
+  But in strict mode:
+
+  ```js
+  "use strict";
+  function test() {
+    this.x = 10; // ❌ TypeError: Cannot set property 'x' of undefined
+  }
+  test();
+  ```
+
+---
+
+## ✅ Final Answer Summary
+
+> In the global scope, `this` represents the global object (`window` in browsers, `global` in Node.js) when not in strict mode.
+> In strict mode, `this` is `undefined` because JavaScript disables the automatic binding of `this` to the global object.
+

@@ -1,0 +1,218 @@
+
+
+# 🔷 What Will `this` Point to If a Function Is Called with `new`?
+
+---
+
+## 🧠 Concept
+
+When a function is called with the `new` keyword, it is treated as a constructor call.
+In this special case, the `this` keyword automatically refers to the newly created object instance — even though the function itself might not explicitly return anything.
+
+This behavior is called new binding.
+
+---
+
+## ⚙️ How “New Binding” Works (Step-by-Step Process)
+
+When you call a function with `new`, JavaScript performs four automatic steps internally:
+
+1. Creates a new empty object.
+
+    A new object is created in memory.
+2. Links that object to the function’s prototype.
+
+    The object’s internal `[[Prototype]]` is set to the function’s `.prototype` property.
+3. Binds `this` to the newly created object.
+
+    Inside the constructor, `this` now refers to the new object.
+4. Returns the new object automatically.
+
+    If the function doesn’t explicitly return another object, the new object is returned by default.
+
+---
+
+## 🧩 Example 1: Simple Constructor Function
+
+```js
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+const p1 = new Person("Alice", 22);
+
+console.log(p1.name); // "Alice"
+console.log(p1.age);  // 22
+```
+
+### 🔍 Explanation:
+
+ When `new Person("Alice", 22)` is executed:
+
+  1. A new empty object `{}` is created.
+  2. That object’s prototype is linked to `Person.prototype`.
+  3. Inside the function, `this` refers to that new object.
+  4. The properties `name` and `age` are added to that new object.
+  5. The object is returned automatically, becoming `p1`.
+
+Thus, `this` → the new object instance (`p1`).
+
+---
+
+## 🧩 Example 2: Comparison Without `new`
+
+```js
+function Car(model) {
+  this.model = model;
+}
+
+const c1 = Car("Tesla"); // ❌ Forgot 'new'
+console.log(c1); // undefined
+console.log(globalThis.model); // "Tesla" (in non-strict mode)
+```
+
+### 🔍 Explanation:
+
+ Without `new`, default binding applies.
+ So, `this` → global object (`window` or `globalThis`).
+ The function doesn’t return anything, so `c1` becomes `undefined`.
+ The global object accidentally gets a new property `model = "Tesla"`.
+
+This is a common beginner mistake, which is why constructors are typically capitalized (e.g., `Car`, `Person`).
+
+---
+
+## 🧩 Example 3: Strict Mode Difference
+
+```js
+"use strict";
+
+function Car(model) {
+  this.model = model;
+}
+
+const c1 = Car("Tesla"); // ❌ no 'new'
+```
+
+### 🔍 Explanation:
+
+ In strict mode, default binding is disabled, so `this` becomes `undefined` inside the function.
+ Hence, trying to assign `this.model` will cause an error:
+
+  ```
+  TypeError: Cannot set properties of undefined (setting 'model')
+  ```
+
+✅ Using `new Car("Tesla")` fixes it, since `this` will correctly bind to the new object.
+
+---
+
+## 🧩 Example 4: Explicit Return Behavior
+
+If a constructor function returns an object explicitly, that object replaces the implicit return.
+
+If it returns a primitive, it’s ignored.
+
+```js
+function Gadget(name) {
+  this.name = name;
+  return { type: "phone" }; // Explicitly returning an object
+}
+
+const g1 = new Gadget("iPhone");
+console.log(g1); // { type: "phone" }
+```
+
+### 🔍 Explanation:
+
+ Normally, the new object (with `this.name = "iPhone"`) would be returned.
+ But since the function explicitly returns another object (`{ type: "phone" }`), that one replaces it.
+ If the function had returned a primitive (e.g., `return 42;`), it would be ignored, and the new object would still be returned.
+
+---
+
+## 🧩 Example 5: Verifying the Prototype Link
+
+```js
+function Animal(type) {
+  this.type = type;
+}
+
+const a1 = new Animal("Dog");
+
+console.log(a1.__proto__ === Animal.prototype); // true
+```
+
+### 🔍 Explanation:
+
+The new object’s prototype (`__proto__`) is automatically linked to the constructor’s prototype (`Animal.prototype`), allowing inheritance and method sharing.
+
+---
+
+## 🧠 Important Notes
+
+1. Arrow functions cannot be used with `new`.
+
+    They don’t have their own `this` or `prototype`.
+
+   ```js
+   const Foo = () = {};
+   const f = new Foo(); // ❌ TypeError: Foo is not a constructor
+   ```
+
+2. `new` has the highest binding precedence.
+
+    It overrides even explicit bindings like `.call()` or `.bind()`.
+
+   ```js
+   function Test(name) {
+     this.name = name;
+   }
+
+   const obj = {};
+   const bound = Test.bind(obj);
+
+   const t = new bound("Alice");
+   console.log(t.name); // "Alice" (not bound to obj)
+   ```
+
+   Even though `bind(obj)` was used, `new` takes priority, and a new object is created.
+
+---
+
+## ⚖️ Summary Table
+
+| Binding Rule | Description                         | `this` Refers To         | Example         |
+| ------------ | ----------------------------------- | ------------------------ | --------------- |
+| Default      | Function called normally            | Global / undefined       | `foo()`         |
+| Implicit     | Called via object                   | That object              | `obj.foo()`     |
+| Explicit     | Forced with `call`, `apply`, `bind` | Specified object         | `foo.call(obj)` |
+| New          | Called with `new`                   | Newly created object | `new Foo()`     |
+
+---
+
+## 🏁 In Short
+
+ When a function is called with the `new` keyword:
+
+  A new object is automatically created.
+  `this` inside the function refers to that new object.
+  The function’s prototype becomes the new object’s prototype.
+  The new object is returned automatically (unless another object is explicitly returned).
+
+---
+
+### ✅ Example Recap:
+
+```js
+function User(name) {
+  this.name = name;
+}
+
+const u1 = new User("Suyash");
+console.log(u1.name); // "Suyash"
+```
+
+🟩 `this` points to: the new object `u1`.
+

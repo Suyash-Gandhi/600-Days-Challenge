@@ -1,0 +1,144 @@
+Q Inside a simple function (not an object method), what does this point to?
+
+## 🔹 1. The Core Concept
+
+When you assign a method from an object to a standalone variable and then call it, the connection between the method and its original object is lost.
+
+So, the `this` binding no longer points to the original object — it falls back to default binding.
+
+---
+
+## 🔹 2. Example and Explanation
+
+### ✅ Example
+
+```js
+const person = {
+  name: "Alice",
+  greet: function() {
+    console.log(this.name);
+  }
+};
+
+person.greet();  // ✅ Output: Alice
+```
+
+Explanation:
+Here, `this` refers to the `person` object, because the function is called as a method — `person.greet()` → implicit binding applies.
+
+---
+
+### ⚠️ Now assign the method to a variable
+
+```js
+const sayHello = person.greet;
+sayHello();  // ❓ What happens here?
+```
+
+Output:
+
+ In non-strict mode: `undefined` or `""` (since `this` becomes the global object, and `global.name` doesn’t exist)
+ In strict mode: `TypeError` or logs `undefined`, because `this` is `undefined`
+
+---
+
+## 🔹 3. Why This Happens
+
+When you do:
+
+```js
+const sayHello = person.greet;
+```
+
+You are copying the function reference, not its binding to the object.
+So when you later call `sayHello()`, it’s just a plain function call — not a method call.
+
+This means `this` uses default binding:
+
+| Mode            | What `this` refers to                                  |
+| --------------- | ------------------------------------------------------ |
+| Non-strict mode | Global object (`window` in browser / `global` in Node) |
+| Strict mode     | `undefined`                                            |
+
+---
+
+## 🔹 4. Illustration
+
+Here’s what happens conceptually:
+
+```js
+const person = {
+  name: "Alice",
+  greet() {
+    console.log(this.name);
+  }
+};
+
+// Case 1: Implicit binding
+person.greet(); 
+// this → person → prints "Alice"
+
+// Case 2: Function reference
+const fn = person.greet;
+fn();
+// this → default binding → global or undefined
+```
+
+---
+
+## 🔹 5. How to Fix It
+
+You can explicitly bind the function to the object using `.bind()`.
+
+### ✅ Example
+
+```js
+const sayHello = person.greet.bind(person);
+sayHello();  // Output: Alice
+```
+
+Explanation:
+`bind()` creates a new function that permanently binds `this` to the specified object (`person` in this case).
+
+---
+
+## 🔹 6. Bonus: Arrow Function Case
+
+Arrow functions don’t have their own `this`; they lexically inherit it from their surrounding scope.
+
+So, if `greet` was written as an arrow function inside the object:
+
+```js
+const person = {
+  name: "Alice",
+  greet: () = console.log(this.name)
+};
+
+person.greet(); // ❌ undefined (because 'this' refers to outer/global scope)
+```
+
+Here, `this` does not refer to `person` — it refers to the surrounding (global) scope where the object was defined.
+
+---
+
+## 🔹 7. Summary Table
+
+| Situation                                     | `this` Value          | Explanation               |
+| --------------------------------------------- | --------------------- | ------------------------- |
+| Called as `person.greet()`                    | `person`              | Implicit binding          |
+| Assigned and called as `sayHello()`           | Global / `undefined`  | Default binding           |
+| Bound explicitly: `person.greet.bind(person)` | `person`              | Explicit binding          |
+| Arrow function inside object                  | Lexical (outer scope) | Inherits from outer scope |
+
+---
+
+## ✅ Final Answer Summary
+
+ When you assign an object’s method to a standalone variable and then call it, the `this` binding to the original object is lost.
+ Therefore:
+
+  In non-strict mode, `this` becomes the global object (`window` or `global`).
+  In strict mode, `this` is `undefined`.
+
+ To preserve the binding, use `.bind()`, or call the method through the object itself.
+
