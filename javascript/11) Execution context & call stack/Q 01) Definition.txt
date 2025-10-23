@@ -1,0 +1,222 @@
+
+
+## 🧠 1. What Is an Execution Context?
+
+An   execution context   is an environment in which JavaScript code is evaluated and executed.
+It defines   how   and   where   variables, functions, and objects are accessible and how the code behaves.
+
+You can think of it as a   container   or   box   that stores:
+
+   Which variables and functions are currently in scope.
+   The value of `this`.
+   References to the outer environment.
+
+---
+
+## ⚙️ 2. Types of Execution Context
+
+JavaScript has   three   types of execution contexts:
+
+### a.   Global Execution Context (GEC)  
+
+   Created   once  , when the program starts.
+   It’s the   default   or   base   context.
+   It creates:
+
+     A global object (`window` in browsers, `global` in Node.js)
+     The global `this` binding.
+   All globally declared variables and functions live here.
+
+  Example:  
+
+```js
+var x = 10;
+function greet() {
+  console.log("Hello");
+}
+```
+
+When the above code runs:
+
+   `x` and `greet` are stored in the global execution context.
+   JavaScript engine executes this context first.
+
+---
+
+### b.   Function Execution Context (FEC)  
+
+   Created whenever a function is called.
+   Each function has   its own execution context  .
+   Includes:
+
+     The function’s arguments.
+     Local variables.
+     Inner functions.
+     The `this` keyword (depends on how the function is called).
+
+  Example:  
+
+```js
+function add(a, b) {
+  let sum = a + b;
+  return sum;
+}
+
+add(2, 3);
+```
+
+Here:
+
+1. The global context runs first.
+2. When `add(2, 3)` is called, a   new FEC   is created.
+3. After `add` finishes execution, its context is   popped off   the call stack.
+
+---
+
+### c.   Eval Execution Context  
+
+   Created when you use the `eval()` function.
+   Rarely used in modern JavaScript because it can introduce security and performance issues.
+
+---
+
+## 🧩 3. How Execution Context Is Created (The Two Phases)
+
+When a new execution context is created, it goes through   two main phases  :
+
+### 1️⃣   Creation Phase  
+
+   Memory is allocated for variables and functions.
+   Variables are initialized with `undefined`.
+   Function declarations are fully stored in memory.
+   The `this` binding is set.
+
+This is where   hoisting   happens.
+
+  Example:  
+
+```js
+console.log(x); // undefined
+var x = 5;
+```
+
+During the creation phase, `x` is hoisted and set to `undefined`.
+
+---
+
+### 2️⃣   Execution Phase  
+
+   The code is executed line by line.
+   Variable assignments are completed.
+   Function calls are made, which can create   new execution contexts  .
+
+---
+
+## 🪜 4. The Call Stack
+
+The   Call Stack   is a data structure that manages execution contexts in JavaScript.
+It works on a   LIFO   (Last In, First Out) principle.
+
+   The   Global Execution Context   is pushed first.
+   When a function is called → its context is   pushed   on top.
+   When the function returns → its context is   popped   off.
+
+  Example:  
+
+```js
+function first() {
+  second();
+  console.log("First");
+}
+
+function second() {
+  console.log("Second");
+}
+
+first();
+console.log("End");
+```
+
+### 🔹 Step-by-Step (Call Stack Behavior)
+
+| Step | Action                              | Call Stack                       |
+| ---- | ----------------------------------- | -------------------------------- |
+| 1    | Global context created              | `[Global]`                       |
+| 2    | `first()` called                    | `[Global, first]`                |
+| 3    | Inside `first()`, `second()` called | `[Global, first, second]`        |
+| 4    | `second()` executes and finishes    | `[Global, first]`                |
+| 5    | `console.log("First")` executes     | `[Global]`                       |
+| 6    | `console.log("End")` executes       | `[ ]` (empty after program ends) |
+
+---
+
+## ⚡ 5. Visualization Summary
+
+```plaintext
+┌──────────────┐
+│ Global EC    │ ← Created first
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│ Function EC  │ ← Created on function call
+└──────┬───────┘
+       │
+       ▼
+[ Call Stack ]
+```
+
+When a function finishes, its context is popped off the stack and control returns to the previous one.
+
+---
+
+## 🧭 6. Why This Matters
+
+Understanding   execution context   and   call stack   helps you:
+
+   Debug scope-related issues.
+   Understand hoisting and closures.
+   Avoid “Stack Overflow” errors (caused by infinite recursion).
+   Predict how asynchronous operations (like promises and timeouts) interact with the call stack and the event loop.
+
+---
+
+## 🧠 Example Summary
+
+Let’s analyze this short example:
+
+```js
+var name = "John";
+
+function sayName() {
+  console.log(name);
+}
+
+function greet() {
+  var name = "Doe";
+  sayName();
+}
+
+greet();
+```
+
+  Call Stack Flow:  
+
+1. Global EC created → `name`, `sayName`, and `greet` defined.
+2. `greet()` called → new FEC pushed.
+3. Inside `greet()`, `sayName()` called → new FEC pushed.
+4. `sayName()` logs `John`, because it finds `name` in the   outer (global) scope  .
+5. `sayName()` pops off → then `greet()` pops off → program ends.
+
+---
+
+## ✅ In Short
+
+| Concept               | Description                                                                  |
+| --------------------- | ---------------------------------------------------------------------------- |
+|   Execution Context   | The environment in which JS code runs (stores variables, functions, `this`). |
+|   Types               | Global, Function, Eval.                                                      |
+|   Phases              | Creation (hoisting) & Execution (run-time).                                  |
+|   Call Stack          | Manages execution contexts using LIFO.                                       |
+|   Key Use             | Explains scope, hoisting, closures, and function execution order.            |
+

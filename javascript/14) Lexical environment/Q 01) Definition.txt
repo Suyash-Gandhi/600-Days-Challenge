@@ -1,0 +1,179 @@
+
+
+## 🧠 1. Definition
+
+A Lexical Environment in JavaScript is a structure that holds variable/function bindings and the reference to its outer environment.
+It determines where variables and functions are accessible in your code — in other words, scope is defined lexically (by where code is written).
+
+Every time a function is created, a new lexical environment is also created.
+
+---
+
+## 🧩 2. Components of a Lexical Environment
+
+A lexical environment has two main parts:
+
+1. Environment Record:
+
+    It stores all variables and function declarations defined in that environment.
+    Example: local variables of a function, or global variables in the global environment.
+
+2. Outer Environment Reference:
+
+    It refers to the lexical environment of the parent scope — the one where the function was defined, not where it was called.
+
+Together, these form a chain — the Lexical Scope Chain.
+
+---
+
+## 🧱 3. Types of Lexical Environments
+
+There are mainly two types:
+
+### a. Global Lexical Environment
+
+ Created when the JS program starts.
+ Contains all global variables and functions.
+ Its outer environment reference is `null` (because there’s nothing above the global scope).
+
+### b. Function Lexical Environment
+
+ Created whenever a function is invoked.
+ Holds local variables declared inside that function.
+ Its outer reference points to the lexical environment of where the function was defined, not where it was called.
+
+---
+
+## 🧮 4. Example (Step-by-Step Execution)
+
+```js
+let a = 10;
+
+function outer() {
+  let b = 20;
+
+  function inner() {
+    let c = 30;
+    console.log(a, b, c);
+  }
+
+  inner();
+}
+
+outer();
+```
+
+### Step 1: Global Lexical Environment
+
+| Identifier | Value    |
+| ---------- | -------- |
+| a          | 10       |
+| outer      | function |
+
+ Outer reference → `null`
+
+---
+
+### Step 2: `outer()` Execution
+
+A new lexical environment is created.
+
+| Identifier | Value    |
+| ---------- | -------- |
+| b          | 20       |
+| inner      | function |
+
+ Outer reference → Global Lexical Environment
+
+---
+
+### Step 3: `inner()` Execution
+
+A new lexical environment is created.
+
+| Identifier | Value |
+| ---------- | ----- |
+| c          | 30    |
+
+ Outer reference → `outer()` Lexical Environment
+
+---
+
+### Step 4: Variable Lookup
+
+When `console.log(a, b, c)` runs:
+
+1. JS looks for `a` → Not found in `inner`, checks `outer`, not found → checks `global`, found = 10.
+2. Looks for `b` → Found in `outer` = 20.
+3. Looks for `c` → Found in `inner` = 30.
+
+✅ Output: `10 20 30`
+
+---
+
+## 🧵 5. Lexical Scope Chain
+
+When JS tries to access a variable, it searches in the current environment, and if not found, it goes up the outer references until:
+
+ It finds the variable, or
+ Reaches the global environment (if not found, ReferenceError).
+
+This chain of linked environments is called the Scope Chain.
+
+---
+
+## ⚙️ 6. Relation with Closures
+
+Closures directly rely on lexical environments.
+When a function remembers its outer variables even after that outer function has returned, it’s because the lexical environment is preserved in memory.
+
+Example:
+
+```js
+function makeCounter() {
+  let count = 0;
+
+  return function() {
+    count++;
+    console.log(count);
+  };
+}
+
+const counter = makeCounter();
+counter(); // 1
+counter(); // 2
+```
+
+Here, even though `makeCounter()` has finished execution, its lexical environment (with variable `count`) stays alive due to the closure.
+
+---
+
+## ⚡ 7. Key Takeaways
+
+| Concept             | Meaning                                       |
+| ------------------- | --------------------------------------------- |
+| Lexical Environment | Structure holding variables + outer reference |
+| Created When        | Execution context is created                  |
+| Contains            | Environment Record + Outer Reference          |
+| Determines          | Variable accessibility (scope)                |
+| Used In             | Closures, Scope Chain, Variable Lookup        |
+
+---
+
+## 📚 8. Comparison Table: Lexical vs Execution Context
+
+| Feature      | Lexical Environment           | Execution Context                         |
+| ------------ | ----------------------------- | ----------------------------------------- |
+| When Created | At function definition        | At function invocation                    |
+| Contains     | Variables and references      | Variable environment, `this`, scope chain |
+| Defines      | Scope (what’s accessible)     | Execution flow (what runs)                |
+| Lifespan     | Can persist via closures      | Exists only during function call          |
+
+---
+
+## 🏁 9. Summary
+
+ Lexical Environment = local variables + reference to outer environment.
+ It’s created when a function is defined, not when it’s executed.
+ It’s the foundation for scope and closures.
+ JS’s scope is lexical, meaning it depends on where code is written, not where it’s called.

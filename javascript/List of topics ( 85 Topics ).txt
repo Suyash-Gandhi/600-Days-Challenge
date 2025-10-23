@@ -8,10 +8,10 @@
 
 1. Variables (`var`, `let`, `const`)
 2. Data types (primitive vs reference)
-3. Type coercion & conversion (`==` vs `===`)
+3. Type coercion & conversion (`==` vs `===`) - covered in 2
 4. Truthy and falsy values
 5. Operators (arithmetic, comparison, logical, bitwise)
-6. Template literals
+6. Template literals - covered in previous topics
 7. Control flow (if, switch, loops)
 8. Functions (declaration vs expression vs arrow)
 9. `this` keyword (all binding rules)
