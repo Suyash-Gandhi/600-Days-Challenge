@@ -1,0 +1,130 @@
+
+Cargo is Rust’s package manager and build system, similar to npm in JavaScript, pip in Python, or Maven in Java. It helps you create, build, run, test, and manage dependencies for Rust projects efficiently.
+
+---
+
+## 🧩 What is Cargo?
+
+Cargo is the official tool that handles:
+
+ Project creation (`cargo new`)
+ Building your code (`cargo build`)
+ Running your code (`cargo run`)
+ Managing dependencies (`Cargo.toml`)
+ Testing (`cargo test`)
+ Documentation (`cargo doc`)
+ Publishing (`cargo publish`)
+
+When you install Rust using `rustup`, Cargo is automatically installed.
+
+---
+
+## ⚙️ Cargo Project Structure
+
+When you create a new project using:
+
+```bash
+cargo new hello_rust
+```
+
+It generates this structure:
+
+```
+hello_rust/
+│
+├── Cargo.toml        # Project configuration and dependencies
+└── src/
+    └── main.rs       # Main Rust source file
+```
+
+### 🔹 `Cargo.toml` (like package.json in Node.js)
+
+This file contains project metadata and dependencies.
+
+Example:
+
+```toml
+[package]
+name = "hello_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+```
+
+If you add dependencies, for example:
+
+```toml
+[dependencies]
+rand = "0.8.5"
+```
+
+Cargo will automatically download and compile them from crates.io (Rust’s package registry).
+
+---
+
+## 🏗️ Common Cargo Commands
+
+| Command                  | Description                                             |
+| ------------------------ | ------------------------------------------------------- |
+| `cargo new project_name` | Create a new project                                    |
+| `cargo build`            | Compile the project                                     |
+| `cargo run`              | Compile and run the project                             |
+| `cargo check`            | Quickly check for errors without creating an executable |
+| `cargo test`             | Run unit tests                                          |
+| `cargo doc --open`       | Build and open documentation for your dependencies      |
+| `cargo update`           | Update dependencies                                     |
+| `cargo clean`            | Remove the `target` directory (compiled files)          |
+
+---
+
+## 📦 Build Process Explained
+
+When you run `cargo build`:
+
+1. Cargo reads `Cargo.toml`.
+2. It fetches and compiles dependencies into the `target/` folder.
+3. Compiles your Rust source code.
+4. Produces an executable in `target/debug/` (for development builds).
+
+To make a release build (optimized binary):
+
+```bash
+cargo build --release
+```
+
+The optimized executable will be in `target/release/`.
+
+---
+
+## 🧠 Cargo Workflow Summary
+
+1. Create project → `cargo new project_name`
+2. Add dependencies → edit `Cargo.toml`
+3. Build & run → `cargo run`
+4. Check for errors → `cargo check`
+5. Release build → `cargo build --release`
+6. Test code → `cargo test`
+
+---
+
+## 💡 Example
+
+Create a new project and print a message:
+
+```bash
+cargo new greetings
+cd greetings
+cargo run
+```
+
+Output:
+
+```
+   Compiling greetings v0.1.0
+    Finished dev [unoptimized + debuginfo] target(s) in 1.23s
+     Running `target\debug\greetings.exe`
+Hello, world!
+```
+
+---

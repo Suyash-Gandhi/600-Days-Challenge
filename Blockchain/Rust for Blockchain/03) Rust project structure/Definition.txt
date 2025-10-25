@@ -1,0 +1,241 @@
+Perfect — let’s go over Rust project structure, step by step.
+
+This topic builds directly on what you just did with Cargo, so understanding it will help you organize real Rust projects, especially as they grow (like in blockchain or systems programming).
+
+---
+
+## 🧱 1. Basic Rust Project Layout
+
+When you create a new Rust project using:
+
+```bash
+cargo new hello_rust
+```
+
+Cargo automatically creates a standard structure like this:
+
+```
+hello_rust/
+│
+├── Cargo.toml
+└── src/
+    └── main.rs
+```
+
+Let’s break this down 👇
+
+---
+
+### 🔹 Cargo.toml — the Project Manifest
+
+This file is like the `package.json` of Node.js or `pom.xml` of Java.
+It defines:
+
+ Your project’s metadata (name, version, authors, edition)
+ Your dependencies
+ Build configurations
+
+Example:
+
+```toml
+[package]
+name = "hello_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8.5"
+```
+
+> 📘 When you run `cargo build`, Cargo reads this file, downloads dependencies from [crates.io](https://crates.io), and compiles your code accordingly.
+
+---
+
+### 🔹 src/main.rs — the Main Source File
+
+This is where your program starts execution.
+It contains the entry point function:
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+When you run `cargo run`, Cargo compiles this file and executes it.
+
+---
+
+## 🧩 2. The `target` Directory
+
+After your first build, Cargo creates a new folder:
+
+```
+target/
+```
+
+This is where compiled files, executables, and build artifacts go.
+
+You’ll typically see:
+
+```
+target/
+├── debug/       # Default debug build output
+└── release/     # Optimized release builds (cargo build --release)
+```
+
+You should not edit or commit this folder — it’s automatically generated.
+
+---
+
+## 🧠 3. Optional Files and Folders
+
+As your project grows, you’ll add more files:
+
+### 🔸 src/lib.rs
+
+If your project is a library instead of a binary app:
+
+```bash
+cargo new my_library --lib
+```
+
+Structure:
+
+```
+my_library/
+├── Cargo.toml
+└── src/
+    └── lib.rs
+```
+
+Then `lib.rs` becomes the entry point instead of `main.rs`.
+
+---
+
+### 🔸 src/bin/
+
+If you want multiple executables in one project, you can add a `bin` folder:
+
+```
+src/
+├── main.rs          # Default binary
+└── bin/
+    ├── server.rs    # Another executable
+    └── client.rs
+```
+
+Run them individually:
+
+```bash
+cargo run --bin server
+cargo run --bin client
+```
+
+---
+
+### 🔸 tests/
+
+Integration tests go here.
+Example:
+
+```
+tests/
+└── integration_test.rs
+```
+
+Run all tests using:
+
+```bash
+cargo test
+```
+
+---
+
+### 🔸 examples/
+
+This folder holds sample programs showing how to use your code:
+
+```
+examples/
+└── demo.rs
+```
+
+Run it with:
+
+```bash
+cargo run --example demo
+```
+
+---
+
+### 🔸 benches/
+
+For benchmarks (performance testing):
+
+```
+benches/
+└── performance.rs
+```
+
+---
+
+### 🔸 .gitignore
+
+If you’re using Git, Cargo automatically creates a `.gitignore` file like:
+
+```
+/target
+```
+
+to prevent committing compiled files.
+
+---
+
+## 🧭 4. Summary of Common Rust Project Layout
+
+| Folder/File   | Purpose                                    |
+| ------------- | ------------------------------------------ |
+| `Cargo.toml`  | Project configuration & dependencies       |
+| `Cargo.lock`  | Exact dependency versions (auto-generated) |
+| `src/main.rs` | Main entry point for binaries              |
+| `src/lib.rs`  | Entry for libraries                        |
+| `src/bin/`    | Additional binaries                        |
+| `tests/`      | Integration tests                          |
+| `examples/`   | Example programs                           |
+| `benches/`    | Benchmark tests                            |
+| `target/`     | Compiled output (auto-generated)           |
+| `.gitignore`  | Git ignore rules                           |
+
+---
+
+## 💡 Tip: Modularizing Code
+
+In Rust, you can split code into multiple files or folders for better structure.
+For example:
+
+```
+src/
+├── main.rs
+└── utils/
+    ├── mod.rs
+    └── math.rs
+```
+
+Inside `main.rs`:
+
+```rust
+mod utils;
+use utils::math;
+```
+
+---
+
+## 🏁 5. Best Practices
+
+ Keep one logical module per file for clarity.
+ Use snake_case for file and module names (`user_data.rs` not `UserData.rs`).
+ Separate library logic (`lib.rs`) from binary logic (`main.rs`) when possible.
+ Never modify files in `target/`.
+ Keep `Cargo.toml` clean and grouped logically (`[dependencies]`, `[dev-dependencies]`, etc.).
+

@@ -1,0 +1,187 @@
+
+## 🧩 1. Categories of Data Types
+
+Rust’s data types fall into two main categories:
+
+### A. Scalar Types
+
+Represent a single value (number, character, boolean).
+
+### B. Compound Types
+
+Group multiple values into one type (like tuples and arrays).
+
+---
+
+## 🧮 2. Scalar Types
+
+### (i) Integers
+
+ Whole numbers — positive or negative — without a decimal point.
+ Can be signed (i) or unsigned (u).
+
+   Signed → can store negative and positive values
+   Unsigned → only positive values
+
+| Length       | Signed  | Unsigned | Range (Signed)                |
+| ------------ | ------- | -------- | ----------------------------- |
+| 8-bit        | `i8`    | `u8`     | -128 to 127                   |
+| 16-bit       | `i16`   | `u16`    | -32,768 to 32,767             |
+| 32-bit       | `i32`   | `u32`    | -2³¹ to 2³¹-1                 |
+| 64-bit       | `i64`   | `u64`    | -2⁶³ to 2⁶³-1                 |
+| 128-bit      | `i128`  | `u128`   | -2¹²⁷ to 2¹²⁷-1               |
+| Architecture | `isize` | `usize`  | Depends on system (32/64-bit) |
+
+Example:
+
+```rust
+let a: i32 = -10;
+let b: u8 = 255;
+```
+
+---
+
+### (ii) Floating-Point Numbers
+
+For decimal or fractional numbers.
+
+| Type  | Precision                    | Example     |
+| ----- | ---------------------------- | ----------- |
+| `f32` | Single (32-bit)              | 3.14        |
+| `f64` | Double (64-bit, default) | 2.718281828 |
+
+Example:
+
+```rust
+let x = 2.5; // f64 by default
+let y: f32 = 3.14;
+```
+
+---
+
+### (iii) Boolean
+
+Has only two values: `true` or `false`.
+
+Example:
+
+```rust
+let is_active: bool = true;
+```
+
+Used frequently in conditionals:
+
+```rust
+if is_active {
+    println!("Active");
+}
+```
+
+---
+
+### (iv) Character (`char`)
+
+Represents a single Unicode character (not just ASCII).
+Each `char` is 4 bytes.
+
+Example:
+
+```rust
+let letter = 'A';
+let heart = '❤';
+let smiley = '😊';
+```
+
+---
+
+## 🧱 3. Compound Types
+
+### (i) Tuple
+
+A fixed-size collection of values of different types.
+
+Example:
+
+```rust
+let person: (i32, f64, char) = (25, 5.9, 'M');
+
+// Access elements:
+println!("{}", person.0); // 25
+println!("{}", person.1); // 5.9
+println!("{}", person.2); // M
+
+// Destructuring
+let (age, height, gender) = person;
+```
+
+---
+
+### (ii) Array
+
+A fixed-size collection of values of the same type stored sequentially in memory.
+
+Example:
+
+```rust
+let scores = [90, 85, 88, 92];
+let days: [&str; 3] = ["Mon", "Tue", "Wed"];
+println!("{}", days[0]); // Mon
+```
+
+ Arrays have fixed length.
+ For dynamic or growable lists, Rust provides vectors (`Vec<T>`).
+
+---
+
+## ⚙️ 4. Type Inference
+
+Rust can often infer the type automatically:
+
+```rust
+let x = 42;      // inferred as i32
+let y = 3.14;    // inferred as f64
+```
+
+You can specify it manually when needed:
+
+```rust
+let z: u8 = 255;
+```
+
+---
+
+## 📏 5. Type Conversion
+
+Rust doesn’t perform implicit type conversion.
+You must explicitly cast using the `as` keyword:
+
+```rust
+let a: i32 = 10;
+let b: f64 = a as f64 + 0.5;
+```
+
+---
+
+## 🔒 6. Constants and Type Annotation
+
+Constants always need an explicit type:
+
+```rust
+const MAX_POINTS: u32 = 100_000;
+```
+
+---
+
+## 🧠 Summary
+
+| Category | Type      | Example                  |
+| -------- | --------- | ------------------------ |
+| Scalar   | Integer   | `let a: i32 = 10;`       |
+| Scalar   | Float     | `let b: f64 = 3.14;`     |
+| Scalar   | Boolean   | `let c: bool = true;`    |
+| Scalar   | Character | `let d: char = 'A';`     |
+| Compound | Tuple     | `let t = (1, 2.0, 'A');` |
+| Compound | Array     | `let arr = [1, 2, 3];`   |
+
+---
+
