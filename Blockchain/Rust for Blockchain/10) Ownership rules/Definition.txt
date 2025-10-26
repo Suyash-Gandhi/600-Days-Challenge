@@ -1,0 +1,158 @@
+
+
+## 10. Ownership Rules in Rust
+
+### Introduction
+
+Ownership is one of the most important and unique features of Rust.
+It allows memory safety without needing a garbage collector.
+
+Rust’s ownership system ensures that memory is managed automatically and safely at compile time, preventing common bugs such as:
+
+ Dangling pointers
+ Double free errors
+ Data races
+
+To understand ownership, we must first understand Rust’s three ownership rules.
+
+---
+
+### The 3 Ownership Rules
+
+#### Rule 1: Each value in Rust has a single owner
+
+Every piece of data in Rust is owned by a variable.
+When that variable goes out of scope, Rust automatically drops (frees) the data.
+
+✅ Example:
+
+```rust
+{
+    let s = String::from("hello"); // 's' owns the String data
+} // 's' goes out of scope and the memory is automatically freed
+```
+
+Here, the `String` is allocated on the heap, and when `s` goes out of scope, its memory is automatically deallocated.
+
+---
+
+#### Rule 2: There can only be one owner at a time
+
+When a variable is assigned to another variable, ownership moves to the new variable.
+The previous variable becomes invalid and can no longer be used.
+
+✅ Example:
+
+```rust
+let s1 = String::from("hello");
+let s2 = s1; // ownership moves from s1 to s2
+
+// println!("{}", s1); // ❌ Error: s1 is no longer valid
+println!("{}", s2); // ✅ Works fine
+```
+
+This prevents double freeing the same memory, which could otherwise cause undefined behavior.
+
+📘 Note: For types stored on the stack (like integers, floats, booleans), ownership is copied, not moved — because they implement the Copy trait.
+
+```rust
+let x = 5;
+let y = x; // copy happens
+println!("x = {}, y = {}", x, y); // both valid ✅
+```
+
+---
+
+#### Rule 3: When the owner goes out of scope, the value is dropped
+
+Once the owner variable leaves its scope, Rust automatically calls the `drop()` function to free memory.
+
+✅ Example:
+
+```rust
+{
+    let s = String::from("Rust");
+    println!("{}", s);
+} // s goes out of scope -> memory freed automatically
+```
+
+No need for manual memory management like in C/C++.
+Rust ensures safety using this rule.
+
+---
+
+### Ownership with Functions
+
+Ownership can also move into or out of functions.
+
+✅ Example:
+
+```rust
+fn main() {
+    let s = String::from("Hello");
+    takes_ownership(s); // ownership moved to function
+    // println!("{}", s); // ❌ Error: s no longer valid
+
+    let x = 5;
+    makes_copy(x); // x is Copy type, still valid
+    println!("{}", x); // ✅ Works
+}
+
+fn takes_ownership(some_string: String) {
+    println!("{}", some_string);
+} // some_string is dropped here
+
+fn makes_copy(some_integer: i32) {
+    println!("{}", s);
+}
+```
+
+If a function needs to use the data without taking ownership, we use references & borrowing — which we’ll study later.
+
+---
+
+### Ownership and Return Values
+
+Ownership can also be returned from functions.
+
+✅ Example:
+
+```rust
+fn gives_ownership() -> String {
+    let s = String::from("world");
+    s // ownership moved to the calling function
+}
+
+fn main() {
+    let s1 = gives_ownership();
+    println!("{}", s1); // ✅ Works
+}
+```
+
+Ownership moves back to the caller when a value is returned.
+
+---
+
+### Summary Table
+
+| Concept           | Description                                | Example                       |
+| ----------------- | ------------------------------------------ | ----------------------------- |
+| Ownership     | Each value has one owner                   | `let s = String::from("Hi");` |
+| Move          | Ownership transferred                      | `let s2 = s1;`                |
+| Copy          | For simple types (int, float, bool)        | `let y = x;`                  |
+| Drop          | When owner goes out of scope, memory freed | End of block `{}`             |
+| Function move | Passing non-copy type transfers ownership  | `takes_ownership(s);`         |
+| Return move   | Returning value transfers ownership back   | `gives_ownership()`           |
+
+---
+
+### Conclusion
+
+Ownership in Rust forms the foundation of its memory safety guarantees.
+By enforcing rules at compile time, Rust:
+
+ Prevents dangling references, double frees, and leaks
+ Eliminates the need for garbage collection
+ Ensures predictable performance
+
+Understanding ownership is essential before moving on to borrowing, references, and lifetimes in Rust.

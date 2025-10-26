@@ -92,6 +92,71 @@ let heart = '❤';
 let smiley = '😊';
 ```
 
+In Rust, a `char` represents exactly one Unicode scalar value — that means a single character, not a string or group of characters.
+
+So, this is ✅ valid:
+
+```rust
+let letter: char = 'A';
+let heart: char = '❤';
+let emoji: char = '😊';
+```
+
+But this is ❌ invalid:
+
+```rust
+let word: char = 'AB'; // ❌ ERROR: character literal may only contain one character
+```
+
+You’ll get a compiler error because `'AB'` is two characters, and `char` expects only one.
+
+---
+
+## ✅ To Store Multiple Characters — Use `&str`
+
+If you want to store multiple characters (like a word, sentence, or name), use a string slice (`&str`) or a `String` type.
+
+### Example 1 — String Slice (`&str`):
+
+```rust
+let greeting: &str = "Hello";
+```
+
+ Stored in read-only memory (string literal).
+ Fast and lightweight.
+ Cannot be modified.
+
+### Example 2 — String (`String`):
+
+```rust
+let mut name: String = String::from("Suyash");
+name.push('!'); // Add a character at the end
+```
+
+ Stored on the heap.
+ Growable and modifiable.
+ Commonly used when you need to change or build strings dynamically.
+
+---
+
+## 🧠 Summary
+
+| Type     | Description                      | Example              | Can Hold Multiple Characters? |
+| -------- | -------------------------------- | -------------------- | ----------------------------- |
+| `char`   | Single Unicode scalar value      | `'A'`, `'😊'`        | ❌ No                          |
+| `&str`   | String slice (fixed)             | `"Hello"`            | ✅ Yes                         |
+| `String` | Growable string (heap-allocated) | `String::from("Hi")` | ✅ Yes                         |
+
+---
+
+💡 Tip:
+
+ Think of `'A'` as a character (`char`)
+ And `"A"` as a string (`&str`)
+
+They look similar but are completely different types in Rust.
+
+
 ---
 
 ## 🧱 3. Compound Types
@@ -184,4 +249,171 @@ const MAX_POINTS: u32 = 100_000;
 | Compound | Array     | `let arr = [1, 2, 3];`   |
 
 ---
+
+Excellent — you’re entering one of the core concepts in Rust’s memory model now.
+Let’s break slices down carefully, with examples and comparisons so you understand both what they are and why they matter 👇
+
+---
+
+## 🧩 What Is a Slice in Rust?
+
+A slice in Rust is a reference to a contiguous sequence of elements in a collection (like an array, vector, or string).
+It doesn’t own the data — it just borrows a view into it.
+
+Think of it like saying:
+
+> “Hey, I want to look at part of this collection — not copy or own it.”
+
+---
+
+## 🧠 Why Slices Exist
+
+Rust emphasizes ownership and borrowing for memory safety.
+If you want to access a portion of data without taking ownership of the entire thing, slices let you safely do that.
+
+---
+
+## 📦 1. Array Slices
+
+### Example:
+
+```rust
+let numbers = [10, 20, 30, 40, 50];
+
+// Slice from index 1 to 3 (excludes index 3)
+let slice = &numbers[1..3];
+
+println!("{:?}", slice); // [20, 30]
+```
+
+✅ Key points:
+
+ `&numbers[1..3]` → takes elements from index 1 up to (but not including) index 3.
+ The slice here is a reference, not a new array.
+ The type of `slice` is `&[i32]`.
+
+---
+
+### You can also omit range boundaries:
+
+```rust
+let slice_all = &numbers[..];     // full slice
+let first_two = &numbers[..2];    // from start to index 2 (excluded)
+let last_two = &numbers[3..];     // from index 3 to end
+```
+
+---
+
+## 📜 2. String Slices
+
+A string slice (`&str`) is actually a slice of a string’s bytes.
+
+### Example:
+
+```rust
+let message = String::from("Hello Rust");
+
+// Slice of string
+let hello = &message[0..5];
+println!("{}", hello); // Hello
+```
+
+✅ `&message[0..5]` gives you `"Hello"`, not a new string — just a borrowed part.
+
+> ⚠️ Important:
+> String slices must be valid UTF-8 boundaries — slicing in the middle of a multibyte character (like emojis) causes a runtime panic.
+
+---
+
+### String Literals Are Slices Too!
+
+```rust
+let greeting: &str = "Hi there";
+```
+
+Here, `"Hi there"` is already a string slice — it’s stored in the program’s binary and points to read-only memory.
+
+---
+
+## ⚙️ 3. Mutable Slices
+
+You can also create mutable slices using `&mut`.
+
+```rust
+let mut numbers = [1, 2, 3, 4];
+let slice = &mut numbers[1..3];
+slice[0] = 99;
+println!("{:?}", numbers); // [1, 99, 3, 4]
+```
+
+✅ Here, `slice` borrows part of the array mutably, allowing you to modify the original array data safely.
+
+---
+
+## 🧭 4. Slice Type Signatures
+
+Let’s look at how Rust represents slice types:
+
+| Collection          | Slice Type   |
+| ------------------- | ------------ |
+| Array of `i32`      | `&[i32]`     |
+| Mutable array slice | `&mut [i32]` |
+| String slice        | `&str`       |
+
+---
+
+## 🧮 5. How Slices Work Internally
+
+Under the hood, a slice is made up of:
+
+1. A pointer to the starting element.
+2. A length.
+
+So, `&numbers[1..3]` holds:
+
+ pointer → address of `numbers[1]`
+ length → `2`
+
+This makes slices lightweight and efficient — they don’t copy data, just borrow references.
+
+---
+
+## 🧱 6. Example: Passing Slices to Functions
+
+```rust
+fn sum(numbers: &[i32]) -> i32 {
+    let mut total = 0;
+    for &num in numbers {
+        total += num;
+    }
+    total
+}
+
+fn main() {
+    let arr = [1, 2, 3, 4, 5];
+    println!("Sum: {}", sum(&arr[1..4])); // Sum: 9
+}
+```
+
+✅ The function accepts any slice of integers, not just arrays — very flexible and memory-safe.
+
+---
+
+## 🧠 Summary
+
+| Concept       | Description       | Example          | Type       |
+| ------------- | ----------------- | ---------------- | ---------- |
+| Array slice   | Part of an array  | `&arr[1..3]`     | `&[T]`     |
+| String slice  | Part of a string  | `&text[0..5]`    | `&str`     |
+| Mutable slice | Writable portion  | `&mut arr[1..3]` | `&mut [T]` |
+| Full slice    | Entire collection | `&arr[..]`       | `&[T]`     |
+
+---
+
+### 🔍 Analogy
+
+Imagine you have a book (`String` or `Array`).
+
+ A slice is like looking at a few pages without tearing them out.
+ You’re borrowing those pages temporarily, not owning them.
 

@@ -1,0 +1,248 @@
+
+# 1) Statement vs Expression
+
+```rust
+fn main() {
+    // 'let x = 5;' is a statement: it creates a variable, does not return a value.
+    let x = 5;
+
+    // 'x + 1' is an expression: it produces the value 6.
+    let y = x + 1; // the expression (x + 1) is evaluated and its value is stored in y
+
+    println!("x = {}, y = {}", x, y);
+}
+```
+
+Explanation:
+
+ `let x = 5;` — statement. It performs an action (binds `x`) and does not itself produce a value you can use in an expression.
+ `x + 1` — expression. It evaluates to `6`. You can use it anywhere a value is expected.
+
+---
+
+# 2) Semicolon changes an expression into a statement (unit `()`)
+
+```rust
+fn main() {
+    let val = {
+        2 + 3 // no semicolon → this expression returns 5 from the block
+    };
+    println!("val = {}", val); // prints 5
+
+    let val2 = {
+        2 + 3; // semicolon here -> the block evaluates to (), the unit type
+    };
+    println!("val2 = {:?}", val2); // prints () (unit)
+}
+```
+
+Explanation:
+
+ A block `{ ... }` is itself an expression whose value is the value of the last expression without a semicolon.
+ If the last line ends with `;`, that line becomes a statement, and the block's value becomes `()`.
+
+---
+
+# 3) Functions: implicit vs explicit return
+
+```rust
+fn implicit_add(a: i32, b: i32) -> i32 {
+    a + b // no semicolon: this expression is returned implicitly
+}
+
+fn explicit_add(a: i32, b: i32) -> i32 {
+    return a + b; // explicit return — works the same here
+}
+
+fn main() {
+    println!("implicit: {}", implicit_add(2, 3)); // prints 5
+    println!("explicit: {}", explicit_add(2, 3)); // prints 5
+}
+```
+
+Explanation:
+
+ In Rust, the last expression in a function (without semicolon) is the function’s return value.
+ You can also use `return expr;` anywhere in the function to return early.
+
+---
+
+# 4) `if` used as an expression
+
+```rust
+fn main() {
+    let n = 7;
+    let parity = if n % 2 == 0 {
+        "even"
+    } else {
+        "odd"
+    }; // whole if-block is an expression because both branches return a value
+
+    println!("{} is {}", n, parity);
+}
+```
+
+Important: both branches must produce values of the same type. Here both return `&str`, so it’s fine.
+
+---
+
+# 5) Block expression with multiple statements
+
+```rust
+fn main() {
+    let result = {
+        let a = 10;     // statement: binds a
+        let b = 20;     // statement: binds b
+        a + b           // expression: block returns 30
+    };
+
+    println!("result = {}", result);
+}
+```
+
+Explanation:
+
+ Inside the block you can have statements (with `;`) and expressions. The last expression (without `;`) is the block’s returned value.
+
+---
+
+# 6) Example that commonly confuses beginners (units and semicolons)
+
+```rust
+fn main() {
+    let a = 3;
+    let b = { a  2 }; // block returns 6
+    let c = { a  2; }; // block returns (), because of trailing semicolon
+
+    println!("a = {}, b = {:?}", a, b); // b = 6
+    println!("c = {:?}", c);            // c = ()
+}
+```
+
+Note: `{:?}` prints debug form — used here because `()` is not printable with `{}`.
+
+---
+
+## Quick checklist so this is crystal clear
+
+ Expression → produces a value (e.g., `5`, `x + 1`, function call that returns something). No trailing semicolon if it's the last value you want returned from a block or function.
+ Statement → performs an action (e.g., `let x = ...;`, `x = 5;`) and does not produce a usable value.
+ Semicolon `;` turns an expression into a statement (so it removes the produced value and the result becomes `()` for the block).
+ A block `{ ... }` is an expression whose value is the last expression inside it (unless that last expression has a semicolon).
+ Functions return the value of their last expression if there is no `return` used.
+
+---
+Question : fn main() {
+    // 'let x = 5;' is a statement: it creates a variable, does not return a value.
+    let x = 5;
+
+    // 'x + 1' is an expression: it produces the value 6.
+    let y = x + 1; // the expression (x + 1) is evaluated and its value is stored in y
+
+    println!("x = {}, y = {}", x, y);
+}     
+
+x + 1 is an expression so why semicolon ?
+
+
+### 🧠 Step 1: Every line can be either
+
+ an expression (which produces a value)
+ or a statement (which does something, but doesn’t produce a value)
+
+---
+
+### 🧩 Step 2: What happens in this line?
+
+```rust
+let y = x + 1;
+```
+
+Here’s what’s really happening:
+
+1. `x + 1` → this part is an expression, it produces the value `6`.
+2. `let y = x + 1;` → this whole line is a statement, because the semicolon ends it.
+
+So, the semicolon doesn’t remove the expression inside, it just says:
+
+> “This is the end of this statement — don’t return this value to anything else.”
+
+---
+
+### 💬 Think of it like this analogy:
+
+If you write:
+
+```rust
+x + 1
+```
+
+That’s like saying:
+
+> “Hey, give me the value of `x + 1` — I want to use it somewhere.”
+
+But if you write:
+
+```rust
+x + 1;
+```
+
+That’s like saying:
+
+> “Compute `x + 1`, but I don’t care about the result — just do it.”
+
+And if you write:
+
+```rust
+let y = x + 1;
+```
+
+That means:
+
+> “Compute `x + 1` (the expression) and store its value in `y`. Then end the statement here.”
+
+So the semicolon marks the end of a complete action (statement) — it doesn’t change the fact that `x + 1` itself is an expression.
+
+---
+
+### ✅ Quick check examples
+
+| Code             | What happens                          | Explanation                               |
+| ---------------- | ------------------------------------- | ----------------------------------------- |
+| `x + 1`          | Returns a value (an expression)       | Can be used as part of another expression |
+| `x + 1;`         | Returns nothing (`()`), just executes | Expression turned into a statement        |
+| `let y = x + 1;` | Declares and stores 6 in `y`          | Full statement containing an expression   |
+
+---
+
+### 🧩 Bonus example
+
+Try this and observe:
+
+```rust
+fn main() {
+    let x = 5;
+
+    // No semicolon → returns 6 from the block
+    let val1 = { x + 1 };
+    println!("val1 = {}", val1); // prints 6
+
+    // With semicolon → returns unit ()
+    let val2 = { x + 1; };
+    println!("val2 = {:?}", val2); // prints ()
+}
+```
+
+See?
+
+ In `val1`, we let the expression return a value.
+ In `val2`, the semicolon turned it into a statement, so the block returned `()` instead.
+
+---
+
+### 🧭 In short:
+
+ `x + 1` → expression (makes a value)
+ `x + 1;` → statement (does something, discards the value)
+ `let y = x + 1;` → statement that uses an expression to assign a value.
+

@@ -1,0 +1,212 @@
+1. What Are Conditional Statements?
+
+Conditional statements are used to control the flow of execution based on certain conditions.
+In Rust, the primary conditional statements are:
+
+if
+
+else if
+
+else
+
+(and indirectly) match for pattern-based branching
+
+🔹 2. The if Statement
+
+Rust’s if condition is similar to other languages — but the condition must always be a boolean (bool), not an integer or any other type.
+
+Example:
+fn main() {
+    let number = 10;
+
+    if number > 0 {
+        println!("The number is positive");
+    }
+}
+
+
+✅ Key point:
+In Rust, if is an expression, not just a statement.
+That means it can return a value (unlike in C, C++, or Java).
+
+🔹 3. if ... else Statement
+
+You can add an else block to handle the alternative condition.
+
+Example:
+fn main() {
+    let number = -3;
+
+    if number > 0 {
+        println!("Positive number");
+    } else {
+        println!("Negative number");
+    }
+}
+
+
+If the first condition (number > 0) is false, Rust executes the else block.
+
+🔹 4. if ... else if ... else Ladder
+
+Used for multiple conditions.
+
+Example:
+fn main() {
+    let number = 0;
+
+    if number > 0 {
+        println!("Positive");
+    } else if number < 0 {
+        println!("Negative");
+    } else {
+        println!("Zero");
+    }
+}
+
+
+Rust evaluates conditions from top to bottom and stops at the first true condition.
+
+🔹 5. Using if as an Expression
+
+Unlike many languages, if can return a value because it’s an expression.
+This is a common pattern in Rust, especially for concise assignments.
+
+Example:
+fn main() {
+    let age = 18;
+
+    let can_vote = if age >= 18 {
+        "Yes"
+    } else {
+        "No"
+    };
+
+    println!("Can vote? {}", can_vote);
+}
+
+
+✅ Rules:
+
+Both if and else blocks must return values of the same type.
+
+The last expression in each block is the returned value (no ; at the end).
+
+⚠️ Common Mistake
+
+If you add a semicolon inside a block, it turns the value into () (unit type), and you’ll get a type error.
+
+❌ Wrong:
+
+let result = if true {
+    5;
+} else {
+    10;
+};
+
+
+🧠 Why error?
+Because the semicolon makes 5; return (), not 5.
+
+✅ Correct:
+
+let result = if true {
+    5
+} else {
+    10
+};
+
+🔹 6. Nested if Statements
+
+You can place if statements inside another if.
+
+Example:
+fn main() {
+    let x = 10;
+    let y = 5;
+
+    if x > 0 {
+        if y > 0 {
+            println!("Both are positive");
+        } else {
+            println!("x is positive, y is not");
+        }
+    }
+}
+
+
+🧠 Tip:
+Instead of deep nesting, prefer else if or match for cleaner code.
+
+🔹 7. if let for Pattern Matching (Bonus)
+
+While technically part of pattern matching, if let is often used for conditionally unpacking Option or Result types.
+
+Example:
+fn main() {
+    let some_number = Some(5);
+
+    if let Some(value) = some_number {
+        println!("The value is {}", value);
+    } else {
+        println!("No value found");
+    }
+}
+
+
+✅ if let is handy when you only care about one pattern (e.g., Some(_)).
+
+🔹 8. The match Statement
+
+Rust’s match is like a powerful switch-case, but more exhaustive — meaning you must cover all possible cases.
+
+✅ Syntax:
+
+match value {
+    pattern1 => expression1,
+    pattern2 => expression2,
+    _ => default_expression,  // _ is a catch-all
+}
+
+
+✅ Example:
+
+let day = 3;
+
+match day {
+    1 => println!("Monday"),
+    2 => println!("Tuesday"),
+    3 => println!("Wednesday"),
+    _ => println!("Another day"),
+}
+
+
+🔹 Key Points:
+
+Patterns must cover all possibilities or include _.
+
+Each arm can return a value, just like expressions.
+
+✅ Example (match as an expression):
+
+let number = 1;
+let result = match number {
+    1 => "One",
+    2 => "Two",
+    _ => "Other",
+};
+println!("Result: {}", result);
+
+
+✅ Example (matching multiple patterns):
+
+let x = 2;
+match x {
+    1 | 2 => println!("One or Two"),
+    3..=5 => println!("Between three and five"),
+    _ => println!("Something else"),
+}
+
+
+🧠 Tip:
+Use if for boolean checks, and match for multi-pattern logic.

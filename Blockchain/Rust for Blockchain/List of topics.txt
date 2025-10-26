@@ -31,7 +31,7 @@
 🔹 Collections
 
 16. Vectors (Vec<T>)
-17. Strings (String, &str)
+17. Strings (String, &str) - done in data types
 18. HashMaps (HashMap<K,V>)
 19. Iterators (basic usage)
 20. BTreeMap and BTreeSet

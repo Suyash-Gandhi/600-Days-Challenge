@@ -1,0 +1,262 @@
+
+## 🧠 1. What Are Loops in Rust?
+
+Loops allow a section of code to run repeatedly until a condition is met (or indefinitely).
+Rust provides three main looping constructs:
+
+1. `loop` → Infinite loop (manual exit with `break`)
+2. `while` → Conditional loop
+3. `for` → Iterator-based loop
+
+Each is designed for specific scenarios, and all are memory-safe and efficient.
+
+---
+
+## 🔁 2. The `loop` Keyword (Infinite Loop)
+
+A `loop` runs forever unless explicitly stopped using `break`.
+
+### Example:
+
+```rust
+fn main() {
+    let mut count = 0;
+
+    loop {
+        println!("Count: {}", count);
+        count += 1;
+
+        if count == 5 {
+            break; // Exit the loop
+        }
+    }
+
+    println!("Loop ended!");
+}
+```
+
+### 🧩 Explanation:
+
+ `loop {}` means: “repeat this block endlessly.”
+ `break` stops execution.
+ `continue` skips to the next iteration (like in C, JS, or Python).
+
+---
+
+### Returning a Value from `loop`
+
+In Rust, loops can return a value — which is unique compared to most languages.
+
+```rust
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter  2; // return value from loop
+        }
+    };
+
+    println!("Result: {}", result);
+}
+```
+
+📘 Output:
+
+```
+Result: 20
+```
+
+---
+
+## 🧮 3. The `while` Loop
+
+The `while` loop runs as long as a condition is true.
+
+### Example:
+
+```rust
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{}!", number);
+        number -= 1;
+    }
+
+    println!("Liftoff!");
+}
+```
+
+### 🧩 Explanation:
+
+ The condition (`number != 0`) is checked before each iteration.
+ The loop exits when the condition becomes false.
+ Ideal when you don’t know how many iterations are needed.
+
+---
+
+## 🧭 4. The `for` Loop (Most Common)
+
+The `for` loop in Rust is iterator-based, meaning it works perfectly with ranges, collections, and iterators.
+
+### Example 1: Using Ranges
+
+```rust
+fn main() {
+    for number in 1..5 {
+        println!("Number: {}", number);
+    }
+}
+```
+
+📘 Output:
+
+```
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+```
+
+> `1..5` is an exclusive range — it stops before `5`.
+> For inclusive range, use `1..=5`.
+
+---
+
+### Example 2: Reversed Range
+
+```rust
+fn main() {
+    for number in (1..=5).rev() {
+        println!("{}!", number);
+    }
+    println!("Liftoff!");
+}
+```
+
+📘 Output:
+
+```
+5!
+4!
+3!
+2!
+1!
+Liftoff!
+```
+
+---
+
+### Example 3: Iterating Over Collections
+
+```rust
+fn main() {
+    let fruits = ["apple", "banana", "mango"];
+
+    for fruit in fruits.iter() {
+        println!("I love {}", fruit);
+    }
+}
+```
+
+### Example 4: Enumerate (Index + Value)
+
+```rust
+fn main() {
+    let languages = ["Rust", "Python", "JavaScript"];
+
+    for (index, lang) in languages.iter().enumerate() {
+        println!("{}. {}", index + 1, lang);
+    }
+}
+```
+
+---
+
+## 🧱 5. `break` and `continue` in Loops
+
+| Keyword    | Description                                       |
+| ---------- | ------------------------------------------------- |
+| `break`    | Exits the loop immediately                        |
+| `continue` | Skips the current iteration and moves to the next |
+
+### Example:
+
+```rust
+fn main() {
+    for i in 1..=10 {
+        if i == 5 {
+            continue; // Skip number 5
+        }
+        if i == 8 {
+            break; // Stop at number 8
+        }
+        println!("{}", i);
+    }
+}
+```
+
+📘 Output:
+
+```
+1
+2
+3
+4
+6
+7
+```
+
+---
+
+## 🌀 6. Nested Loops with Labels
+
+You can label loops and control which one to break or continue.
+
+```rust
+fn main() {
+    'outer: for i in 1..=3 {
+        for j in 1..=3 {
+            if i == 2 && j == 2 {
+                break 'outer; // breaks outer loop
+            }
+            println!("i = {}, j = {}", i, j);
+        }
+    }
+}
+```
+
+📘 Output:
+
+```
+i = 1, j = 1
+i = 1, j = 2
+i = 1, j = 3
+i = 2, j = 1
+```
+
+---
+
+## ✅ 7. Summary Table
+
+| Loop Type | Used When                                        | Example                                 |
+| --------- | ------------------------------------------------ | --------------------------------------- |
+| `loop`    | You need an infinite or manually controlled loop | Retry logic, game loop                  |
+| `while`   | Condition-based repetition                       | Wait until a condition becomes false    |
+| `for`     | Iterating over ranges or collections             | Traversing arrays, ranges, or iterators |
+
+---
+
+## ⚙️ 8. Example Comparison
+
+| Feature                | `loop`               | `while`          | `for`               |
+| ---------------------- | -------------------- | ---------------- | ------------------- |
+| Infinite by default    | ✅                    | ❌                | ❌                   |
+| Needs manual counter   | ✅                    | ✅                | ❌                   |
+| Range/Iterator support | ❌                    | ✅ (manual)       | ✅                   |
+| Most common use        | Retry logic, servers | Input validation | Collections, ranges |
+
+---

@@ -1,0 +1,217 @@
+🔹 1. Introduction
+
+Functions in Rust are fundamental building blocks used to organize code into reusable, readable, and modular units.
+A function is a block of code that performs a specific task, can take parameters, and can return values.
+
+Functions:
+
+Improve code reusability.
+
+Enhance readability and maintainability.
+
+Allow logical separation of program components.
+
+Rust’s function system is strictly typed, ensuring safety and predictability.
+
+🔹 2. Function Declaration and Syntax
+
+The general syntax is:
+
+fn function_name(parameter1: Type1, parameter2: Type2, ...) -> ReturnType {
+    // function body
+}
+
+Key points:
+
+The keyword fn defines a function.
+
+Parameters must explicitly declare their data types.
+
+The -> symbol specifies the return type.
+
+Curly braces {} define the function body.
+
+Example:
+fn main() {
+    greet("Suyash");
+    let result = add(5, 7);
+    println!("Sum is: {}", result);
+}
+
+fn greet(name: &str) {
+    println!("Hello, {}!", name);
+}
+
+fn add(a: i32, b: i32) -> i32 {
+    a + b // no semicolon means this value is returned
+}
+
+Output:
+Hello, Suyash!
+Sum is: 12
+
+🔹 3. Function Parameters
+
+Parameters are inputs to a function.
+
+They must include type annotations.
+
+Multiple parameters are separated by commas.
+
+Example:
+
+fn multiply(x: i32, y: i32) -> i32 {
+    x * y
+}
+
+
+Rust requires explicit types — this prevents ambiguity and ensures compile-time safety.
+
+🔹 4. Return Values
+
+Rust functions can return values using either:
+
+Implicit return (preferred)
+
+Explicit return using the return keyword.
+
+✅ Implicit Return
+
+If the last expression in the function body does not end with a semicolon (;), it becomes the return value.
+
+fn square(x: i32) -> i32 {
+    x * x  // returned implicitly
+}
+
+✅ Explicit Return
+
+You can also use the return keyword to exit early:
+
+fn divide(a: f64, b: f64) -> f64 {
+    if b == 0.0 {
+        return 0.0; // early return
+    }
+    a / b
+}
+
+🔹 5. No Return Value (Unit Type)
+
+If a function doesn’t return anything, its return type is () (called the unit type).
+
+fn print_message() {
+    println!("Hello, Rust!");
+}
+
+
+This is equivalent to:
+
+fn print_message() -> () {
+    println!("Hello, Rust!");
+}
+
+🔹 6. Function Scope and Variables
+
+Variables defined inside a function are local.
+
+They exist only within that function’s scope.
+
+Example:
+
+fn show_scope() {
+    let message = "Inside function";
+    println!("{}", message);
+}
+// message is not accessible here
+
+🔹 7. Nested Functions (Inner Functions)
+
+Rust supports defining functions inside other functions, although it’s less common.
+
+fn outer() {
+    fn inner() {
+        println!("This is an inner function");
+    }
+    inner();
+}
+
+
+This helps create helper functions that are private to their scope.
+
+🔹 8. Functions with Multiple Return Types (Tuples)
+
+Rust allows returning multiple values using tuples.
+
+fn calculate(x: i32, y: i32) -> (i32, i32) {
+    (x + y, x * y)
+}
+
+fn main() {
+    let (sum, product) = calculate(3, 4);
+    println!("Sum: {}, Product: {}", sum, product);
+}
+
+🔹 9. Expressions vs Statements in Functions
+
+Understanding this difference is crucial in Rust:
+
+Statements: Perform an action, don’t return a value.
+
+let x = 5;  // statement
+
+
+Expressions: Evaluate to a value.
+
+x + 1 // expression
+
+
+In functions, the last expression (without a semicolon) is returned implicitly.
+
+🔹 10. Function Naming Convention
+
+Rust follows the snake_case naming convention for function names.
+
+✅ Good: calculate_area, find_max_value
+❌ Bad: CalculateArea, FindMaxValue
+
+This convention matches Rust’s standard library and improves readability.
+
+🔹 11. Best Practices
+
+Use meaningful names – functions should clearly describe what they do.
+
+Keep functions small – each should handle a single logical task.
+
+Avoid side effects – prefer returning results instead of modifying global state.
+
+Document functions – using /// doc comments for clarity.
+
+/// Adds two integers and returns the result.
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+🔹 12. Summary Table
+Concept	Example	Description
+Function Definition	fn greet() {}	Defines a new function
+Parameters	(a: i32, b: i32)	Typed inputs
+Return Type	-> i32	Defines output type
+Implicit Return	a + b	Last expression returned
+Explicit Return	return a + b;	Early exit possible
+No Return	()	Unit type
+Tuple Return	(x, y)	Multiple values
+✅ Final Example
+fn main() {
+    let (sum, product) = calculate(5, 3);
+    println!("Sum: {}, Product: {}", sum, product);
+}
+
+fn calculate(a: i32, b: i32) -> (i32, i32) {
+    let sum = a + b;
+    let product = a * b;
+    (sum, product) // implicit return
+}
+
+
+Output:
+
+Sum: 8, Product: 15
