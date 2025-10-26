@@ -1,0 +1,172 @@
+### 🧠 14. Stack and Heap Memory in Rust
+
+Memory management is one of Rust’s core strengths — it gives you speed like C/C++, but with safety like high-level languages.
+To understand how Rust achieves this, you must know how stack and heap memory work.
+
+---
+
+## 🧩 1. What Is Memory Management?
+
+Every running program needs memory to store:
+
+ Data (variables, strings, numbers, objects, etc.)
+ Instructions (the actual compiled code)
+
+Rust divides memory into two main regions:
+
+ The Stack
+ The Heap
+
+Each behaves differently in how data is stored, accessed, and cleaned up.
+
+---
+
+## ⚙️ 2. Stack Memory
+
+### ✅ Characteristics:
+
+ Memory is managed automatically (Last-In-First-Out order — like a stack of plates).
+ Very fast to allocate and deallocate.
+ Stores fixed-size data (known at compile time).
+ No need for manual memory management.
+
+### 📦 What’s stored on the stack?
+
+ Primitive types: `i32`, `f64`, `bool`, `char`
+ Function call data (local variables, return addresses)
+ References and pointers (but not the data they point to)
+
+### 🧱 Example:
+
+```rust
+fn main() {
+    let x = 10; // stored on stack
+    let y = 20; // also on stack
+    println!("x = {}, y = {}", x, y);
+}
+```
+
+Here both `x` and `y` are integers with a known size at compile time, so they’re stored directly on the stack.
+
+---
+
+## 🗃️ 3. Heap Memory
+
+### ✅ Characteristics:
+
+ Used for dynamic or variable-sized data.
+ Memory must be requested at runtime (via allocation).
+ Slower to access than the stack.
+ Requires management — in Rust, handled safely via ownership and borrowing.
+
+### 📦 What’s stored on the heap?
+
+ Data with an unknown size at compile time.
+ Collections like `String`, `Vec`, `Box`, `HashMap`.
+
+### 🧱 Example:
+
+```rust
+fn main() {
+    let s = String::from("Rust"); // stored on heap
+    println!("{}", s);
+}
+```
+
+Here:
+
+ The pointer, length, and capacity of `s` are stored on the stack.
+ The actual characters (`'R'`, `'u'`, `'s'`, `'t'`) live on the heap.
+
+---
+
+## 🧮 4. How Stack and Heap Work Together
+
+When you create a heap-allocated variable like `String`:
+
+ The stack holds the pointer and metadata.
+ The heap holds the actual data.
+
+```
+Stack:                 Heap:
++------------+         +------------------+
+| ptr: 0x01  | ------> | "Rust" (4 bytes) |
+| len: 4     |         +------------------+
+| cap: 4     |
++------------+
+```
+
+When `s` goes out of scope, Rust’s ownership system automatically drops (frees) the heap memory — safely and without garbage collection.
+
+---
+
+## 🛠️ 5. Performance Comparison
+
+| Feature           | Stack                   | Heap                          |
+| ----------------- | ----------------------- | ----------------------------- |
+| Speed             | Very fast (LIFO)        | Slower (dynamic allocation)   |
+| Size              | Fixed, limited          | Flexible, large               |
+| Access time       | Predictable and quick   | Indirect via pointer          |
+| Memory management | Automatic (scope-based) | Automatic via ownership rules |
+| Typical use cases | Small, known-size data  | Large or unknown-size data    |
+
+---
+
+## 🧩 6. Example: Stack vs Heap in Action
+
+```rust
+fn main() {
+    let num = 42;               // stack
+    let text = String::from("Hello"); // heap
+
+    println!("num = {}, text = {}", num, text);
+}
+```
+
+Explanation:
+
+ `num` is a fixed-size integer → stored directly on the stack.
+ `text` (a `String`) has variable length → stored partly on stack (metadata) and partly on heap (data).
+
+---
+
+## 🔐 7. Rust’s Safety Advantage
+
+Unlike C/C++:
+
+ Rust prevents dangling pointers, double frees, and memory leaks.
+ It uses ownership, borrowing, and lifetimes to ensure:
+
+   Memory is freed exactly once.
+   Data is always valid when accessed.
+
+Example (safe memory handling):
+
+```rust
+{
+    let s = String::from("Blockchain"); // allocates heap memory
+    // use s here
+} // s goes out of scope → memory automatically freed
+```
+
+---
+
+## 🧭 8. Summary Table
+
+| Aspect        | Stack                 | Heap                   |
+| ------------- | --------------------- | ---------------------- |
+| Allocation    | Compile-time          | Runtime                |
+| Access speed  | Fast                  | Slow                   |
+| Memory size   | Small                 | Large                  |
+| Ownership     | Not needed            | Managed via ownership  |
+| Example types | `i32`, `bool`, `char` | `String`, `Vec`, `Box` |
+
+---
+
+## 💡 9. Real-World Analogy
+
+Imagine you’re at a restaurant:
+
+ Stack = Counter service — you take food instantly, but can’t customize much.
+ Heap = Made-to-order meal — slower, but flexible to handle any size order.
+

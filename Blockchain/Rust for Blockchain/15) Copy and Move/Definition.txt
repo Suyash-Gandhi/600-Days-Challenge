@@ -1,0 +1,187 @@
+### 15. Copy and Move Semantics in Rust
+
+In Rust, copy and move semantics describe how values are transferred between variables — whether data is copied (duplicated) or moved (ownership transferred).
+This concept is central to Rust’s ownership model, which ensures memory safety without garbage collection.
+
+---
+
+## 🧠 1. Understanding Ownership Transfer
+
+In Rust, each value has a single owner. When you assign or pass that value to another variable, ownership can either be copied or moved, depending on the type.
+
+For example:
+
+```rust
+let x = 10;
+let y = x; // Copy occurs because i32 implements the Copy trait
+println!("x: {}, y: {}", x, y);
+```
+
+Here both `x` and `y` are valid.
+But with non-Copy types (like `String`):
+
+```rust
+let s1 = String::from("Hello");
+let s2 = s1; // Move occurs
+println!("{}", s1); // ❌ Error: s1 is moved
+```
+
+---
+
+## ⚙️ 2. Copy Semantics
+
+### Definition:
+
+When a variable is assigned or passed to a function, a bitwise copy of the value is made. Both variables are independent and own their own data.
+
+### Applies to:
+
+ Primitive types stored on the stack:
+
+   `i32`, `u32`, `f64`, `bool`, `char`, etc.
+   Tuples or arrays containing only Copy types.
+
+### Example:
+
+```rust
+let a = 5;
+let b = a; // Copy
+println!("a = {}, b = {}", a, b);
+```
+
+Both `a` and `b` exist independently since integers are lightweight and easy to duplicate.
+
+### Behind the Scenes:
+
+Rust types that can be copied implement the `Copy` trait.
+You can even define your own copyable type:
+
+```rust
+#[derive(Copy, Clone)]
+struct Point { x: i32, y: i32 }
+
+let p1 = Point { x: 3, y: 4 };
+let p2 = p1; // Copy
+println!("p1: ({}, {}), p2: ({}, {})", p1.x, p1.y, p2.x, p2.y);
+```
+
+---
+
+## 🚚 3. Move Semantics
+
+### Definition:
+
+When a value is moved, ownership is transferred to the new variable, and the old one becomes invalid.
+
+### Why Move Instead of Copy?
+
+Because some types (like `String` or `Vec<T>`) manage heap data.
+Copying them directly would be expensive and unsafe (two variables pointing to the same memory).
+
+### Example:
+
+```rust
+let s1 = String::from("Rust");
+let s2 = s1; // Move
+// println!("{}", s1); // ❌ Error: s1 no longer owns the data
+println!("{}", s2);   // ✅ Valid
+```
+
+Under the hood:
+
+ Only the pointer, length, and capacity (stored on stack) are copied.
+ Ownership of the heap data is transferred to `s2`.
+
+---
+
+## 🔁 4. Move vs Copy: Comparison Table
+
+| Aspect           | Copy                          | Move                         |
+| ---------------- | ----------------------------- | ---------------------------- |
+| Ownership        | Both variables own their data | Ownership transferred        |
+| Type requirement | Type implements `Copy` trait  | Non-`Copy` types             |
+| Memory location  | Stack-only data               | May involve heap data        |
+| Performance      | Very fast                     | Slightly slower but safe     |
+| Example types    | `i32`, `char`, `bool`         | `String`, `Vec<T>`, `Box<T>` |
+| After assignment | Both variables valid          | Original becomes invalid     |
+
+---
+
+## 🧩 5. Clone: Explicit Deep Copy
+
+If you want to duplicate heap data, use `.clone()`.
+
+```rust
+let s1 = String::from("Rust");
+let s2 = s1.clone(); // Explicit deep copy
+println!("s1 = {}, s2 = {}", s1, s2);
+```
+
+Here, `s2` gets a new allocation on the heap with a full copy of `s1`’s data.
+
+| Operation  | Description                      |
+| ---------- | -------------------------------- |
+| `=`        | Move or copy (depending on type) |
+| `.clone()` | Always deep copy                 |
+
+---
+
+## 🔄 6. Moves in Function Calls
+
+Passing a value to a function also triggers a move (or copy).
+
+```rust
+fn take_ownership(s: String) {
+    println!("{}", s);
+}
+
+let s1 = String::from("hello");
+take_ownership(s1); // Moves s1 into function
+// println!("{}", s1); // ❌ Invalid
+```
+
+If you want to use `s1` again, you must return ownership or use a reference.
+
+---
+
+## 🧮 7. Example: Mixed Behavior
+
+```rust
+fn main() {
+    let x = 10;         // i32 -> Copy
+    let y = x;          // Copy
+    println!("x = {}, y = {}", x, y);
+
+    let s1 = String::from("Hi");
+    let s2 = s1;        // Move
+    // println!("{}", s1); // ❌ Moved
+    println!("{}", s2);
+}
+```
+
+Output:
+
+```
+x = 10, y = 10
+Hi
+```
+
+---
+
+## 🧱 8. Why Rust Uses Move Semantics
+
+ Prevents double free errors (two variables freeing same memory)
+ Avoids dangling pointers
+ Ensures predictable memory ownership
+ Improves performance (no hidden deep copies)
+
+---
+
+### ✅ Summary
+
+| Concept | Meaning                        | Example                     | Valid After Move? |
+| ------- | ------------------------------ | --------------------------- | ----------------- |
+| Copy    | Duplicates value (lightweight) | `let y = x;` for `i32`      | ✅                 |
+| Move    | Transfers ownership            | `let s2 = s1;` for `String` | ❌                 |
+| Clone   | Explicit deep copy             | `let s2 = s1.clone();`      | ✅                 |
+

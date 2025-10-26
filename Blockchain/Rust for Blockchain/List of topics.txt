@@ -23,7 +23,7 @@
 
 10. Ownership rules
 11. Borrowing (& references)
-12. Mutable vs. immutable references
+12. Mutable vs. immutable references - done in Borrowing
 13. Lifetimes (introductory level)
 14. Stack vs heap memory
 15. Copy vs Move semantics

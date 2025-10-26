@@ -1,0 +1,226 @@
+### 🧩 16. Vectors in Rust
+
+---
+
+### 🔹 What is a Vector?
+
+A vector in Rust (`Vec<T>`) is a growable, heap-allocated array.
+Unlike fixed-size arrays, vectors can dynamically resize — meaning you can add or remove elements at runtime.
+
+It is defined in the Rust standard library as:
+
+```rust
+struct Vec<T> { / implementation details / }
+```
+
+Here, `T` represents the type of elements stored in the vector — all elements in a vector must be of the same type.
+
+---
+
+### 🔹 Creating Vectors
+
+There are several ways to create vectors:
+
+#### 1. Using `Vec::new()`
+
+Creates an empty vector.
+
+```rust
+let v: Vec<i32> = Vec::new();
+```
+
+> Note: Type annotation (`Vec<i32>`) is needed because Rust must know what type of elements the vector will hold.
+
+#### 2. Using the `vec!` Macro
+
+The most common way to create vectors:
+
+```rust
+let v = vec![1, 2, 3, 4, 5];
+```
+
+> Rust automatically infers the type based on the values.
+
+#### 3. Using `Vec::with_capacity()`
+
+Creates a vector with a predefined capacity to avoid reallocations when adding many items:
+
+```rust
+let mut v = Vec::with_capacity(10);
+v.push(5);
+```
+
+---
+
+### 🔹 Adding Elements
+
+Use the `.push()` method:
+
+```rust
+let mut v = Vec::new();
+v.push(10);
+v.push(20);
+v.push(30);
+```
+
+> Vectors must be mutable (`mut`) to allow insertion or deletion.
+
+---
+
+### 🔹 Accessing Elements
+
+#### 1. Using Indexing
+
+```rust
+let v = vec![10, 20, 30];
+println!("{}", v[1]); // Output: 20
+```
+
+⚠️ If the index is out of range, your program will panic.
+
+#### 2. Using `.get()` Method (Safer)
+
+```rust
+let v = vec![10, 20, 30];
+match v.get(5) {
+    Some(value) => println!("Value: {}", value),
+    None => println!("Index out of bounds"),
+}
+```
+
+✅ `.get()` returns an `Option<T>` (`Some(value)` or `None`).
+
+---
+
+### 🔹 Iterating Over Vectors
+
+#### 1. Immutable Iteration
+
+```rust
+let v = vec![1, 2, 3];
+for val in &v {
+    println!("{}", val);
+}
+```
+
+#### 2. Mutable Iteration
+
+```rust
+let mut v = vec![1, 2, 3];
+for val in &mut v {
+    val += 10; // dereference to modify
+}
+println!("{:?}", v); // [11, 12, 13]
+```
+
+#### 3. Ownership Iteration
+
+```rust
+let v = vec![1, 2, 3];
+for val in v {
+    println!("{}", val);
+}
+// v can’t be used here because it’s moved
+```
+
+---
+
+### 🔹 Removing Elements
+
+#### 1. `.pop()` – Removes the last element
+
+```rust
+let mut v = vec![1, 2, 3];
+v.pop();
+println!("{:?}", v); // [1, 2]
+```
+
+#### 2. `.remove(index)` – Removes element at a specific position
+
+```rust
+let mut v = vec![10, 20, 30, 40];
+v.remove(1);
+println!("{:?}", v); // [10, 30, 40]
+```
+
+---
+
+### 🔹 Common Vector Methods
+
+| Method                 | Description              | Example          |
+| ---------------------- | ------------------------ | ---------------- |
+| `push(value)`          | Add element at the end   | `v.push(5)`      |
+| `pop()`                | Remove last element      | `v.pop()`        |
+| `len()`                | Get number of elements   | `v.len()`        |
+| `is_empty()`           | Check if empty           | `v.is_empty()`   |
+| `contains(&value)`     | Check if element exists  | `v.contains(&3)` |
+| `insert(index, value)` | Insert at specific index | `v.insert(1, 5)` |
+| `remove(index)`        | Remove at index          | `v.remove(2)`    |
+| `clear()`              | Remove all elements      | `v.clear()`      |
+
+---
+
+### 🔹 Ownership & Borrowing Rules with Vectors
+
+Vectors follow Rust’s ownership and borrowing rules:
+
+```rust
+let v = vec![1, 2, 3];
+let first = &v[0];
+v.push(4); // ❌ Error: cannot borrow `v` as mutable while immutable borrow exists
+```
+
+Reason: adding a new element may reallocate the vector, invalidating existing references.
+
+✅ Solution — use separate scopes or avoid holding references while modifying:
+
+```rust
+let mut v = vec![1, 2, 3];
+v.push(4);
+let first = &v[0];
+```
+
+---
+
+### 🔹 Vector of Structs Example
+
+```rust
+struct Student {
+    name: String,
+    marks: u32,
+}
+
+fn main() {
+    let students = vec![
+        Student { name: String::from("Alice"), marks: 85 },
+        Student { name: String::from("Bob"), marks: 90 },
+    ];
+
+    for s in &students {
+        println!("{} scored {}", s.name, s.marks);
+    }
+}
+```
+
+---
+
+### 🔹 Memory Representation
+
+ Elements are stored contiguously in heap memory.
+ A `Vec<T>` is essentially a pointer, capacity, and length.
+ When resized, it may reallocate memory for larger capacity.
+
+---
+
+### 🔹 Summary
+
+| Concept       | Description                                       |
+| ------------- | ------------------------------------------------- |
+| Type      | `Vec<T>` – growable, heap-allocated list          |
+| Creation  | `Vec::new()`, `vec![...]`, `Vec::with_capacity()` |
+| Mutation  | `.push()`, `.pop()`, `.insert()`, `.remove()`     |
+| Access    | Indexing `[i]` or `.get(i)`                       |
+| Iteration | `for val in &v`, `for val in &mut v`              |
+| Safety    | Use `.get()` to prevent panics                    |
+| Ownership | Watch out for borrow conflicts when modifying     |
+
