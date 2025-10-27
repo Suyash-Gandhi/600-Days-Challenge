@@ -1,0 +1,132 @@
+### 🔹 Nullish Coalescing Operator (`??`) in JavaScript
+
+The Nullish Coalescing Operator (`??`) is used to provide a default value when a variable is either `null` or `undefined`.
+
+It is similar to the logical OR (`||`) operator — but with one key difference:
+
+> `||` treats falsy values like `0`, `''`, or `false` as needing a default,
+> while `??` only treats `null` and `undefined` as needing a default.
+
+---
+
+### 🔸 Syntax
+
+```js
+let result = value ?? defaultValue;
+```
+
+ If `value` is not null or undefined, it returns `value`.
+ Otherwise, it returns `defaultValue`.
+
+---
+
+### 🔹 Example 1: Basic Usage
+
+```js
+let username = null;
+let displayName = username ?? "Guest";
+console.log(displayName); // "Guest"
+```
+
+✅ Explanation:
+Since `username` is `null`, it falls back to `"Guest"`.
+
+---
+
+### 🔹 Example 2: Difference from OR (`||`)
+
+```js
+let count = 0;
+
+console.log(count || 5); // 5  → because 0 is falsy
+console.log(count ?? 5); // 0  → because 0 is NOT null or undefined
+```
+
+✅ Explanation:
+
+ `||` returns 5 because 0 is falsy.
+ `??` returns 0 because it only checks for `null` and `undefined`.
+
+---
+
+### 🔹 Example 3: Undefined Value
+
+```js
+let price;
+let finalPrice = price ?? 100;
+console.log(finalPrice); // 100
+```
+
+✅ Explanation:
+`price` is `undefined`, so `finalPrice` becomes 100.
+
+---
+
+### 🔹 Example 4: With Strings
+
+```js
+let name = "";
+let result = name ?? "Anonymous";
+console.log(result); // ""
+```
+
+✅ Explanation:
+Empty string `""` is not null or undefined, so `??` keeps it as is.
+
+---
+
+### 🔹 Example 5: Combining with Other Operators
+
+You can combine it with other operators, but you must use parentheses when mixing with `||` or `&&`:
+
+```js
+let userInput = null;
+let value = (userInput ?? 10) + 5;
+console.log(value); // 15
+```
+
+⚠️ Note:
+`??` cannot be directly mixed with `||` or `&&` without parentheses,
+because of operator precedence ambiguity:
+
+```js
+// ❌ SyntaxError
+let x = null || ?? 5;
+```
+
+✅ Correct:
+
+```js
+let x = (null || undefined) ?? 5;
+console.log(x); // 5
+```
+
+---
+
+### 🔹 Real-world Example
+
+Default configuration values:
+
+```js
+function createUser(name, age) {
+  return {
+    name: name ?? "Anonymous",
+    age: age ?? 18
+  };
+}
+
+console.log(createUser("Alice", 25)); // { name: "Alice", age: 25 }
+console.log(createUser(undefined, null)); // { name: "Anonymous", age: 18 }
+```
+
+---
+
+### 🔸 When to Use `??`
+
+Use it when:
+
+ You want to handle `null` or `undefined`,
+  but keep falsy values like 0, false, or "" as valid inputs.
+
+---
+

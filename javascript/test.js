@@ -1,9 +1,6 @@
-{
-    let r;              // -------+-- 'a starts here
-    {                   //        |
-        let x = 5;      // ---+-- 'b starts here
-        r = x;         //    |   Error! 'b shorter than 'a
-    }                   // ---+-- 'b ends here
-    console.log(r);
-      // Dangling reference if allowed
-}                       // -------+-- 'a ends here
+
+const numbers = [1, 2, 3, 4, 5]
+
+const[first,...rest]=numbers
+
+console.log(first,rest);
