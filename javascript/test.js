@@ -1,6 +1,8 @@
+function greet(name = "Guest", ...messages) {
+  console.log(`Hello, ${name}!`);
+  console.log("Your messages:");
+  messages.forEach(msg => console.log(`- ${msg}`));
+}
 
-const numbers = [1, 2, 3, 4, 5]
-
-const[first,...rest]=numbers
-
-console.log(first,rest);
+// Example calls
+greet("Suyash", "Welcome back!", "You have 3 new notifications.", "Have a great day!");
