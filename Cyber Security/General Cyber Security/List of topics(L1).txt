@@ -1,0 +1,221 @@
+
+# 🔴 RED TEAM — Offensive Security (1–80)
+
+1. What is hacking & cybersecurity ethics (legal/ethical boundaries)
+2. CIA triad & attacker objectives (confidentiality, integrity, availability)
+3. Basic networking for attackers (IP, TCP/UDP, DNS, routing)
+4. OSI model & how packets traverse networks
+5. HTTP/HTTPS, cookies, headers — web request anatomy
+6. Basic OS fundamentals for attackers (processes, memory, system calls)
+7. Linux CLI essentials (bash scripting, tools)
+8. Windows CLI & PowerShell basics for red teamers
+9. Setting up lab environments (VirtualBox, VMware, containers)
+10. Building an attack playground (Metasploitable, DVWA, local infra)
+11. Python for pentesting: scripting automation & tooling
+12. Bash/PowerShell scripting for automation & post-exploitation
+13. Reconnaissance basics: passive vs active recon
+14. OSINT techniques & tools (subdomain enumeration, social media)
+15. Whois, DNSdumpster, crt.sh, theHarvester and footprinting tools
+16. Port scanning fundamentals with Nmap (scan types, timing)
+17. Service/OS fingerprinting and banner grabbing
+18. Network mapping and topology discovery
+19. Vulnerability scanning (Nessus, OpenVAS) and interpreting results
+20. Web app reconnaissance: spidering, parameter discovery
+21. Burp Suite basics: proxy, repeater, intruder, scanner workflow
+22. OWASP Top 10 deep dive (SQLi, XSS, CSRF, SSRF, etc.)
+23. SQL Injection techniques and payload crafting
+24. Cross-Site Scripting (reflected, stored, DOM) exploitation & defense research
+25. Cross-Site Request Forgery (CSRF) exploitation & exploit chains
+26. Server-side request forgery (SSRF) and impact analysis
+27. Remote/Command injection exploitation strategies
+28. Local & Remote file inclusion (LFI/RFI) exploitation
+29. Authentication flaws: session hijacking, cookie tampering, JWT attacks
+30. Password attacks: hashes, cracking, rainbow tables, Hashcat & John usage
+31. Brute force, credential stuffing, and rate-limit bypass techniques
+32. Phishing fundamentals: crafting believable lures & delivery channels
+33. Social engineering operations: pretexting, vishing, physical deception
+34. Wireless attacks: WEP/WPA/WPA2/ WPA3 fundamentals & cracking approaches
+35. Evil Twin, rogue APs, and wireless client attacks
+36. DoS & DDoS concepts, amplification vectors and basic mitigation avoidance techniques
+37. Exploit frameworks: Metasploit usage and custom module development
+38. Client-side attacks: browser-based exploitation and malicious payloads
+39. Mobile app exploitation basics (Android/iOS reverse engineering)
+40. API security attacks: auth bypasses, IDOR, mass assignment, abuse cases
+41. Directory & file enumeration, SMB/LDAP/NetBIOS attacks
+42. Basic reverse engineering concepts (static vs dynamic)
+43. Binary analysis tooling: strings, objdump, radare2 basics
+44. Memory corruption fundamentals (stack/heap overflow concepts)
+45. Buffer overflow exploitation principles (shellcode, ret2libc)
+46. Introduction to exploit development and proof-of-concept creation
+47. Shellcode basics and crafting position-independent payloads
+48. Privilege escalation fundamentals (Linux SUID binaries, Windows misconfigurations)
+49. Windows privilege escalation techniques (ACLs, services, token impersonation)
+50. Linux privilege escalation techniques (capabilities, misconfig, cron)
+51. Active Directory basics for attackers (domain concepts, trusts)
+52. AD attack techniques: Kerberoasting, Pass-the-Hash, Pass-the-Ticket
+53. Lateral movement techniques: SMB, RDP, WMI, PsExec, SSH pivoting
+54. BloodHound/Impacket usage for AD enumeration & abuse
+55. Post-exploitation operations: persistence methods and stealth
+56. C2 fundamentals: architecture, protocols, and covert channels
+57. Common C2 frameworks (Cobalt Strike concepts, Empire alternatives)
+58. Evasion techniques: AV/EDR detection logic & telemetry evasion basics
+59. Payload obfuscation and packing basics (steganography, crypters)
+60. Data exfiltration methods and covert storage/transport techniques
+61. Threat actor emulation & TTPs (use of MITRE ATT&CK for planning)
+62. Red team planning: rules of engagement, scoping, and safety
+63. Reporting pentests: structure, evidence, risk rating, remediation guidance
+64. Advanced exploitation: ROP chains and heap exploitation techniques
+65. Advanced reverse engineering using IDA Pro, Ghidra, Binary Ninja
+66. Kernel exploitation basics (Windows & Linux kernel primitives)
+67. IoT/embedded device exploitation basics (firmware analysis, JTAG)
+68. Exploit development for modern targets and fuzzing techniques (AFL, honggfuzz)
+69. Binary instrumentation & dynamic analysis (PIN, Frida)
+70. Custom tool development (Go / Rust for pentesting tools)
+71. Red team automation & scripting of large-scale exercises
+72. Hardware/side-channel basics relevant to red teaming (timing, power analysis)
+73. Supply-chain attack concepts and dependency confusion tactics
+74. Advanced social engineering campaigns and OPSEC for attackers
+75. Offensive cloud attacks: misconfigured storage, IAM abuse, SSRF→RCE chains
+76. Container escape techniques and Kubernetes attack surface
+77. Advanced credential harvesting and lateral persistence in cloud-native infra
+78. Zero-day discovery methodologies and responsible disclosure process
+79. Nation-state level tactics: APT behaviors, advanced evasion & persistence strategies
+80. Leading red teams: strategy, measurement, continuous improvement
+
+---
+
+# 🟦 BLUE TEAM — Defensive Security (81–140)
+
+81. Defensive mindset: triage, detection, containment, recovery
+82. Packet analysis basics for defenders (Wireshark workflows)
+83. Log sources & formats (syslog, Windows Event, JSON logs)
+84. Fundamentals of SIEM architecture and data ingestion
+85. Building use cases for detection (from ATT&CK techniques)
+86. Alert triage & SOC analyst workflows (Tier 1 → Tier 3)
+87. Endpoint security fundamentals: AV vs EDR vs XDR concepts
+88. EDR telemetry: process, network, file, registry events analysis
+89. Intrusion Detection Systems (Snort, Suricata) configuration & tuning
+90. Network detection using Zeek (Bro) and flow analysis (NetFlow/IPFIX)
+91. Incident response fundamentals: IR lifecycle (prepare, detect, contain, eradicate, recover)
+92. Forensic basics: evidence collection, chain-of-custody, preservation best practices
+93. Disk forensics: imaging, filesystem artifacts (Autopsy basics)
+94. Memory forensics fundamentals (Volatility, Rekall)
+95. Malware analysis basics for defenders (sandboxing, YARA rules)
+96. Threat intelligence basics: IOC ingestion, enrichment, and operationalization
+97. Threat intel formats & sharing: STIX/TAXII concepts
+98. Hunt team operations: hypothesis-driven threat hunting methodologies
+99. Detection engineering: writing Sigma rules, custom correlation logic
+100. SOAR integration: automating playbooks & response workflows
+101. Network segmentation & microsegmentation for defense-in-depth
+102. Web application defenses: WAF, input validation, CSP, secure headers
+103. Hardening OSes: CIS benchmarks, patch management practices
+104. Identity & access management (IAM) defense: MFA, conditional access, least privilege
+105. PAM (Privileged Access Management) concepts and controls
+106. Log management architecture, retention policies, and storage planning
+107. Security monitoring in cloud: CloudTrail, CloudWatch, Audit Logs (AWS/Azure/GCP)
+108. Container security monitoring (Kubernetes audit logs, Falco)
+109. Vulnerability management lifecycle: scanning, triage, remediation, metrics
+110. Application security defenses: SAST/DFIR integration into pipelines
+111. Incident response tabletop exercises & war-gaming best practices
+112. Crisis communications & legal coordination during incidents
+113. Forensic analysis of network captures and full packet capture architectures
+114. Ransomware detection, containment, and recovery practices
+115. Backup strategies, immutable backups, and recovery testing
+116. Deception technologies: honeypots, honeytokens, and deception orchestration
+117. Security architecture patterns: segmentation, DMZs, and WAF placement
+118. Secure boot, TPM, HSM basics for endpoint resilience
+119. Data Loss Prevention (DLP) technologies and policy design
+120. Secure logging and observability (structured logs, tracing, metrics)
+121. Security metrics, KPIs, and operational dashboards for SOC performance
+122. Insider threat detection programs and behavioral analytics
+123. Malware reverse engineering for defenders (static & dynamic defensive analysis)
+124. Forensic readiness: preparation of systems for investigations
+125. Cloud-native security architectures: CASB, CSPM, CWPP concepts
+126. Code and artifact provenance: SBOMs and supply chain transparency
+127. Detection validation: attack simulation frameworks (Atomic Red Team, Caldera)
+128. Compliance-driven monitoring (PCI, HIPAA, GDPR logging requirements)
+129. Security patch orchestration at scale and rollback strategies
+130. Threat hunting with AI/ML-assisted tooling and anomaly detection
+131. Blue team playbook authoring, maintenance, and tabletop testing
+132. SOC maturity models and building a world-class SOC (people/process/tech)
+133. Endpoint containment & remediation tooling (isolation, rollback)
+134. Log enrichment and pivoting (user attribution, geolocation)
+135. Cross-team coordination: legal, PR, IT, executive reporting during incidents
+136. Secure architecture reviews and threat modeling remediation tracking
+137. Malware telemetry pipelines and IOC lifecycle management
+138. Post-incident forensics, lessons-learned, and remediation verification
+139. Cyber resilience planning and business continuity integration
+140. Leading blue teams: governance, hiring, incident readiness metrics
+
+---
+
+# 🟪 PURPLE TEAM — Integration & Continuous Improvement (141–170)
+
+141. Purple team concept: aligning red & blue for continuous improvement
+142. Building collaborative exercises: red-led tests + blue validation
+143. Mapping exercises to MITRE ATT&CK and D3FEND frameworks
+144. Detection engineering driven by red team findings
+145. Breach and attack simulation (BAS) tool concepts and selection
+146. Attack emulation planning and cadence (adversary emulation calendars)
+147. Purple team metrics: mean time to detect/respond, coverage % by ATT&CK
+148. Automated feedback loops (red test → detection rule → retest)
+149. Purple team playbooks & runbooks for iterative improvement
+150. Implementing Atomic tests and detection validation frameworks
+151. Threat emulation platforms (Caldera, Atomic Red Team, Infection Monkey workflows)
+152. Using ATT&CK Navigator for coverage visualization & gap analysis
+153. Blue/red report translation: making technical findings actionable for ops
+154. Purple team tooling: telemetry collection, replay, and detection simulations
+155. Tabletop exercises & cross-functional incident simulations
+156. Collaborative root cause analysis and remediation ownership models
+157. Detection content lifecycle: build → test → deploy → monitor → retire
+158. Purple-led red-team augmentation for continuous validation (supply chain, infra)
+159. Red team tool hardening to prevent false positives in detection testing
+160. Scheduling & governance of purple operations in mature organizations
+161. Automated adversary emulation at scale (scripting TTPs and orchestration)
+162. Building internal training: using red team findings to train SOC analysts
+163. Purple team playbook for cloud-native platforms (Kubernetes, Serverless)
+164. Metrics-driven security investment justification using purple data
+165. Continuous purple operations: sprint-based security improvements
+166. Coordinating external engagements (3rd party red teams / purple audits)
+167. Purple team maturity model and roadmaps for enterprise adoption
+168. Creating a shared security language between offensive and defensive teams
+169. Red-blue knowledge transfer sessions and certification programs
+170. Leading purple teams: program design, ROI measurement, and executive reporting
+
+---
+
+# ⛓️ BLOCKCHAIN SPECIALIZATION (171–200)
+
+*(Smart contracts, node security, crypto, DeFi, audits, advanced blockchain topics)*
+
+171. Blockchain fundamentals: blocks, transactions, state machines
+172. Consensus algorithms: PoW, PoS, PBFT, delegated variants
+173. Transaction lifecycle and mempool behavior
+174. Merkle tree structures, Patricia tries, and state proofs
+175. Cryptographic primitives in blockchain (hashes, ECDSA/EdDSA)
+176. Wallet fundamentals: private/public keys, seed phrases, derivation paths
+177. Key management & custody: hot vs cold wallets, hardware wallets, multi-sig basics
+178. Smart contract platforms: EVM, WASM, Solana, move-based chains overview
+179. Solidity fundamentals and secure coding basics for smart contracts
+180. Common smart contract vulnerabilities (reentrancy, arithmetic, access control)
+181. Proxy & upgrade patterns security risks (storage collisions, admin keys)
+182. Gas economics: gas limits, optimization, gas-based DoS vectors
+183. Oracles & external data: oracle manipulation, decentralized oracles risk models
+184. MEV (Miner/Maximal Extractable Value): front-running & sandwich attacks overview
+185. Cross-chain bridges & risks: message relays, trusted relayers, bridge exploits
+186. Token standards & standards compliance (ERC20/721/1155 and equivalents)
+187. DeFi primitives: AMMs, lending protocols, flash loans and attack surfaces
+188. Static analysis tools for contracts (Slither, Mythril, Solhint)
+189. Dynamic testing & fuzzing for smart contracts (Echidna, Foundry fuzz)
+190. Formal verification basics & tools (Certora, KEVM, symbolic model checking)
+191. Blockchain node security: full node configuration, RPC hardening, peers management
+192. Network-level blockchain attacks: eclipse, BGP hijacking, partitioning, eclipse defenses
+193. On-chain forensics & tracer tools (Etherscan, Chainalysis basics)
+194. Privacy techniques: mixers, coinjoins, zk-SNARKs & zk-STARKs basics
+195. Gasless transactions, meta-transactions, and relayer security considerations
+196. Smart contract audit process: scoping, manual review, tooling, reporting templates
+197. Stablecoin mechanics & risks (algorithmic vs collateralized models)
+198. Layer 2 security (optimistic/zk rollups), fraud proofs, and challenge periods
+199. DeFi composability risks & safe composition patterns
+200. Responsible disclosure, bounty programs, and post-audit remediation verification
+
