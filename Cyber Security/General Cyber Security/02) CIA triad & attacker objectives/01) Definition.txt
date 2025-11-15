@@ -1,0 +1,113 @@
+Below is a clear, thorough, university-level (12-mark style) explanation of the CIA Triad and Attacker Objectives, written the way you prefer: structured, detailed, step-by-step, and complete.
+
+---
+
+# CIA Triad & Attacker Objectives
+
+The CIA Triad is the foundational model of cybersecurity. It defines the three primary security goals that every system must protect. Understanding this model also helps in understanding an attacker’s intentions, because most cyberattacks aim to break one or more of these three components.
+
+---
+
+# 1. Confidentiality
+
+### Definition
+
+Confidentiality ensures that information is accessible only to authorized individuals. It prevents unauthorized disclosure of data.
+
+### Why It Matters
+
+If confidentiality is broken, sensitive information—such as personal data, financial records, passwords, business secrets—gets exposed. This leads to privacy violations, financial loss, identity theft, or corporate espionage.
+
+### Methods Used to Maintain Confidentiality
+Encryption (AES, RSA, TLS)Access control & authentication (passwords, biometrics, MFA)Least privilege principleNetwork segmentationData classification & labeling
+
+### Attacker Objective: Break Confidentiality
+
+Attackers try to access information they should not see.
+Examples:
+Data breaches (stealing customer databases)Password sniffing/credential theftEavesdropping attacks (MITM attacks)Exploiting misconfigured cloud storage
+
+---
+
+# 2. Integrity
+
+### Definition
+
+Integrity ensures that data remains accurate, complete, and unaltered unless modified by authorized users.
+
+### Why It Matters
+
+If integrity is compromised, wrong or manipulated information is used for decision-making. It can mislead users, disrupt operations, or cause massive financial/operational damage.
+
+### Methods Used to Maintain Integrity
+Hash functions (SHA-256)Digital signaturesChecksumsVersion controlLogging and auditing
+
+### Attacker Objective: Break Integrity
+
+Attackers aim to modify, corrupt, replace, or forge data.
+Examples:
+Altering bank transactionsDefacing websitesChanging configuration filesInjecting malicious code (SQL injection)Tampering with logs to hide traces
+
+---
+
+# 3. Availability
+
+### Definition
+
+Availability ensures that systems, services, and data are accessible whenever required by legitimate users.
+
+### Why It Matters
+
+If availability fails, even secure information or accurate data becomes useless because users cannot access it. Organizations face downtime, revenue loss, and operational disruption.
+
+### Methods Used to Maintain Availability
+Redundancy (multiple servers, backups)Load balancingRegular maintenance & patchingDisaster recovery plans (DRP)Failover mechanismsNetwork security tools (WAF, firewalls)
+
+### Attacker Objective: Break Availability
+
+Attackers aim to disrupt or shut down a service, making it unusable.
+Examples:
+DDoS attacksRansomware that locks systemsDeleting system filesOverloading serversCutting network cables or power
+
+---
+
+# Understanding Attacker Objectives Through the CIA Triad
+
+Attackers typically have one of the following motivations:
+
+### 1. Break Confidentiality
+
+To steal, spy, or sell data
+→ Example: Hacker stealing 10M customer records.
+
+### 2. Break Integrity
+
+To damage reputation, manipulate data, or cause financial loss
+→ Example: Changing exam results, altering financial databases.
+
+### 3. Break Availability
+
+To disrupt business, cause chaos, or demand ransom
+→ Example: Blocking access to a hospital database.
+
+### Many attacks combine all three
+
+Example: Ransomware
+ Breaks Availability by locking files Threatens Confidentiality (“pay or we leak” model) Damages Integrity by corrupting files
+
+---
+
+# Examples of Attacks Mapped to CIA Triad
+
+| Attack Type        | Breaks Confidentiality     | Breaks Integrity     | Breaks Availability |
+| ------------------ | -------------------------- | -------------------- | --------------------|
+| Phishing           | ✔                          | –                    | –                   |
+| SQL Injection      | ✔                          | ✔                   | –                   |
+| Ransomware         | ✔ (potentially)            | ✔                   | ✔                   |
+| DDoS Attack        | –                           | –                   | ✔                   |
+| MITM Attack        | ✔                          | ✔                   | –                   |
+| Website Defacement | –                           | ✔                   | –                   |
+| Insider Data Leak  | ✔                          | ✔                   | ✔                   |
+
+---
+
