@@ -1,6 +1,4 @@
-Here’s a comprehensive list of computer networking topics you need to master for cybersecurity, covering Level 1 (Basics) to Level 3 (Advanced):
 
----
 
 ## 🔹 Level 1: Networking Fundamentals (Must-Have Basics)
 

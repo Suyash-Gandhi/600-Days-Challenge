@@ -1,103 +1,8 @@
 
 
-# OSI Model & How Packets Traverse Networks (Detailed Explanation)
+#  How Packets Traverse Networks (Detailed Explanation)
 
-## 1. Introduction to the OSI Model
-
-The OSI (Open Systems Interconnection) model is a conceptual framework that standardizes how data moves across a network.
-It divides communication into 7 layers, each with its own responsibilities.
-Understanding OSI helps you analyze network behavior, troubleshoot issues, and understand how attackers exploit different layers.
-
----
-
-# 2. Seven Layers of the OSI Model (With Functions)
-
----
-
-## Layer 7 – Application Layer
-
- Closest to the user.
- Provides services like web browsing, email, file transfer.
- Protocols: HTTP, HTTPS, FTP, DNS, SMTP.
- Security relevance: phishing, malware delivery, DNS spoofing start here.
-
----
-
-## Layer 6 – Presentation Layer
-
- Translates data formats (JSON, XML, JPEG, MP4).
- Handles:
-
-   Encryption/decryption (SSL/TLS handshake).
-   Compression.
- Security relevance: encryption protects confidentiality.
-
----
-
-## Layer 5 – Session Layer
-
- Establishes, maintains, and terminates communication sessions.
- Responsible for:
-
-   Authentication.
-   Session checkpoints.
- Protocols: NetBIOS, RPC.
- Attack example: Session hijacking.
-
----
-
-## Layer 4 – Transport Layer
-
- Provides end-to-end communication.
- Two main protocols:
-
-   TCP → Reliable (3-way handshake)
-   UDP → Unreliable but faster (gaming, streaming)
- Handles port numbers.
- Attack relevance:
-
-   SYN Flood (DDoS)
-   Port scanning (Nmap)
-
----
-
-## Layer 3 – Network Layer
-
- Handles routing packets across networks.
- Uses IP addresses.
- Protocols: IPv4, IPv6, ICMP, ARP (layer 2.5)
- Devices: Routers.
- Attack relevance: IP spoofing, DDoS, traceroute enumeration.
-
----
-
-## Layer 2 – Data Link Layer
-
- Handles communication on the local network.
- Converts packets → frames.
- Uses MAC addresses.
- Divided into:
-
-   LLC (logic)
-   MAC (hardware addressing)
- Devices: Switches.
- Attacks: MAC spoofing, ARP poisoning, VLAN hopping.
-
----
-
-## Layer 1 – Physical Layer
-
- Transmits raw bits (0s and 1s).
- Physical mediums:
-
-   Copper cables
-   Fiber optics
-   Radio waves (Wi-Fi)
- Attacks: Wire tapping, RF jamming.
-
----
-
-# 3. How a Packet Traverses a Network (Step-by-Step)
+# 1. How a Packet Traverses a Network (Step-by-Step)
 
 This is important for understanding how communication actually happens.
 
@@ -181,7 +86,7 @@ It travels to the router.
 
 ---
 
-# 4. What Happens Next in the Network?
+# 2. What Happens Next in the Network?
 
 After reaching your router:
 
@@ -231,7 +136,7 @@ The server then sends the response back following the same OSI path but in rever
 
 ---
 
-# 5. Encapsulation vs Decapsulation
+# 3. Encapsulation vs Decapsulation
 
 ### Encapsulation
 
@@ -247,7 +152,7 @@ When data arrives at the destination:
 
 ---
 
-# 6. Why OSI Matters for Cybersecurity
+# 4. Why OSI Matters for Cybersecurity
 
 Attackers exploit weaknesses in layers:
 
@@ -265,7 +170,7 @@ Understanding OSI helps identify where an attack is happening.
 
 ---
 
-# 7. Simple Real-World Example (Complete Flow)
+# 5. Simple Real-World Example (Complete Flow)
 
 ### You → Wi-Fi → Router → ISP → Internet → Server
 
@@ -281,24 +186,3 @@ Understanding OSI helps identify where an attack is happening.
 10. Server decapsulates, reads request, sends response back
 
 ---
-
-# 8. Summary (Exam-Friendly + Interview-Friendly)
-
-### OSI Model = 7 Layers
-
-Each has specific roles and vulnerabilities.
-
-### Packet Traversal:
-
-From top (Application) to bottom (Physical) → Encapsulation
-Across network routers → Routing
-Bottom to top at receiver → Decapsulation
-
-### Key Concept:
-
- Ports = Process to process
- IP = Device to device
- MAC = Local network hop-to-hop
-
----
-
