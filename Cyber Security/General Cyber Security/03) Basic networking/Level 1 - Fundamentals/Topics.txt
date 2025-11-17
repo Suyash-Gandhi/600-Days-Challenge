@@ -1,0 +1,38 @@
+Here’s a comprehensive list of computer networking topics you need to master for cybersecurity, covering Level 1 (Basics) to Level 3 (Advanced):
+
+---
+
+## 🔹 Level 1: Networking Fundamentals (Must-Have Basics)
+
+### 📌 Network Models:
+
+ OSI Model (7 Layers)
+ TCP/IP Model
+
+### 📌 IP Addressing:
+
+ IPv4 and IPv6
+ Public vs Private IP
+ Subnet Masks
+ CIDR Notation
+ Loopback and Broadcast Addresses
+
+### 📌 Protocols & Ports:
+
+ TCP vs UDP
+ Common Ports (20, 21, 22, 25, 53, 80, 443, etc.)
+ Application Layer Protocols (HTTP, HTTPS, DNS, DHCP, FTP, SMTP, etc.)
+
+### 📌 ARP & MAC Addresses:
+
+ Address Resolution Protocol
+ MAC Address Structure and Role
+
+### 📌 Basics of Routing & Switching:
+
+ What is a router vs switch?
+ How routing tables work
+ Default Gateway
+
+---
+

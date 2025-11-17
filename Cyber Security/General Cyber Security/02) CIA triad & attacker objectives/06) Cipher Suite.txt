@@ -1,6 +1,4 @@
-Below is a clear, complete, university-level explanation of cipher suites, written in the same style you prefer: structured, detailed, and easy to understand.
 
----
 
 # What is a Cipher Suite? (Very Important for HTTPS & TLS)
 
@@ -165,13 +163,3 @@ A cipher suite specifies:
 
 It is the blueprint that defines how HTTPS secures your connection.
 
----
-
-If you want, I can also explain:
-
-✅ How browsers choose cipher suites
-✅ How TLS 1.3 handshake works internally
-✅ What “forward secrecy” means (very important)
-✅ How attackers exploit weak ciphers
-
-Just tell me!
