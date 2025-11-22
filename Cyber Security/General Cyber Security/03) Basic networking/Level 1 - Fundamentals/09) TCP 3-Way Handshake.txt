@@ -1,0 +1,271 @@
+
+
+# ✅ TCP 3-Way Handshake — Full Explanation (Attacker-Oriented + Deep Networking View)
+
+The TCP 3-Way Handshake is the process used to establish a reliable, synchronized, and connection-oriented communication channel between a client and a server. It ensures that both sides agree on starting sequence numbers, supports flow control, and verifies that both parties are ready for data transmission.
+
+It is called a handshake because both ends participate in a coordinated “hello” exchange before any data flows.
+
+---
+
+# 🔥 Why Attackers Study TCP Handshake?
+
+Attackers care about this because:
+
+ It is fundamental to scanning techniques (SYN scan, FIN scan, Xmas scan).
+ Helps understand connection spoofing.
+ Helps in DoS attacks like SYN Floods.
+ Helps in packet crafting with tools like `hping3`, `scapy`, `nmap`.
+ Needed for detecting firewalls, NATs, and packet filtering behavior.
+
+So mastering this handshake is essential for network pentesting.
+
+---
+
+# 🧩 Overview of the TCP 3-Way Handshake
+
+The handshake has three steps:
+
+1. SYN — Client → Server: “I want to start a connection; here is my sequence number.”
+2. SYN-ACK — Server → Client: “I received your SYN; here is my sequence number.”
+3. ACK — Client → Server: “Acknowledged. Connection established.”
+
+Once Step 3 is done → TCP connection is established.
+
+---
+
+# 🧠 Before the Handshake: Keys to Understand
+
+### ### 🔸 1. TCP Sequence Numbers (SEQ)
+
+Every TCP packet has:
+
+ SEQ — the position of the first byte of data in that packet.
+
+Sequence numbers ensure packets arrive in order, and allow detection of lost or duplicated packets.
+
+### 🔸 2. Acknowledgement Numbers (ACK)
+
+An ACK number tells the sender:
+
+> “I successfully received all bytes up to this number minus 1. Send me the next byte from here.”
+
+### 🔸 3. TCP Flags
+
+TCP uses flags to control connection states:
+
+| Flag | Meaning                                         |
+| ---- | ----------------------------------------------- |
+| SYN  | Synchronize sequence numbers (begin connection) |
+| ACK  | Acknowledgment                                  |
+| FIN  | Finish connection                               |
+| RST  | Reset connection                                |
+| PSH  | Push data immediately                           |
+| URG  | Urgent data                                     |
+
+The handshake mainly uses SYN and ACK.
+
+---
+
+# 🚦 Step-by-Step: How the TCP 3-Way Handshake Works
+
+---
+
+## 🟨 Step 1: Client sends SYN
+
+### Packet: SYN
+
+ Client → Server
+ Client selects a random Initial Sequence Number (ISN) (e.g., 1000)
+ Sends:
+
+   `SYN=1`
+   `SEQ=1000`
+
+### What it means?
+
+Client says:
+
+> “I want to start a connection, and my starting sequence number is 1000.”
+
+### Purpose
+
+ Start communication
+ Synchronize sequence numbers
+ Ensure protection from old duplicate packets
+
+---
+
+## 🟩 Step 2: Server responds with SYN-ACK
+
+### Packet: SYN-ACK
+
+ Server → Client
+ Server chooses its own ISN, e.g., 5000
+ Sends:
+
+   `SYN=1`
+   `ACK=1001` (client’s ISN + 1)
+   `SEQ=5000`
+
+### What it means?
+
+Server replies:
+
+> “I acknowledge your request. I received your SYN.
+> Here is my own initial sequence number 5000.”
+
+### Purpose
+
+ Confirms server is ready
+ Shares server’s ISN
+ Completes half of the mutual synchronization
+
+---
+
+## 🟦 Step 3: Client sends final ACK
+
+### Packet: ACK
+
+ Client → Server
+ Sends:
+
+   `ACK=5001` (server’s ISN + 1)
+   `SEQ=1001`
+
+### What it means?
+
+Client says:
+
+> “I acknowledge your SYN.
+> We are synchronized. Begin data transfer.”
+
+### Purpose
+
+ Confirms the server’s ISN
+ Finalizes the connection
+
+---
+
+# 🎉 Connection Established
+
+After Step 3:
+
+ Both sides have SYNchronized SEQ numbers
+ Both sides have ACKed the other’s SEQ numbers
+ A full-duplex, reliable TCP session is established
+
+Now they can exchange data.
+
+---
+
+# 🧪 Real Example with Numbers
+
+### Initial ISNs:
+
+ Client ISN = 1000
+ Server ISN = 5000
+
+### Step 1: SYN
+
+Client → Server
+`SEQ=1000, SYN=1`
+
+### Step 2: SYN-ACK
+
+Server → Client
+`SEQ=5000, ACK=1001, SYN=1`
+
+### Step 3: ACK
+
+Client → Server
+`SEQ=1001, ACK=5001`
+
+---
+
+# 🛡️ Security Perspective: Why This Matters for Attackers
+
+## 1. SYN Scan (Half-Open Scan)
+
+Nmap uses this.
+
+ Client sends SYN
+ Server replies with SYN-ACK → port open
+ Client sends RST instead of final ACK
+
+This avoids full connection logging.
+
+---
+
+## 2. SYN Flood Attack
+
+Attacker sends millions of SYNs, but never sends final ACK.
+
+Server allocates resources for half-open connections.
+
+Result: Server memory and backlog queue get overloaded → Denial of Service.
+
+This works because servers must store:
+
+ SEQ
+ ACK
+ TCP state
+ Buffer allocations
+
+---
+
+## 3. Sequence Number Prediction Attack
+
+If an attacker predicts server ISNs, they can spoof connections.
+
+This was used in early hacks against:
+
+ RSH
+ Trusted hosts (r-protocols)
+ Telnet
+
+Modern TCP randomizes ISNs to prevent this.
+
+---
+
+## 4. Firewall Detection Using Handshake Behavior
+
+Firewalls behave differently:
+
+ Stateless firewalls may allow SYN
+ Statefull firewalls track SYN, SYN-ACK, ACK behavior
+ IPS may drop SYN floods or malformed handshakes
+
+Understanding the handshake helps attackers fingerprint firewalls.
+
+---
+
+# 📘 Difference Between TCP and UDP in Context
+
+| Feature     | TCP             | UDP                    |
+| ----------- | --------------- | ---------------------- |
+| Handshake   | Yes (3-way)     | No                     |
+| Reliability | Strong          | Weak                   |
+| Ordering    | Guaranteed      | Not guaranteed         |
+| Speed       | Slower          | Faster                 |
+| Use cases   | Web, email, SSH | DNS, streaming, gaming |
+
+---
+
+# 📌 Diagram (Mentally Visualize)
+
+```
+Client                             Server
+  | ---- SYN (SEQ=x) ------------> |
+  | <--- SYN-ACK (SEQ=y, ACK=x+1) |
+  | ---- ACK (SEQ=x+1, ACK=y+1)--> |
+  | ---------- Data -------------->|
+```
+
+---
+
+# ✅ Conclusion (Exam-Ready Summary)
+
+The TCP 3-Way Handshake is a critical mechanism for establishing a reliable TCP connection. It uses three packets (SYN, SYN/ACK, ACK) to synchronize sequence numbers and confirm readiness on both ends. The process ensures reliability, controls data flow, and protects against packet duplication. Attackers exploit knowledge of the handshake for scanning methods, spoofing, DoS attacks, and understanding firewall behavior.
+
+---
