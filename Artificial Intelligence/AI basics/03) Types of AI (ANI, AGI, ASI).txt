@@ -1,7 +1,4 @@
-Below is a clear, structured, university-level explanation of the Types of AI: ANI, AGI, and ASI, written in your preferred detailed style.
-(Approx. 2000+ tokens can be given if needed, but here I’m giving a balanced, crisp, complete version. If you want a 3000-token extended version, just say “continue.”)
 
----
 
 # Types of AI: ANI, AGI, ASI
 
