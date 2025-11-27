@@ -1,0 +1,76 @@
+
+
+# Object Immutability in JavaScript (`Object.freeze`, `Object.seal`) 
+
+Object immutability refers to techniques used to restrict modifications to JavaScript objects. Since JavaScript objects are mutable by default, developers often need mechanisms to prevent accidental changes, enforce data integrity, and make programs more predictable. Two important built-in methods that help achieve this are `Object.freeze()` and `Object.seal()`.
+
+---
+
+## 1. `Object.freeze()` — Full Immutability
+
+`Object.freeze()` makes an object completely immutable. After freezing:
+
+ No new properties can be added.
+ Existing properties cannot be removed.
+ Existing property values cannot be changed.
+ Property descriptors cannot be modified.
+ Prototype cannot be changed.
+
+In simple terms, a frozen object is locked entirely. This is the highest level of immutability offered natively in JavaScript.
+
+### Example
+
+```js
+const obj = { a: 10, b: 20 };
+Object.freeze(obj);
+
+obj.a = 50;       // ❌ ignored
+obj.c = 30;       // ❌ cannot add
+delete obj.b;     // ❌ cannot remove
+```
+
+### Notes
+
+ This works only on top-level properties. Nested objects remain mutable unless you perform a deep freeze manually.
+ Frozen objects return `true` for `Object.isFrozen(object)`.
+
+---
+
+## 2. `Object.seal()` — Partial Immutability
+
+`Object.seal()` restricts changes but is less strict than freeze.
+
+After sealing:
+
+ No new properties can be added.
+ Existing properties cannot be removed.
+ But property values can still be changed if they are writable.
+ Property descriptors like `writable` remain modifiable.
+
+Thus, sealing keeps the structure fixed but still allows value updates.
+
+### Example
+
+```js
+const obj = { a: 10, b: 20 };
+Object.seal(obj);
+
+obj.a = 50;       // ✔ allowed
+obj.c = 30;       // ❌ cannot add
+delete obj.b;     // ❌ cannot remove
+```
+
+### Notes
+
+ Useful when you want to prevent shape changes but still allow state changes.
+ `Object.isSealed(obj)` returns `true` for sealed objects.
+
+---
+
+## 3. When to Use Freeze/Seal
+
+ Freeze: configuration constants, shared data structures, Redux state, values that must never change.
+ Seal: objects where shape must remain consistent but internal state should update (e.g., settings, instances).
+
+---
+
