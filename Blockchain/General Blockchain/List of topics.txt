@@ -1,20 +1,20 @@
 
 
- Beginner
+ PHASE - 1
 
 # 1. Foundations of Blockchain
 
-1. What is Blockchain?
+  1. What is Blockchain?
 
-  1.1  Definition & history (Bitcoin → Ethereum → Modern chains)
-  1.2  Distributed ledger technology (DLT) basics
+    1.1  Definition & history (Bitcoin → Ethereum → Modern chains)
+    1.2  Distributed ledger technology (DLT) basics
 
-2. Why Blockchain?
+  2. Why Blockchain?
 
-  2.1  Centralized vs. decentralized systems
-  2.2  Problems blockchain solves (trust, immutability, transparency)
+    2.1  Centralized vs. decentralized systems
+    2.2  Problems blockchain solves (trust, immutability, transparency)
 
-3. Key Properties (nod necessary as completed in earlier topics)
+  3. Key Properties (nod necessary as completed in earlier topics)
 
     Decentralization
     Immutability
@@ -71,6 +71,7 @@
 4. Bitcoin scripting basics
 
 ---
+
 
 # 5. Ethereum & Smart Contracts
 
@@ -138,6 +139,7 @@
  Rollups (Optimistic, ZK-rollups)
 
 ---
+ PHASE - 2
 
 # 10. Security & Best Practices
 
@@ -257,6 +259,7 @@
 64. Deploying a basic token contract
 
 ---
+ PHASE - 3
 
 # 8. DeFi Basics
 
@@ -344,7 +347,7 @@
 95. Event logging & off-chain indexing
 
 ---
-
+ PHASE - 4
 # 4. Token Standards & Complex Contracts
 
 96. ERC-20, ERC-721, ERC-1155 advanced usage
@@ -410,6 +413,7 @@
 126. Wallet integrations beyond MetaMask (WalletConnect, Coinbase Wallet)
 
 ---
+ PHASE - 5
 
 # 11. Advanced Projects for Mid-Level
 
@@ -480,6 +484,7 @@
 159. Governance token models, DAO treasury management
 
 ---
+ PHASE - 6
 
 # 6. Blockchain Security & Auditing
 

@@ -43,8 +43,7 @@
 30. Flattening nested arrays (`flat`, recursion, reduce)
 31. Array-like objects (arguments, NodeList)
 32. Sets and Maps
-33. WeakSet and WeakMap
-
+33. WeakSet and WeakMap 
 ---
 
 ## 3. Functions & Advanced Functionality
