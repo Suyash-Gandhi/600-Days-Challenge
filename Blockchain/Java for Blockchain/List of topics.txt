@@ -1,0 +1,197 @@
+
+## A) Beginner – Core Java Fundamentals (1–40)
+
+1. Introduction to Java & JVM architecture
+2. JDK, JRE, JVM differences
+3. Java program structure
+4. Data types & variables
+5. Operators & expressions
+6. Input/Output in Java
+7. Conditional statements
+8. Looping statements
+9. Break, continue, return
+10. Arrays (1D & 2D)
+11. Strings & String methods
+12. StringBuilder vs StringBuffer
+13. Methods & method overloading
+14. Recursion
+15. Command-line arguments
+16. Packages & import
+17. Access modifiers
+18. static & final keywords
+19. this & super keywords
+20. OOP principles
+21. Classes & objects
+22. Constructors
+23. Inheritance
+24. Method overriding
+25. Polymorphism
+26. Abstraction
+27. Interfaces
+28. Encapsulation
+29. Exception handling
+30. Custom exceptions
+31. Nested & inner classes
+32. Enum
+33. Wrapper classes
+34. Autoboxing & unboxing
+35. Javadoc
+36. Debugging basics
+37. Java 8 overview
+38. Primitive vs reference types
+39. Stack vs Heap
+40. Immutability & String pool
+
+---
+
+## B) Java GUI & Desktop Development (41–60)
+
+41. Java GUI overview
+42. AWT basics
+43. Swing architecture
+44. Swing components & containers
+45. Layout managers
+46. Event handling model
+47. Mouse & keyboard events
+48. Advanced Swing components
+49. Swing threading (EDT)
+50. MVC in Swing
+51. JavaFX introduction
+52. JavaFX architecture
+53. Stage, Scene & SceneGraph
+54. JavaFX UI controls
+55. FXML & Scene Builder
+56. CSS styling in JavaFX
+57. JavaFX event handling
+58. Media handling
+59. Swing vs JavaFX (conceptual)
+60. Desktop app design best practices
+
+---
+
+## C) Intermediate Core Java (61–115)
+
+61. Collections Framework
+62. List, Set, Map
+63. ArrayList & LinkedList
+64. HashSet, TreeSet
+65. HashMap & TreeMap
+66. Queue & Deque
+67. Comparator & Comparable
+68. Generics & wildcards
+69. Iterator & Iterable
+70. Streams API
+71. Stream operations
+72. Parallel streams
+73. Lambda expressions
+74. Functional interfaces
+75. Predicate, Consumer, Supplier
+76. Method references
+77. Optional
+78. File handling
+79. Serialization
+80. Java I/O & NIO
+81. Multithreading basics
+82. Thread lifecycle
+83. Synchronization
+84. Thread communication
+85. Executor framework
+86. Locks & Semaphores
+87. Deadlock & race conditions
+88. Concurrency API
+89. Volatile & Atomic variables
+90. ScheduledExecutorService
+91. Memory management
+92. Garbage collectors (G1, ZGC)
+93. JVM memory areas
+94. Classloaders
+95. Annotations
+96. Reflection API
+97. Regular expressions
+98. Date & Time API
+99. Internationalization
+100. Logging frameworks
+101. Clean Code principles
+102. SOLID principles
+103. Refactoring techniques
+104. Unit testing (JUnit)
+105. Mockito basics
+106. JVM execution model (JIT)
+107. JVM tuning basics
+108. Java module system (JPMS)
+109. Records & sealed classes
+110. Pattern matching
+111. Text blocks
+112. Performance pitfalls
+113. Memory leaks detection
+114. Code quality tools
+115. Java best practices
+
+---
+
+## D) Database & Backend Foundations (116–150)
+
+116. SQL fundamentals
+117. CRUD & joins
+118. Indexing & optimization
+119. ACID vs BASE
+120. JDBC architecture
+121. Transactions
+122. ORM concept
+123. JPA fundamentals
+124. Hibernate architecture
+125. Entity lifecycle
+126. Relationships & fetching
+127. Hibernate caching
+128. NoSQL concepts
+129. MongoDB basics
+130. Redis basics
+131. Database migrations
+132. Spring Framework
+133. Spring Core (IoC, DI)
+134. Bean lifecycle & scopes
+135. Spring AOP
+136. Spring MVC
+137. Spring Boot architecture
+138. REST API design
+139. HTTP fundamentals
+140. REST best practices
+141. Validation & error handling
+142. Pagination & sorting
+143. Configuration & profiles
+144. API documentation (Swagger)
+145. API testing (Postman)
+146. API versioning
+147. Security basics
+148. JWT & OAuth2
+149. CORS & CSRF
+150. OWASP Top 10
+
+---
+
+## E) Advanced, Microservices & Senior Skills (151–170)
+
+151. Microservices architecture
+152. Spring Cloud
+153. Service discovery
+154. API Gateway
+155. Circuit breaker
+156. Distributed tracing
+157. Event-driven architecture
+158. Kafka fundamentals
+159. CQRS
+160. Event sourcing
+161. WebSockets
+162. Caching strategies
+163. Reactive programming
+164. Spring WebFlux
+165. Docker for Java
+166. Kubernetes basics
+167. CI/CD pipelines
+168. Monitoring (Prometheus, Grafana)
+169. System design fundamentals
+170. Senior skills (reviews, mentoring, estimation)
+
+---
+
+
