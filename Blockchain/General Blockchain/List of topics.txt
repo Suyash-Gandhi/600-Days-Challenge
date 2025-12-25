@@ -14,7 +14,7 @@
     2.1  Centralized vs. decentralized systems
     2.2  Problems blockchain solves (trust, immutability, transparency)
 
-  3. Key Properties (nod necessary as completed in earlier topics)
+  3. Key Properties (not necessary as completed in earlier topics)
 
     Decentralization
     Immutability

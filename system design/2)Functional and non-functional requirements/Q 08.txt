@@ -1,4 +1,0 @@
-Q8. Explain how SLAs (Service Level Agreements) in cloud 
-systems are tied to non-functional requirements.
-
-=> 

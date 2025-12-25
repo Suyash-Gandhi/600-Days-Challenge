@@ -1,3 +1,0 @@
-Q9. During a system design interview, if asked to design a 
-ride-sharing platform (like Uber), which key functional and 
-non-functional requirements would you highlight first, and why?

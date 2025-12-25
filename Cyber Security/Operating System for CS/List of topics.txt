@@ -1,0 +1,209 @@
+
+
+# 🟢 JUNIOR LEVEL
+
+Goal: Understand OS trust boundaries, privilege separation, basic execution, and attacker mindset
+(Awareness + foundations, no deep exploitation yet)
+
+### OS Foundations & Trust Boundaries
+
+1. Role of the Operating System in Security
+2. OS Goals: Security vs Usability Trade-offs
+3. OS as Resource & Policy Enforcer
+4. Types of Operating Systems (Desktop, Server, Mobile, Embedded)
+5. Distributed & Network OS (remote attack surface)
+6. User Mode vs Kernel Mode (core trust boundary)
+7. Privilege Levels & Rings
+8. Trusted Computing Base (TCB)
+9. OS Design Choices & Security Implications
+
+### Processes & Execution Basics
+
+10. Process Model & Execution Context
+11. Process States & PCB Abuse
+12. Process Creation & Termination
+13. fork(), exec(), wait()
+14. Zombie, Orphan & Daemon Processes
+15. Process vs Thread (isolation differences)
+16. User vs Kernel Threads
+17. Process Isolation & Sandboxing
+18. Privilege Inheritance & Capabilities
+
+### IPC & Synchronization (Conceptual)
+
+19. Inter-Process Communication (IPC) Models
+20. Pipes, FIFOs & Message Queues
+21. Signals & Asynchronous Control
+22. Critical Section Problem
+23. Deadlock vs Race Conditions
+
+### Memory & File System Basics
+
+24. Logical vs Physical Memory
+25. Virtual Memory & Page Faults
+26. Stack vs Heap
+27. User Space vs Kernel Space
+28. File System Security Model
+29. File Permissions (POSIX)
+30. ACLs
+31. Secure File Deletion
+
+### Virtualization & Security Models (Intro)
+
+32. Virtualization Fundamentals
+33. Containers vs Virtual Machines
+34. Protection Domains
+35. Access Matrix Model
+36. DAC vs MAC
+37. Defense-in-Depth (OS view)
+
+✅ Junior outcome:
+You understand where security boundaries exist and why OS design matters for attackers and defenders.
+
+---
+
+# 🟡 MID LEVEL
+
+Goal: Understand attack surfaces, abuse patterns, detection points, and real exploit classes
+(Offensive + defensive thinking begins)
+
+### Kernel Architecture & Attack Surface
+
+38. Kernel Architectures (Monolithic, Microkernel, Hybrid)
+39. Modular Kernels & Loadable Modules (risk model)
+40. Boot Process: BIOS, UEFI & Secure Boot
+41. Kernel Memory Layout & Address Space
+42. Kernel Data Structures (targets for corruption)
+43. Interrupts, Traps & Exceptions (attack vectors)
+44. Kernel Synchronization (spinlocks, RW locks)
+45. Kernel Preemption & Timing Effects
+46. Kernel Attack Surface
+
+### Concurrency, IPC & Race Attacks
+
+47. Multiprogramming & Time-Sharing (shared resource risks)
+48. Multiprocessor OS & Concurrency Risks
+49. Multithreading & Race Conditions
+50. Scheduler Behavior & Side Channels
+51. Shared Memory (data leakage risk)
+52. Sockets (local & privilege abuse)
+53. Race Conditions & TOCTOU Attacks
+54. Mutexes vs Semaphores
+55. Atomic Operations & Memory Barriers
+56. Happens-Before Relationship
+57. IPC Permission Models
+58. IPC Abuse in Real Attacks
+59. Synchronization Bugs
+
+### Resource Abuse & DoS
+
+60. Resource Allocation & Control
+61. Deadlock Conditions (security view)
+62. Deadlock Prevention vs Detection
+63. Starvation & Livelock
+64. Resource Preemption
+65. Resource Exhaustion Attacks
+66. Denial-of-Service via OS Resources
+
+### Memory Exploitation (Core)
+
+67. Paging & Segmentation
+68. Page Tables & PTEs
+69. Memory Protection Mechanisms
+70. TLB & TLB Misses
+71. Copy-on-Write (Dirty COW class bugs)
+72. mmap() & Shared Memory Regions
+73. Buffer Overflows (OS perspective)
+74. Use-After-Free (conceptual)
+75. Address Space Isolation
+76. ASLR
+77. Memory Corruption Attacks
+
+### File Systems, Persistence & Detection
+
+78. Inodes & Metadata Abuse
+79. File Descriptors
+80. Hard vs Soft Links
+81. Virtual File System (VFS)
+82. Journaling File Systems
+83. Hidden Files & Persistence
+84. Malware Persistence via File System
+85. Log Files & Audit Trails
+86. Log Tampering Techniques
+87. Integrity Checking
+
+### Virtualization & Containers (Attack View)
+
+88. Hypervisors & Attack Surface
+89. Namespaces
+90. cgroups & Resource Isolation
+91. Container Security
+92. OS Security Policies
+93. Kernel Hardening
+94. OS Threat Models
+
+✅ Mid outcome:
+You can reason about real OS-level attacks, detect abuse patterns, and understand exploit prerequisites.
+
+---
+
+# 🔴 SENIOR LEVEL
+
+Goal: Exploit development, rootkits, side channels, forensics, and large-scale defense
+(Advanced offensive & defensive mastery)
+
+### Kernel Exploitation & Hardening
+
+95. Kernel Memory Safety Issues
+96. Rootkits (kernel-level)
+97. Kernel Hardening Techniques
+98. Privilege Escalation via Kernel Bugs
+99. Race Condition Exploits (real-world)
+
+### Advanced Memory Exploitation
+
+100. Kernel Memory Allocation (Buddy, Slab, SLUB)
+101. Memory Exploit Mitigations
+
+### Process & Malware Stealth
+
+102. Context Switching (information leakage)
+103. CPU Affinity & Resource Abuse
+104. Load Average as DoS Indicator
+105. Process Injection (conceptual)
+106. Process Hiding & Masquerading
+107. Process Monitoring & Detection
+
+### File System Forensics
+
+108. Mounting & Namespaces
+109. File System Forensics
+
+### I/O, Hardware & Side Channels
+
+110. Interrupt-Driven I/O
+111. DMA & DMA Attacks
+112. Block vs Character Devices
+113. Swap Space & Information Leakage
+114. Disk Scheduling & Timing
+115. SSD vs HDD Security Differences
+116. RAID & Data Recovery Risks
+117. Caching vs Buffering
+118. Side-Channel Timing Attacks
+119. I/O-Based DoS
+120. OS-Level Monitoring for Attacks
+
+### Virtualization Escapes & Isolation Failures
+
+121. VM Escape
+122. Container Breakout Attacks
+123. Secure Boot
+124. Capability-Based Security
+125. SELinux (conceptual)
+126. AppArmor (conceptual)
+127. Cloud OS Risks
+
+✅ Senior outcome:
+You can analyze kernel bugs, understand real-world LPE chains, design hardening strategies, and lead OS-level security decisions.
+
+---

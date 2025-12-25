@@ -1,0 +1,184 @@
+## What is System Design & Why It Matters
+
+### 1. What is System Design?
+
+System design is the process of planning, structuring, and organizing a software system so that it can efficiently meet functional requirements (what the system should do) and non-functional requirements (how well it should do it).
+
+In simple terms:
+
+> System design answers how a system should be built before we start coding.
+
+It focuses on architecture-level decisions, not on writing classes or functions.
+
+---
+
+### 2. What Problems Does System Design Solve?
+
+When software grows beyond a small program, several challenges appear:
+
+ Large number of users
+ High traffic and concurrent requests
+ Data consistency and storage
+ Fault tolerance and failures
+ Performance bottlenecks
+ Security and scalability
+
+System design exists to anticipate and handle these challenges early, instead of fixing them after the system breaks.
+
+---
+
+### 3. Key Components of System Design
+
+System design typically deals with the following aspects:
+
+#### a) Architecture
+
+ Monolithic vs Microservices
+ Layered architecture
+ Event-driven systems
+
+#### b) Scalability
+
+ Horizontal scaling (adding machines)
+ Vertical scaling (upgrading machines)
+ Load balancing strategies
+
+#### c) Data Management
+
+ SQL vs NoSQL databases
+ Caching strategies
+ Data partitioning and replication
+
+#### d) Communication
+
+ REST APIs
+ gRPC
+ Message queues
+ Asynchronous vs synchronous communication
+
+#### e) Reliability & Availability
+
+ Redundancy
+ Failover mechanisms
+ Avoiding Single Point of Failure (SPOF)
+
+#### f) Performance
+
+ Latency vs throughput
+ Caching
+ CDN usage
+
+---
+
+### 4. System Design vs Low-Level Design
+
+| Aspect    | System Design             | Low-Level Design            |
+| --------- | ------------------------- | --------------------------- |
+| Focus     | Architecture & components | Classes & methods           |
+| Scale     | Entire system             | Individual modules          |
+| Decisions | Databases, services, APIs | Algorithms, data structures |
+| Stage     | Before coding             | During coding               |
+
+System design is high-level planning, while low-level design is implementation detail.
+
+---
+
+### 5. Why System Design Matters (Very Important)
+
+#### 1. Scalability
+
+A poorly designed system may work for 100 users but fail for 10,000 users.
+Good system design ensures the system can grow without rewriting everything.
+
+#### 2. Performance
+
+Design choices directly affect:
+
+ Response time
+ Throughput
+ Resource usage
+
+Bad design leads to slow systems, even with powerful hardware.
+
+#### 3. Reliability & Availability
+
+Well-designed systems:
+
+ Continue working even when components fail
+ Recover automatically
+ Minimize downtime
+
+This is critical for real-world systems like banking, messaging apps, and e-commerce.
+
+#### 4. Maintainability
+
+A clean system design:
+
+ Is easier to understand
+ Is easier to debug
+ Allows new features without breaking old ones
+
+Poor design increases technical debt.
+
+#### 5. Cost Efficiency
+
+Good design:
+
+ Uses resources efficiently
+ Avoids over-engineering
+ Reduces cloud and infrastructure costs
+
+Bad design can make systems expensive to operate.
+
+---
+
+### 6. Why System Design Matters for Developers & Interviews
+
+#### For Developers:
+
+ Helps you think beyond just code
+ Improves architectural decision-making
+ Makes you capable of handling real-world systems
+
+#### For Interviews:
+
+ Almost mandatory for mid to senior-level roles
+ Tests problem-solving, trade-offs, and clarity of thought
+ Shows whether you understand production systems, not just syntax
+
+---
+
+### 7. Example (Simple Perspective)
+
+Consider designing a URL shortener:
+
+Without system design:
+
+ Single server
+ Single database
+ No caching
+ No failure handling
+
+With system design:
+
+ Load balancer
+ Multiple app servers
+ Distributed database
+ Caching for popular URLs
+ Failover and replication
+
+Both may work initially, but only one survives real-world usage.
+
+---
+
+### 8. Summary
+
+ System design is about planning how a software system should work at scale.
+ It focuses on architecture, scalability, performance, and reliability.
+ It prevents failures, reduces costs, and improves maintainability.
+ It is essential for real-world development and technical interviews.
+
+> Good code can fail in a bad design.
+> Good design can survive average code.
+
+If you want, next we can break this down into how to approach a system design problem step-by-step, or start with functional vs non-functional requirements, which is usually the first interview step.

@@ -1,0 +1,185 @@
+
+## 1. What are Functional Requirements (FR)?
+
+Functional requirements describe what the system should do.
+They define features, behaviors, and actions the system must perform.
+
+Think of them as:
+
+> “If a user does X, the system should do Y.”
+
+### Simple definition
+
+Functional requirements = system capabilities
+
+### Examples (very concrete)
+
+ User can register using email and password
+ User can log in
+ User can search products
+ User can place an order
+ Admin can block a user
+ System sends a password reset email
+
+### Example (real project – e-commerce)
+
+ User can add items to cart
+ User can remove items from cart
+ User can checkout using UPI / card
+ System generates an order ID after payment
+
+If you remove a functional requirement → a feature disappears.
+
+---
+
+## 2. What are Non-Functional Requirements (NFR)?
+
+Non-functional requirements describe how well the system should work.
+They define quality attributes, constraints, and system behavior under load.
+
+Think of them as:
+
+> “How fast, how secure, how reliable, how scalable?”
+
+### Simple definition
+
+Non-functional requirements = system qualities
+
+### Common categories of NFRs
+
+ Performance
+ Scalability
+ Availability
+ Security
+ Reliability
+ Maintainability
+ Usability
+ Consistency
+
+---
+
+## 3. Examples of Non-Functional Requirements
+
+### Performance
+
+ API response time should be < 200 ms
+ Page should load within 2 seconds
+
+### Scalability
+
+ System should handle 1 million users
+ Should support 10x traffic during sales
+
+### Availability
+
+ System uptime should be 99.9%
+ No single point of failure
+
+### Security
+
+ Passwords must be hashed
+ APIs must require authentication
+ Data must be encrypted at rest and in transit
+
+### Reliability
+
+ No data loss during server crash
+ Messages should not be duplicated
+
+### Maintainability
+
+ Code should be modular
+ Easy to add new features
+
+If you remove a non-functional requirement →
+the feature still exists, but works poorly or fails under real conditions.
+
+---
+
+## 4. Side-by-Side Comparison
+
+| Aspect         | Functional       | Non-Functional                  |
+| -------------- | ---------------- | ------------------------------- |
+| Focus          | What system does | How system behaves              |
+| Defines        | Features         | Quality & constraints           |
+| User visible   | Yes              | Mostly indirect                 |
+| Example        | “User can login” | “Login should take < 300 ms”    |
+| Failure impact | Feature missing  | System slow, insecure, unstable |
+
+---
+
+## 5. Example: Login Feature (FR + NFR together)
+
+### Functional Requirements
+
+ User can log in using email & password
+ User sees error on wrong credentials
+
+### Non-Functional Requirements
+
+ Login response time < 200 ms
+ Password stored using bcrypt
+ Login API should handle 10k concurrent users
+ Account locked after 5 failed attempts
+
+👉 Real systems always need BOTH
+
+---
+
+## 6. How They Are Used in System Design
+
+### Functional Requirements help you decide:
+
+ APIs needed
+ Database tables
+ User flows
+ Business logic
+
+### Non-Functional Requirements help you decide:
+
+ Architecture (monolith vs microservices)
+ Caching (Redis)
+ Load balancers
+ Database type
+ Replication & backups
+
+Example:
+
+ FR: “User can upload images”
+ NFR: “Image upload should support 10MB files and serve images globally with low latency”
+  → leads to object storage + CDN
+
+---
+
+## 7. Beginner Mistake (Very Common)
+
+❌ Writing only functional requirements
+✅ Writing functional AND non-functional together
+
+Bad:
+
+> “User can watch videos”
+
+Good:
+
+> “User can watch videos at 1080p with buffering < 1 second for 95% users”
+
+---
+
+## 8. Rule of Thumb (Very Important)
+
+ FR = product correctness
+ NFR = production readiness
+
+A system with only FRs:
+
+ Works in demo
+ Fails in real world
+
+A system with FR + NFR:
+
+ Scales
+ Survives traffic
+ Feels “professional”
+
+---

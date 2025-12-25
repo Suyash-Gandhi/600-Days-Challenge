@@ -1,0 +1,226 @@
+
+
+# 🔴 RED TEAM (Offensive Security)
+
+## 🟢 Junior Red Team
+
+1. Cyber kill chain fundamentals
+2. Reconnaissance methodologies
+3. Open-source intelligence (OSINT) basics
+4. Attack surface identification
+5. Vulnerability vs exploit distinction
+6. Common attack vectors overview
+7. Password attack fundamentals
+8. Brute force vs credential stuffing
+9. Web application attack basics
+10. Input validation flaws
+11. Authentication bypass concepts
+12. Authorization flaws
+13. Business logic abuse basics
+14. Common malware categories
+15. Social engineering principles
+16. Phishing attack fundamentals
+17. Ethics and legal boundaries in offensive security
+18. Secure coding mistakes attackers exploit
+19. Insecure dependency usage concepts
+20. Cryptographic misuse patterns (high-level)
+
+---
+
+## 🟡 Mid-Level Red Team
+
+21. Threat actor profiling
+22. Advanced OSINT techniques
+23. Web application exploitation workflows
+24. Injection attack chains
+25. File upload abuse
+26. Session management attacks
+27. Token-based authentication abuse
+28. API security exploitation
+29. OAuth and SSO misconfiguration attacks
+30. Authorization model abuse (RBAC/ABAC failures)
+31. Identity-based attack paths
+32. Exploit chaining
+33. Post-exploitation concepts
+34. Privilege escalation concepts (non-OS specific)
+35. Persistence mechanisms (conceptual)
+36. Command-and-control (C2) theory
+37. Payload obfuscation principles
+38. Evasion techniques (AV/EDR concepts)
+39. Cryptographic implementation abuse
+40. Supply-chain attack concepts
+41. CI/CD abuse theory (security-only)
+42. Red team operational security (OPSEC)
+43. Red team reporting standards
+
+---
+
+## 🔴 Senior Red Team
+
+44. Adversary emulation planning
+45. Threat-informed attack simulation
+46. Advanced social engineering campaigns
+47. Pretext development psychology
+48. Zero-day discovery methodology
+49. Custom exploit development theory
+50. Malware architecture design
+51. Living-off-the-land attack theory
+52. Red team infrastructure design (conceptual)
+53. Detection evasion strategy design
+54. Anti-forensics principles
+55. Initial access broker models
+56. Cost vs impact attack analysis
+57. Attack path optimization
+58. Targeted intrusion simulation
+59. Risk-based exploitation prioritization
+60. Failure-mode analysis of attacks
+61. Red team automation frameworks
+62. Red team metrics & KPIs
+63. Ethical red teaming governance
+
+---
+
+# 🔵 BLUE TEAM (Defensive Security)
+
+## 🟢 Junior Blue Team
+
+64. Defensive security principles
+65. Security monitoring fundamentals
+66. Indicators of compromise (IOC)
+67. Log analysis basics
+68. Alert vs incident distinction
+69. Security event triage
+70. Incident response lifecycle
+71. Malware behavior basics
+72. Phishing detection fundamentals
+73. Email security concepts
+74. Authentication security principles
+75. Access control fundamentals
+76. Identity threat fundamentals
+77. Security misconfiguration concepts
+78. Vulnerability assessment basics
+79. Patch management strategy (conceptual)
+80. Secure configuration baselines (conceptual)
+81. Security awareness fundamentals
+82. Defensive ethics & compliance
+
+---
+
+## 🟡 Mid-Level Blue Team
+
+83. Threat detection engineering
+84. SIEM correlation logic
+85. Behavioral anomaly detection
+86. Malware analysis fundamentals (static & dynamic concepts)
+87. Endpoint threat detection concepts
+88. Identity abuse detection
+89. Privilege misuse detection
+90. Incident containment strategies
+91. Root cause analysis techniques
+92. Digital forensics concepts
+93. Threat hunting methodology
+94. MITRE ATT&CK defensive mapping
+95. Detection rule engineering
+96. Detection blind-spot analysis
+97. False positive & false negative reduction
+98. Detection logic testing strategies
+99. Insider threat detection
+100. Threat intelligence consumption
+101. Security automation concepts
+102. Blue team reporting frameworks
+
+---
+
+## 🔴 Senior Blue Team
+
+103. Advanced threat hunting
+104. Detection coverage modeling
+105. Telemetry quality assessment
+106. Adversary behavior modeling
+107. Purple-aligned detection design
+108. Security control effectiveness measurement
+109. Advanced malware reverse engineering concepts
+110. Incident response orchestration
+111. Large-scale breach response strategy
+112. Ransomware defense architecture
+113. Threat intelligence operationalization
+114. Proactive defense strategy
+115. Security data engineering concepts
+116. SOC maturity modeling
+117. Defensive deception strategy
+118. Security resilience engineering
+119. Privacy & data protection engineering
+120. Security governance & risk modeling
+121. Blue team leadership strategy
+
+---
+
+# 🟣 PURPLE TEAM (Offense + Defense Integration)
+
+## 🟢 Junior Purple Team
+
+122. Purple team fundamentals
+123. Red vs Blue collaboration models
+124. Attack–detection lifecycle
+125. MITRE ATT&CK overview
+126. Threat scenario mapping
+127. Detection gap identification
+128. Security control validation
+129. Basic attack replay analysis
+130. Detection tuning fundamentals
+131. Incident learning feedback loops
+132. Tabletop exercise basics
+133. Security validation concepts
+134. Breach simulation fundamentals
+135. Detection engineering basics
+136. Metrics for security effectiveness
+137. Purple team documentation
+138. Cross-team communication practices
+
+---
+
+## 🟡 Mid-Level Purple Team
+
+139. Adversary emulation planning
+140. Threat-informed defense
+141. Control coverage analysis
+142. Detection-as-code concepts
+143. Security test automation
+144. Attack simulation frameworks
+145. Detection maturity assessment
+146. Purple team playbook development
+147. SOC feedback optimization
+148. Continuous security validation
+149. False negative analysis
+150. Detection regression testing
+151. Detection roadmap development
+152. Purple team metrics design
+153. Cross-team workflow optimization
+154. Purple team reporting
+155. Security improvement roadmaps
+156. Validation of security investments
+
+---
+
+## 🔴 Senior Purple Team
+
+157. Enterprise threat modeling
+158. Threat-driven security architecture
+159. Strategic adversary simulation
+160. Security posture measurement frameworks
+161. Long-term detection strategy
+162. Purple team operating models
+163. Continuous adversarial testing strategy
+164. Security hypothesis testing
+165. Detection ROI analysis
+166. Risk-based security prioritization
+167. Security control trade-off analysis
+168. Organizational security resilience strategy
+169. Purple team program governance
+170. Security engineering leadership
+171. Red–Blue maturity alignment
+172. Purple team center-of-excellence design
+
+---
+
+

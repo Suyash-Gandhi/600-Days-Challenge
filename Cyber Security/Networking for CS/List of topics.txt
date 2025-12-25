@@ -1,0 +1,216 @@
+
+
+# 🟢 JUNIOR LEVEL
+
+Goal: Understand networks as an attack surface, recognize common abuses, and follow security discussions without confusion.
+
+### Core networking concepts (security-oriented)
+
+1. What is a computer network (attack surface definition)
+2. Why networks exist (centralization risks)
+3. Network scope: PAN, LAN, MAN, WAN
+4. Client–Server vs Peer-to-Peer models
+5. Network topologies (blast radius of compromise)
+6. Wired vs Wireless networks
+7. Network components (assets & trust boundaries)
+8. Nodes & hosts (asset identification)
+9. NIC role (MAC spoofing relevance)
+
+### Traffic & performance (security meaning)
+
+10. Bandwidth, latency, throughput (DoS & exfiltration indicators)
+11. Packet vs frame vs segment
+12. Circuit vs packet switching
+13. Connection-oriented vs connectionless communication
+14. Encapsulation (where payloads hide)
+15. Network performance metrics (attack detection)
+
+### OSI / TCP-IP fundamentals
+
+16. Purpose of OSI model (attack classification)
+17. OSI layers overview
+18. TCP/IP model overview
+19. OSI vs TCP/IP comparison
+20. Protocol-to-layer mapping
+
+### Transport basics (intro level)
+
+21. TCP vs UDP (attack choice)
+22. TCP 3-way handshake & teardown
+23. UDP packet structure & stateless abuse
+
+### IP & addressing basics
+
+24. IP address fundamentals (IPv4 & IPv6)
+25. Public vs private IPs
+26. Static vs dynamic addressing risks
+27. Loopback & localhost abuse
+
+### Ports & common protocols (security view)
+
+28. Ports & services model
+29. Well-known, registered & ephemeral ports
+30. HTTP & HTTPS security implications
+31. Email protocols (SMTP, POP3, IMAP) risks
+32. Telnet vs SSH
+
+### Entry-level devices & controls
+
+33. Hubs vs switches (traffic visibility)
+34. Gateways & trust boundaries
+35. Firewalls (core concepts)
+36. IDS vs IPS
+37. Wireless access points
+
+---
+
+# 🟡 MID LEVEL
+
+Goal: Actively analyze, detect, and exploit weaknesses in real networks.
+
+### Physical & hardware attack surface
+
+38. Ethernet standards (speed vs sniffing)
+39. UTP vs STP cables
+40. Cable categories & distance limits
+41. RJ45 pinout (physical tampering)
+42. Auto-negotiation & duplex mismatch abuse
+43. EMI, noise, attenuation & crosstalk (side channels)
+44. Fiber optics (single vs multi-mode, tapping difficulty)
+45. Power over Ethernet (device compromise)
+46. Physical link failures (sabotage vs fault)
+47. Patch panels & cabling infrastructure risks
+48. Link lights (physical recon)
+49. Physical layer attack detection
+
+### OSI & packet analysis
+
+50. Layer-wise attack mapping (L1–L7)
+51. Encapsulation & de-encapsulation
+52. Protocol stack vulnerabilities
+53. OSI-based troubleshooting
+54. OSI in packet analysis & incident response
+
+### Transport-layer attacks
+
+55. TCP flags (stealth & scan techniques)
+56. Flow control, congestion control & window abuse
+57. Retransmissions & timeout behavior
+58. Half-open connections
+59. SYN flood attacks
+60. MTU, fragmentation & evasion
+61. Jumbo frames & IDS evasion
+62. Transport-layer behavior in malware
+
+### IP addressing & segmentation
+
+63. IPv4 classes & reserved ranges (legacy relevance)
+64. Subnet masks & CIDR
+65. Network ID vs host ID
+66. Broadcast addresses (amplification attacks)
+67. Default gateway abuse
+68. Subnetting & segmentation strength
+69. Supernetting
+70. IPv4 exhaustion & NAT side effects
+71. IPv6 attack surface
+72. IPv4 vs IPv6 security comparison
+
+### Protocol abuse & manipulation
+
+73. Ethernet, IP & TCP header fields (spoofing & evasion)
+74. FTP vs SFTP
+75. DNS protocol abuse
+76. DHCP spoofing
+77. ICMP misuse
+78. ARP poisoning
+79. SNMP exploitation
+80. Protocol vulnerabilities
+81. Protocol misuse attacks
+
+### Network devices (security behavior)
+
+82. Switch attacks (ARP, MAC flooding)
+83. Router attacks (route poisoning)
+84. Load balancers (L4 vs L7 relevance)
+85. Proxy servers (forward vs reverse)
+86. Layer 2 vs Layer 3 security controls
+87. Managed vs unmanaged switches
+88. Hardware vs software firewalls
+
+### DNS, NAT & perimeter
+
+89. DNS resolution & record types
+90. Recursive vs iterative DNS
+91. DNS caching & poisoning
+92. DHCP lease attacks
+93. NAT behavior & security implications
+94. PAT & port exhaustion
+95. NAT traversal & port forwarding risks
+96. DMZ architecture
+97. Firewall rule logic & ordering
+98. Stateful inspection vs DPI
+
+### Routing, VLANs & wireless
+
+99. Routing vs switching
+100. Routing tables & default routes
+101. Static vs dynamic routing risks
+102. RIP, OSPF & BGP attacks
+103. Distance-vector vs link-state security
+104. VLAN segmentation
+105. VLAN hopping
+106. Inter-VLAN routing risks
+107. MAC table flooding
+108. ARP table poisoning
+109. STP attacks
+110. Trunk vs access misconfiguration
+111. Wi-Fi standards & frequency security
+112. WPA2 vs WPA3
+113. Evil twin & deauth attacks
+114. Wireless attack detection
+
+---
+
+# 🔴 SENIOR LEVEL
+
+Goal: Design, evaluate, and defend complex enterprise and cloud networks under real attack conditions.
+
+### Architecture & security design
+
+115. Enterprise vs SOHO security posture
+116. Network zones
+117. Zero Trust networking
+118. Secure perimeter design
+119. Network segmentation strategies
+120. Flat vs tiered networks
+121. East–west vs north–south traffic
+
+### Monitoring & detection
+
+122. NetFlow & sFlow
+123. Latency, packet loss & anomaly detection
+124. Throughput baselining
+125. Normal traffic profiling
+
+### High availability & resilience
+
+126. High availability vs attack resilience
+
+### Advanced routing & control plane risk
+
+127. Routing protocol trust models
+128. Control-plane vs data-plane attacks
+
+### Cloud networking (security-only view)
+
+129. Cloud networking security (VPCs, subnets, SGs)
+
+### Strategic security thinking
+
+130. Network attack surface reduction strategy
+131. Network visibility gaps & blind spots
+132. Network-based threat modeling
+
+---
+
+
