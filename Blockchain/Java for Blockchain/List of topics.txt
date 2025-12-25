@@ -13,7 +13,7 @@
 10. Arrays (1D & 2D)
 11. Strings & String methods
 12. StringBuilder vs StringBuffer
-13. Methods & method overloading
+13. Methods & function - 24. overriding and overloading
 14. Recursion
 15. Command-line arguments
 16. Packages & import
@@ -24,94 +24,93 @@
 21. Classes & objects
 22. Constructors
 23. Inheritance
-24. Method overriding
-25. Polymorphism
-26. Abstraction
-27. Interfaces
-28. Encapsulation
-29. Exception handling
-30. Custom exceptions
-31. Nested & inner classes
-32. Enum
-33. Wrapper classes
-34. Autoboxing & unboxing
-35. Javadoc
-36. Debugging basics
-37. Java 8 overview
-38. Primitive vs reference types
-39. Stack vs Heap
-40. Immutability & String pool
+24. Polymorphism
+25. Abstraction
+26. Interfaces
+27. Encapsulation
+28. Exception handling
+29. Custom exceptions 
+30. Nested & inner classes
+31. Enum
+32. Wrapper classes
+33. Autoboxing & unboxing
+34. Javadoc
+35. Debugging basics
+36. Java 8 overview
+37. Primitive vs reference types
+38. Stack vs Heap
+39. Immutability & String pool
 
 ---
 
 ## B) Java GUI & Desktop Development (41–60)
 
-41. Java GUI overview
-42. AWT basics
-43. Swing architecture
-44. Swing components & containers
-45. Layout managers
-46. Event handling model
-47. Mouse & keyboard events
-48. Advanced Swing components
-49. Swing threading (EDT)
-50. MVC in Swing
-51. JavaFX introduction
-52. JavaFX architecture
-53. Stage, Scene & SceneGraph
-54. JavaFX UI controls
-55. FXML & Scene Builder
-56. CSS styling in JavaFX
-57. JavaFX event handling
-58. Media handling
-59. Swing vs JavaFX (conceptual)
-60. Desktop app design best practices
+40. Java GUI overview
+41. AWT basics
+42. Swing architecture
+43. Swing components & containers
+44. Layout managers
+45. Event handling model
+46. Mouse & keyboard events
+47. Advanced Swing components
+48. Swing threading (EDT)
+49. MVC in Swing
+50. JavaFX introduction
+51. JavaFX architecture
+52. Stage, Scene & SceneGraph
+53. JavaFX UI controls
+54. FXML & Scene Builder
+55. CSS styling in JavaFX
+56. JavaFX event handling
+57. Media handling
+58. Swing vs JavaFX (conceptual)
+59. Desktop app design best practices
 
 ---
 
 ## C) Intermediate Core Java (61–115)
 
-61. Collections Framework
-62. List, Set, Map
-63. ArrayList & LinkedList
-64. HashSet, TreeSet
-65. HashMap & TreeMap
-66. Queue & Deque
-67. Comparator & Comparable
-68. Generics & wildcards
-69. Iterator & Iterable
-70. Streams API
-71. Stream operations
-72. Parallel streams
-73. Lambda expressions
-74. Functional interfaces
-75. Predicate, Consumer, Supplier
-76. Method references
-77. Optional
-78. File handling
-79. Serialization
-80. Java I/O & NIO
-81. Multithreading basics
-82. Thread lifecycle
-83. Synchronization
-84. Thread communication
-85. Executor framework
-86. Locks & Semaphores
-87. Deadlock & race conditions
-88. Concurrency API
-89. Volatile & Atomic variables
-90. ScheduledExecutorService
-91. Memory management
-92. Garbage collectors (G1, ZGC)
-93. JVM memory areas
-94. Classloaders
-95. Annotations
-96. Reflection API
-97. Regular expressions
-98. Date & Time API
-99. Internationalization
-100. Logging frameworks
-101. Clean Code principles
+60. Collections Framework
+61. List, Set, Map
+62. ArrayList & LinkedList
+63. HashSet, TreeSet
+64. HashMap & TreeMap
+65. Queue & Deque
+66. Comparator & Comparable
+67. Generics & wildcards
+68. Iterator & Iterable
+69. Streams API
+70. Stream operations
+71. Parallel streams
+72. Lambda expressions
+73. Functional interfaces
+74. Predicate, Consumer, Supplier
+75. Method references
+76. Optional
+77. File handling
+78. Serialization
+79. Java I/O & NIO
+80. Multithreading basics
+81. Thread lifecycle
+82. Synchronization
+83. Thread communication
+84. Executor framework
+85. Locks & Semaphores
+86. Deadlock & race conditions
+87. Concurrency API
+88. Volatile & Atomic variables
+89. ScheduledExecutorService
+90. Memory management
+91. Garbage collectors (G1, ZGC)
+92. JVM memory areas
+93. Classloaders
+94. Annotations--------------------------------------
+95. Reflection API
+96. Regular expressions
+97. Date & Time API
+98. Internationalization
+99. Logging frameworks
+100. Clean Code principles
 102. SOLID principles
 103. Refactoring techniques
 104. Unit testing (JUnit)

@@ -1,0 +1,150 @@
+
+## 1. Introduction to Java
+
+Java is a high-level, object-oriented, platform-independent programming language developed by Sun Microsystems in 1995 (now owned by Oracle). It was designed with the philosophy “Write Once, Run Anywhere (WORA)”, meaning Java programs can run on any system that has a Java Virtual Machine (JVM).
+
+### Key Characteristics of Java
+
+ Platform Independent
+  Java code is compiled into an intermediate form called bytecode, which can run on any operating system via the JVM.
+
+ Object-Oriented
+  Java follows core OOP principles such as encapsulation, inheritance, polymorphism, and abstraction, making programs modular and reusable.
+
+ Secure
+  Java eliminates pointers and includes a security manager and bytecode verification, reducing risks like memory corruption.
+
+ Robust and Reliable
+  Strong exception handling, automatic garbage collection, and strict type checking make Java reliable for large-scale systems.
+
+ Multithreaded
+  Java provides built-in support for multithreading, enabling concurrent execution and efficient CPU utilization.
+
+ Distributed and Network-Centric
+  Java supports networking APIs and is widely used in web applications, enterprise systems, and distributed computing.
+
+---
+
+## 2. Java Platform Components
+
+The Java ecosystem consists of three main components:
+
+1. JDK (Java Development Kit)
+   Used by developers to write, compile, and run Java programs.
+   Includes:
+
+    Compiler (`javac`)
+    JVM
+    Libraries
+    Debugging and development tools
+
+2. JRE (Java Runtime Environment)
+   Used to run Java programs.
+   Includes:
+
+    JVM
+    Core libraries
+     Does not include development tools.
+
+3. JVM (Java Virtual Machine)
+   The core component responsible for executing Java bytecode and enabling platform independence.
+
+---
+
+## 3. What is JVM?
+
+The Java Virtual Machine (JVM) is an abstract machine that provides a runtime environment to execute Java bytecode. It acts as a bridge between Java programs and the underlying operating system.
+
+ JVM is platform dependent (different JVMs for Windows, Linux, macOS).
+ Java bytecode is platform independent.
+ JVM ensures memory management, security, and execution control.
+
+---
+
+## 4. JVM Architecture
+
+The JVM architecture consists of three major subsystems:
+
+---
+
+### A) Class Loader Subsystem
+
+The Class Loader loads `.class` files into memory when required.
+
+Types of Class Loaders:
+
+ Bootstrap Class Loader – Loads core Java libraries (`java.lang`, `java.util`)
+ Extension Class Loader – Loads extension libraries
+ Application Class Loader – Loads user-defined classes
+
+Functions:
+
+ Loading
+ Linking (verification, preparation, resolution)
+ Initialization
+
+---
+
+### B) Runtime Data Areas
+
+These are memory areas created when JVM starts.
+
+1. Method Area
+
+    Stores class-level data (methods, static variables, runtime constant pool)
+    Shared among all threads
+
+2. Heap Area
+
+    Stores objects and instance variables
+    Managed by Garbage Collector
+    Shared memory area
+
+3. Stack Area
+
+    Each thread has its own stack
+    Stores method calls, local variables, and references
+
+4. PC (Program Counter) Register
+
+    Stores the address of the currently executing instruction
+
+5. Native Method Stack
+
+    Used for executing native (non-Java) methods written in C/C++
+
+---
+
+### C) Execution Engine
+
+Responsible for executing the bytecode.
+
+Components:
+
+ Interpreter – Executes bytecode line by line
+ JIT (Just-In-Time) Compiler – Converts frequently executed bytecode into native machine code for better performance
+ Garbage Collector – Automatically removes unused objects to free memory
+
+---
+
+## 5. Java Program Execution Flow
+
+1. Java source code (`.java`) is written by the programmer.
+2. The Java compiler (`javac`) converts source code into bytecode (`.class`).
+3. The Class Loader loads the bytecode into JVM.
+4. The Bytecode Verifier checks code for security violations.
+5. The Execution Engine executes bytecode using Interpreter/JIT.
+6. Output is produced on the target machine.
+
+---
+
+## 6. Importance of JVM Architecture
+
+ Enables platform independence
+ Provides automatic memory management
+ Improves performance through JIT compilation
+ Ensures security and reliability
+ Supports multithreading and scalability
+
+---
+

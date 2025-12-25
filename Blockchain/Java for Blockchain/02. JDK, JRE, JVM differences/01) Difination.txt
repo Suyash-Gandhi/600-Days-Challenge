@@ -1,0 +1,107 @@
+## Differences between JDK, JRE, and JVM
+
+
+### 1. JVM (Java Virtual Machine)
+
+Definition:
+JVM is an abstract machine that provides a runtime environment to execute Java bytecode.
+
+Key Points:
+
+ JVM does not compile code; it only executes `.class` files.
+ It makes Java platform-independent (Write Once, Run Anywhere).
+ Different OS have different JVM implementations, but bytecode remains the same.
+
+Main Responsibilities:
+
+ Loads bytecode (Class Loader)
+ Verifies bytecode
+ Executes bytecode (Interpreter + JIT compiler)
+ Manages memory (Heap, Stack, Garbage Collection)
+
+Important Note:
+JVM is part of JRE, not a standalone user tool.
+
+---
+
+### 2. JRE (Java Runtime Environment)
+
+Definition:
+JRE provides the environment required to run Java applications, but not to develop them.
+
+Key Points:
+
+ Contains JVM + Core Java Libraries + Supporting files
+ Used by end users who only want to run Java programs
+ Cannot compile Java source code (`.java`)
+
+Components of JRE:
+
+ JVM
+ Java class libraries (java.lang, java.util, etc.)
+ Runtime supporting files
+
+Example Use Case:
+If you download a Java-based application and only want to run it, JRE is sufficient.
+
+---
+
+### 3. JDK (Java Development Kit)
+
+Definition:
+JDK is a full-featured software development kit used to develop, compile, debug, and run Java applications.
+
+Key Points:
+
+ Contains JRE + Development tools
+ Required by Java developers
+ Can both compile and execute Java programs
+
+Major Tools in JDK:
+
+ `javac` – Java compiler
+ `java` – Program launcher
+ `javadoc` – Documentation generator
+ `jar` – Package manager
+ Debugging and monitoring tools
+
+Important Note:
+Without JDK, Java development is not possible.
+
+---
+
+### 4. Relationship between JDK, JRE, and JVM
+
+```
+JDK
+ └── JRE
+      └── JVM
+```
+
+ JVM executes the program
+ JRE provides the runtime environment
+ JDK provides tools for development + JRE
+
+---
+
+### 5. Comparison Table
+
+| Feature            | JVM               | JRE                | JDK                           |
+| ------------------ | ----------------- | ------------------ | ----------------------------- |
+| Purpose            | Executes bytecode | Runs Java programs | Develops & runs Java programs |
+| Contains           | Execution engine  | JVM + libraries    | JRE + dev tools               |
+| Can compile code   | ❌ No              | ❌ No               | ✅ Yes                         |
+| Used by            | Runtime system    | End users          | Developers                    |
+| Platform dependent | Yes               | Yes                | Yes                           |
+
+---
+
+### 6. Simple One-Line Summary (Exam-friendly)
+
+ JVM → Executes Java bytecode
+ JRE → Provides environment to run Java programs
+ JDK → Provides tools to develop and run Java programs
+
+---
+
+

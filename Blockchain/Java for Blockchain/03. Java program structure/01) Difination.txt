@@ -1,0 +1,175 @@
+## 3. Java Program Structure
+
+A Java program follows a strict, well-defined structure. Understanding this structure is fundamental because every Java application—small or enterprise-level—builds on the same skeleton. Below is a complete, university-level explanation, written step-by-step, with clarity and depth.
+
+---
+
+## 1. Basic Layout of a Java Program
+
+A typical Java program consists of the following components in logical order:
+
+1. Documentation comments
+2. Package statement (optional)
+3. Import statements (optional)
+4. Class declaration
+5. Main method
+6. Statements (program logic)
+
+Each component has a specific role and rules enforced by the Java compiler.
+
+---
+
+## 2. Documentation Comments
+
+These are comments written for developers and documentation tools, not for execution.
+
+ Written using `/ ... /`
+ Used by Javadoc to generate documentation
+ Usually placed before classes and methods
+
+Purpose:
+
+ Describe what the program/class/method does
+ Improve maintainability and readability
+
+Example description (no code):
+
+> Explains the purpose of the program, author name, version, and date.
+
+---
+
+## 3. Package Statement
+
+The `package` statement defines the namespace of the class.
+
+### Key Points:
+
+ Must be the first executable line in the program
+ Groups related classes together
+ Helps avoid name conflicts
+ Used extensively in large applications
+
+Example:
+
+ `package com.company.project;`
+
+If omitted:
+
+ The class belongs to the default package (not recommended in real projects)
+
+---
+
+## 4. Import Statements
+
+Import statements allow access to predefined or user-defined classes from other packages.
+
+### Key Points:
+
+ Written after the package statement
+ Makes code shorter and readable
+ Without import, you must use fully qualified class names
+
+Example usage:
+
+ Importing utility classes (Scanner, List, etc.)
+
+---
+
+## 5. Class Declaration
+
+Every Java program must have at least one class.
+
+### Syntax Concept:
+
+ Uses the `class` keyword
+ Class name must match the filename
+ Class names follow PascalCase
+
+Rules:
+
+ A Java file can contain multiple classes
+ Only one public class per file
+ Public class name = file name
+
+Purpose:
+
+ Acts as a blueprint
+ Contains variables, methods, and logic
+
+---
+
+## 6. Main Method
+
+The `main` method is the entry point of any standalone Java application.
+
+### Standard Signature:
+
+ `public static void main(String[] args)`
+
+### Explanation of keywords:
+
+ public → Accessible by JVM from anywhere
+ static → No object needed to run
+ void → Returns nothing
+ String[] args → Command-line arguments
+
+### Important:
+
+ JVM looks only for this exact signature
+ Without it, the program will not execute
+
+---
+
+## 7. Statements (Program Logic)
+
+Inside the `main` method, we write executable statements.
+
+These may include:
+
+ Variable declarations
+ Input/output statements
+ Control structures (if, loops)
+ Method calls
+ Object creation
+
+Execution Flow:
+
+ Statements run top to bottom
+ Ends when the `main` method finishes execution
+
+---
+
+## 8. Complete Logical Flow of Execution
+
+1. Source file (`.java`) is written
+2. Compiler (`javac`) checks syntax
+3. Bytecode (`.class`) is generated
+4. JVM loads the class
+5. JVM calls the `main` method
+6. Statements execute sequentially
+7. Program terminates
+
+---
+
+## 9. Important Rules to Remember (Exam-Focused)
+
+ Java programs are class-based
+ `main` method is mandatory for execution
+ File name must match public class name
+ Package statement comes before import
+ Execution always starts from `main`
+
+---
+
+## 10. Why Java Enforces This Structure
+
+ Platform independence
+ Strong security model
+ Better memory management
+ Clean separation of responsibilities
+ Scalability for enterprise systems
+
+---
+
+
+
