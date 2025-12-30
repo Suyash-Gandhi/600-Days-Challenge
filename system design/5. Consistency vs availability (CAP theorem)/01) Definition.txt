@@ -1,0 +1,204 @@
+### 5. Consistency vs Availability (CAP Theorem)
+
+When you design distributed systems (systems running on multiple machines), one of the most important trade-offs you’ll face is Consistency vs Availability.
+This is formalized by the CAP Theorem.
+
+---
+
+## What is the CAP Theorem?
+
+CAP theorem states:
+
+> In a distributed system, you can guarantee only two out of three at the same time:
+
+ Consistency (C)
+ Availability (A)
+ Partition Tolerance (P)
+
+You cannot have all three simultaneously.
+
+---
+
+## First, understand the three terms clearly
+
+### 1. Consistency (C)
+
+Consistency means:
+
+ Every read gets the most recent write
+ All nodes see the same data at the same time
+
+Example
+
+ User updates their email
+ Immediately reads it back
+ Every server returns the updated email, not the old one
+
+👉 Think: “Data correctness and freshness”
+
+---
+
+### 2. Availability (A)
+
+Availability means:
+
+ Every request gets a response
+ Even if the response is not the latest data
+
+Example
+
+ User requests their profile
+ Server responds instantly
+ Might return slightly outdated data, but never fails
+
+👉 Think: “System is always responsive”
+
+---
+
+### 3. Partition Tolerance (P)
+
+Partition tolerance means:
+
+ The system continues to work even if network failures happen
+ Some nodes cannot communicate with others
+
+Example
+
+ Data center in Mumbai cannot reach data center in Delhi
+ Network is partially broken
+ System must still operate
+
+👉 In real distributed systems, network partitions are unavoidable, so P is non-negotiable.
+
+---
+
+## The real trade-off: Consistency vs Availability
+
+Since Partition Tolerance is mandatory, the real choice becomes:
+
+> When a partition happens, do you choose Consistency or Availability?
+
+---
+
+## Two practical system types
+
+### 1. CP Systems (Consistency + Partition Tolerance)
+
+Behavior
+
+ If nodes can’t sync data → system may reject requests
+ Prevents serving stale or incorrect data
+
+Example scenario
+
+ Banking system
+ Stock trading
+ Wallet balance checks
+
+Why?
+
+ Showing wrong balance is worse than showing an error
+
+What happens during partition
+
+ Some requests fail
+ Data remains correct
+
+👉 Correctness over uptime
+
+---
+
+### 2. AP Systems (Availability + Partition Tolerance)
+
+Behavior
+
+ System always responds
+ Might serve eventually consistent data
+
+Example scenario
+
+ Social media feeds
+ Likes, views, comments
+ Product recommendations
+
+Why?
+
+ Seeing an old like count is acceptable
+ Downtime is worse for user experience
+
+What happens during partition
+
+ Requests succeed
+ Data syncs later
+
+👉 Uptime over immediate correctness
+
+---
+
+## Real-world examples (intuitive)
+
+### Example 1: WhatsApp message delivery
+
+ Messages may appear late
+ But app keeps working
+ Eventually messages sync
+
+➡️ AP system
+
+---
+
+### Example 2: Online payment
+
+ Balance must be accurate
+ If unsure → transaction fails
+
+➡️ CP system
+
+---
+
+## Important clarification (very common confusion)
+
+❌ CAP does NOT mean:
+
+ “You can never have consistency and availability together”
+
+✅ It means:
+
+ During a network partition, you must choose one
+
+When the network is healthy, systems often appear to have both.
+
+---
+
+## CAP vs Real-world design (important insight)
+
+Modern systems don’t blindly choose CP or AP.
+
+Instead they:
+
+ Are mostly AP
+ Add strong consistency only where required
+
+Example
+
+ Amazon:
+
+   Product browsing → AP
+   Checkout & payment → CP
+
+This is how real systems scale.
+
+---
+
+## Summary (easy to remember)
+
+ C → Always correct data
+ A → Always responds
+ P → Network failures are handled
+
+Since P is unavoidable:
+
+ Choose CP → correctness matters most
+ Choose AP → uptime matters most
+
+---
