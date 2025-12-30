@@ -1,0 +1,251 @@
+
+## 1. What is Latency?
+
+Latency = how long one request takes to complete.
+It is about time, not quantity.
+
+Think of it as:
+
+> “How fast does a single user get a response?”
+
+### Simple definition
+
+ Time taken from request sent → response received
+ Usually measured in milliseconds (ms)
+
+### Real-life analogy
+
+ You order coffee ☕
+ Latency = time from ordering to getting the coffee
+
+### Tech examples
+
+ API call takes 120 ms
+ Database query takes 30 ms
+ Page loads in 800 ms
+
+### Types of latency you’ll hear in system design
+
+ Network latency – time taken to travel over the network
+ Processing latency – time server takes to compute
+ Disk latency – time to read/write from disk
+ End-to-end latency – total time user experiences
+
+### Why latency matters
+
+ Affects user experience
+ High latency = app feels slow, even with powerful servers
+
+Example:
+
+ Chat app: messages arriving after 2 seconds feels broken
+ Payment system: slow response causes duplicate payments
+
+---
+
+## 2. What is Throughput?
+
+Throughput = how many requests a system can handle in a given time.
+It is about capacity, not speed.
+
+Think of it as:
+
+> “How much work can the system do per second?”
+
+### Simple definition
+
+ Number of requests processed per unit time
+ Measured in:
+
+   Requests/second (RPS)
+   Transactions/second (TPS)
+   Messages/second
+
+### Real-life analogy
+
+ Same coffee shop ☕
+ Throughput = how many coffees can be made per hour
+
+### Tech examples
+
+ Server handles 10,000 requests/second
+ Kafka processes 1 million messages/second
+ Database supports 5,000 writes/second
+
+### Why throughput matters
+
+ Determines scalability
+ Important for high-traffic systems
+
+Example:
+
+ Flash sale website
+ Live sports streaming
+ Social media feed refresh
+
+---
+
+## 3. Latency vs Throughput (Core Difference)
+
+| Aspect            | Latency              | Throughput         |
+| ----------------- | -------------------- | ------------------ |
+| Focus             | Speed of one request | Number of requests |
+| Unit              | Time (ms)            | Requests/sec       |
+| User feels        | Slowness             | Crashes / overload |
+| Optimization goal | Faster response      | Higher capacity    |
+
+### Key insight (very important)
+
+> Low latency does NOT guarantee high throughput
+> High throughput does NOT guarantee low latency
+
+---
+
+## 4. Relationship Between Latency and Throughput
+
+### Case 1: Low latency, low throughput
+
+ Fast response
+ But system handles few users
+
+Example:
+
+ Single fast server
+ 10 users → great
+ 1,000 users → fails
+
+### Case 2: High throughput, high latency
+
+ Handles many users
+ Each request is slow
+
+Example:
+
+ Batch processing system
+ Fine for analytics
+ Terrible for real-time apps
+
+### Case 3: Low latency + high throughput (ideal)
+
+ Hardest to achieve
+ Requires good design
+
+Example:
+
+ Netflix
+ WhatsApp messaging
+ Payment gateways
+
+---
+
+## 5. Practical System Design Examples
+
+### Example 1: Chat Application
+
+ Latency priority: VERY HIGH
+ Throughput: Moderate
+
+Why?
+
+ Messages must arrive instantly
+ 1 message late = bad UX
+
+Design choices:
+
+ WebSockets
+ In-memory caches
+ Async processing
+
+---
+
+### Example 2: Video Streaming Platform
+
+ Latency: Medium
+ Throughput: VERY HIGH
+
+Why?
+
+ Millions of users watching simultaneously
+ Small delay is acceptable
+
+Design choices:
+
+ CDNs
+ Edge servers
+ Load balancing
+
+---
+
+### Example 3: Payment System
+
+ Latency: High priority
+ Throughput: Also high
+
+Why?
+
+ Slow response causes retries
+ Retries cause double charges
+
+Design choices:
+
+ Idempotent APIs
+ Fast databases
+ Message queues for reliability
+
+---
+
+## 6. How Do Engineers Improve Latency?
+
+ Caching (Redis, in-memory)
+ Reduce network hops
+ Use CDNs
+ Optimize database queries
+ Use async/non-blocking I/O
+
+Key idea:
+
+> Remove waiting time
+
+---
+
+## 7. How Do Engineers Improve Throughput?
+
+ Horizontal scaling (more servers)
+ Load balancers
+ Message queues
+ Batch processing
+ Database sharding
+
+Key idea:
+
+> Increase parallel work
+
+---
+
+## 8. Common Interview / Design Mistakes
+
+❌ Confusing latency with throughput
+❌ Optimizing only one and ignoring the other
+❌ Saying “faster server” solves everything
+❌ Ignoring user-perceived latency (p99, p95)
+
+---
+
+## 9. One-Line Memory Trick
+
+ Latency → How long does one request take?
+ Throughput → How many requests can be handled?
+
+---
+
+## 10. When to prioritize what?
+
+| System Type   | Priority              |
+| ------------- | --------------------- |
+| Chat / Gaming | Latency               |
+| Analytics     | Throughput            |
+| E-commerce    | Both                  |
+| Streaming     | Throughput            |
+| Payments      | Latency + Reliability |
+
+---
