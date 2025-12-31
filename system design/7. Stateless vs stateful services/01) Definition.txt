@@ -1,0 +1,191 @@
+## 7. Stateless vs Stateful Services
+
+This is a core system-design concept and comes up everywhere: scaling, load balancing, fault tolerance, cloud-native design, and microservices.
+
+---
+
+## 1. What is a Stateless Service?
+
+A stateless service does not store any client-specific data between requests.
+
+ Every request is independent
+ The server does not remember what happened before
+ All required data is sent with the request or fetched from an external system (DB, cache, auth service)
+
+### Simple way to think
+
+> The server has no memory of you once the request is done.
+
+### Example
+
+ REST APIs
+ Public APIs
+ Authentication using JWT tokens
+ Search APIs
+
+HTTP itself is stateless by design.
+
+### Example flow
+
+1. Client sends request with token + data
+2. Server processes request
+3. Server sends response
+4. Server forgets everything about the client
+
+---
+
+## 2. What is a Stateful Service?
+
+A stateful service stores information about the client or session across multiple requests.
+
+ Server remembers previous interactions
+ Client must often connect to the same server
+ State lives inside memory, disk, or local cache
+
+### Simple way to think
+
+> The server remembers who you are and what you did last time
+
+### Example
+
+ Login sessions stored in memory
+ Multiplayer game servers
+ Chat servers maintaining active connections
+ Database servers
+
+---
+
+## 3. Real-World Examples
+
+### Stateless example: API service
+
+ User sends JWT token
+ Token contains user identity
+ Any server can handle the request
+ No session stored on server
+
+### Stateful example: Session-based login
+
+ User logs in
+ Server stores session in memory
+ Next request must go to same server
+ If server crashes → session lost
+
+---
+
+## 4. Scaling Differences (Very Important)
+
+### Stateless services scale easily
+
+ Add more servers
+ Load balancer can send traffic to any instance
+ No special handling required
+
+### Stateful services are harder to scale
+
+ Need session affinity (sticky sessions)
+ Or externalize state to DB/cache
+ Failures can cause data loss
+
+---
+
+## 5. Failure Handling
+
+### Stateless
+
+ Server crash → no data loss
+ Another server handles next request
+ Very fault-tolerant
+
+### Stateful
+
+ Server crash → state lost
+ Active sessions broken
+ Requires replication or backups
+
+---
+
+## 6. Where Is State Usually Stored?
+
+Modern systems avoid stateful services by moving state outside:
+
+ Databases
+ Distributed caches like Redis
+ Object storage
+ Auth tokens (JWT)
+
+This converts stateful logic into stateless services.
+
+---
+
+## 7. Load Balancing Behavior
+
+### Stateless
+
+ Round-robin works perfectly
+ Any server can serve any request
+
+### Stateful
+
+ Requires sticky sessions
+ Load balancer must remember client → server mapping
+
+---
+
+## 8. Cloud & Microservices Perspective
+
+Cloud-native platforms like Kubernetes strongly prefer:
+
+ Stateless application containers
+ External state (DB, cache, queues)
+ Easy auto-scaling and self-healing
+
+That’s why most microservices are stateless.
+
+---
+
+## 9. When Stateful Services Are Necessary
+
+Stateful services are unavoidable when:
+
+ Low-latency in-memory state is required
+ Continuous connections are needed
+ Real-time coordination is critical
+
+Examples:
+
+ Databases
+ Message brokers
+ Game servers
+ WebSocket connection managers
+
+---
+
+## 10. Stateless vs Stateful – Quick Comparison
+
+| Aspect             | Stateless | Stateful            |
+| ------------------ | --------- | ------------------- |
+| Stores client data | ❌ No      | ✅ Yes               |
+| Scaling            | Easy      | Hard                |
+| Fault tolerance    | High      | Lower               |
+| Load balancing     | Simple    | Complex             |
+| Cloud friendly     | ✅ Yes     | ❌ Less              |
+| Examples           | REST APIs | Databases, sessions |
+
+---
+
+## 11. System Design Best Practice (Interview Gold)
+
+> Design services to be stateless whenever possible.
+> Store state in dedicated systems.
+
+This gives you:
+
+ Horizontal scalability
+ Better fault tolerance
+ Easier deployments
+ Simpler recovery
+
+---
+
+
