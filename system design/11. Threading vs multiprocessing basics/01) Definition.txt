@@ -1,0 +1,232 @@
+
+## 11. Threading vs Multiprocessing — Basics
+
+When a system needs to do multiple things at the same time, it can achieve concurrency using threads or processes.
+Both aim to improve performance, responsiveness, and throughput, but they work very differently under the hood.
+
+---
+
+## 1. What is a Thread?
+
+A thread is the smallest unit of execution inside a process.
+
+ Multiple threads share the same memory space
+ Threads run within the same process
+ Creating threads is lightweight and fast
+
+### Key characteristics
+
+ Shared memory (heap, variables, files)
+ Faster communication between threads
+ Higher risk of bugs due to shared state
+
+### Simple example
+
+A web server handling:
+
+ Thread 1 → reads request
+ Thread 2 → queries database
+ Thread 3 → sends response
+
+All threads share the same application memory.
+
+---
+
+## 2. What is a Process?
+
+A process is an independent program instance with its own memory.
+
+ Each process has separate memory space
+ Processes do not share memory by default
+ Heavier to create and manage
+
+### Key characteristics
+
+ Strong isolation
+ Slower communication (IPC needed)
+ More stable and secure
+
+### Simple example
+
+ Browser runs as one process
+ Each tab may run in a separate process
+ If one crashes, others stay alive
+
+---
+
+## 3. Core Differences (High-level)
+
+| Aspect         | Threading                          | Multiprocessing             |
+| -------------- | ---------------------------------- | --------------------------- |
+| Memory         | Shared                             | Separate                    |
+| Creation cost  | Low                                | High                        |
+| Communication  | Fast (shared memory)               | Slow (IPC)                  |
+| Isolation      | Weak                               | Strong                      |
+| Failure impact | One thread can crash whole process | Process crash is isolated   |
+| CPU usage      | Limited by GIL (in some languages) | Can fully use multiple CPUs |
+
+---
+
+## 4. CPU-bound vs I/O-bound Work (Very Important)
+
+### I/O-bound tasks
+
+Tasks that wait on external resources:
+
+ Network calls
+ Disk reads
+ API requests
+
+✅ Threading is better
+
+ Threads can run while others wait
+ Low overhead
+
+Example:
+
+ Web servers
+ API gateways
+ Chat applications
+
+---
+
+### CPU-bound tasks
+
+Tasks that use heavy computation:
+
+ Image processing
+ Encryption
+ Machine learning training
+
+✅ Multiprocessing is better
+
+ Uses multiple CPU cores
+ Avoids CPU contention
+
+Example:
+
+ Video encoding
+ Blockchain mining
+ Data analytics
+
+---
+
+## 5. Language-Level Reality (Important Insight)
+
+In many languages (like Python):
+
+ Threads cannot fully use multiple CPU cores due to internal locks (e.g., GIL)
+ Multiprocessing bypasses this limitation
+
+So:
+
+ Python → threads for I/O, processes for CPU work
+ Java / Go → threads can use multiple cores efficiently
+
+---
+
+## 6. Failure & Stability Considerations
+
+### Threading
+
+ One thread crash → entire process may fail
+ Shared memory bugs (race conditions, deadlocks)
+
+### Multiprocessing
+
+ One process crash → others unaffected
+ Easier fault isolation
+ Preferred in high-availability systems
+
+---
+
+## 7. Real-World System Design Usage
+
+### When threading is used
+
+ Web servers handling thousands of connections
+ Background jobs inside the same service
+ UI responsiveness (frontend apps)
+
+### When multiprocessing is used
+
+ Worker pools (e.g., job queues)
+ Parallel computation systems
+ Security-critical services
+
+---
+
+## 8. Performance Trade-offs
+
+### Threading
+
+Pros
+
+ Fast startup
+ Low memory usage
+ Efficient for I/O
+
+Cons
+
+ Hard to debug
+ Shared-state bugs
+ Limited CPU scaling (language dependent)
+
+---
+
+### Multiprocessing
+
+Pros
+
+ True parallelism
+ Better fault isolation
+ Scales with CPU cores
+
+Cons
+
+ Higher memory usage
+ Slower startup
+ IPC complexity
+
+---
+
+## 9. How Modern Systems Combine Both
+
+Real systems rarely choose only one.
+
+Example: Web backend
+
+ Processes → isolate services (microservices, containers)
+ Threads → handle concurrent requests inside each service
+
+This hybrid model gives:
+
+ Performance
+ Stability
+ Scalability
+
+---
+
+## 10. One-line Mental Model (Very Useful)
+
+ Threading → “Many workers sharing one room”
+ Multiprocessing → “Many workers in separate rooms”
+
+---
+
+## 11. Quick Decision Guide
+
+Choose Threading if:
+
+ Task is I/O-heavy
+ Low latency needed
+ Shared data access is required
+
+Choose Multiprocessing if:
+
+ Task is CPU-heavy
+ Stability matters
+ Full CPU utilization is required
+
+---
+

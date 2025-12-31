@@ -1,0 +1,879 @@
+## 10. High Availability (HA) – Basics
+
+High Availability (HA) is about keeping a system running and accessible even when something goes wrong. In real systems, failures are not if, but when—HA is how we design for that reality.
+
+---
+
+## 1. What is High Availability?
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+
+High Availability means a system is designed to:
+
+ Stay online most of the time
+ Minimize downtime
+ Recover automatically from failures
+
+In simple terms:
+
+> If one part fails, users should not notice.
+
+Example:
+
+ If one server crashes, traffic automatically goes to another server.
+ If a database node fails, a replica takes over.
+
+---
+
+## 2. Why High Availability Matters
+
+Without HA:
+
+ One crash = full service outage
+ Users lose trust
+ Business loses money
+
+With HA:
+
+ Failures are isolated
+ System degrades gracefully, not catastrophically
+ Maintenance can happen without downtime
+
+Real-world impact:
+
+ E-commerce → lost sales per minute of downtime
+ Banking → failed transactions
+ SaaS apps → churned users
+
+---
+
+## 3. Availability Metrics (Uptime)
+
+Availability is usually expressed as a percentage:
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.7 hours        |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+> Each extra “9” is much harder and more expensive to achieve.
+
+---
+
+## 4. Core Principles of High Availability
+
+### 1. Eliminate Single Points of Failure (SPOF)
+
+Any component whose failure brings down the entire system is a SPOF.
+
+Examples of SPOFs:
+
+ One server
+ One database
+ One load balancer
+ One network connection
+
+HA rule:
+
+> Everything critical must be redundant.
+
+---
+
+### 2. Redundancy
+
+Run multiple instances of critical components.
+
+Examples:
+
+ Multiple app servers
+ Primary + replica databases
+ Multiple availability zones
+
+Redundancy alone is not enough—you also need automatic failover.
+
+---
+
+### 3. Failover (Automatic Recovery)
+
+Failover means:
+
+ Detect failure
+ Switch traffic to a healthy component automatically
+
+Example:
+
+ Database primary fails → replica becomes new primary
+ App server crashes → load balancer stops sending traffic to it
+
+Manual failover ≠ High Availability
+HA requires automation.
+
+---
+
+### 4. Health Checks & Monitoring
+
+Systems must constantly check:
+
+ Is this server responding?
+ Is latency acceptable?
+ Is error rate high?
+
+If a component is unhealthy:
+
+ Remove it from traffic
+ Replace or restart it
+
+Without monitoring, redundancy is useless.
+
+---
+
+## 5. Common HA Building Blocks
+
+### 1. Load Balancers
+
+ Distribute traffic across multiple servers
+ Detect unhealthy instances
+ Prevent overload on a single server
+
+Example:
+
+ User requests → Load balancer → App Server A / B / C
+
+---
+
+### 2. Stateless Application Servers
+
+HA works best when app servers are stateless.
+
+Why?
+
+ Any request can go to any server
+ Failed servers can be replaced instantly
+
+State (sessions, data) should be stored in:
+
+ Databases
+ Caches (Redis, Memcached)
+ External storage
+
+---
+
+### 3. Database Replication
+
+ Primary database handles writes
+ Replicas handle reads or standby for failover
+
+Important:
+
+ Replication lag exists
+ Failover strategy must be defined clearly
+
+---
+
+### 4. Multiple Availability Zones / Data Centers
+
+Protects against:
+
+ Power failures
+ Network outages
+ Data center-level disasters
+
+HA across zones > HA within one zone.
+
+---
+
+## 6. High Availability vs Related Concepts
+
+### HA vs Scalability
+
+ HA → system stays up
+ Scalability → system handles more load
+
+You can have:
+
+ Scalable but not highly available
+ Highly available but not scalable
+  Best systems are both.
+
+---
+
+### HA vs Fault Tolerance
+
+ HA: system recovers quickly after failure
+ Fault tolerance: system continues without interruption
+
+Fault tolerance is stronger and more expensive.
+
+---
+
+## 7. Example: HA Web Application
+
+Without HA:
+
+```
+User → Single Server → Database
+```
+
+ Server fails → site down
+
+With HA:
+
+```
+User
+  ↓
+Load Balancer
+  ↓
+App Server A / App Server B
+  ↓
+Primary DB ← Replica DB
+```
+
+If:
+
+ App Server A fails → traffic goes to B
+ Primary DB fails → replica promoted
+ Users may see slight delay, not total outage
+
+---
+
+## 8. Trade-offs of High Availability
+
+HA is not free.
+
+Costs:
+
+ More servers
+ More complexity
+ More operational overhead
+
+Engineering trade-offs:
+
+ Consistency vs availability (CAP theorem)
+ Cost vs uptime
+ Complexity vs reliability
+
+---
+
+## 9. When Do You Need High Availability?
+
+You must consider HA when:
+
+ System is user-facing
+ Downtime impacts revenue or trust
+ System is critical infrastructure
+
+You may skip heavy HA for:
+
+ Internal tools
+ Early prototypes
+ Non-critical batch systems
+
+---
+
+## 10. Key Takeaways
+
+ High Availability = designing for failure
+ Remove single points of failure
+ Use redundancy + automatic failover
+ Monitor everything
+ Aim for graceful degradat3waion, not perfection

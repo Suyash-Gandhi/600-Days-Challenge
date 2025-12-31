@@ -17,7 +17,7 @@
 9. Single point of failure (SPOF)
 10. High availability (HA) basics
 11. Threading vs multiprocessing basics
-12. Async I/O vs multithreading vs multiprocessing trade-offs
+12. Async I/O vs multithreading vs multiprocessing trade-offs (completed in previous)
 13. Basics of containerization (Docker)
 
 ---

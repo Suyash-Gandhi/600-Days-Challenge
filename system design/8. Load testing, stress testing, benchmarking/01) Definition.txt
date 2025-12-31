@@ -1,0 +1,230 @@
+
+## 1. Load Testing
+
+### What it is
+
+Load testing checks how your system behaves under expected, normal traffic.
+
+Think of it as asking:
+
+> “Can my system handle the number of users I expect in real life?”
+
+---
+
+### What you simulate
+
+ Normal user behavior
+ Expected peak traffic (e.g., 1k, 10k, 100k users)
+ Typical actions (login, API calls, DB reads/writes)
+
+---
+
+### What you measure
+
+ Response time (latency)
+ Throughput (requests/sec)
+ Error rate
+ CPU, memory, DB connections
+
+---
+
+### Example (real-world)
+
+You’re building a job portal:
+
+ Expected traffic: 5,000 users/hour
+ Load test simulates:
+
+   Users browsing jobs
+   Applying to jobs
+   Logging in/out
+ Goal:
+
+   Pages load < 2 seconds
+   Error rate < 1%
+
+If it fails → you optimize DB queries, caching, or scale services.
+
+---
+
+### When to use
+
+ Before production release
+ Before marketing campaigns
+ After major feature changes
+
+---
+
+### Key insight
+
+> Load testing validates performance under normal conditions.
+
+---
+
+## 2. Stress Testing
+
+### What it is
+
+Stress testing pushes the system beyond its limits to see how and when it breaks.
+
+Think of it as asking:
+
+> “What happens if everything goes wrong?”
+
+---
+
+### What you simulate
+
+ Traffic far above expected load
+ Sudden spikes (traffic surge)
+ Resource exhaustion (CPU, memory, DB)
+
+---
+
+### What you look for
+
+ Breaking point (max users)
+ Failure behavior (graceful vs crash)
+ Recovery ability after failure
+
+---
+
+### Example (real-world)
+
+Same job portal, but:
+
+ Normal load: 5,000 users/hour
+ Stress test: 50,000 → 100,000 users/hour
+
+Questions you want answered:
+
+ Does the app crash or degrade gracefully?
+ Do users get slow responses or server errors?
+ Does it recover automatically when load drops?
+
+---
+
+### Good vs bad outcome
+
+❌ Bad:
+
+ Entire system crashes
+ Data corruption
+ Manual restart required
+
+✅ Good:
+
+ Requests slow down
+ Some requests rejected
+ Core system stays alive
+
+---
+
+### When to use
+
+ Systems expecting traffic spikes (sales, exams, launches)
+ Critical systems (payments, healthcare, banking)
+
+---
+
+### Key insight
+
+> Stress testing reveals system limits and failure behavior.
+
+---
+
+## 3. Benchmarking
+
+### What it is
+
+Benchmarking is about comparison, not failure.
+
+Think of it as asking:
+
+> “How fast is my system compared to others or to previous versions?”
+
+---
+
+### What you compare
+
+ Your system vs another system
+ Old version vs new version
+ Different technologies or configurations
+
+---
+
+### What you measure
+
+ Requests per second
+ Latency
+ Resource usage
+ Cost-performance ratio
+
+---
+
+### Example (real-world)
+
+You are deciding between:
+
+ PostgreSQL vs MongoDB
+ REST API vs GraphQL
+ Redis caching vs no caching
+
+You benchmark:
+
+ Same workload
+ Same environment
+ Compare performance numbers
+
+Result:
+
+ PostgreSQL handles 8k req/sec
+ MongoDB handles 12k req/sec
+  Now you make a data-backed decision.
+
+---
+
+### When to use
+
+ Choosing tech stack
+ Performance optimization
+ Capacity planning
+
+---
+
+### Key insight
+
+> Benchmarking helps you choose and justify technical decisions.
+
+---
+
+## 4. Side-by-Side Comparison
+
+| Aspect  | Load Testing            | Stress Testing          | Benchmarking            |
+| ------- | ----------------------- | ----------------------- | ----------------------- |
+| Goal    | Handle expected traffic | Find breaking point     | Compare performance     |
+| Traffic | Normal / expected       | Extreme / beyond limits | Controlled & repeatable |
+| Focus   | Stability               | Failure & recovery      | Relative speed          |
+| Output  | Pass/fail under load    | Max capacity            | Best option             |
+
+---
+
+## 5. How These Fit Together (System Design View)
+
+In real projects, you usually do all three:
+
+1. Benchmark → choose best tech/config
+2. Load test → verify it works for real users
+3. Stress test → understand failure limits
+
+Skipping any one leads to surprises in production.
+
+---
+
+## 6. Simple Mental Model (Easy to Remember)
+
+ Load testing → “Can it handle daily life?”
+ Stress testing → “What happens during chaos?”
+ Benchmarking → “Is this the fastest/best choice?”
+
+---
