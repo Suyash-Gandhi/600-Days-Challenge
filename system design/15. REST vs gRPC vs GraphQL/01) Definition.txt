@@ -1,0 +1,230 @@
+
+
+## 1. What problem are these solving (at a high level)?
+
+All three are API communication styles.
+They define how clients talk to servers.
+
+The difference is how data is requested, sent, and optimized.
+
+Think of it like food ordering:
+
+ REST → You order from a fixed menu
+ GraphQL → You build your own plate
+ gRPC → You eat in the kitchen with the chef (fast, efficient, not for everyone)
+
+---
+
+## 2. REST (Representational State Transfer)
+
+### What it is
+
+REST is a resource-based API style built on top of HTTP.
+
+You access resources using URLs and HTTP methods.
+
+Example resources:
+
+ `/users`
+ `/orders/123`
+ `/products`
+
+### How it works
+
+ Uses HTTP verbs:
+
+   GET → read
+   POST → create
+   PUT/PATCH → update
+   DELETE → remove
+ Data format is usually JSON
+ Stateless: each request is independent
+
+### Strengths
+
+ Very simple and intuitive
+ Works everywhere (browsers, mobiles, servers)
+ Easy to debug (plain HTTP, readable JSON)
+ Caching works naturally (HTTP cache, CDN)
+
+### Weaknesses
+
+ Over-fetching: you get more data than needed
+ Under-fetching: multiple API calls for one screen
+ Versioning pain (`/v1`, `/v2`, `/v3`)
+
+### Real-world use
+
+ Public APIs
+ CRUD-heavy systems
+ Beginner-friendly backends
+ Microservices exposed to external clients
+
+Example scenario
+A blog app:
+
+ `GET /posts`
+ `GET /posts/42`
+ `GET /posts/42/comments`
+
+---
+
+## 3. GraphQL
+
+### What it is
+
+GraphQL is a query-based API language.
+
+Instead of the server deciding the response shape,
+the client asks exactly what it wants.
+
+### How it works
+
+ Single endpoint (usually `/graphql`)
+ Client sends a query describing required fields
+ Server responds with exactly those fields
+
+### Strengths
+
+ No over-fetching, no under-fetching
+ Perfect for frontend-heavy apps
+ One request can replace many REST calls
+ Strongly typed schema (self-documenting)
+
+### Weaknesses
+
+ Harder to cache (not HTTP-friendly by default)
+ More complex server logic
+ Can be abused with expensive queries if not controlled
+ Not ideal for simple CRUD-only APIs
+
+### Real-world use
+
+ Mobile apps (slow networks)
+ Dashboards with complex UI
+ Rapidly changing frontend requirements
+
+Example scenario
+A user profile screen needs:
+
+ user name
+ profile picture
+ last 3 posts
+
+GraphQL fetches only those fields, not everything.
+
+---
+
+## 4. gRPC
+
+### What it is
+
+gRPC is a high-performance RPC framework developed for service-to-service communication.
+
+It is not designed for browsers by default.
+
+### How it works
+
+ Uses Protocol Buffers (binary format), not JSON
+ Runs over HTTP/2
+ Strongly typed contracts (`.proto` files)
+ Supports:
+
+   Unary calls
+   Streaming (client, server, bidirectional)
+
+### Strengths
+
+ Extremely fast and efficient
+ Smaller payloads than JSON
+ Built-in streaming
+ Strong contracts → fewer runtime errors
+
+### Weaknesses
+
+ Hard to debug (binary data)
+ Poor browser support
+ Learning curve is steeper
+ Not human-readable
+
+### Real-world use
+
+ Internal microservices
+ High-throughput systems
+ Low-latency communication
+ Real-time streaming data
+
+Example scenario
+A payment system:
+
+ Fraud service
+ Risk engine
+ Ledger service
+
+gRPC is ideal here.
+
+---
+
+## 5. Side-by-side comparison (important for interviews)
+
+| Feature          | REST        | GraphQL       | gRPC              |
+| ---------------- | ----------- | ------------- | ----------------- |
+| Protocol         | HTTP/1.1    | HTTP          | HTTP/2            |
+| Data format      | JSON        | JSON          | Protobuf (binary) |
+| Endpoint style   | Multiple    | Single        | Method-based      |
+| Performance      | Medium      | Medium        | Very high         |
+| Browser friendly | Yes         | Yes           | No (by default)   |
+| Caching          | Easy        | Hard          | N/A               |
+| Typing           | Weak        | Strong        | Very strong       |
+| Best for         | Public APIs | Frontend apps | Internal services |
+
+---
+
+## 6. When should you choose what? (This matters most)
+
+### Choose REST when:
+
+ You want simplicity
+ You’re building public APIs
+ CRUD operations dominate
+ You want easy caching & debugging
+
+### Choose GraphQL when:
+
+ Frontend requirements change frequently
+ Mobile or low-bandwidth clients
+ One screen needs data from many sources
+ You want flexible queries
+
+### Choose gRPC when:
+
+ Services talk to each other internally
+ Performance & latency are critical
+ You control both client and server
+ Streaming is required
+
+---
+
+## 7. Common real-world architecture (important insight)
+
+Most large systems use all three together:
+
+ REST / GraphQL → client-facing APIs
+ gRPC → internal microservice communication
+
+Example:
+
+ Mobile app → GraphQL API
+ Backend services → gRPC
+ External partners → REST
+
+---
+
+## 8. One-line summary (for quick recall)
+
+ REST: simple, universal, resource-based
+ GraphQL: flexible, client-driven, frontend-friendly
+ gRPC: fast, binary, service-to-service focused
+
+---
+

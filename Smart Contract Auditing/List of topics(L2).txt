@@ -5,7 +5,7 @@
 
 Understand the core of how blockchain works before diving into smart contract vulnerabilities.
 
-1. What is a blockchain
+1. What is a blockchain.
 2. Distributed ledger technology
 3. Public vs. private blockchains
 4. Blockchain consensus mechanisms (PoW, PoS, DPoS, PBFT)
