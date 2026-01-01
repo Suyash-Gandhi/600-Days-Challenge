@@ -1,0 +1,39 @@
+Q2. Can you compare objects using == or ===? Explain with an 
+example.
+
+=> 1. Objects in JavaScript
+
+Objects (including arrays, functions) are reference types.
+
+== and === compare object references, not their content.
+
+2. Comparing Objects
+
+If two variables point to the same object reference, == and 
+=== both return true.
+
+If they point to different objects (even with identical 
+content), both return false.
+
+3. Example
+let obj1 = { name: "Alice" };
+let obj2 = { name: "Alice" };
+let obj3 = obj1;
+
+console.log(obj1 == obj2);  // false (different references)
+console.log(obj1 === obj2); // false (different references)
+console.log(obj1 === obj3); // true  (same reference)
+
+4. Why This Happens
+
+obj1 and obj2 look identical, but they are stored in different 
+memory locations.
+
+Only obj3 shares the same reference as obj1.
+
+5. Key Takeaway
+
+Use == or === for reference equality, not content.
+
+To compare object contents, you need a deep comparison function, 
+e.g., JSON.stringify(obj1) === JSON.stringify(obj2) (with limitations).

@@ -1,0 +1,66 @@
+Q2. Consider the following code snippet:
+if ([] == false) console.log("A");
+if ([] === false) console.log("B");
+
+
+Question: Explain the output and reasoning.
+
+=> Step 1: Understanding == vs ===
+
+== (loose equality) allows type coercion before comparison.
+
+=== (strict equality) checks both type and value, with no 
+coercion.
+
+Step 2: Evaluating [] == false
+
+Left side: [] is an empty array.
+
+In loose equality, JavaScript tries to coerce types.
+
+[] when converted to a primitive (via toString()) becomes "".
+
+[].toString(); // ""
+
+
+Now we compare "" == false.
+
+false gets converted to a number 0.
+
+"" when converted to a number also becomes 0.
+
+Number(""); // 0
+Number(false); // 0
+
+
+So, 0 == 0 → true.
+
+✅ Therefore, "A" is printed.
+
+Step 3: Evaluating [] === false
+
+Strict equality means no coercion happens.
+
+Type of [] → "object".
+
+Type of false → "boolean".
+
+Since types differ, [] === false → false.
+
+❌ Therefore, "B" is not printed.
+
+== can cause unexpected results due to type coercion.
+Example:
+
+"" == 0;      // true
+"0" == 0;     // true
+[] == "";     // true
+[] == 0;      // true
+
+
+These comparisons are unintuitive.
+
+Always prefer === to avoid hidden coercions.
+
+Special case: empty array ([]) is truthy in Boolean context, 
+but due to coercion it may behave like false in == comparisons.

@@ -1,0 +1,94 @@
+Q5. Explain operator precedence
+
+=> 1. Definition
+
+Operator precedence is the set of rules that determines which 
+operator is evaluated first in an expression when multiple 
+operators are present.
+
+For example: 2 + 3 * 4 → Multiplication has higher precedence 
+than addition, so 3 * 4 is evaluated first.
+
+2. Precedence vs Associativity
+
+Precedence decides which operator goes first.
+
+Associativity decides the order when operators have the same 
+precedence.
+
+👉 Example:
+
+let x = 10 - 4 - 2;
+
+
+Subtraction has left-to-right associativity, so (10 - 4) - 2 = 4.
+
+3. Common Precedence Order (High → Low)
+
+Here’s a simplified precedence table (not full, but the most 
+important ones):
+
+| Precedence  | Operator(s)               | Example                | Associativity |
+| ----------- | ------------------------- | ---------------------- | ------------- |
+|  Highest    | `()` (grouping)           | `(2 + 3) * 4`          | N/A           |
+| 1           | `++`, `--`, `!`, `typeof` | `!true`                | Right-to-left |
+| 2           | `*`, `/`, `%`             | `10 / 2 * 5`           | Left-to-right |
+| 3           | `+`, `-`                  | `2 + 3 - 1`            | Left-to-right |
+| 4           | `<`, `<=`, `>`, `>=`      | `5 > 3`                | Left-to-right |
+| 5           | `==`, `===`, `!=`, `!==`  | `"5" == 5`             | Left-to-right |
+| 6           | `&&`                      | `true && false`        | Left-to-right |
+| 7           | `?:` (ternary)            | `x > 0 ? "yes" : "no"` | Right-to-left |
+|  Lowest     | `=` (assignment)          | `a = 5 + 2`            | Right-to-left |
+
+4. Example Walkthrough
+
+Expression:
+
+let result = 2 + 3 * 4 > 10 && !false;
+
+
+Step-by-step:
+
+3 * 4 → 12 (multiplication first).
+
+2 + 12 → 14 (addition next).
+
+14 > 10 → true (comparison next).
+
+!false → true (logical NOT).
+
+true && true → true (logical AND).
+
+✅ Final Answer: true.
+
+5. Associativity Example
+let y = 10   2   3;
+
+
+Exponentiation ( ) is right-to-left,
+
+So it is 10   (2   3) → 10   8 = 100000000.
+
+6. Common Pitfalls
+
+Mixing + with strings and numbers:
+
+console.log(1 + 2 + "3"); // "33" (because left-to-right)  
+console.log("1" + 2 + 3); // "123"
+
+
+Misunderstanding short-circuiting:
+
+console.log(false || true && false); // false (&& has higher 
+precedence)
+
+7. Best Practices
+
+Use parentheses () to make code more readable and explicit.
+
+Do not rely on remembering the entire precedence table — clarity 
+is better than cleverness.
+
+Example:
+
+let safe = (a + b) * c; // much clearer

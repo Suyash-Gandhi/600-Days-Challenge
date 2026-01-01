@@ -1,0 +1,241 @@
+### Destructuring in JavaScript
+
+Destructuring in JavaScript is a convenient way to extract values from arrays or properties from objects into distinct variables.
+It makes your code cleaner, more readable, and concise.
+
+---
+
+## 🧩 1. What is Destructuring?
+
+Instead of manually accessing array elements or object properties, destructuring lets you unpack values in a single statement.
+
+### Example – Without Destructuring:
+
+```js
+const person = { name: "Suyash", age: 22 };
+const name = person.name;
+const age = person.age;
+
+console.log(name, age); // Suyash 22
+```
+
+### Example – With Destructuring:
+
+```js
+const person = { name: "Suyash", age: 22 };
+const { name, age } = person;
+
+console.log(name, age); // Suyash 22
+```
+
+---
+
+## 🔢 2. Array Destructuring
+
+Array destructuring extracts elements from arrays by their order.
+
+### Example:
+
+```js
+const numbers = [10, 20, 30];
+const [a, b, c] = numbers;
+
+console.log(a, b, c); // 10 20 30
+```
+
+### ✅ Skip Elements:
+
+```js
+const [first, , third] = [10, 20, 30];
+console.log(first, third); // 10 30
+```
+
+### ✅ Default Values:
+
+```js
+const [x = 5, y = 10] = [1];
+console.log(x, y); // 1 10
+```
+
+### ✅ Swapping Variables:
+
+```js
+let a = 1, b = 2;
+[a, b] = [b, a];
+console.log(a, b); // 2 1
+```
+
+---
+
+## 🧱 3. Object Destructuring
+
+Object destructuring extracts properties by their name, not position.
+
+### Example:
+
+```js
+const user = { id: 101, username: "coderX", role: "admin" };
+const { id, role } = user;
+
+console.log(id, role); // 101 admin
+```
+
+### ✅ Rename Variables:
+
+```js
+const { username: userName } = user;
+console.log(userName); // coderX
+```
+
+### ✅ Default Values:
+
+```js
+const { email = "not provided" } = user;
+console.log(email); // not provided
+```
+
+### ✅ Nested Object Destructuring:
+
+```js
+const person = {
+  name: "Suyash",
+  address: {
+    city: "Pune",
+    pin: 411001
+  }
+};
+
+const { address: { city } } = person;
+console.log(city); // Pune
+```
+
+---
+
+## 🔁 4. Mixed Destructuring (Object + Array)
+
+You can mix both array and object destructuring together.
+
+### Example:
+
+```js
+const users = [
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 30 }
+];
+
+const [{ name: firstUser }, { age: secondAge }] = users;
+
+console.log(firstUser, secondAge); // Alice 30
+```
+
+---
+
+## ⚙️ 5. Function Parameter Destructuring
+
+Destructuring can be used directly inside function parameters for cleaner and more readable code.
+
+### Example (Object):
+
+```js
+function greet({ name, age }) {
+  console.log(`Hello ${name}, age ${age}`);
+}
+
+greet({ name: "Suyash", age: 22 }); // Hello Suyash, age 22
+```
+
+### Example (Array):
+
+```js
+function print([a, b]) {
+  console.log(a, b);
+}
+
+print([10, 20]); // 10 20
+```
+
+---
+
+## 💡 6. Rest with Destructuring
+
+You can combine the rest operator (`...`) to collect remaining elements or properties.
+
+### Array Example:
+
+```js
+const [first, ...rest] = [1, 2, 3, 4];
+console.log(first); // 1
+console.log(rest);  // [2, 3, 4]
+```
+
+### Object Example:
+
+```js
+const { name, ...details } = { name: "Suyash", age: 22, country: "India" };
+console.log(name);    // Suyash
+console.log(details); // { age: 22, country: 'India' }
+```
+
+---
+
+## 🧠 7. Practical Use Cases
+
+✅ Extract API response data
+
+```js
+const { data, status } = await fetchAPI();
+```
+
+✅ React props destructuring
+
+```js
+function Profile({ name, age }) {
+  return <h2>{name} ({age})</h2>;
+}
+```
+
+✅ Swapping values
+
+```js
+[a, b] = [b, a];
+```
+
+✅ Setting default configurations
+
+```js
+const { theme = "light" } = userPreferences;
+```
+
+---
+
+## ⚖️ 8. Common Mistakes
+
+❌ Using object destructuring with arrays:
+
+```js
+const { 0: first } = [10, 20];
+console.log(first); // Works but not recommended
+```
+
+✅ Prefer array destructuring:
+
+```js
+const [first] = [10, 20];
+```
+
+❌ Mismatching property names:
+
+```js
+const { age } = { years: 22 };
+console.log(age); // undefined
+```
+
+---
+
+## 🏁 Summary
+
+| Type                 | Syntax         | Based On      | Can Rename | Can Use Defaults |
+| -------------------- | -------------- | ------------- | ---------- | ---------------- |
+| Array Destructuring  | `[a, b] = arr` | Position      | ❌          | ✅                |
+| Object Destructuring | `{x, y} = obj` | Property Name | ✅          | ✅                |
+

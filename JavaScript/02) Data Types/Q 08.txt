@@ -1,0 +1,31 @@
+Q8. What are the differences between == and === when comparing 
+values of different data types?
+
+=> 1. == (Loose Equality)
+
+Compares two values after type coercion (automatic conversion).
+
+If the types are different, JavaScript tries to convert them 
+to the same type, then compares.
+
+Can lead to unexpected results.
+
+Examples:
+
+5 == "5"      // true → "5" (string) converted to number
+0 == false    // true → false converted to 0
+null == undefined // true → special rule
+
+2. === (Strict Equality)
+
+Compares two values without type coercion.
+
+Both value and type must match to return true.
+
+Safer and more predictable
+
+Examples:
+
+5 === "5"     // false → different types
+0 === false   // false → number vs boolean
+null === undefined // false → different types

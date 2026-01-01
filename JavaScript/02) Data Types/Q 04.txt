@@ -1,0 +1,35 @@
+Q4. Explain the difference between symbol and string data types.
+When would you use a symbol?
+
+=> 1. String
+
+Represents a sequence of characters (text). Strings are 
+immutable and can have identical values. They are commonly
+used for messages, object keys, or any textual data.
+Two strings can be identical. "id" === "id" → true.
+
+2. Symbol
+
+Represents a unique and immutable identifier. Every Symbol is 
+guaranteed to be unique, even if it has the same description. 
+Symbol("id") === Symbol("id") → false.. 
+Symbols are mainly used as unique object keys or for defining 
+internal/private properties. Primarily used as unique keys in 
+objects, to avoid property name collisions.
+
+
+When to use a Symbol
+
+Unique object keys to prevent name clashes:
+
+const id = Symbol("id");
+const user = {};
+user[id] = 123;
+console.log(user); // { [Symbol(id)]: 123 }
+
+
+Defining private or internal properties that shouldn’t be 
+accidentally accessed or overwritten.
+
+Implementing well-known symbols like Symbol.iterator for 
+custom iteration behavior

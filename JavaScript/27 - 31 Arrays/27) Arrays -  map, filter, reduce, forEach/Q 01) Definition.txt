@@ -1,0 +1,207 @@
+
+
+# ✅ Arrays: `map`, `filter`, `reduce`, `forEach` — Complete Explanation
+
+Array methods like `map`, `filter`, `reduce`, and `forEach` are foundational tools used in modern JavaScript for transforming, processing, and iterating over lists of data. They are considered higher-order functions because they accept another function (callback) as an argument.
+
+These four methods help you write cleaner, more readable, and more expressive code compared to traditional `for` loops.
+
+---
+
+# ⭐ 1. `map()` – Transformation Method
+
+## ✔ What it does
+
+ Creates a new array.
+ Applies a function to each element.
+ Returns the transformed value.
+ Length of the new array is always equal to original array length.
+
+## ✔ Use-case
+
+When you want to modify or transform every element.
+
+Examples:
+
+ Converting prices (₹ → $)
+ Extracting specific fields from objects
+ Formatting strings
+
+## ✔ Syntax
+
+```js
+const newArray = array.map((value, index, array) => {
+    return value;
+});
+```
+
+## ✔ Example
+
+Convert numbers → their squares.
+
+```js
+const nums = [1, 2, 3, 4];
+
+const squares = nums.map(n => n  2);
+console.log(squares); // [2, 4, 6, 8]
+```
+
+## ✔ Key Points
+
+ Does not mutate original array.
+ Always returns a new array.
+ Perfect for data transformation.
+
+---
+
+# ⭐ 2. `filter()` – Extraction Method
+
+## ✔ What it does
+
+ Creates a new array.
+ Only keeps the elements that pass a condition.
+ Returned array may be:
+
+   Smaller
+   Same size
+   Even empty
+
+## ✔ Use-case
+
+Use when you want to choose or select items from a list.
+
+Examples:
+
+ Filter users older than 18
+ Filter odd numbers
+ Filter products in stock
+
+## ✔ Syntax
+
+```js
+const result = array.filter((value, index, array) => {
+    return condition; // must be true/false
+});
+```
+
+## ✔ Example
+
+Select even numbers:
+
+```js
+const nums = [1, 2, 3, 4, 5];
+
+const evens = nums.filter(n => n % 2 === 0);
+console.log(evens); // [2, 4]
+```
+
+## ✔ Key Points
+
+ Does not modify original array.
+ Great for searching, filtering logic.
+ Returns a subset.
+
+---
+
+# ⭐ 3. `reduce()` – Accumulation Method
+
+## ✔ What it does
+
+ Reduces the array to a single value.
+ Works with:
+
+   Numbers → sum
+   Strings → concatenation
+   Arrays → flattening
+   Objects → grouping
+
+## ✔ Use-case
+
+Perfect when you want a single output from multiple values.
+
+Examples:
+
+ Sum of numbers
+ Maximum value
+ Counting occurrences
+ Transform arrays into objects
+
+## ✔ Syntax
+
+```js
+const result = array.reduce((accumulator, value, index, array) => {
+    return newAccumulator;
+}, initialValue);
+```
+
+## ✔ Example 1: Sum of Numbers
+
+```js
+const nums = [10, 20, 30];
+
+const sum = nums.reduce((acc, n) => acc + n, 0);
+console.log(sum); // 60
+```
+
+## ✔ Example 2: Count occurrences
+
+```js
+const letters = ['a', 'b', 'a', 'c', 'b', 'a'];
+
+const count = letters.reduce((acc, ch) => {
+    acc[ch] = (acc[ch] || 0) + 1;
+    return acc;
+}, {});
+
+console.log(count); // {a: 3, b: 2, c: 1}
+```
+
+## ✔ Key Points
+
+ Most powerful method of the four.
+ Can mimic map, filter, and forEach.
+ Often used for data analytics.
+
+---
+
+# ⭐ 4. `forEach()` – Iteration Method
+
+## ✔ What it does
+
+ Runs a callback on each element.
+ Does not return anything.
+ Used only for side effects (logging, updating DOM, etc.)
+
+## ✔ Use-case
+
+Best when you are:
+
+ Printing values
+ Updating UI
+ Pushing into an external array
+ Running functions without needing a return
+
+## ✔ Syntax
+
+```js
+array.forEach((value, index, array) => {
+    // perform action
+});
+```
+
+## ✔ Example
+
+```js
+const nums = [1, 2, 3];
+
+nums.forEach(n => console.log(n));
+// prints: 1 2 3
+```
+
+## ✔ Key Points
+
+ Returns undefined.
+ Not chainable like map/filter/reduce.
+ Not meant for transformations.
+
+---

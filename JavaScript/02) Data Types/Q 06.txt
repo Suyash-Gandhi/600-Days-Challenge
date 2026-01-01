@@ -1,0 +1,61 @@
+Q6. How does JavaScript handle dynamic typing? Give an 
+example where a variable changes its type.
+
+=> JavaScript is a dynamically typed language, meaning you 
+don’t declare a variable’s type explicitly (like int, string, 
+bool). Instead, the type is inferred at runtime based on the 
+value assigned.
+
+Static typing (e.g., Java, C++): type is fixed at compile time.
+
+Dynamic typing (e.g., JavaScript, Python): type can change 
+anytime at runtime.
+
+Example :
+
+let data = 42;         // Number
+console.log(typeof data);  // "number"
+
+data = "Hello World";  // String
+console.log(typeof data);  // "string"
+
+data = { id: 1 };      // Object
+console.log(typeof data);  // "object"
+
+
+➡️ The variable data changes type without errors.
+
+Type Coercion (Automatic Conversion)
+
+JavaScript sometimes converts types implicitly, which is also 
+part of dynamic typing.
+
+console.log("5" - 2);   // 3   → "5" converted to number
+console.log("5" + 2);   // "52" → number 2 converted to string
+
+
+This can cause unexpected results if not carefully handled.
+
+✅ Advantages of Dynamic Typing
+
+Flexibility – Quick prototyping is easier since you don’t 
+need to declare strict types.
+
+Less boilerplate – No need to repeatedly specify types.
+
+Versatility – Same variable can be reused for multiple purposes.
+
+❌ Disadvantages of Dynamic Typing
+
+Runtime Errors – Bugs appear only when code runs, not at 
+compile time.
+
+let x = 5;
+x.toUpperCase(); // Error: x is a number, not a string
+
+
+Harder Debugging – A variable’s type may change unexpectedly 
+in large projects.
+
+Maintainability Issues – Team projects become tricky when 
+developers assume different types

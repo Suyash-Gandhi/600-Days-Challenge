@@ -1,0 +1,114 @@
+
+
+## 🟦   1. Rest Parameters (`...`)  
+
+### 🧠 Concept
+
+Rest parameters allow you to   collect all remaining arguments into an array   when the number of arguments is not fixed.
+
+```js
+function sum(...numbers) {
+  return numbers.reduce((a, b) => a + b, 0);
+}
+console.log(sum(1, 2, 3, 4)); // 10
+```
+
+---
+
+### 💡 Key Points
+
+1. Rest parameters   must be the last parameter  :
+
+   ```js
+   function example(a, b, ...rest) {
+     console.log(a, b, rest);
+   }
+   example(1, 2, 3, 4, 5); // 1 2 [3, 4, 5]
+   ```
+
+2. Works great for   variable argument lists   (e.g., math operations, logging, etc.)
+
+   ```js
+   const logAll = (...msgs) => console.log(msgs.join(", "));
+   logAll("Hello", "World", "JS"); // Hello, World, JS
+   ```
+
+3. Replaces the   old `arguments` object   (which isn’t a real array):
+
+   ```js
+   function oldSum() {
+     console.log(arguments); // array-like object, not real array
+   }
+   ```
+
+---
+
+## 🟨   2. Spread Operator (`...`)  
+
+### 🧠 Concept
+
+The spread operator   expands arrays or objects   into individual elements — the opposite of the rest parameter.
+
+### 🔹 Spreading Arrays
+
+```js
+const nums = [1, 2, 3];
+const moreNums = [...nums, 4, 5];
+console.log(moreNums); // [1, 2, 3, 4, 5]
+```
+
+### 🔹 Passing Arrays as Function Arguments
+
+```js
+function add(a, b, c) {
+  return a + b + c;
+}
+const numbers = [10, 20, 30];
+console.log(add(...numbers)); // 60
+```
+
+### 🔹 Copying Arrays (Shallow Copy)
+
+```js
+const arr1 = [1, 2, 3];
+const arr2 = [...arr1];
+arr2.push(4);
+console.log(arr1, arr2); // [1, 2, 3] [1, 2, 3, 4]
+```
+
+### 🔹 Merging Objects
+
+```js
+const user = { name: "Suyash", age: 22 };
+const details = { country: "India", profession: "Developer" };
+const merged = { ...user, ...details };
+console.log(merged);
+// { name: 'Suyash', age: 22, country: 'India', profession: 'Developer' }
+```
+
+---
+
+## ⚖️   4. Rest vs Spread Summary  
+
+| Feature    | Symbol | Used In                            | Purpose                                              |
+| ---------- | ------ | ---------------------------------- | ---------------------------------------------------- |
+|   Rest     | `...`  | Function parameters                | Collects multiple arguments into an array            |
+|   Spread   | `...`  | Function calls, arrays, or objects | Expands array/object elements into individual values |
+
+---
+
+### 🧩 Example Combining All
+
+```js
+function introduce(name = "Guest", ...skills) {
+  console.log(`Hello ${name}, you know ${skills.join(", ")}!`);
+}
+
+const userSkills = ["JavaScript", "React", "Node.js"];
+
+introduce("Suyash", ...userSkills);
+// Output: Hello Suyash, you know JavaScript, React, Node.js!
+```
+
+---
+

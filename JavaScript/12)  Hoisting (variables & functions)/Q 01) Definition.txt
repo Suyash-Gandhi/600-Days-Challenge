@@ -1,0 +1,200 @@
+
+## 🧠 1. What is Hoisting?
+
+Definition:
+Hoisting is JavaScript’s default behavior of moving declarations (not initializations) to the top of their scope (either global or function scope) during the compilation phase.
+
+In simple terms — before your code runs, JS scans it and “lifts” variable and function declarations to the top of the scope, allowing you to use them before they’re actually written in the code.
+
+---
+
+## ⚙️ 2. How Hoisting Works (Behind the Scenes)
+
+Before executing code, JS performs two steps:
+
+1. Memory creation phase (compile time):
+
+    JS engine allocates memory for variables and functions.
+    Variables declared with `var` are set to undefined.
+    Functions declared with `function` keyword are stored entirely (their whole definition is hoisted).
+
+2. Execution phase:
+
+    The code runs line-by-line, using those memory references.
+
+---
+
+## 🧩 3. Variable Hoisting
+
+### 🟠 `var` Hoisting
+
+`var` declarations are hoisted and initialized with `undefined`.
+
+Example:
+
+```js
+console.log(a); // undefined
+var a = 10;
+```
+
+Explanation:
+Internally, JavaScript treats it like:
+
+```js
+var a;      // declaration hoisted
+console.log(a); // undefined
+a = 10;     // initialization happens later
+```
+
+So the declaration is hoisted, but the assignment remains in place.
+
+---
+
+### 🔵 `let` and `const` Hoisting
+
+Both `let` and `const` are also hoisted, but they are not initialized until the code execution reaches their line.
+They exist in the Temporal Dead Zone (TDZ) — a period between the start of the scope and their actual declaration line, where access causes an error.
+
+Example:
+
+```js
+console.log(x); // ❌ ReferenceError: Cannot access 'x' before initialization
+let x = 5;
+```
+
+Explanation:
+
+ The declaration is hoisted (JS knows `x` exists),
+ but it isn’t initialized yet, so it can’t be accessed.
+
+---
+
+### 🧠 Summary Table for Variable Hoisting
+
+| Keyword | Hoisted? | Initialized before use? | Default Value | Accessible before declaration? |
+| ------- | -------- | ----------------------- | ------------- | ------------------------------ |
+| `var`   | ✅ Yes    | ✅ Yes (as undefined)    | `undefined`   | ✅ Yes                          |
+| `let`   | ✅ Yes    | ❌ No                    | —             | ❌ No (TDZ)                     |
+| `const` | ✅ Yes    | ❌ No                    | —             | ❌ No (TDZ)                     |
+
+---
+
+## 🧭 4. Function Hoisting
+
+### 🟢 Function Declarations
+
+Functions defined using the `function` keyword are fully hoisted — meaning both their name and definition are hoisted to the top of the scope.
+
+Example:
+
+```js
+greet(); // ✅ Works fine
+function greet() {
+  console.log("Hello!");
+}
+```
+
+Internally, JS treats it as if the function is available from the start of the scope.
+
+---
+
+### 🟣 Function Expressions (with `var`, `let`, `const`)
+
+If you assign a function to a variable, only the variable declaration is hoisted — not the function definition.
+
+Example:
+
+```js
+sayHello(); // ❌ TypeError: sayHello is not a function
+var sayHello = function() {
+  console.log("Hi!");
+};
+```
+
+Explanation:
+
+```js
+var sayHello;        // declaration hoisted
+sayHello();          // ❌ undefined()
+sayHello = function() { console.log("Hi!"); };
+```
+
+For `let` or `const`, it’s even stricter:
+
+```js
+sayHello(); // ❌ ReferenceError
+let sayHello = function() {
+  console.log("Hi!");
+};
+```
+
+---
+
+## 🧮 5. Hoisting with Arrow Functions
+
+Arrow functions behave like function expressions, not declarations.
+So they follow the same hoisting rules as the variable type they are assigned to.
+
+Example:
+
+```js
+greet(); // ❌ ReferenceError
+const greet = () => console.log("Hey there!");
+```
+
+---
+
+## 🧩 6. Real-World Example
+
+```js
+console.log(a); // undefined
+var a = 10;
+
+foo(); // works
+function foo() {
+  console.log("Function is hoisted!");
+}
+
+bar(); // ❌ TypeError: bar is not a function
+var bar = function() {
+  console.log("This won't run yet");
+};
+```
+
+Step-by-step Explanation:
+
+During memory creation phase:
+
+```js
+var a = undefined;
+function foo() { ... }
+var bar = undefined;
+```
+
+During execution:
+
+1. `console.log(a)` → `undefined`
+2. `foo()` → prints message
+3. `bar()` → `undefined is not a function` (since it’s not assigned yet)
+
+---
+
+## 🔍 7. Key Takeaways
+
+| Type                  | What Gets Hoisted         | Can You Use It Before Declaration? | Notes                    |
+| --------------------- | ------------------------- | ---------------------------------- | ------------------------ |
+| `var`                 | Declaration only          | Yes, gives `undefined`             | Function-scope           |
+| `let` / `const`       | Declaration only (in TDZ) | No                                 | Block-scope              |
+| `function`            | Declaration + Definition  | Yes                                | Fully hoisted            |
+| `function expression` | Variable declaration only | No                                 | Depends on var/let/const |
+| `arrow function`      | Variable declaration only | No                                 | Same as let/const rules  |
+
+---
+
+## 🧠 8. Interview Tip
+
+If you’re asked “Is hoisting bad?” —
+👉 Not really. It’s just how JS works internally.
+But relying on hoisting makes code confusing.
+✅ Best practice: Always declare variables and functions before using them.
+

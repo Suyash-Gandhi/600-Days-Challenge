@@ -1,0 +1,47 @@
+Q7. Why does 0.1 + 0.2 not exactly equal 0.3 in JavaScript?
+
+Step 1: Understanding the problem
+In JavaScript, if you type:
+
+0.1 + 0.2 === 0.3  // false
+
+
+This is surprising, but it’s due to floating-point precision.
+
+Step 2: How JavaScript stores numbers
+
+JavaScript uses the IEEE 754 double-precision floating-point 
+format for all numbers.
+
+This format represents numbers in binary (base 2), not decimal 
+(base 10).
+
+Step 3: Binary representation issue
+
+Some decimal fractions cannot be represented exactly in binary.
+
+Example:
+
+Decimal	Binary (approx)
+0.1	0.000110011001100110011…
+0.2	0.0011001100110011001100…
+
+These are repeating fractions, so the computer stores only an 
+approximation.
+
+Step 4: Adding approximations
+
+0.1 (approx) + 0.2 (approx) ≈ 0.30000000000000004
+
+
+That tiny difference makes 0.1 + 0.2 === 0.3 return false.
+
+Step 5: Correct handling
+
+Use a tolerance for comparison:
+
+Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON  // true
+
+
+Number.EPSILON is the smallest difference between two 
+representable numbers.

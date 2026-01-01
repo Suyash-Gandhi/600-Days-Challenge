@@ -1,0 +1,67 @@
+Q12. Why does the following expression return true?
+
+[] == ![]
+
+=>Step 1: Evaluate the right-hand side (![])
+
+[] is an empty array, which is a truthy value in JavaScript.
+
+Applying the ! operator turns truthy into false.
+
+So:
+
+![] → false
+
+
+Now the expression becomes:
+
+[] == false
+
+Step 2: Type coercion with ==
+
+The == operator (loose equality) allows type coercion.
+Here, we’re comparing an object ([]) with a boolean (false).
+
+JavaScript rules say:
+
+If one side is a boolean, convert it to a number first.
+
+So:
+
+false → 0
+
+
+Now we’re comparing:
+
+[] == 0
+
+Step 3: Array ([]) conversion
+
+When an object (like an array) is compared with a number, 
+JavaScript tries to convert the object to a primitive.
+
+For arrays, the steps are:
+
+[].toString() → "" (an empty string)
+
+"" when converted to a number → 0
+
+So:
+
+[] → "" → 0
+
+Step 4: Final comparison
+
+Now we have:
+
+0 == 0  // ✅ true
+
+
+✅ Final Answer:
+The expression [] == ![] returns true because:
+
+![] becomes false → 0
+
+[] becomes "" → 0
+
+0 == 0 → true

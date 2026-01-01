@@ -1,0 +1,50 @@
+Q6. How does JavaScript handle negative numbers with modulo: -7 % 3?
+
+=> Step 1: Understanding modulo in JS
+
+In JavaScript, the % operator is remainder, not the true 
+mathematical modulo.
+
+Formula:
+
+a % b = a - Math.floor(a / b) * b
+
+Step 2: Work through example -7 % 3
+
+Compute -7 / 3 → -2.333…
+
+Math.floor(-2.333…) → -3
+
+Multiply back: -3 * 3 = -9
+
+Subtract: -7 - (-9) = 2
+
+So:
+
+-7 % 3 === -7 - (Math.floor(-7/3) * 3)
+        === -7 - (-3 * 3)
+        === -7 - (-9)
+        === 2
+
+Step 3: General rule
+
+The result of % in JavaScript takes the sign of the dividend 
+(a), not the divisor (b).
+
+Examples:
+
+7 % 3   // 1
+-7 % 3  // -1
+7 % -3  // 1
+-7 % -3 // -1
+
+Step 4: Key point
+
+Many languages define modulo differently (always non-negative).
+
+In JS, % is remainder → it can be negative.
+
+Step 5: Conclusion
+
+In -7 % 3, the result is -1 because JavaScript’s % follows 
+remainder rules and keeps the sign of the first operand.

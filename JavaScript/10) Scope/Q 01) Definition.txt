@@ -1,0 +1,182 @@
+Let’s break down Scope in JavaScript — a fundamental topic that defines where variables, functions, and objects are accessible in your code.
+
+---
+
+## 🧠 10. Scope (Global, Function, Block) in JavaScript)
+
+### 🔹 What is Scope?
+
+Scope determines the visibility or accessibility of variables in different parts of your code.
+It defines where a variable can be used or modified.
+
+In simple terms:
+
+> "Scope is like the boundary of a variable’s world."
+
+---
+
+## ⚙️ 1. Global Scope
+
+### 🔸 Definition:
+
+A variable is in the global scope if it’s declared outside any function or block.
+It can be accessed from anywhere in the program.
+
+### 🔸 Example:
+
+```js
+let message = "Hello World!"; // Global scope
+
+function greet() {
+  console.log(message); // ✅ accessible here
+}
+
+greet();
+console.log(message); // ✅ accessible here too
+```
+
+### 🔸 Characteristics:
+
+ Declared outside functions/blocks.
+ Accessible from any part of the code (functions, loops, blocks).
+ Be careful: too many global variables can cause naming conflicts and bugs.
+
+### 🔸 Global Variables in Browser:
+
+In browser environments, global variables declared using `var` become properties of the `window` object.
+
+```js
+var name = "Alice";
+console.log(window.name); // Alice
+```
+
+But `let` and `const` do not attach to `window`:
+
+```js
+let city = "Paris";
+console.log(window.city); // undefined
+```
+
+---
+
+## ⚙️ 2. Function Scope
+
+### 🔸 Definition:
+
+Variables declared inside a function are local to that function and cannot be accessed outside.
+
+### 🔸 Example:
+
+```js
+function sayHi() {
+  let greeting = "Hello!";
+  console.log(greeting); // ✅ accessible here
+}
+
+sayHi();
+console.log(greeting); // ❌ Error: greeting is not defined
+```
+
+### 🔸 Characteristics:
+
+ Created with `var`, `let`, or `const` inside functions.
+ Exist only during function execution.
+ Each function creates its own local scope.
+
+### 🔸 Nested Functions Example:
+
+```js
+function outer() {
+  let outerVar = "Outer";
+
+  function inner() {
+    let innerVar = "Inner";
+    console.log(outerVar); // ✅ accessible (inner has access to outer scope)
+  }
+
+  inner();
+  console.log(innerVar); // ❌ Error
+}
+
+outer();
+```
+
+👉 Inner functions can access variables from outer functions — this is the basis for closures.
+
+---
+
+## ⚙️ 3. Block Scope
+
+### 🔸 Definition:
+
+Introduced with ES6, `let` and `const` variables are scoped to the block `{}` in which they are defined (e.g., inside loops, if statements).
+
+### 🔸 Example:
+
+```js
+{
+  let x = 10;
+  const y = 20;
+  console.log(x, y); // ✅ accessible
+}
+console.log(x, y); // ❌ Error: not defined
+```
+
+### 🔸 Contrast with `var`:
+
+`var` ignores block scope — it’s function-scoped, not block-scoped.
+
+```js
+if (true) {
+  var a = 5;
+  let b = 10;
+}
+console.log(a); // ✅ 5
+console.log(b); // ❌ Error
+```
+
+---
+
+## ⚖️ Comparison Summary
+
+| Feature                  | Global Scope                              | Function Scope           | Block Scope                     |
+| ------------------------ | ----------------------------------------- | ------------------------ | ------------------------------- |
+| Declared with            | `var`, `let`, `const` (outside functions) | Inside functions         | Inside `{}` using `let`/`const` |
+| Accessible from          | Entire program                            | Within the same function | Within the same block           |
+| `var` behavior           | Global                                    | Function-scoped          | ❌ Not block-scoped              |
+| `let` / `const` behavior | Global                                    | Function-scoped          | ✅ Block-scoped                  |
+| Memory lifetime          | Till program ends                         | Till function ends       | Till block ends                 |
+
+---
+
+## 🧩 Example Combining All Scopes
+
+```js
+let globalVar = "Global";
+
+function testScope() {
+  var functionVar = "Function";
+
+  if (true) {
+    let blockVar = "Block";
+    console.log(globalVar);  // ✅ Global
+    console.log(functionVar); // ✅ Function
+    console.log(blockVar);   // ✅ Block
+  }
+
+  console.log(blockVar); // ❌ Error: blockVar is not defined
+}
+
+testScope();
+console.log(functionVar); // ❌ Error
+```
+
+---
+
+## 💡 Best Practices
+
+1. Avoid global variables when possible — use local scope for safety.
+2. Always use `let` or `const` instead of `var`.
+3. Keep scopes small and controlled for cleaner, more predictable code.
+4. Understand scope before debugging variable-related issues — many JS bugs come from scope confusion.
+

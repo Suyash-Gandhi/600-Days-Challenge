@@ -1,0 +1,51 @@
+Q9. Explain the difference between object and array in terms 
+of data type and usage
+
+=> Objects in JavaScript
+
+Data type:
+Objects are a reference type in JavaScript.
+They store data in key–value pairs.
+
+Usage:
+
+Best when you want to represent entities with properties.
+
+Keys are usually strings (or symbols).
+
+Values can be any type (primitive or reference).
+
+Example:
+
+const person = {
+  name: "Alice",
+  age: 25,
+  isStudent: true
+};
+console.log(person.name); // "Alice"
+
+
+Here, person is an object with descriptive properties.
+
+Arrays in JavaScript
+
+Data type:
+Arrays are a special kind of object designed for ordered 
+collections.
+Technically, typeof [] returns "object", but arrays have extra 
+methods/properties like .length, .push(), .map().
+
+Usage:
+
+Best when you want a list of items in order.
+
+Elements are indexed with numbers starting from 0.
+
+Often used for iteration and bulk data operations.
+
+Example:
+
+const numbers = [10, 20, 30];
+console.log(numbers[1]); // 20
+numbers.push(40);
+console.log(numbers); // [10, 20, 30, 40]

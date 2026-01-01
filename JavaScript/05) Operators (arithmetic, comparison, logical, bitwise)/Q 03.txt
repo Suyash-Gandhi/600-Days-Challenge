@@ -1,0 +1,83 @@
+Q3. What is the difference between << (left shift) and >> 
+(right shift)? Give an example.
+
+=> 1. Definition
+
+<< (Left Shift):
+Moves all bits of a number to the left by the specified number 
+of positions.
+Each left shift multiplies the number by 2 (ignoring overflow 
+beyond 32 bits).
+
+>> (Right Shift):
+Moves all bits of a number to the right by the specified number 
+of positions.
+Each right shift divides the number by 2 (discarding remainder). 
+The sign bit (leftmost bit) is preserved for signed integers.
+
+2. How It Works
+
+In JavaScript, numbers are stored as 64-bit floating point,
+but bitwise operators convert them to 32-bit signed integers 
+for the operation.
+
+Example in Binary:
+
+Let’s take the number 8:
+
+Decimal: 8  
+Binary (32-bit): 00000000 00000000 00000000 00001000
+
+
+Left Shift (<< 1)
+
+8 << 1  →  00000000 00000000 00000000 00010000  → 16
+
+
+✅ Effectively multiplies by 2.
+
+Right Shift (>> 1)
+
+8 >> 1  →  00000000 00000000 00000000 00000100  → 4
+
+
+✅ Effectively divides by 2 (and drops fractions).
+
+3. Effect with Negative Numbers
+
+Left Shift (<<) still just shifts bits left, ignoring the sign.
+
+Right Shift (>>) keeps the sign intact (sign-extended).
+
+Example with -8:
+
+Decimal: -8
+Binary (32-bit two’s complement): 11111111 11111111 11111111 11111000
+
+
+-8 << 1 → -16
+
+-8 >> 1 → -4 (sign preserved).
+
+4. >>> (Unsigned Right Shift)
+
+Moves all bits to the right.
+
+Does not preserve the sign bit — instead, it always fills with 0.
+
+Result is always a positive integer, even if the original number was negative.
+
+Example:
+
+console.log(-8 >>> 1); 
+
+
+Step-by-step:
+
+-8 in binary (32-bit):
+11111111 11111111 11111111 11111000
+
+After unsigned right shift by 1 (>>> 1):
+01111111 11111111 11111111 11111100 → 2147483644
+
+✔ Notice: The negative number turned into a large positive number.

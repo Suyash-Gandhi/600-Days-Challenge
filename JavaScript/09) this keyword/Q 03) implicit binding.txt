@@ -1,0 +1,161 @@
+
+
+## 🔹 1. What Is Implicit Binding?
+
+Implicit binding is one of the four binding rules that determine the value of `this` in JavaScript.
+It applies when a function is called as a method of an object — that is, when it is invoked through a dot (`.`) or bracket (`[]`) notation.
+
+ In simple terms:
+ When a function is called as a property of an object, `this` refers to that object.
+
+---
+
+## 🔹 2. Key Idea
+
+When you call:
+
+```js
+object.method()
+```
+
+the object to the left of the dot is what `this` refers to inside the method.
+
+That’s why it’s called implicit binding — JavaScript implicitly binds `this` to the object used to call the function.
+
+---
+
+## 🔹 3. Example
+
+```js
+const person = {
+  name: "Alice",
+  age: 25,
+  greet: function() {
+    console.log(`Hi, I'm ${this.name} and I'm ${this.age} years old.`);
+  }
+};
+
+person.greet();
+```
+
+Output:
+
+```
+Hi, I'm Alice and I'm 25 years old.
+```
+
+### 🔍 Explanation
+
+ The function `greet()` is called as a property of `person`.
+ Therefore, by implicit binding, `this` inside `greet()` refers to the `person` object.
+ So `this.name` → `"Alice"` and `this.age` → `25`.
+
+---
+
+## 🔹 4. Nested Example (Common Pitfall)
+
+Let’s see what happens with nested objects:
+
+```js
+const user = {
+  name: "Bob",
+  info: {
+    age: 30,
+    showInfo: function() {
+      console.log(this.name, this.age);
+    }
+  }
+};
+
+user.info.showInfo();
+```
+
+Output:
+
+```
+undefined 30
+```
+
+### 🔍 Why?
+
+Because `showInfo()` was called as `user.info.showInfo()` →
+the object to the left of the dot is `user.info`.
+
+So `this` refers to `user.info`, not `user`.
+`user.info` doesn’t have a `name` property → `this.name` is `undefined`.
+But it does have `age` → `this.age` is `30`.
+
+---
+
+## 🔹 5. Losing Implicit Binding
+
+If you extract the method from the object and call it standalone, you lose implicit binding:
+
+```js
+const show = user.info.showInfo;
+show(); // ❌ default binding applies
+```
+
+Output:
+
+```
+undefined undefined
+```
+
+Because now it’s a plain function call, not attached to an object, so `this` falls back to the global object (non-strict) or `undefined` (strict mode).
+
+---
+
+## 🔹 6. Real-World Example (Event Handlers)
+
+Implicit binding often appears in event handlers and callbacks:
+
+```js
+const button = {
+  text: "Click Me",
+  click() {
+    console.log(this.text);
+  }
+};
+
+// Calling the method directly
+button.click(); // ✅ "Click Me"
+
+// Assigning the method to a variable
+const handler = button.click;
+handler(); // ❌ undefined (implicit binding lost)
+```
+
+---
+
+## 🔹 7. Summary Table
+
+| Call Type           | Code           | `this` Refers To     | Rule Applied     |
+| ------------------- | -------------- | -------------------- | ---------------- |
+| Method call         | `obj.method()` | `obj`                | Implicit binding |
+| Standalone function | `fn()`         | Global / `undefined` | Default binding  |
+| Constructor         | `new Fn()`     | New instance         | New binding      |
+| Bound function      | `fn.bind(obj)` | Bound object         | Explicit binding |
+| Arrow function      | `()={}`       | Lexical scope        | Lexical binding  |
+
+---
+
+## ✅ Final Answer Summary
+
+ Implicit binding occurs when a function is invoked as a method of an object (e.g., `obj.method()`).
+ In this case, `this` automatically refers to the object on the left side of the dot.
+
+ Example:
+
+ ```js
+ const person = {
+   name: "Alice",
+   greet() {
+     console.log(this.name);
+   }
+ };
+ person.greet(); // "Alice"
+ ```
+
+ If you detach the method from the object, the binding is lost, and `this` falls back to default binding.
+
