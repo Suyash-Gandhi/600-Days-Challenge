@@ -1,0 +1,451 @@
+## 18. CDN Basics (Content Delivery Network)
+
+A Content Delivery Network (CDN) is a globally distributed network of servers designed to deliver content to users faster, more reliably, and at lower load on the origin server.
+
+In system design, CDNs are one of the simplest but highest-impact optimizations you can add.
+
+---
+
+## 1. Why CDNs Exist (The Core Problem)
+
+Without a CDN:
+
+ A user in India requests data from a server in US
+ Data travels thousands of kilometers
+ High latency
+ Slow page loads
+ Origin server gets overloaded as traffic grows
+
+CDNs solve this by moving content closer to users.
+
+---
+
+## 2. What a CDN Actually Does
+
+A CDN:
+
+ Stores cached copies of content on servers called edge servers
+ These edge servers are located across the world
+ Users are routed to the nearest edge server
+
+So instead of:
+
+```
+User → Origin Server
+```
+
+You get:
+
+```
+User → Nearest CDN Edge → (Origin only if needed)
+```
+
+---
+
+## 3. What Kind of Content Goes Through a CDN
+
+### Static Content (most common)
+
+ Images
+ CSS / JS files
+ Videos
+ Fonts
+ PDFs
+
+### Semi-dynamic / Dynamic (advanced CDNs)
+
+ API responses (cached for short time)
+ HTML pages
+ Personalized content (with rules)
+
+---
+
+## 4. High-Level CDN Flow (Step-by-Step)
+
+1. User requests `example.com/logo.png`
+2. DNS routes the request to the nearest CDN edge
+3. CDN checks cache:
+
+    Cache hit → return immediately
+    Cache miss → fetch from origin server
+4. CDN stores the response
+5. Future users get it instantly from edge
+
+---
+
+## 5. Key CDN Concepts (Very Important)
+
+### 5.1 Edge Server
+
+ Server located near users
+ Handles requests and caching
+
+### 5.2 Origin Server
+
+ Your main backend / storage
+ Only contacted when CDN doesn’t have the data
+
+### 5.3 Cache Hit vs Cache Miss
+
+ Hit → Fast, cheap, low latency
+ Miss → Slower, origin server involved
+
+High-performing systems aim for 90%+ cache hit ratio
+
+---
+
+## 6. Caching Rules & TTL
+
+### TTL (Time To Live)
+
+ Defines how long content stays cached
+ Example:
+
+   Images: 1 day – 1 year
+   API responses: seconds to minutes
+
+### Cache-Control Headers
+
+ `public`
+ `private`
+ `max-age`
+ `no-cache`
+ `no-store`
+
+These headers control CDN behavior.
+
+---
+
+## 7. CDN vs Traditional Load Balancer
+
+| Feature             | CDN       | Load Balancer    |
+| ------------------- | --------- | ---------------- |
+| Global distribution | Yes       | Usually regional |
+| Caching             | Yes       | No               |
+| Static content      | Excellent | Not optimized    |
+| Dynamic requests    | Limited   | Primary use      |
+| Latency reduction   | Very high | Medium           |
+
+CDNs reduce traffic before load balancers even see it
+
+---
+
+## 8. CDN and DNS (Very Common Interview Point)
+
+CDNs often integrate with DNS:
+
+ DNS returns edge server IP
+ Based on:
+
+   User location
+   Network latency
+   Server health
+
+This is called Geo-DNS or Anycast routing
+
+---
+
+## 9. CDN and DDoS Protection
+
+CDNs provide:
+
+ Traffic absorption
+ Rate limiting
+ Bot filtering
+ Web Application Firewall (WAF)
+
+Large attacks hit CDN edges instead of your servers.
+
+This is why companies like Cloudflare are used even by small startups.
+
+---
+
+## 10. Popular CDN Providers (You Should Know These)
+
+ Cloudflare
+ Akamai
+ AWS CloudFront
+ Fastly
+ Google Cloud CDN
+
+---
+
+## 11. Benefits of Using a CDN
+
+ 🚀 Faster load times
+ 🌍 Global scalability
+ 💰 Lower bandwidth costs
+ 🛡️ Better security
+ 📉 Reduced origin server load
+
+---
+
+## 12. Limitations & Trade-offs
+
+ Cache invalidation complexity
+ Not all content is cacheable
+ Debugging becomes harder
+ Slight delay when content updates
+
+---
+
+## 13. When Should You Use a CDN
+
+Use a CDN if:
+
+ Users are geographically distributed
+ You serve images, videos, or static assets
+ You expect traffic spikes
+ You care about performance & SEO
+
+Almost all production systems use a CDN
+
+---
+
+## 14. CDN in System Design Interviews
+
+If you forget CDN in a design:
+
+ It’s considered a missed optimization
+ Especially for:
+
+   E-commerce
+   Social media
+   Video platforms
+   News sites
+
+---
+
+## 15. One-Line Summary
+
+> A CDN improves performance, scalability, and security by caching content on edge servers close to users, reducing latency and origin load.
+
+---
+
+## Edge Caching (CDN Deep Dive)
+
+Edge caching means storing responses as close to the user as possible—on CDN edge servers—so repeated requests don’t need to travel back to your origin server.
+
+Think of it as “serve from nearby memory instead of distant computation.”
+
+---
+
+## 1. Where Edge Caching Sits in the Request Path
+
+```
+User
+ ↓
+CDN Edge (cache)
+ ↓ (only on cache miss)
+Origin Server (backend / storage)
+```
+
+If the edge already has the response → origin is never touched.
+
+---
+
+## 2. What Exactly Gets Cached at the Edge
+
+### Commonly cached
+
+ Images, videos, fonts
+ JS / CSS bundles
+ Static HTML pages
+ API responses (with short TTLs)
+
+### Conditionally cached
+
+ Authenticated content (with rules)
+ Location-based pages
+ A/B test variants
+
+### Usually not cached
+
+ Highly personalized data
+ Real-time data (unless explicitly designed)
+
+---
+
+## 3. Cache Hit vs Cache Miss (Very Important)
+
+### Cache Hit
+
+ Data exists on edge
+ Response time: milliseconds
+ Zero load on origin
+
+### Cache Miss
+
+ Edge forwards request to origin
+ Fetch + store + return
+ Slower and more expensive
+
+> Goal: Keep cache hit ratio as high as possible (often 85–95%)
+
+---
+
+## 4. How Edge Caching Works (Step-by-Step)
+
+1. User requests `/product-image.jpg`
+2. Nearest edge server receives request
+3. Edge checks cache:
+
+    Hit → respond immediately
+    Miss → request origin
+4. Origin responds with headers
+5. Edge stores response based on rules
+6. Future users get cached copy
+
+---
+
+## 5. Cache-Control: The Brain of Edge Caching
+
+Your backend controls edge behavior using HTTP headers.
+
+### Important headers
+
+ `Cache-Control: public`
+ `Cache-Control: max-age=3600`
+ `Cache-Control: no-store`
+ `Cache-Control: private`
+
+Example meaning:
+
+ `max-age=3600` → cache for 1 hour
+ `public` → CDN allowed to cache
+ `private` → browser only, not CDN
+
+---
+
+## 6. TTL (Time To Live)
+
+TTL defines how long content stays cached.
+
+Typical TTLs:
+
+ Images: days → months
+ JS/CSS: days → weeks
+ HTML pages: minutes → hours
+ APIs: seconds → minutes
+
+Longer TTL = faster + cheaper
+Shorter TTL = fresher data
+
+---
+
+## 7. Cache Invalidation (Hard Part)
+
+### Why it’s needed
+
+When content updates but cached copy still exists.
+
+### Common strategies
+
+1. Time-based expiry
+
+    Let TTL expire naturally
+    Simple, eventual consistency
+
+2. Manual purge
+
+    Explicitly delete cache
+    Supported by CDNs like Cloudflare
+
+3. Versioned URLs (best practice)
+
+    `/app.v1.js` → `/app.v2.js`
+    Old cache becomes irrelevant
+
+> Versioning avoids cache invalidation entirely.
+
+---
+
+## 8. Edge Caching for APIs (Advanced but Common)
+
+APIs can be edge-cached if:
+
+ Responses are deterministic
+ Headers define cacheability
+ User-specific data is excluded or keyed
+
+Example use cases:
+
+ Product listings
+ Public profiles
+ Exchange rates
+ Config metadata
+
+---
+
+## 9. Edge Caching vs Browser Caching
+
+| Aspect              | Edge Cache | Browser Cache |
+| ------------------- | ---------- | ------------- |
+| Location            | CDN server | User device   |
+| Shared              | Yes        | No            |
+| Reduces origin load | Yes        | No            |
+| Scope               | Global     | Single user   |
+
+Best systems use both together.
+
+---
+
+## 10. Edge Caching vs Reverse Proxy Cache
+
+ Reverse proxy (like Nginx):
+
+   Near origin
+   Single region
+ Edge cache:
+
+   Global
+   Massive scale
+
+Edge caching happens before reverse proxies.
+
+---
+
+## 11. Security & Edge Caching
+
+Edge servers can:
+
+ Block malicious requests
+ Rate-limit traffic
+ Cache error pages
+ Absorb DDoS attacks
+
+That’s why CDNs like Akamai sit in front of critical systems.
+
+---
+
+## 12. Trade-offs & Pitfalls
+
+ Serving stale content
+ Debugging cache issues
+ Cache fragmentation (too many variants)
+ Misconfigured headers causing no caching
+
+Most CDN issues come from bad cache rules, not the CDN itself.
+
+---
+
+## 13. When Edge Caching Is a Must
+
+You should always use edge caching when:
+
+ Users are globally distributed
+ You serve static assets
+ Traffic spikes are expected
+ Latency matters (SEO, UX)
+
+Modern systems rarely skip this layer.
+
+---
+
+## 14. Interview One-Liner
+
+> Edge caching stores responses on CDN servers close to users, drastically reducing latency, origin load, and improving system scalability.
+
+---
+
+

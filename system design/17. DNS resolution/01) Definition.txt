@@ -1,0 +1,269 @@
+## 17. DNS Resolution (clear, practical, example-driven)
+
+DNS resolution is the process of converting a human-readable domain name (like `www.example.com`) into an IP address (like `93.184.216.34`) that computers can actually use to communicate.
+
+Think of DNS as the internet’s phonebook.
+
+---
+
+## Why DNS resolution exists (simple idea)
+
+ Humans remember names
+ Networks route traffic using IP addresses
+ DNS bridges this gap
+
+Without DNS, you would need to remember IP addresses for every website you visit.
+
+---
+
+## High-level flow (what actually happens)
+
+When you type `www.example.com` in your browser:
+
+1. Browser asks: “Do I already know this IP?”
+2. If not, it asks the OS
+3. OS asks a DNS resolver
+4. Resolver finds the answer by talking to DNS servers
+5. IP is returned → browser connects to the server
+
+This entire process usually completes in milliseconds.
+
+---
+
+## Step-by-step DNS resolution (real flow)
+
+### 1️⃣ Browser cache
+
+ Browser checks its own DNS cache
+ If IP is found and TTL is valid → done
+
+Why this matters:
+
+ Fastest possible resolution
+ No network call
+
+---
+
+### 2️⃣ OS / Local cache
+
+ If browser doesn’t know, OS checks:
+
+   OS DNS cache
+   `hosts` file (manual overrides)
+
+Example:
+
+```text
+127.0.0.1   localhost
+```
+
+Used for:
+
+ Local testing
+ Blocking domains
+ Development environments
+
+---
+
+### 3️⃣ Recursive DNS Resolver
+
+If still not found:
+
+ OS forwards the query to a recursive resolver
+ Usually provided by:
+
+   ISP
+   Public DNS (Google, Cloudflare, etc.)
+
+The resolver does the hard work for you.
+
+---
+
+### 4️⃣ Root DNS Server
+
+Resolver asks a root server:
+
+> “Who knows about `.com` domains?”
+
+Root server replies:
+
+> “Ask the `.com` TLD servers”
+
+Important:
+
+ Root servers don’t know IPs
+ They only direct traffic
+
+---
+
+### 5️⃣ TLD (Top-Level Domain) Server
+
+Resolver asks `.com` server:
+
+> “Who manages `example.com`?”
+
+TLD replies:
+
+> “Ask these authoritative name servers”
+
+---
+
+### 6️⃣ Authoritative DNS Server
+
+Resolver asks the authoritative server:
+
+> “What is the IP for `www.example.com`?”
+
+Authoritative server replies:
+
+```text
+www.example.com → 93.184.216.34
+```
+
+This is the final, trusted answer.
+
+---
+
+### 7️⃣ Response + caching
+
+ Resolver sends IP back to OS
+ OS sends IP to browser
+ All layers cache the result using TTL
+
+Browser now connects directly to the IP.
+
+---
+
+## DNS caching & TTL (very important)
+
+### What is TTL?
+
+Time To Live — how long a DNS record can be cached.
+
+Example:
+
+```text
+TTL = 300 seconds (5 minutes)
+```
+
+Why TTL matters:
+
+ Low TTL → faster updates, more DNS traffic
+ High TTL → better performance, slower changes
+
+Used strategically during:
+
+ Deployments
+ Traffic migration
+ Failover scenarios
+
+---
+
+## Common DNS record types (must know)
+
+| Record    | Purpose                 |
+| --------- | ----------------------- |
+| A     | Domain → IPv4           |
+| AAAA  | Domain → IPv6           |
+| CNAME | Alias to another domain |
+| MX    | Mail server             |
+| NS    | Name server             |
+| TXT   | Verification, SPF, DKIM |
+
+Example:
+
+```text
+api.example.com → CNAME → lb.example.net
+```
+
+---
+
+## DNS resolution in system design (real impact)
+
+### 1️⃣ Latency
+
+ DNS lookup adds network round trips
+ Poor DNS configuration increases page load time
+
+Optimizations:
+
+ DNS caching
+ Geo-DNS
+ Anycast resolvers
+
+---
+
+### 2️⃣ Load balancing
+
+DNS can distribute traffic:
+
+ Round-robin DNS
+ Geo-based DNS
+ Weighted records
+
+But:
+
+ DNS ≠ real-time load balancing
+ Changes propagate slowly due to caching
+
+---
+
+### 3️⃣ High availability
+
+Multiple IPs per domain:
+
+```text
+example.com → IP1, IP2, IP3
+```
+
+If one fails:
+
+ Clients try another (eventually)
+ TTL determines failover speed
+
+---
+
+### 4️⃣ Security risks
+
+ DNS spoofing
+ Cache poisoning
+ DDoS on DNS servers
+
+Mitigations:
+
+ DNSSEC
+ Trusted resolvers
+ Rate limiting
+
+---
+
+## DNS resolution vs direct IP access
+
+| Access Method | Result               |
+| ------------- | -------------------- |
+| Domain name   | Flexible, scalable   |
+| Direct IP     | Fragile, no failover |
+
+Never hardcode IPs in production systems.
+
+---
+
+## Common interview traps (watch out)
+
+ ❌ “DNS directly returns IP from root server”
+ ❌ “DNS is instant and real-time”
+ ❌ “DNS load balancing is same as LB”
+
+Correct understanding:
+
+ DNS is hierarchical
+ DNS is cached
+ DNS is eventually consistent
+
+---
+
+## One-line summary
+
+> DNS resolution is a hierarchical, cached lookup process that translates domain names into IP addresses, trading real-time accuracy for speed, scalability, and global reliability.
+
+
