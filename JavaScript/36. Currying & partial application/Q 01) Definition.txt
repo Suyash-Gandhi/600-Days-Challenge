@@ -1,0 +1,133 @@
+### 36. Currying & Partial Application (JavaScript)
+
+
+## 1. What is Currying?
+
+Currying is a technique where a function that normally takes multiple arguments is transformed into a chain of functions, each taking one argument at a time.
+
+### Normal function
+
+```js
+const add = (a, b, c) => a + b + c;
+add(1, 2, 3); // 6
+```
+
+### Curried version
+
+```js
+const add = a => b => c => a + b + c;
+
+add(1)(2)(3); // 6
+```
+
+Instead of one call with three parameters, we call three functions in sequence.
+
+---
+
+## 2. Why Currying is Useful
+
+Currying allows:
+
+ Reuse of partial logic
+ Creating highly flexible, composable functions
+ Cleaner functional pipelines
+ Avoiding repeated arguments
+
+---
+
+## 3. Partial Application
+
+Partial application means fixing some arguments of a function and producing a new function with fewer parameters.
+
+### Example without currying
+
+```js
+const multiply = (a, b) => a * b;
+
+const double = b => multiply(2, b);
+double(5); // 10
+```
+
+Here `2` is pre-filled → that’s partial application.
+
+---
+
+## 4. Currying vs Partial Application
+
+| Feature        | Currying                         | Partial Application          |
+| -------------- | -------------------------------- | ---------------------------- |
+| Transformation | Multi-arg → chain of 1-arg funcs | Pre-filling some arguments   |
+| Result         | `f(a)(b)(c)` style               | New function with fewer args |
+| Purpose        | Functional composition           | Reuse & specialization       |
+
+---
+
+## 5. Creating a Generic Curry Function
+
+```js
+const curry = fn => {
+  const curried = (...args) =>
+    args.length >= fn.length
+      ? fn(...args)
+      : (...next) => curried(...args, ...next);
+
+  return curried;
+};
+
+const sum = (a, b, c) => a + b + c;
+
+const curriedSum = curry(sum);
+
+curriedSum(1)(2)(3);    // 6
+curriedSum(1, 2)(3);   // 6
+curriedSum(1)(2, 3);   // 6
+```
+
+---
+
+## 6. Practical Use Case – Logging System
+
+```js
+const log = level => message => `[${level}] ${message}`;
+
+const errorLog = log("ERROR");
+const infoLog = log("INFO");
+
+errorLog("Server crashed");
+infoLog("User logged in");
+```
+
+You fixed `level` once and reused the function everywhere.
+
+---
+
+## 7. Currying with Function Composition
+
+```js
+const multiply = a => b => a * b;
+const add = a => b => a + b;
+
+const double = multiply(2);
+const addTen = add(10);
+
+addTen(double(5)); // 20
+```
+
+This becomes extremely powerful when building pipelines.
+
+---
+
+## 8. Key Takeaways
+
+ Currying converts
+  `f(a, b, c)` → `f(a)(b)(c)`
+ Partial application fixes some arguments early.
+ Both improve:
+
+   Code reuse
+   Readability
+   Functional composition
+
+---
+
+This concept is heavily used in React hooks, Redux middleware, functional libraries like Ramda/Lodash FP, so mastering it will immediately improve your JavaScript design skills.

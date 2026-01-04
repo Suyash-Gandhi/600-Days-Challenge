@@ -1,0 +1,278 @@
+## 35. Pure vs Impure Functions (JavaScript)
+
+This is a core functional-programming concept and very important for JavaScript, React, Redux, testing, and system reliability.
+
+---
+
+## 1. What is a Pure Function?
+
+A pure function is a function that:
+
+1. Always returns the same output for the same input
+2. Does not cause any side effects
+
+In simple words:
+👉 It only depends on its inputs and doesn’t touch anything outside itself.
+
+---
+
+### ✅ Characteristics of Pure Functions
+
+ No modification of global variables
+ No mutation of input parameters
+ No API calls, database calls, DOM manipulation
+ No randomness (`Math.random`)
+ No current time (`Date.now`)
+ Predictable and deterministic
+
+---
+
+### ✅ Example of a Pure Function
+
+```js
+const add = (a, b) => a + b;
+```
+
+ Input: `(2, 3)`
+ Output: `5`
+ Always returns `5` for `(2, 3)`
+ No external dependency
+
+✔️ Pure
+
+---
+
+### Another Pure Example
+
+```js
+const calculateDiscount = (price, discount) => {
+  return price - (price  discount);
+};
+```
+
+ Depends only on arguments
+ No mutation
+ No side effects
+
+✔️ Pure
+
+---
+
+## 2. What is an Impure Function?
+
+An impure function is a function that:
+
+ Depends on external state
+ OR modifies something outside the function
+ OR produces different outputs for the same input
+
+---
+
+### ❌ Characteristics of Impure Functions
+
+ Uses global variables
+ Modifies variables outside its scope
+ Mutates objects/arrays passed as arguments
+ Performs I/O (console, API, DB, DOM)
+ Uses time or randomness
+
+---
+
+### ❌ Example of an Impure Function
+
+```js
+let taxRate = 0.18;
+
+const calculateTax = (amount) => {
+  return amount  taxRate;
+};
+```
+
+Why impure?
+
+ Depends on `taxRate` (external variable)
+ If `taxRate` changes, output changes
+
+❌ Impure
+
+---
+
+### Another Impure Example (Side Effect)
+
+```js
+let total = 0;
+
+const addToTotal = (value) => {
+  total += value;
+};
+```
+
+Why impure?
+
+ Modifies external variable `total`
+ No return value
+ Side effect present
+
+❌ Impure
+
+---
+
+## 3. Mutation vs Immutability (Very Important)
+
+### ❌ Impure (Mutating Input)
+
+```js
+const addItem = (arr, item) => {
+  arr.push(item);
+  return arr;
+};
+```
+
+ Mutates original array
+ Side effect
+
+❌ Impure
+
+---
+
+### ✅ Pure Version (Immutable)
+
+```js
+const addItem = (arr, item) => {
+  return [...arr, item];
+};
+```
+
+ Creates a new array
+ Original array unchanged
+
+✔️ Pure
+
+---
+
+## 4. Pure vs Impure — Side-by-Side Comparison
+
+| Aspect            | Pure Function            | Impure Function |
+| ----------------- | ------------------------ | --------------- |
+| Output            | Same input → same output | Output may vary |
+| Side effects      | ❌ None                   | ✅ Present       |
+| Uses global state | ❌ No                     | ✅ Yes           |
+| Mutates data      | ❌ No                     | ✅ Yes           |
+| Testability       | ⭐ Very easy              | ❌ Hard          |
+| Debugging         | Easy                     | Difficult       |
+| React-friendly    | ✅ Yes                    | ❌ No            |
+
+---
+
+## 5. Why Pure Functions Matter (Real-World Reasons)
+
+### ✅ Easier Testing
+
+```js
+expect(add(2, 3)).toBe(5);
+```
+
+No setup, no mocks, no environment issues.
+
+---
+
+### ✅ Easier Debugging
+
+ Same input → same output
+ Bugs are reproducible
+
+---
+
+### ✅ Better for React & State Management
+
+React expects pure functions in:
+
+ Components (mostly)
+ Reducers (Redux)
+ Selectors
+ Hooks logic
+
+Redux reducers must be pure.
+
+---
+
+### ✅ Concurrency & Performance
+
+ Safe to run in parallel
+ Can be memoized (cached)
+ Ideal for functional pipelines
+
+---
+
+## 6. When Are Impure Functions Necessary?
+
+Impure functions are not evil — they are necessary.
+
+You need impure functions for:
+
+ API calls
+ Database access
+ Logging
+ DOM manipulation
+ Reading user input
+ Timers
+
+Example:
+
+```js
+const fetchUsers = async () => {
+  const response = await fetch("/api/users");
+  return response.json();
+};
+```
+
+❌ Impure — but necessary
+
+---
+
+## 7. Best Practice: Separate Pure & Impure Logic
+
+### ❌ Bad Practice (Mixed)
+
+```js
+const getFinalPrice = (price) => {
+  console.log("Calculating price");
+  return price + price  0.18;
+};
+```
+
+---
+
+### ✅ Good Practice (Separated)
+
+```js
+const calculateFinalPrice = (price) => price + price  0.18;
+
+const logPrice = (price) => {
+  console.log("Final price:", price);
+};
+```
+
+ Business logic → pure
+ Side effects → isolated
+
+✔️ Professional-grade code
+
+---
+
+## 8. Interview-Ready One-Line Definition
+
+> A pure function always returns the same output for the same input and has no side effects, whereas an impure function depends on or modifies external state.
+
+---
+
+## 9. Key Takeaways
+
+ Prefer pure functions for logic
+ Keep impure functions at the edges
+ Pure functions = predictable, testable, scalable
+ This concept is foundational for React, Redux, FP, and system design
+
+---
+
+

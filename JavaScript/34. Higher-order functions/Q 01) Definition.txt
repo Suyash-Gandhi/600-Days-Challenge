@@ -1,0 +1,217 @@
+### 34. Higher-Order Functions (HOFs)
+
+In JavaScript, a higher-order function is a function that does at least one of the following:
+
+1. Takes another function as an argument, or
+2. Returns a function as its result
+
+This is possible because functions in JavaScript are first-class citizens—they can be stored in variables, passed around, and returned just like numbers or objects.
+
+---
+
+## 1. Why Higher-Order Functions Exist
+
+Higher-order functions are used to:
+
+ Reduce code duplication
+ Improve readability
+ Write reusable and declarative code
+ Separate logic from behavior
+ Enable functional programming patterns
+
+Instead of writing how to do something step-by-step, you describe what should happen.
+
+---
+
+## 2. Functions as Arguments (Most Common Case)
+
+A function is passed to another function to decide how some operation should behave.
+
+### Example: Basic Higher-Order Function
+
+```js
+const greet = (name, formatter) => {
+  return formatter(name);
+};
+
+const casual = name => `Hi ${name}`;
+const formal = name => `Hello, Mr. ${name}`;
+
+greet("Suyash", casual); // "Hi Suyash"
+greet("Suyash", formal); // "Hello, Mr. Suyash"
+```
+
+Explanation
+
+ `greet` is a higher-order function
+ `formatter` is a function parameter
+ Behavior changes without modifying `greet`
+
+---
+
+## 3. Functions Returning Functions
+
+A function can generate and return another function.
+
+### Example: Function Factory
+
+```js
+const multiplier = factor => {
+  return number => number  factor;
+};
+
+const double = multiplier(2);
+const triple = multiplier(3);
+
+double(5); // 10
+triple(5); // 15
+```
+
+Why this matters
+
+ Creates configurable functions
+ Widely used in closures, middleware, and React hooks
+
+---
+
+## 4. Built-in Higher-Order Functions in JavaScript
+
+JavaScript already provides many HOFs, especially for arrays.
+
+### `map()` – Transform data
+
+```js
+const nums = [1, 2, 3];
+const squares = nums.map(n => n  n);
+// [1, 4, 9]
+```
+
+### `filter()` – Select data
+
+```js
+const nums = [1, 2, 3, 4];
+const even = nums.filter(n => n % 2 === 0);
+// [2, 4]
+```
+
+### `reduce()` – Accumulate data
+
+```js
+const nums = [1, 2, 3, 4];
+const sum = nums.reduce((acc, n) => acc + n, 0);
+// 10
+```
+
+These functions:
+
+ Accept callback functions
+ Do not mutate the original array
+ Encourage immutable, predictable logic
+
+---
+
+## 5. Callbacks Are Higher-Order Function Usage
+
+Whenever you pass a function as an argument, you are using HOFs.
+
+```js
+setTimeout(() => {
+  console.log("Executed later");
+}, 1000);
+```
+
+Here:
+
+ `setTimeout` is a higher-order function
+ The arrow function is the callback
+
+---
+
+## 6. Custom Higher-Order Utility Function
+
+```js
+const withLogging = fn => {
+  return (...args) => {
+    console.log("Calling function with:", args);
+    return fn(...args);
+  };
+};
+
+const add = (a, b) => a + b;
+const loggedAdd = withLogging(add);
+
+loggedAdd(2, 3);
+// Logs: Calling function with: [2, 3]
+// Returns: 5
+```
+
+Real-world use cases
+
+ Logging
+ Authentication checks
+ Caching
+ Error handling
+ Rate limiting
+
+---
+
+## 7. Higher-Order Functions in Real Projects
+
+You’ll see HOFs heavily used in:
+
+ React
+
+   `useCallback`, `memo`, custom hooks
+ Redux
+
+   Middleware (`store => next => action`)
+ Express
+
+   Middleware (`req => res => next`)
+ Functional utilities
+
+   Lodash, Ramda
+
+They are a core skill, not an advanced niche concept.
+
+---
+
+## 8. Common Mistakes
+
+❌ Calling instead of passing a function
+
+```js
+// Wrong
+arr.map(callback());
+
+// Correct
+arr.map(callback);
+```
+
+❌ Overusing HOFs
+
+ Don’t chain 10 `map().filter().reduce()` calls blindly
+ Readability > cleverness
+
+---
+
+## 9. When You Should Use Higher-Order Functions
+
+Use HOFs when:
+
+ Behavior needs to be configurable
+ Logic repeats with small variations
+ You want cleaner, declarative code
+
+Avoid when:
+
+ Logic is extremely simple
+ Performance-critical tight loops (sometimes)
+
+---
+
+## 10. One-Line Definition (Interview-Ready)
+
+> A higher-order function is a function that takes another function as an argument or returns a function, enabling abstraction, reuse, and declarative programming.
+
+---
