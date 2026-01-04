@@ -1,0 +1,186 @@
+### 37. Function Composition (JavaScript)
+
+Function composition is a functional programming technique where you combine multiple small functions into a single function, such that the output of one function becomes the input of the next.
+
+In simple words:
+👉 You build complex logic by chaining simple functions together.
+
+---
+
+## 1️⃣ What is Function Composition?
+
+Mathematically, function composition looks like this:
+
+```
+f(g(x))
+```
+
+In JavaScript terms:
+
+ `g` runs first
+ its result is passed to `f`
+
+So instead of writing logic step-by-step, you compose behavior.
+
+---
+
+## 2️⃣ Why Function Composition Matters
+
+Function composition is important because it:
+
+ Encourages small, reusable functions
+ Makes code cleaner and more readable
+ Avoids deeply nested function calls
+ Fits naturally with functional programming, React, and modern JS
+
+Think of it as LEGO blocks for logic 🧱
+
+---
+
+## 3️⃣ Basic Example (Without Composition)
+
+```js
+const add2 = x => x + 2;
+const multiply3 = x => x  3;
+
+const result = multiply3(add2(4)); // 18
+```
+
+This works, but when functions increase, nesting becomes messy.
+
+---
+
+## 4️⃣ Manual Function Composition
+
+Let’s create a `compose` function.
+
+```js
+const compose = (f, g) => x => f(g(x));
+
+const add2 = x => x + 2;
+const multiply3 = x => x  3;
+
+const composedFn = compose(multiply3, add2);
+
+console.log(composedFn(4)); // 18
+```
+
+### How this works:
+
+ `add2(4)` → `6`
+ `multiply3(6)` → `18`
+
+---
+
+## 5️⃣ Composing Multiple Functions
+
+Real applications often need more than two functions.
+
+```js
+const compose = (...fns) => value =>
+  fns.reduceRight((acc, fn) => fn(acc), value);
+
+const add2 = x => x + 2;
+const multiply3 = x => x  3;
+const square = x => x  x;
+
+const composed = compose(square, multiply3, add2);
+
+console.log(composed(4)); // 324
+```
+
+### Execution order (right → left):
+
+1. `add2(4)` → 6
+2. `multiply3(6)` → 18
+3. `square(18)` → 324
+
+---
+
+## 6️⃣ `pipe` vs `compose`
+
+Many developers prefer left-to-right readability, called `pipe`.
+
+### Pipe implementation:
+
+```js
+const pipe = (...fns) => value =>
+  fns.reduce((acc, fn) => fn(acc), value);
+
+const result = pipe(add2, multiply3, square)(4);
+console.log(result); // 324
+```
+
+### Difference:
+
+| compose      | pipe           |
+| ------------ | -------------- |
+| Right → Left | Left → Right   |
+| `f(g(h(x)))` | `h(g(f(x)))`   |
+| Math-style   | Human-readable |
+
+👉 Use `pipe` for readability, `compose` for functional purity.
+
+---
+
+## 7️⃣ Real-World Example
+
+Imagine processing user input:
+
+```js
+const trim = str => str.trim();
+const toLower = str => str.toLowerCase();
+const removeSpaces = str => str.replace(/\s+/g, '');
+
+const normalizeUsername = pipe(
+  trim,
+  toLower,
+  removeSpaces
+);
+
+console.log(normalizeUsername("  John Doe  "));
+// "johndoe"
+```
+
+This is:
+
+ Clean
+ Predictable
+ Easy to extend
+
+---
+
+## 8️⃣ Function Composition vs Chaining
+
+### Chaining:
+
+```js
+str.trim().toLowerCase().replace(/\s+/g, '');
+```
+
+### Composition:
+
+```js
+pipe(trim, toLower, removeSpaces)(str);
+```
+
+Composition wins when:
+
+ Logic is reused in many places
+ You want testable, isolated functions
+ You work with functional patterns (Redux, middleware, utilities)
+
+---
+
+## 9️⃣ Best Practices
+
+ Keep composed functions pure
+ Each function should do one thing
+ Prefer `pipe` for readability
+ Avoid side effects inside composed functions
+
+---
+
+## 🔑 Key Takeaway
+
+> Function composition lets you build powerful logic by combining simple, reusable functions — cleanly and predictably.

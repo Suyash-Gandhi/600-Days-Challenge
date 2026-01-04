@@ -1,0 +1,197 @@
+## 39. `call()`, `apply()`, and `bind()` in JavaScript
+
+In JavaScript, `call`, `apply`, and `bind` are methods available on functions.
+They are used to explicitly control the value of `this` when a function is executed.
+
+At a high level:
+
+ All three are about function borrowing and context control
+ The main difference is how arguments are passed and when the function executes
+
+---
+
+## 1. Why do we need `call`, `apply`, and `bind`?
+
+In JavaScript, the value of `this` is not fixed. It depends on how a function is called, not where it is written.
+
+```js
+const user = {
+  name: "Suyash",
+  greet() {
+    console.log(this.name);
+  }
+};
+
+user.greet(); // "Suyash"
+```
+
+But:
+
+```js
+const greetFn = user.greet;
+greetFn(); // undefined (or error in strict mode)
+```
+
+Here, `this` is lost.
+
+👉 `call`, `apply`, and `bind` allow us to manually set `this`.
+
+---
+
+## 2. `call()` – Invoke immediately with arguments one by one
+
+### Definition
+
+`call()` invokes the function immediately and allows you to pass arguments individually.
+
+### Syntax
+
+```js
+functionName.call(thisArg, arg1, arg2, ...)
+```
+
+### Example
+
+```js
+function introduce(city, country) {
+  console.log(`${this.name} lives in ${city}, ${country}`);
+}
+
+const person = { name: "Suyash" };
+
+introduce.call(person, "Delhi", "India");
+// Suyash lives in Delhi, India
+```
+
+### Key Points
+
+ Executes immediately
+ Arguments are comma-separated
+ Commonly used when arguments are known individually
+
+---
+
+## 3. `apply()` – Invoke immediately with arguments as an array
+
+### Definition
+
+`apply()` is almost identical to `call()`, except it takes arguments as an array.
+
+### Syntax
+
+```js
+functionName.apply(thisArg, [arg1, arg2, ...])
+```
+
+### Example
+
+```js
+introduce.apply(person, ["Delhi", "India"]);
+// Suyash lives in Delhi, India
+```
+
+### When to use `apply`
+
+ When arguments are already in an array
+ Useful with functions like `Math.max`
+
+```js
+Math.max.apply(null, [3, 7, 2, 9]);
+// 9
+```
+
+---
+
+## 4. `bind()` – Returns a new function with bound `this`
+
+### Definition
+
+`bind()` does NOT execute immediately.
+It returns a new function with `this` permanently bound.
+
+### Syntax
+
+```js
+const newFn = functionName.bind(thisArg, arg1, arg2, ...)
+```
+
+### Example
+
+```js
+const boundIntroduce = introduce.bind(person, "Delhi", "India");
+
+boundIntroduce();
+// Suyash lives in Delhi, India
+```
+
+### Key Points
+
+ Returns a new function
+ `this` cannot be changed later
+ Very useful for callbacks, event handlers, and async code
+
+---
+
+## 5. Real-world use case (very important)
+
+### Problem: `this` lost in callbacks
+
+```js
+const user = {
+  name: "Suyash",
+  greet() {
+    setTimeout(function () {
+      console.log(this.name);
+    }, 1000);
+  }
+};
+
+user.greet(); // undefined
+```
+
+### Solution using `bind`
+
+```js
+const user = {
+  name: "Suyash",
+  greet() {
+    setTimeout(function () {
+      console.log(this.name);
+    }.bind(this), 1000);
+  }
+};
+
+user.greet(); // Suyash
+```
+
+---
+
+## 6. `call` vs `apply` vs `bind` (Comparison Table)
+
+| Feature   | `call()`          | `apply()`        | `bind()`             |
+| --------- | ----------------- | ---------------- | -------------------- |
+| Execution | Immediate         | Immediate        | Later                |
+| Arguments | Individual        | Array            | Individual or preset |
+| Returns   | Function result   | Function result  | New function         |
+| Use case  | Direct invocation | Array-based args | Callbacks, events    |
+
+---
+
+## 7. Interview-level summary (important)
+
+ `call` → Invoke immediately, arguments separated by commas
+ `apply` → Invoke immediately, arguments as an array
+ `bind` → Returns a new function, execution happens later
+ All three are used to control `this` explicitly
+ `bind` is heavily used in React, event handlers, async logic
+
+---
+
+## 8. Common mistakes to avoid
+
+ ❌ Expecting `bind()` to execute the function
+ ❌ Forgetting that `call()` and `apply()` execute immediately
+ ❌ Losing `this` inside callbacks and not using `bind` or arrow functions
+
+---
+

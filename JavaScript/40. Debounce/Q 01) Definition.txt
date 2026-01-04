@@ -1,0 +1,207 @@
+## 40. Debounce (JavaScript)
+
+Debounce is a rate-limiting technique used to control how often a function executes.
+Instead of running a function every time an event fires, debounce delays execution until a certain amount of time has passed since the last event.
+
+In simple terms:
+👉 “Wait until the user stops doing something, then run the function once.”
+
+---
+
+## 1. Why Debounce Exists (The Real Problem)
+
+Modern web apps deal with high-frequency events, such as:
+
+ `keyup`
+ `scroll`
+ `resize`
+ `mousemove`
+ window resizing
+ live search inputs
+
+These events can fire dozens or hundreds of times per second.
+
+### What goes wrong without debounce?
+
+ Unnecessary API calls
+ UI lag
+ Poor performance
+ Browser freezing on low-end devices
+
+Debounce solves this by grouping rapid events into a single execution.
+
+---
+
+## 2. Conceptual Understanding (No Code Yet)
+
+Imagine a search box:
+
+ User types: `j` → `ja` → `jav` → `java`
+ Each keystroke fires an event
+ You don’t want to call the API 4 times
+
+With debounce:
+
+ Timer starts on first key press
+ Every new key press resets the timer
+ Function runs only after typing stops
+
+So instead of 4 calls → 1 clean call
+
+---
+
+## 3. Basic Debounce Implementation (ES6)
+
+```js
+const debounce = (fn, delay) => {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+};
+```
+
+### What’s happening internally?
+
+ `timer` is stored using closure
+ `clearTimeout(timer)` cancels previous execution
+ `setTimeout` schedules a new one
+ Function executes only after no calls for `delay` ms
+
+---
+
+## 4. Example: Debounced Search Input
+
+```js
+const searchAPI = (query) => {
+  console.log("Fetching results for:", query);
+};
+
+const debouncedSearch = debounce(searchAPI, 500);
+
+input.addEventListener("keyup", (e) => {
+  debouncedSearch(e.target.value);
+});
+```
+
+### Execution behavior:
+
+ User types continuously → no API call
+ User stops typing for 500ms → single API call
+ Clean, efficient, scalable
+
+---
+
+## 5. Debounce vs Normal Execution
+
+| Scenario     | Without Debounce          | With Debounce   |
+| ------------ | ------------------------- | --------------- |
+| Typing speed | API called every keypress | API called once |
+| Performance  | Poor                      | Optimized       |
+| UX           | Laggy                     | Smooth          |
+| Backend load | High                      | Minimal         |
+
+---
+
+## 6. Debounce with Immediate Execution (Advanced)
+
+Sometimes you want:
+
+ First call immediately
+ Then ignore calls until delay passes
+
+Example: button click protection
+
+```js
+const debounce = (fn, delay, immediate = false) => {
+  let timer;
+
+  return (...args) => {
+    const callNow = immediate && !timer;
+
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      timer = null;
+      if (!immediate) fn(...args);
+    }, delay);
+
+    if (callNow) fn(...args);
+  };
+};
+```
+
+### Use cases:
+
+ Prevent double form submission
+ Prevent multiple payment clicks
+
+---
+
+## 7. Common Real-World Use Cases
+
+### ✅ Search bar suggestions
+
+### ✅ Window resize handlers
+
+### ✅ Scroll-based calculations
+
+### ✅ Auto-saving drafts
+
+### ✅ Input validation
+
+### ✅ Preventing button spam
+
+Debounce is especially important in frontend performance engineering.
+
+---
+
+## 8. Debounce vs Throttle (Quick Contrast)
+
+| Feature   | Debounce         | Throttle               |
+| --------- | ---------------- | ---------------------- |
+| Execution | After inactivity | At fixed intervals     |
+| Best for  | Typing, resizing | Scrolling, dragging    |
+| Calls     | One final call   | Repeated limited calls |
+
+📌 Rule of thumb
+
+ User stops → Debounce
+ User keeps moving → Throttle
+
+---
+
+## 9. Common Mistakes
+
+### ❌ Creating debounce inside event handler
+
+```js
+input.addEventListener("keyup", debounce(fn, 500)); // WRONG
+```
+
+👉 New debounce created every time → defeats purpose
+
+### ✅ Correct approach
+
+```js
+const debouncedFn = debounce(fn, 500);
+input.addEventListener("keyup", debouncedFn);
+```
+
+---
+
+## 10. Interview-Level Summary
+
+ Debounce delays function execution until activity stops
+ Uses closures + `setTimeout`
+ Reduces unnecessary function calls
+ Critical for performance-heavy UI events
+ Commonly paired with API calls and input handling
+
+---
+
