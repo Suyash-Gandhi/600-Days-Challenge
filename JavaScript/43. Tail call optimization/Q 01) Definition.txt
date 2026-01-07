@@ -1,0 +1,166 @@
+## 43. Tail Call Optimization (TCO)
+
+![Image](https://media.geeksforgeeks.org/wp-content/uploads/20230825123147/Tail-Call-Optimisation-in-C.png)
+
+![Image](https://maxglassie.github.io/static/img/tail_vs_not_tail.png)
+
+![Image](https://dkq85ftleqhzg.cloudfront.net/algo_book/images/recursion/pop_from_stack.png)
+
+### What is Tail Call Optimization?
+
+Tail Call Optimization (TCO) is a runtime optimization where a function call that occurs as the very last operation of another function (a tail call) does not create a new stack frame.
+Instead, the engine reuses the current stack frame, preventing stack growth.
+
+In short:
+
+ Without TCO → deep recursion can overflow the call stack.
+ With TCO → certain recursive functions run in constant stack space.
+
+---
+
+### What is a tail call?
+
+A function call is in tail position if nothing remains to be done after it returns.
+
+#### Not a tail call ❌
+
+```js
+const factorial = (n) => {
+  if (n === 0) return 1;
+  return n  factorial(n - 1); // multiplication happens AFTER the call
+};
+```
+
+Here, the result of `factorial(n - 1)` is still used → not tail position.
+
+#### Tail call ✅
+
+```js
+const factorial = (n, acc = 1) => {
+  if (n === 0) return acc;
+  return factorial(n - 1, acc  n); // last operation
+};
+```
+
+Nothing happens after the recursive call → tail position.
+
+---
+
+### How TCO works (conceptually)
+
+ Normal recursion:
+  Each recursive call adds a new frame to the call stack.
+ Tail recursion with TCO:
+  The engine replaces the current frame instead of pushing a new one.
+
+Result:
+
+ Stack depth stays constant
+ Memory usage improves
+ No stack overflow for deep recursion
+
+---
+
+### Why Tail Call Optimization matters
+
+1. Prevents stack overflow
+
+    Useful for deeply recursive algorithms.
+2. Memory efficiency
+
+    Constant stack space instead of linear.
+3. Functional programming
+
+    Encourages recursion instead of loops.
+4. Cleaner logic
+
+    State passed explicitly through parameters.
+
+---
+
+### Important JavaScript reality check ⚠️
+
+Although ES6 (ECMAScript 2015) specified Tail Call Optimization:
+
+> Most JavaScript engines do NOT implement TCO in practice.
+
+Current situation:
+
+ ❌ Chrome (V8): No TCO
+ ❌ Node.js: No TCO
+ ❌ Firefox: No TCO
+ ⚠️ Safari (JavaScriptCore): Partial / experimental support (and often disabled)
+
+Conclusion:
+👉 Do not rely on TCO in JavaScript for production code.
+
+---
+
+### Practical implication for JavaScript developers
+
+Even if your function is tail-recursive, JavaScript engines usually won’t optimize it.
+
+So this can still crash:
+
+```js
+const recurse = (n) => {
+  if (n === 0) return;
+  return recurse(n - 1);
+};
+
+recurse(1_000_000); // likely stack overflow
+```
+
+---
+
+### Common workaround: convert recursion to iteration
+
+Instead of trusting TCO, rewrite recursion using loops.
+
+#### Recursive (unsafe)
+
+```js
+const sum = (n, acc = 0) => {
+  if (n === 0) return acc;
+  return sum(n - 1, acc + n);
+};
+```
+
+#### Iterative (safe)
+
+```js
+const sum = (n) => {
+  let acc = 0;
+  while (n > 0) {
+    acc += n;
+    n--;
+  }
+  return acc;
+};
+```
+
+---
+
+### TCO vs Tail Recursion (important distinction)
+
+| Term                   | Meaning                                               |
+| ---------------------- | ----------------------------------------------------- |
+| Tail recursion         | Code pattern (function calls itself in tail position) |
+| Tail call optimization | Engine-level optimization                             |
+| Tail recursion ≠ TCO   | Tail recursion does not guarantee optimization    |
+
+---
+
+### When should you care about TCO?
+
+ ✔️ Understanding recursion internals
+ ✔️ Functional programming concepts
+ ✔️ Interviews & theory questions
+ ❌ Not for relying on JavaScript performance gains
+
+---
+
+### Interview-friendly one-liner
+
+> Tail Call Optimization is an optimization where tail-recursive function calls reuse the same stack frame, preventing stack growth—but it is mostly not supported in JavaScript engines today.
+

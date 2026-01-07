@@ -1,0 +1,192 @@
+## 42. Memoization (JavaScript)
+
+### What is Memoization?
+
+Memoization is an optimization technique where you cache the result of a function call and reuse it when the same inputs occur again, instead of recomputing the result.
+
+In short:
+
+> Same input → return stored result → save time
+
+This is especially useful for:
+
+ Expensive computations
+ Repeated function calls with the same arguments
+ Recursive algorithms
+
+---
+
+## Why Memoization is Needed
+
+Without memoization:
+
+ Functions recompute results every time
+ Performance degrades for repeated calls
+ Recursive functions become extremely slow
+
+With memoization:
+
+ Time complexity improves drastically
+ CPU usage reduces
+ User experience improves (faster UI, smoother apps)
+
+---
+
+## Simple Example (Without Memoization)
+
+```js
+const square = (n) => {
+  console.log("Calculating...");
+  return n  n;
+};
+
+square(5); // Calculating...
+square(5); // Calculating again ❌
+```
+
+The function recalculates even though the input is the same.
+
+---
+
+## Same Example (With Memoization)
+
+```js
+const memoizedSquare = () => {
+  const cache = {};
+
+  return (n) => {
+    if (cache[n]) {
+      return cache[n]; // cached result
+    }
+
+    console.log("Calculating...");
+    cache[n] = n  n;
+    return cache[n];
+  };
+};
+
+const square = memoizedSquare();
+
+square(5); // Calculating...
+square(5); // Returned from cache ✅
+```
+
+### Key Idea
+
+ `cache` stores results
+ Function checks cache before computing
+ Closure keeps cache alive
+
+---
+
+## Memoization in Recursive Functions (Very Important)
+
+### Fibonacci Without Memoization
+
+```js
+const fib = (n) => {
+  if (n <= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+};
+```
+
+⛔ Time Complexity: O(2ⁿ)
+Very slow for large `n`.
+
+---
+
+### Fibonacci With Memoization
+
+```js
+const fib = (n, memo = {}) => {
+  if (n in memo) return memo[n];
+  if (n <= 1) return n;
+
+  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
+  return memo[n];
+};
+```
+
+✅ Time Complexity: O(n)
+Huge performance improvement.
+
+---
+
+## Generic Memoization Utility
+
+```js
+const memoize = (fn) => {
+  const cache = {};
+
+  return (...args) => {
+    const key = JSON.stringify(args);
+
+    if (cache[key]) {
+      return cache[key];
+    }
+
+    cache[key] = fn(...args);
+    return cache[key];
+  };
+};
+```
+
+### Usage
+
+```js
+const slowAdd = (a, b) => {
+  console.log("Computing...");
+  return a + b;
+};
+
+const fastAdd = memoize(slowAdd);
+
+fastAdd(2, 3); // Computing...
+fastAdd(2, 3); // Cached result ✅
+```
+
+---
+
+## Memoization vs Caching (Interview Tip)
+
+| Aspect        | Memoization             | Caching              |
+| ------------- | ----------------------- | -------------------- |
+| Scope         | Function-level          | System / App-level   |
+| Storage       | In-memory               | Memory / DB / Redis  |
+| Use case      | Repeated function calls | Repeated data access |
+| Typical usage | Algorithms, utilities   | APIs, backend        |
+
+Memoization is a specific form of caching.
+
+---
+
+## Where Memoization is Used in Real Projects
+
+ React (`useMemo`, `useCallback`)
+ Dynamic programming problems
+ API response optimization
+ Expensive calculations (charts, analytics)
+ Recursive algorithms
+
+---
+
+## Common Mistakes
+
+ Memoizing functions with changing external state
+ Using memoization when computation is cheap
+ Forgetting cache size control (memory leaks)
+
+---
+
+## When NOT to Use Memoization
+
+ Function runs once
+ Inputs are almost always different
+ Result depends on time, randomness, or external data
+
+---
+
+## One-Line Summary
+
+> Memoization improves performance by remembering previous results and avoiding unnecessary recomputation.
+
