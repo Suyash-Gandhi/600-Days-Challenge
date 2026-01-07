@@ -1,0 +1,183 @@
+### 41. Throttle (JavaScript)
+
+Throttle is a performance-optimization technique used to limit how often a function can execute.
+Even if an event fires continuously, the throttled function will run at most once in a fixed time interval.
+
+---
+
+## 1. Why Throttling Is Needed
+
+Some browser events fire extremely frequently:
+
+ `scroll`
+ `resize`
+ `mousemove`
+ `keydown`
+ window drag / touch move
+
+If you attach a normal function to these events, it can run hundreds of times per second, causing:
+
+ UI lag
+ High CPU usage
+ Unnecessary API calls
+ Poor battery performance (especially on mobile)
+
+Throttle ensures controlled execution.
+
+---
+
+## 2. Simple Definition
+
+> Throttle guarantees that a function runs once every X milliseconds, no matter how many times the event occurs.
+
+---
+
+## 3. Throttle vs Normal Function
+
+| Scenario               | Normal Function | Throttled Function                |
+| ---------------------- | --------------- | --------------------------------- |
+| Scroll fires 100 times | Runs 100 times  | Runs ~10 times (if delay = 100ms) |
+| Performance            | Poor            | Optimized                         |
+| Control                | None            | Predictable                       |
+
+---
+
+## 4. Real-World Use Cases
+
+Throttle is best when you must respond continuously, but not excessively:
+
+ Updating scroll position
+ Tracking mouse movement
+ Window resize handlers
+ Game input handling
+ Infinite scrolling
+ Analytics event tracking
+
+---
+
+## 5. Basic Throttle Implementation (ES6)
+
+```js
+const throttle = (fn, delay) => {
+  let lastCall = 0;
+
+  return (...args) => {
+    const now = Date.now();
+
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      fn(...args);
+    }
+  };
+};
+```
+
+---
+
+## 6. Example: Throttling Scroll Event
+
+```js
+const onScroll = () => {
+  console.log("Scrolling...");
+};
+
+window.addEventListener(
+  "scroll",
+  throttle(onScroll, 200)
+);
+```
+
+What happens here?
+
+ Scroll may fire hundreds of times
+ `onScroll` executes once every 200ms
+ Smooth performance, no overload
+
+---
+
+## 7. Timeline Explanation
+
+If delay = 1000ms
+
+```
+Event fires →  ✓ execute
+Event fires →  ✗ ignored
+Event fires →  ✗ ignored
+1000ms pass → ✓ execute
+```
+
+Throttle does not wait for inactivity
+It executes at regular intervals
+
+---
+
+## 8. Advanced Throttle (Leading + Trailing Execution)
+
+Sometimes you want:
+
+ Immediate execution (leading)
+ One final execution after events stop (trailing)
+
+```js
+const throttle = (fn, delay) => {
+  let lastCall = 0;
+  let timeoutId = null;
+
+  return (...args) => {
+    const now = Date.now();
+
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      fn(...args);
+    } else {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        lastCall = Date.now();
+        fn(...args);
+      }, delay - (now - lastCall));
+    }
+  };
+};
+```
+
+---
+
+## 9. Throttle vs Debounce (Important Interview Point)
+
+| Feature    | Throttle             | Debounce         |
+| ---------- | -------------------- | ---------------- |
+| Executes   | At regular intervals | After inactivity |
+| Best for   | Continuous events    | Final action     |
+| Example    | Scroll, resize       | Search input     |
+| Guarantees | Max execution rate   | Single execution |
+
+Rule of thumb:
+
+ 👉 Use Throttle when updates must happen during activity
+ 👉 Use Debounce when action should happen after activity ends
+
+---
+
+## 10. Common Mistakes
+
+❌ Throttling API calls that require latest input
+❌ Using throttle where debounce is better (search bars)
+❌ Forgetting to clean up event listeners
+
+---
+
+## 11. When NOT to Use Throttle
+
+ Form validation
+ Search suggestions
+ Button clicks (use disable instead)
+ Anything requiring final accurate state
+
+---
+
+## 12. One-Line Mental Model
+
+> Throttle = “Run this function, but not more than once every X ms.”
+
+---
+
