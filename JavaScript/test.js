@@ -1,12 +1,10 @@
-function* infiniteCounter() {
-  let i = 1;
-  while (true) {
-    yield i++;
-  }
-}
+const greet = (name, callback) => {
+  console.log("Hello", name);
+  callback();
+};
 
-const counter = infiniteCounter();
+const sayBye = () => {
+  console.log("Goodbye!");
+};
 
-console.log(counter.next().value); // 1
-console.log(counter.next().value); // 2
-console.log(counter.next().value); // 3
+greet("Suyash", sayBye);

@@ -1,0 +1,273 @@
+## 48. Event Loop & Task Queues (Microtasks vs Macrotasks)
+
+Understanding the event loop is essential to truly grasp how JavaScript achieves asynchronous, non-blocking behavior despite being single-threaded.
+
+---
+
+## 1. Why the Event Loop Exists
+
+JavaScript runs on a single thread, meaning it can do one thing at a time.
+However, modern applications need to:
+
+ Fetch data from servers
+ Handle timers
+ Respond to user actions
+ Update the UI smoothly
+
+The event loop is the mechanism that coordinates all of this without blocking execution.
+
+---
+
+## 2. High-Level Execution Model
+
+JavaScript runtime consists of:
+
+1. Call Stack
+2. Web APIs / Host APIs
+3. Task Queues
+
+    Macrotask queue
+    Microtask queue
+4. Event Loop
+
+![Image](https://i.sstatic.net/BTm1H.png)
+
+![Image](https://felixgerschau.com/static/79486d91b22a7c1b4044fce88a4cae20/5a190/js-event-loop-explained.png)
+
+![Image](https://blog.softbinator.com/wp-content/uploads/14_Microtask-vs.-Macrotask-in-JavaScript-What-are-The-Differences-1.png)
+
+---
+
+## 3. Call Stack (Synchronous Core)
+
+ Executes functions line by line
+ Uses LIFO (Last In, First Out)
+ Blocking: if a function takes time, everything waits
+
+Example:
+
+```js
+console.log("A");
+console.log("B");
+```
+
+➡️ Executes immediately, no event loop involved.
+
+---
+
+## 4. Web APIs (Async Offloading)
+
+When JavaScript encounters async operations, they are delegated to the environment:
+
+ `setTimeout`
+ `fetch`
+ DOM events
+ `setInterval`
+
+These APIs are not part of JavaScript itself, but provided by the browser or Node.js.
+
+---
+
+## 5. Task Queues Explained
+
+### 5.1 Macrotask Queue (Task Queue)
+
+Contains large async tasks.
+
+Examples:
+
+ `setTimeout`
+ `setInterval`
+ `setImmediate` (Node.js)
+ UI events (click, scroll)
+
+```js
+setTimeout(() => {
+  console.log("Macrotask");
+}, 0);
+```
+
+⏳ Even with `0ms`, it waits until:
+
+ Call stack is empty
+ Microtasks are finished
+
+---
+
+### 5.2 Microtask Queue (High Priority)
+
+Contains small but critical tasks.
+
+Examples:
+
+ `Promise.then / catch / finally`
+ `queueMicrotask`
+ `MutationObserver`
+
+```js
+Promise.resolve().then(() => {
+  console.log("Microtask");
+});
+```
+
+⚡ Microtasks always run before macrotasks
+
+---
+
+## 6. Event Loop: Step-by-Step Algorithm
+
+The event loop follows this cycle:
+
+1. Execute all synchronous code
+2. When call stack is empty:
+
+    Execute ALL microtasks
+3. Then:
+
+    Execute ONE macrotask
+4. Repeat forever
+
+![Image](https://media2.dev.to/dynamic/image/width%3D1600%2Cheight%3D900%2Cfit%3Dcover%2Cgravity%3Dauto%2Cformat%3Dauto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1v05yqyxbjfiepzphyph.png)
+
+![Image](https://media.licdn.com/dms/image/v2/D5612AQFANlI5Z3eAGQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1672668898515?e=2147483647\&t=gVHhlp8beH3CVWjKM_UI41pKqXLUXLNluR3KsfIHhrI\&v=beta)
+
+![Image](https://media.geeksforgeeks.org/wp-content/uploads/20250208123836185275/Event-Loop-in-JavaScript.jpg)
+
+---
+
+## 7. Execution Order Example (Very Important)
+
+```js
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Timeout");
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log("Promise");
+});
+
+console.log("End");
+```
+
+### Execution Order:
+
+1. `Start`
+2. `End`
+3. `Promise`  ← microtask
+4. `Timeout`  ← macrotask
+
+### Output:
+
+```
+Start
+End
+Promise
+Timeout
+```
+
+✅ Microtasks always finish before macrotasks
+
+---
+
+## 8. Multiple Microtasks Rule
+
+All microtasks are executed completely before moving to the next macrotask.
+
+```js
+setTimeout(() => {
+  console.log("Timeout");
+}, 0);
+
+Promise.resolve()
+  .then(() => console.log("Microtask 1"))
+  .then(() => console.log("Microtask 2"));
+```
+
+Output:
+
+```
+Microtask 1
+Microtask 2
+Timeout
+```
+
+---
+
+## 9. Why Promises Can Starve the Event Loop
+
+```js
+function infiniteMicrotasks() {
+  Promise.resolve().then(infiniteMicrotasks);
+}
+infiniteMicrotasks();
+```
+
+🚨 Result:
+
+ Macrotasks never execute
+ UI freezes
+
+This is called microtask starvation.
+
+---
+
+## 10. Browser Rendering & Event Loop
+
+In browsers, rendering typically happens:
+
+ After macrotasks
+ Before the next event loop iteration
+
+Excessive microtasks can:
+
+ Delay rendering
+ Cause UI lag
+
+---
+
+## 11. Microtasks vs Macrotasks (Comparison)
+
+| Feature       | Microtasks              | Macrotasks   |
+| ------------- | ----------------------- | ------------ |
+| Priority      | Highest                 | Lower        |
+| Executed      | Immediately after stack | One per loop |
+| Examples      | Promise.then            | setTimeout   |
+| Can starve UI | Yes                     | No           |
+| Use case      | State consistency       | Scheduling   |
+
+---
+
+## 12. Real-World Use Cases
+
+### Use Microtasks When:
+
+ You need logic to run right after current execution
+ State updates
+ Promise chaining
+
+### Use Macrotasks When:
+
+ Scheduling work
+ Delaying execution
+ Avoiding UI blocking
+
+---
+
+## 13. Mental Model (Best Way to Remember)
+
+> JavaScript finishes what it started → clears promises → then looks at timers
+
+Or simply:
+
+Sync → Microtasks → Macrotask → Repeat
+
+---
+
+## 14. Interview One-Line Summary
+
+> JavaScript’s event loop continuously checks whether the call stack is empty, then executes all microtasks first, followed by one macrotask, enabling non-blocking asynchronous execution in a single-threaded environment.
+
+---
+

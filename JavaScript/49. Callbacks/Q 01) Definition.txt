@@ -1,0 +1,243 @@
+## 49. Callbacks in JavaScript
+
+### 1. What is a Callback?
+
+A callback is a function passed as an argument to another function, which is then executed later, usually after a task finishes.
+
+In simple terms:
+
+> “Call this function back when you’re done.”
+
+Callbacks are one of the foundations of asynchronous JavaScript and were the first solution JS used to handle non-blocking operations.
+
+---
+
+### 2. Why Callbacks Exist
+
+JavaScript is single-threaded, meaning it can do only one thing at a time.
+
+If JS waited for slow operations like:
+
+ API requests
+ File reading
+ Timers
+ Database calls
+
+…the entire program would freeze.
+
+Callbacks allow JS to:
+
+ Start a task
+ Continue executing other code
+ Run a function later when the task finishes
+
+![Image](https://i.sstatic.net/qD7eb.png)
+
+![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AddKOVPd0nh4-3l9QisgJnQ.png)
+
+![Image](https://media.geeksforgeeks.org/wp-content/uploads/20250208123836185275/Event-Loop-in-JavaScript.jpg)
+
+---
+
+### 3. Basic Callback Example (Synchronous)
+
+```js
+const greet = (name, callback) => {
+  console.log("Hello", name);
+  callback();
+};
+
+const sayBye = () => {
+  console.log("Goodbye!");
+};
+
+greet("Suyash", sayBye);
+```
+
+Output
+
+```
+Hello Suyash
+Goodbye!
+```
+
+📌 Here:
+
+ `sayBye` is passed, not executed
+ `greet` decides when to run it
+
+---
+
+### 4. Asynchronous Callback Example
+
+```js
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Inside timeout");
+}, 2000);
+
+console.log("End");
+```
+
+Output
+
+```
+Start
+End
+Inside timeout
+```
+
+📌 Explanation:
+
+ `setTimeout` registers a callback
+ JS does not wait
+ Callback runs later via the event loop
+
+---
+
+### 5. Callbacks with Realistic Use Case
+
+```js
+const fetchData = (callback) => {
+  setTimeout(() => {
+    const data = { id: 1, name: "JS" };
+    callback(data);
+  }, 1000);
+};
+
+fetchData((result) => {
+  console.log(result);
+});
+```
+
+📌 Used in:
+
+ APIs
+ Network calls
+ File handling
+ Event listeners
+
+---
+
+### 6. Callback in Event Handling
+
+```js
+button.addEventListener("click", () => {
+  console.log("Button clicked");
+});
+```
+
+📌 The click handler is a callback
+📌 Browser decides when to execute it
+
+---
+
+### 7. Error-First Callbacks (Node.js Pattern)
+
+```js
+const readData = (callback) => {
+  const error = null;
+  const data = "File content";
+
+  callback(error, data);
+};
+
+readData((err, result) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(result);
+});
+```
+
+📌 Convention:
+
+```js
+callback(error, result)
+```
+
+---
+
+### 8. Callback Hell (Major Problem)
+
+```js
+login(user, () => {
+  getProfile(() => {
+    getPosts(() => {
+      getComments(() => {
+        console.log("Done");
+      });
+    });
+  });
+});
+```
+
+❌ Problems:
+
+ Deep nesting
+ Hard to read
+ Hard to debug
+ Hard to maintain
+
+This is called Callback Hell or Pyramid of Doom.
+
+---
+
+### 9. How Callback Hell Was Solved
+
+| Technique       | Improvement      |
+| --------------- | ---------------- |
+| Named functions | Slightly better  |
+| Promises        | Much cleaner     |
+| async/await     | Best readability |
+
+Example replacement:
+
+```js
+await login();
+await getProfile();
+await getPosts();
+await getComments();
+```
+
+---
+
+### 10. When Callbacks Are Still Useful
+
+Callbacks are not bad — they are ideal when:
+
+✅ Handling events
+✅ Simple async tasks
+✅ Streaming data
+✅ Performance-critical code
+✅ Library APIs expect callbacks
+
+---
+
+### 11. Key Characteristics of Callbacks
+
+ Functions passed as arguments
+ Can be synchronous or asynchronous
+ Controlled by the function that receives them
+ Prone to callback hell if overused
+ Foundation of Promises and async/await
+
+---
+
+### 12. Callback vs Promise (Quick Comparison)
+
+| Callbacks             | Promises        |
+| --------------------- | --------------- |
+| Nested                | Flat chaining   |
+| Harder error handling | `.catch()`      |
+| Old pattern           | Modern standard |
+| Less readable         | Cleaner         |
+
+---
+
+### 13. Interview One-Liner
+
+> A callback is a function passed into another function to be executed later, commonly used to handle asynchronous operations in JavaScript.
+
