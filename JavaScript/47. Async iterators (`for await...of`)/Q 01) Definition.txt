@@ -1,0 +1,288 @@
+## 47. Async Iterators (`for await...of`)
+
+Async iterators are an extension of the normal iterator pattern that allow asynchronous data consumptionusing `await` inside iteration. They are essential when data arrives over time—for example from APIs, streams, databases, or event queues.
+
+You’ll mostly see them used with streams, async generators, and paginated APIs.
+
+---
+
+## 1. Why async iterators exist
+
+Normal iterators (`for...of`) assume that:
+
+The next value is available immediately
+The iteration is synchronous
+
+But in real systems:
+
+Network calls are async
+Streams produce data gradually
+Files are read chunk by chunk
+
+Async iterators solve this by allowing each iteration step to return a Promise.
+
+---
+
+## 2. Sync iterator vs async iterator (core idea)
+
+### Sync iterator
+
+```js
+iterator.next() 
+// → { value: X, done: false }
+```
+
+### Async iterator
+
+```js
+iterator.next()
+// → Promise<{ value: X, done: false }>
+```
+
+That single difference enables `await` during iteration.
+
+---
+
+## 3. `for await...of` syntax
+
+```js
+for await (const value of asyncIterable) {
+  // use value
+}
+```
+
+Key rules:
+
+Can onlybe used inside an `async` function
+Works with async iterables
+Automatically `await`s each `.next()` call
+
+---
+
+## 4. What is an async iterable?
+
+An object is async iterableif it has:
+
+```js
+[Symbol.asyncIterator]()
+```
+
+That method must return an object with a `next()` function returning a Promise.
+
+---
+
+## 5. Async generator functions (most common source)
+
+The easiest way to create async iterators is using async generators.
+
+### Example: async generator
+
+```js
+async functionfetchNumbers() {
+  yield 1
+  await new Promise(r => setTimeout(r, 1000))
+  yield 2
+  await new Promise(r => setTimeout(r, 1000))
+  yield 3
+}
+```
+
+Consume it:
+
+```js
+const run = async () => {
+  for await (const num of fetchNumbers()) {
+    console.log(num)
+  }
+}
+
+run()
+```
+
+Output (with delay):
+
+```
+1
+2
+3
+```
+
+✔ Each `yield` can wait for async operations
+✔ Clean, readable, no manual `.then()`
+
+---
+
+## 6. Using `for await...of` with Promises
+
+If an iterable yields Promises, `for await...of` will await them automatically.
+
+```js
+const promises = [
+  Promise.resolve(10),
+  Promise.resolve(20),
+  Promise.resolve(30)
+]
+
+const run = async () => {
+  for await (const value of promises) {
+    console.log(value)
+  }
+}
+
+run()
+```
+
+Output:
+
+```
+10
+20
+30
+```
+
+⚠️ `for...of` would log unresolved Promises
+✔ `for await...of` resolves them
+
+---
+
+## 7. Manual async iterator (low-level understanding)
+
+```js
+const asyncIterable = {
+  data: [1, 2, 3],
+  index: 0,
+
+  [Symbol.asyncIterator]() {
+    return {
+      next: async () => {
+        if (this.index < this.data.length) {
+          await new Promise(r => setTimeout(r, 500))
+          return { value: this.data[this.index++], done: false }
+        }
+        return { done: true }
+      }
+    }
+  }
+}
+
+const run = async () => {
+  for await (const item of asyncIterable) {
+    console.log(item)
+  }
+}
+
+run()
+```
+
+This shows what `for await...of` does internally:
+
+Calls `.next()`
+Awaits the Promise
+Stops when `done: true`
+
+---
+
+## 8. Real-world use cases
+
+### 1. Streaming APIs
+
+Node.js streams
+Web streams
+Kafka consumers
+
+### 2. Paginated API fetching
+
+```js
+async functionfetchPages() {
+  let page = 1
+  while (page <= 3) {
+    const data = await fetch(`/api?page=${page}`).then(r => r.json())
+    yield data
+    page++
+  }
+}
+```
+
+### 3. File processing (large files)
+
+Process line by line
+Avoid loading everything into memory
+
+### 4. Event queues
+
+Consume events as they arrive
+Stop gracefully
+
+---
+
+## 9. `for...of` vs `for await...of`
+
+| Feature                | `for...of` | `for await...of` |
+| ---------------------- | ---------- | ---------------- |
+| Sync iterable          | ✅          | ✅                |
+| Async iterable         | ❌          | ✅                |
+| Awaits Promises        | ❌          | ✅                |
+| Needs `async` function | ❌          | ✅                |
+
+---
+
+## 10. Error handling
+
+Use `try...catch` around the loop:
+
+```js
+const run = async () => {
+  try {
+    for await (const value of fetchNumbers()) {
+      console.log(value)
+    }
+  } catch (err) {
+    console.error("Error:", err)
+  }
+}
+```
+
+If:
+
+The generator throws
+A Promise rejects
+
+→ control jumps to `catch`
+
+---
+
+## 11. When NOT to use async iterators
+
+Avoid them when:
+
+Data is already fully available
+You need random access
+Simple `Promise.all()` works better
+
+Async iterators shine when:
+✔ Data arrives over time
+✔ Memory efficiency matters
+✔ Sequential async processing is required
+
+---
+
+## 12. Mental model (important)
+
+Think of `for await...of` as:
+
+> “Wait for the next piece of data, process it, then wait again.”
+
+Not:
+
+> “Get everything first, then loop.”
+
+---
+
+## 13. Summary
+
+Async iterators allow asynchronous iteration
+`for await...of` automatically awaits each step
+Async generators (`async function`) are the cleanest way to create them
+Perfect for streams, paginated APIs, and real-time data
+Improves readability over nested `await` + loops
+

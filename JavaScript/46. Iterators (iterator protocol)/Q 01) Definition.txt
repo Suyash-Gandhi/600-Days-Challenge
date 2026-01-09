@@ -1,0 +1,275 @@
+## 46. Iterators (Iterator Protocol) — JavaScript
+
+Since you’re going through advanced JavaScript internals (HOFs → generators → iterators), this topic is foundational for understanding how `for...of`, generators, and many built-in structures actually work under the hood.
+
+I’ll explain this clearly, step-by-step, with examples, and no unnecessary theory fluff.
+
+---
+
+## 1. What is an Iterator?
+
+An iterator is an object that allows you to traverse a collection one value at a time.
+
+In JavaScript, iteration is standardized using the Iterator Protocol.
+
+> In simple words:
+> An iterator is an object that knows how to get the next value from a collection.
+
+---
+
+## 2. The Iterator Protocol (Core Definition)
+
+An object is an iterator if it has:
+
+ A `next()` method
+ `next()` returns an object with:
+
+  ```js
+  { value: any, done: boolean }
+  ```
+
+### Meaning:
+
+ `value` → current item
+ `done` → `true` when iteration is finished
+
+---
+
+## 3. Minimal Iterator Example (Manual)
+
+```js
+const iterator = {
+  current: 1,
+  last: 3,
+
+  next() {
+    if (this.current <= this.last) {
+      return { value: this.current++, done: false };
+    } else {
+      return { value: undefined, done: true };
+    }
+  }
+};
+```
+
+Usage:
+
+```js
+iterator.next(); // { value: 1, done: false }
+iterator.next(); // { value: 2, done: false }
+iterator.next(); // { value: 3, done: false }
+iterator.next(); // { value: undefined, done: true }
+```
+
+📌 This is a valid iterator, but it’s not yet iterable.
+
+---
+
+## 4. Iterator vs Iterable (Very Important Difference)
+
+### Iterator
+
+ Has `next()`
+ Manually controlled
+
+### Iterable
+
+ Has a `[Symbol.iterator]()` method
+ Returns an iterator
+
+👉 `for...of` works only on iterables, not plain iterators.
+
+---
+
+## 5. The Iterable Protocol
+
+An object is iterable if:
+
+```js
+obj[Symbol.iterator] === function
+```
+
+And that function returns an iterator.
+
+---
+
+## 6. Making a Custom Iterable (Correct Way)
+
+```js
+const range = {
+  start: 1,
+  end: 5,
+
+  [Symbol.iterator]() {
+    let current = this.start;
+    const last = this.end;
+
+    return {
+      next() {
+        if (current <= last) {
+          return { value: current++, done: false };
+        } else {
+          return { value: undefined, done: true };
+        }
+      }
+    };
+  }
+};
+```
+
+Now this works:
+
+```js
+for (const num of range) {
+  console.log(num);
+}
+```
+
+Output:
+
+```
+1
+2
+3
+4
+5
+```
+
+✅ This is a proper iterable using the iterator protocol.
+
+---
+
+## 7. Built-in Iterables in JavaScript
+
+These already implement `[Symbol.iterator]`:
+
+ Arrays
+ Strings
+ Maps
+ Sets
+ TypedArrays
+ Arguments object
+ DOM collections (NodeList)
+
+Example:
+
+```js
+const arr = [1, 2, 3];
+const iter = arr[Symbol.iterator]();
+
+iter.next(); // { value: 1, done: false }
+iter.next(); // { value: 2, done: false }
+```
+
+---
+
+## 8. How `for...of` Uses Iterators (Internals)
+
+When you write:
+
+```js
+for (const x of iterable) {
+  console.log(x);
+}
+```
+
+JavaScript internally does:
+
+1. Call `iterable[Symbol.iterator]()`
+2. Get an iterator
+3. Repeatedly call `next()`
+4. Stop when `done === true`
+
+---
+
+## 9. Iterators vs Generators (Connection to Previous Topic)
+
+### Iterator (manual)
+
+ You write `next()` yourself
+ More verbose
+ Full control
+
+### Generator (automatic iterator)
+
+ Uses `function`
+ Uses `yield`
+ Automatically implements iterator + iterable
+
+Example generator:
+
+```js
+function rangeGen(start, end) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}
+```
+
+```js
+for (const n of rangeGen(1, 3)) {
+  console.log(n);
+}
+```
+
+👉 Generators are iterator factories.
+
+---
+
+## 10. Why Iterators Matter (Practical Reasons)
+
+ Enables lazy evaluation
+ Avoids loading entire data into memory
+ Backbone of:
+
+   `for...of`
+   Spread operator (`...`)
+   Destructuring
+   Generators
+ Used in:
+
+   Streams
+   Infinite sequences
+   Custom data structures
+
+---
+
+## 11. Common Mistakes
+
+### ❌ Thinking iterator === iterable
+
+They are different concepts.
+
+### ❌ Forgetting `Symbol.iterator`
+
+Then `for...of` won’t work.
+
+### ❌ Returning values directly
+
+You must return `{ value, done }`.
+
+---
+
+## 12. When You Should Use Custom Iterators
+
+Use them when:
+
+ You need custom traversal logic
+ You want lazy computation
+ You’re implementing:
+
+   Ranges
+   Tree traversal
+   Infinite sequences
+   Complex data structures
+
+Otherwise, generators are usually better.
+
+---
+
+## 13. One-Line Summary
+
+> Iterator Protocol defines how JavaScript reads values step-by-step using `next()`, and Iterable Protocol defines how objects expose iterators using `Symbol.iterator`.
+
+---
+
