@@ -1,0 +1,298 @@
+## 50. Promises (creation, chaining, error handling)
+
+A Promise in JavaScript represents a value that may be available now, later, or never. It is the foundation of modern asynchronous JavaScript and is heavily used in APIs like `fetch`, database calls, timers, and more.
+
+---
+
+## 1️⃣ Why Promises exist (problem they solve)
+
+Before Promises, async code was written using callbacks, which caused:
+
+ Callback hell (deep nesting)
+ Hard-to-read flow
+ Difficult error handling
+
+Promises solve this by:
+
+ Making async code linear and readable
+ Providing centralized error handling
+ Allowing chaining of async operations
+
+---
+
+## 2️⃣ Promise states (core concept)
+
+A Promise is always in one of these states:
+
+1. Pending – initial state
+2. Fulfilled – operation succeeded
+3. Rejected – operation failed
+
+Once fulfilled or rejected, the state is final (immutable).
+
+---
+
+## 3️⃣ Creating a Promise
+
+A Promise is created using the `Promise` constructor.
+
+### Syntax
+
+```js
+const promise = new Promise((resolve, reject) => {
+  // async operation
+});
+```
+
+ `resolve(value)` → success
+ `reject(error)` → failure
+
+### Example: Simple Promise
+
+```js
+const isServerUp = true;
+
+const checkServer = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (isServerUp) {
+      resolve("Server is running");
+    } else {
+      reject("Server is down");
+    }
+  }, 1000);
+});
+```
+
+---
+
+## 4️⃣ Consuming a Promise (`then`, `catch`, `finally`)
+
+### `then()` – handles success
+
+### `catch()` – handles errors
+
+### `finally()` – always runs
+
+```js
+checkServer
+  .then((message) => {
+    console.log(message);
+  })
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(() => {
+    console.log("Check completed");
+  });
+```
+
+---
+
+## 5️⃣ Promise chaining (most important feature)
+
+Promise chaining allows you to run async tasks one after another.
+
+### Key rule
+
+> `then()` always returns a new Promise
+
+### Example: Chaining
+
+```js
+const fetchUser = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({ id: 1, name: "Suyash" }), 1000);
+  });
+};
+
+const fetchPosts = (user) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`Posts for ${user.name}`), 1000);
+  });
+};
+
+fetchUser()
+  .then((user) => fetchPosts(user))
+  .then((posts) => console.log(posts))
+  .catch((err) => console.error(err));
+```
+
+### Flow
+
+```
+fetchUser → fetchPosts → output
+```
+
+No nesting. Clean and readable.
+
+---
+
+## 6️⃣ Returning values vs returning Promises
+
+### Returning a value
+
+```js
+Promise.resolve(10)
+  .then((value) => value * 2)
+  .then((result) => console.log(result)); // 20
+```
+
+JavaScript automatically wraps returned values into a Promise.
+
+### Returning a Promise
+
+```js
+.then(() => new Promise(resolve => resolve(100)))
+```
+
+Both work seamlessly in chaining.
+
+---
+
+## 7️⃣ Error handling in Promises
+
+### Centralized error handling
+
+Any error in the chain jumps to the nearest `catch()`.
+
+```js
+Promise.resolve(10)
+  .then((value) => {
+    throw new Error("Something went wrong");
+  })
+  .then(() => console.log("This will not run"))
+  .catch((error) => console.error(error.message));
+```
+
+### Rejecting explicitly
+
+```js
+return Promise.reject("Failed");
+```
+
+---
+
+## 8️⃣ Multiple `then()` vs single `catch()`
+
+Best practice:
+
+```js
+doTask1()
+  .then(doTask2)
+  .then(doTask3)
+  .catch(handleError);
+```
+
+Avoid:
+
+```js
+.then(...)
+.catch(...)
+.then(...)
+.catch(...)
+```
+
+This fragments error flow and is harder to maintain.
+
+---
+
+## 9️⃣ `finally()` behavior
+
+ Runs always
+ Does not receive data
+ Does not modify result
+
+```js
+fetchData()
+  .then(data => data)
+  .catch(err => err)
+  .finally(() => console.log("Cleanup"));
+```
+
+---
+
+## 🔟 Common Promise mistakes (important)
+
+### ❌ Forgetting to return a Promise
+
+```js
+.then(() => {
+  fetchData(); // WRONG
+})
+```
+
+✅ Correct
+
+```js
+.then(() => {
+  return fetchData();
+})
+```
+
+---
+
+### ❌ Creating unnecessary Promises
+
+```js
+new Promise(resolve => resolve(value)); // avoid
+```
+
+Use:
+
+```js
+Promise.resolve(value);
+```
+
+---
+
+## 1️⃣1️⃣ Promises vs Callbacks (quick comparison)
+
+| Feature        | Callbacks | Promises    |
+| -------------- | --------- | ----------- |
+| Readability    | Poor      | High        |
+| Error handling | Scattered | Centralized |
+| Chaining       | Hard      | Built-in    |
+| Debugging      | Difficult | Easier      |
+
+---
+
+## 1️⃣2️⃣ Relationship with `async / await`
+
+> `async/await` is syntax sugar over Promises
+
+```js
+async function getData() {
+  try {
+    const user = await fetchUser();
+    const posts = await fetchPosts(user);
+    console.log(posts);
+  } catch (err) {
+    console.error(err);
+  }
+}
+```
+
+Under the hood → still Promises.
+
+---
+
+## ✅ When to use Promises directly
+
+ Library code
+ Utility functions
+ Parallel execution (`Promise.all`, `race`, etc.)
+ Understanding async fundamentals
+
+---
+
+## 🔑 Summary
+
+ Promises represent future values
+ Created using `new Promise`
+ Consumed using `then`, `catch`, `finally`
+ Chaining enables sequential async flow
+ Errors propagate automatically
+ Backbone of modern JavaScript async programming
+
+---
+

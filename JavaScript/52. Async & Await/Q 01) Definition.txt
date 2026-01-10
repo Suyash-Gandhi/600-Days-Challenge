@@ -1,0 +1,230 @@
+## 52. Async / Await (JavaScript)
+
+`async` / `await` is syntactic sugar over Promises that lets you write asynchronous JavaScript in a clean, synchronous-looking style, without changing how the JavaScript engine actually works.
+
+It was introduced to solve readability, maintainability, and error-handling problems caused by heavy Promise chaining.
+
+---
+
+## 1. Why Async/Await Was Introdued
+
+Before `async/await`, JavaScript handled async logic using:
+
+1. Callbacks → callback hell, unreadable nesting
+2. Promises (`then`, `catch`) → better, but still hard to read in complex flows
+
+Problems with Promise-based code:
+
+ Logic flows top → bottom mentally, but code flows inside callbacks
+ Error handling becomes fragmented
+ Sequential async operations look confusing
+
+`async/await` fixes this by:
+
+ Making async code look synchronous
+ Centralizing error handling
+ Improving debugging and stack traces
+
+---
+
+## 2. What `async` Means
+
+An `async` function:
+
+ Always returns a Promise
+ Even if you return a normal value, JavaScript wraps it in a Promise
+ Allows the use of `await` inside it
+
+Key points:
+
+ `async` does not make code synchronous
+ It only changes how you write and read async logic
+
+Think of `async` as:
+
+> “This function works asynchronously and returns a Promise”
+
+---
+
+## 3. What `await` Means
+
+`await`:
+
+ Pauses execution of the async function
+ Waits until the Promise is resolved or rejected
+ Does not block the main thread
+ Only works inside async functions
+
+Important clarification:
+
+ JavaScript does not stop
+ The function is suspended and resumed later
+ The event loop continues running normally
+
+So:
+
+> `await` pauses the function, not JavaScript itself
+
+---
+
+## 4. Execution Flow (Behind the Scenes)
+
+When JavaScript hits `await`:
+
+1. The async function is suspended
+2. The Promise is registered as a microtask
+3. Control returns to the event loop
+4. When the Promise settles:
+
+    The function resumes execution
+    Execution continues from the next line
+
+This is why:
+
+ Async/await works smoothly with the event loop
+ It integrates perfectly with microtask queues
+
+---
+
+## 5. Async/Await vs Promises (Conceptual Difference)
+
+| Aspect         | Promises          | Async/Await      |
+| -------------- | ----------------- | ---------------- |
+| Syntax         | Chained callbacks | Linear, readable |
+| Readability    | Medium            | High             |
+| Error handling | `.catch()`        | `try/catch`      |
+| Debugging      | Harder            | Easier           |
+| Control flow   | Inverted          | Natural          |
+
+Important:
+
+> Async/await does NOT replace Promises — it is built on top of them
+
+---
+
+## 6. Error Handling with Async/Await
+
+Error handling becomes structured and centralized.
+
+Instead of:
+
+ Multiple `.catch()` blocks
+ Error leaks in Promise chains
+
+You get:
+
+ Standard `try / catch / finally`
+ Cleaner mental model
+ Easier recovery logic
+
+Best practice:
+
+ Wrap awaited logic in `try/catch`
+ Handle only meaningful errors
+ Let unexpected errors bubble up
+
+---
+
+## 7. Sequential vs Parallel Execution
+
+### Sequential Awaiting
+
+ Each async task waits for the previous one
+ Slower if tasks are independent
+ Useful when tasks depend on each other
+
+### Parallel Execution with Await
+
+ Start multiple async tasks first
+ Await them later
+ Much faster for independent operations
+
+Key idea:
+
+> `await` controls when you wait, not when work starts
+
+---
+
+## 8. Common Mistakes
+
+1. Using await outside async
+
+    Syntax error
+
+2. Overusing await
+
+    Can accidentally make parallel tasks sequential
+
+3. Ignoring error handling
+
+    Unhandled Promise rejections still crash apps
+
+4. Thinking await blocks JavaScript
+
+    It does not
+
+5. Mixing then/catch with await unnecessarily
+
+    Pick one style per function
+
+---
+
+## 9. Async/Await and the Event Loop
+
+Important relationship:
+
+ `await` uses Promises
+ Promises use microtask queue
+ Microtasks run before macrotasks
+
+This means:
+
+ `await` resumes execution before timers
+ Predictable, high-priority async behavior
+
+This is why async/await feels “fast” and consistent.
+
+---
+
+## 10. When to Use Async/Await
+
+Use async/await when:
+
+ Writing business logic
+ Handling API calls
+ Managing sequential async workflows
+ Readability and maintainability matter
+
+Avoid async/await when:
+
+ Writing very low-level performance-critical loops
+ You need fine-grained Promise composition control
+
+---
+
+## 11. Real-World Mental Model
+
+Think of async/await as:
+
+> “Write async code the way you would explain it to a human”
+
+Instead of:
+
+> “When this finishes, then do that, then catch this…”
+
+You write:
+
+> “Wait for this, then do that, handle errors if they occur”
+
+---
+
+## 12. Key Takeaways
+
+ `async` makes a function return a Promise
+ `await` pauses function execution, not JavaScript
+ Built on top of Promises
+ Cleaner syntax, better error handling
+ Works seamlessly with the event loop
+ Essential for modern JavaScript development
+
+---

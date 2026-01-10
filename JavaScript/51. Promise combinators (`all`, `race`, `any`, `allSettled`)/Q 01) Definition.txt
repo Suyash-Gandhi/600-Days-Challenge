@@ -1,0 +1,250 @@
+## 51. Promise Combinators (`all`, `race`, `any`, `allSettled`)
+
+Promise combinators are static methods on `Promise` that let you work with multiple promises together. Instead of handling each async task separately, combinators define how multiple promises should be coordinated and when the final result should resolve or reject.
+
+They are heavily used in:
+
+ Parallel API calls
+ Feature initialization
+ Fallback strategies
+ Error-tolerant async workflows
+
+---
+
+## 1. `Promise.all()`
+
+### What it does
+
+ Runs multiple promises in parallel
+ Resolves only if all promises resolve
+ Rejects immediately if any one promise rejects
+
+### Behavior
+
+ Result → array of resolved values (order preserved)
+ Failure → first rejection error (short-circuits)
+
+### Syntax
+
+```js
+Promise.all([p1, p2, p3])
+```
+
+### Example
+
+```js
+const p1 = Promise.resolve(10);
+const p2 = Promise.resolve(20);
+const p3 = Promise.resolve(30);
+
+Promise.all([p1, p2, p3])
+  .then(values => {
+    console.log(values); // [10, 20, 30]
+  })
+  .catch(err => {
+    console.error(err);
+  });
+```
+
+### If one fails
+
+```js
+Promise.all([
+  Promise.resolve("OK"),
+  Promise.reject("Error"),
+  Promise.resolve("Never reached")
+])
+.catch(err => console.log(err)); // "Error"
+```
+
+### Use cases
+
+ Fetching multiple APIs that are all mandatory
+ Loading app configuration before startup
+ Parallel database queries
+
+---
+
+## 2. `Promise.race()`
+
+### What it does
+
+ Resolves or rejects as soon as the first promise settles
+ Does not wait for others
+
+### Behavior
+
+ First settled promise (resolve or reject) wins
+
+### Syntax
+
+```js
+Promise.race([p1, p2, p3])
+```
+
+### Example
+
+```js
+const fast = new Promise(res => setTimeout(() => res("Fast"), 100));
+const slow = new Promise(res => setTimeout(() => res("Slow"), 500));
+
+Promise.race([fast, slow])
+  .then(result => console.log(result)); // "Fast"
+```
+
+### Rejection can win
+
+```js
+Promise.race([
+  Promise.reject("Failed early"),
+  Promise.resolve("Success later")
+])
+.catch(err => console.log(err)); // "Failed early"
+```
+
+### Use cases
+
+ Timeouts
+ First-response-wins logic
+ Network fallback strategies
+
+---
+
+## 3. `Promise.any()`
+
+### What it does
+
+ Resolves when the first promise fulfills
+ Ignores rejected promises
+ Rejects only if all promises reject
+
+### Behavior
+
+ Success → first fulfilled value
+ Failure → `AggregateError` (array of all errors)
+
+### Syntax
+
+```js
+Promise.any([p1, p2, p3])
+```
+
+### Example
+
+```js
+Promise.any([
+  Promise.reject("Error 1"),
+  Promise.resolve("Success"),
+  Promise.reject("Error 2")
+])
+.then(value => console.log(value)); // "Success"
+```
+
+### If all fail
+
+```js
+Promise.any([
+  Promise.reject("A"),
+  Promise.reject("B")
+])
+.catch(err => {
+  console.log(err.errors); // ["A", "B"]
+});
+```
+
+### Use cases
+
+ Redundant APIs (CDN, mirrors)
+ Feature detection
+ Fallback resource loading
+
+---
+
+## 4. `Promise.allSettled()`
+
+### What it does
+
+ Waits for all promises to settle
+ Never rejects
+ Returns detailed status for each promise
+
+### Behavior
+
+Each result is an object:
+
+```js
+{ status: "fulfilled", value: ... }
+{ status: "rejected", reason: ... }
+```
+
+### Syntax
+
+```js
+Promise.allSettled([p1, p2, p3])
+```
+
+### Example
+
+```js
+Promise.allSettled([
+  Promise.resolve(1),
+  Promise.reject("Error"),
+  Promise.resolve(3)
+])
+.then(results => {
+  console.log(results);
+});
+```
+
+### Output
+
+```js
+[
+  { status: "fulfilled", value: 1 },
+  { status: "rejected", reason: "Error" },
+  { status: "fulfilled", value: 3 }
+]
+```
+
+### Use cases
+
+ Batch processing
+ Logging results of multiple tasks
+ Dashboards & reports
+ Error-tolerant workflows
+
+---
+
+## 🔥 Comparison Summary
+
+| Method               | Waits for All | Rejects Early | Ignores Failures | Returns        |
+| -------------------- | ------------- | ------------- | ---------------- | -------------- |
+| `Promise.all`        | ✅             | ✅             | ❌                | Values array   |
+| `Promise.race`       | ❌             | ❌             | ❌                | First settled  |
+| `Promise.any`        | ❌             | ❌             | ✅                | First success  |
+| `Promise.allSettled` | ✅             | ❌             | ✅                | Status objects |
+
+---
+
+## 🧠 Practical Guidance
+
+ Use `all` → when every async task is required
+ Use `race` → when speed matters
+ Use `any` → when any success is enough
+ Use `allSettled` → when you want full visibility
+
+---
+
+## 🚫 Common Mistakes
+
+1. Expecting `Promise.all` to give partial results
+2. Using `race` without handling rejection
+3. Forgetting `AggregateError` in `any`
+4. Overusing `allSettled` when failures should stop execution
+
+---
+
+## ✅ Final Mental Model
+
+> Promise combinators define when multiple async tasks should finish and what counts as success or failure.
+
