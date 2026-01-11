@@ -1,19 +1,491 @@
-Q1. What is function hoisting? How does it work in JavaScript?
-Ans=>
+Here are clear, well-structured answers to all three questions, explained step by step and with simple examples.
 
+---
+
+Q1. What is function hoisting? How does it work in JavaScript?
+
+Ans ⇒
+
+What is function hoisting?
+
+Function hoisting is JavaScript’s behavior of moving function declarations to the top of their scope during the compilation phase, before the code is executed.
+
+Because of this, you can call a function before it is written in the code, as long as it is declared using a function declaration.
+
+---
+
+How it works internally
+
+JavaScript code runs in two phases:
+
+1. Memory Creation Phase
+
+    Function declarations are stored completely in memory.
+    Variables declared with `var` are initialized as `undefined`.
+2. Execution Phase
+
+    Code is executed line by line.
+
+Since function declarations are fully stored in memory, they are accessible anywhere in their scope.
+
+---
+
+Example
+
+```js
+sayHello();
+
+function sayHello() {
+  console.log("Hello!");
+}
+```
+
+✔️ This works because `sayHello` is hoisted with its full definition.
+
+---
+
+Important distinction
+
+| Type                 | Hoisted?  | Usable before declaration? |
+| -------------------- | --------- | -------------------------- |
+| Function Declaration | ✅ Yes     | ✅ Yes                      |
+| Function Expression  | Partially | ❌ No                       |
+| Arrow Function       | Partially | ❌ No                       |
+
+```js
+greet(); // ❌ Error
+
+const greet = () => {
+  console.log("Hi");
+};
+```
+
+---
+
+Key takeaway
+
+ Only function declarations are fully hoisted
+ Function expressions and arrow functions behave like variables
+
+---
 
 Q2. Explain closure in JavaScript with an example.
-Ans=>
+
+Ans ⇒
+
+What is a closure?
+
+A closure is created when:
+
+> A function remembers and continues to access variables from its outer (lexical) scope, even after the outer function has finished executing.
+
+In simple words:
+👉 Inner functions remember their outer variables
+
+---
+
+Why closures exist
+
+Closures happen because JavaScript uses lexical scoping, meaning:
+
+ Scope is decided by where the function is written, not where it is called.
+
+---
+
+Example
+
+```js
+const outerFunction = () => {
+  let count = 0;
+
+  return () => {
+    count++;
+    console.log(count);
+  };
+};
+
+const counter = outerFunction();
+
+counter(); // 1
+counter(); // 2
+counter(); // 3
+```
+
+---
+
+What’s happening here
+
+1. `outerFunction()` executes and returns an inner function
+2. The inner function keeps access to `count`
+3. Even though `outerFunction` is finished, `count` is not destroyed
+4. This preserved scope is the closure
+
+---
+
+Real-world uses of closures
+
+ Data encapsulation (private variables)
+ Function factories
+ Memoization
+ Event handlers
+ Callbacks and async code
+
+---
+
+Key takeaway
+
+ Closures allow functions to remember their creation environment
+ They are powerful but can cause memory issues if misused
+
+---
+
+Q3. What happens if you use `return` inside a function that doesn’t explicitly return a value?
+
+Ans ⇒
+
+Default return behavior
+
+In JavaScript:
+
+> Every function returns something
+
+If no value is returned explicitly, the function returns `undefined`.
+
+---
+
+Case 1: No return statement
+
+```js
+const test = () => {
+  let x = 10;
+};
+
+console.log(test()); // undefined
+```
+
+---
+
+Case 2: `return` without a value
+
+```js
+const test = () => {
+  let x = 10;
+  return;
+};
+
+console.log(test()); // undefined
+```
+
+---
+
+Why this happens
+
+ `return;` means: exit the function
+ Since no value is provided, JavaScript returns `undefined` automatically
+
+---
+
+Common use case
+
+Using `return` to stop function execution early:
+
+```js
+const checkAge = (age) => {
+  if (age < 18) return;
+  console.log("Allowed");
+};
+```
+
+---
+
+Key takeaway
+
+ `return` without a value → returns `undefined`
+ Useful for early exits and control flow
+ JavaScript never returns “nothing”
 
 
-Q3. What happens if you use return inside a function that doesn’t explicitly return a value?
-Ans=>
+Q4. How do arrow functions handle the `this` keyword differently from regular functions?
 
+Ans ⇒
 
-Q4. How do arrow functions handle the this keyword differently from regular functions?
-Ans=>
+Key difference (one line)
 
+👉 Arrow functions do NOT have their own `this`.
+They inherit `this` from their surrounding (lexical) scope, whereas regular functions have their own `this` determined at call time.
+
+---
+
+`this` in regular functions
+
+ Depends on how the function is called
+ Can change dynamically
+ Common causes of bugs
+
+```js
+const obj = {
+  name: "JS",
+  show() {
+    console.log(this.name);
+  }
+};
+
+obj.show(); // "JS"
+```
+
+Here, `this` refers to `obj`.
+
+---
+
+Problem with regular functions inside methods
+
+```js
+const obj = {
+  name: "JS",
+  show() {
+    setTimeout(function () {
+      console.log(this.name);
+    }, 1000);
+  }
+};
+
+obj.show(); // undefined
+```
+
+❌ Because `this` inside the callback refers to `window` (or `undefined` in strict mode).
+
+---
+
+Arrow functions fix this
+
+```js
+const obj = {
+  name: "JS",
+  show() {
+    setTimeout(() => {
+      console.log(this.name);
+    }, 1000);
+  }
+};
+
+obj.show(); // "JS"
+```
+
+✔️ Arrow function inherits `this` from `show()`
+
+---
+
+Summary table
+
+| Feature                | Regular Function | Arrow Function |
+| ---------------------- | ---------------- | -------------- |
+| Own `this`             | ✅ Yes            | ❌ No           |
+| `this` decided by      | Call-site        | Lexical scope  |
+| Suitable for methods   | ✅ Yes            | ❌ No           |
+| Suitable for callbacks | ❌ Risky          | ✅ Best         |
+
+---
+
+Important note
+
+❌ Do NOT use arrow functions as object methods
+
+```js
+const obj = {
+  name: "JS",
+  show: () => console.log(this.name)
+};
+
+obj.show(); // undefined
+```
+
+---
+
+Key takeaway
+
+ Arrow functions capture `this`
+ Regular functions define `this`
+ Use arrows for callbacks, not object methods
+
+---
 
 Q5. What is the difference between pure functions and impure functions? Give examples.
-Ans=>
+
+Ans ⇒
+
+Pure Function
+
+A function is pure if:
+
+1. Same input → same output
+2. No side effects (no modification of external state)
+
+---
+
+Example of a pure function
+
+```js
+const add = (a, b) => a + b;
+```
+
+✔️ Always returns the same result
+✔️ Does not modify anything outside
+
+---
+
+Impure Function
+
+A function is impure if:
+
+ Output depends on external state
+ OR it modifies external data
+
+---
+
+Example of an impure function
+
+```js
+let count = 0;
+
+const increment = () => {
+  count++;
+  return count;
+};
+```
+
+❌ Depends on external variable
+❌ Changes external state
+
+---
+
+Another impure example
+
+```js
+const randomNumber = () => Math.random();
+```
+
+❌ Same input, different output
+
+---
+
+Comparison table
+
+| Aspect       | Pure Function | Impure Function |
+| ------------ | ------------- | --------------- |
+| Predictable  | ✅ Yes         | ❌ No            |
+| Side effects | ❌ None        | ✅ Yes           |
+| Testable     | ✅ Easy        | ❌ Hard          |
+| Reusable     | ✅ High        | ❌ Low           |
+
+---
+
+Why pure functions matter
+
+ Easier debugging
+ Better performance (memoization)
+ Safer concurrency
+ Core of functional programming
+
+---
+
+Key takeaway
+
+ Pure = predictable & safe
+ Impure = powerful but risky
+ Prefer pure functions unless side effects are needed
+
+---
+
+Q6. Explain the difference between local scope, block scope, and global scope with functions.
+
+Ans ⇒
+
+1. Global Scope
+
+Variables declared outside any function or block
+
+```js
+let globalVar = "I am global";
+
+const test = () => {
+  console.log(globalVar);
+};
+
+test(); // accessible
+```
+
+⚠️ Accessible everywhere → can cause conflicts
+
+---
+
+2. Local (Function) Scope
+
+Variables declared inside a function
+
+```js
+const demo = () => {
+  let localVar = "I am local";
+  console.log(localVar);
+};
+
+demo();
+console.log(localVar); // ❌ Error
+```
+
+✔️ Exists only during function execution
+
+---
+
+3. Block Scope
+
+Variables declared using `let` or `const` inside `{}`
+
+```js
+if (true) {
+  let x = 10;
+  const y = 20;
+}
+
+console.log(x); // ❌ Error
+console.log(y); // ❌ Error
+```
+
+✔️ Limited to the block
+❌ `var` does NOT follow block scope
+
+---
+
+`var` vs `let/const`
+
+```js
+if (true) {
+  var a = 10;
+}
+
+console.log(a); // ✅ Works (function-scoped)
+```
+
+---
+
+Scope hierarchy
+
+```
+Global Scope
+  └── Function Scope
+        └── Block Scope
+```
+
+Inner scopes can access outer scopes, not vice versa.
+
+---
+
+Key takeaway
+
+ Global → everywhere (use carefully)
+ Local → function-only
+ Block → `{}` with `let` & `const`
+ Prefer `let` and `const` for safer scoping
+
+---
+
 
