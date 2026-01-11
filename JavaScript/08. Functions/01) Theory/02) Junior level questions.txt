@@ -1,0 +1,268 @@
+
+Q1. What is the difference between a function declaration and a function expression?
+
+Ans ⇒
+
+The main differences lie in how they are defined, hoisting behavior, and usage flexibility.
+
+1. Function Declaration
+
+ A function declaration defines a named function using a standard syntax.
+ It is hoisted completely, meaning it can be called before it is defined in the code.
+ Commonly used for utility functions or core logic that should be accessible throughout the scope.
+
+Key characteristics:
+
+ Hoisted (available before definition)
+ Must have a name
+ More readable for large programs
+
+---
+
+2. Function Expression
+
+ A function expression assigns a function to a variable.
+ It is not hoisted as a function, only the variable is hoisted (without value).
+ The function can be anonymous or named.
+ Often used in callbacks, closures, and conditional logic.
+
+Key characteristics:
+
+ Not hoisted like declarations
+ More flexible
+ Useful for dynamic or conditional execution
+
+---
+
+Summary Difference
+
+| Aspect        | Function Declaration | Function Expression      |
+| ------------- | -------------------- | ------------------------ |
+| Hoisting      | Yes (fully)          | No                       |
+| Name required | Yes                  | No (can be anonymous)    |
+| Usage         | General-purpose      | Callbacks, dynamic logic |
+
+---
+
+Q2. Explain the difference between parameters and arguments in a function.
+
+Ans ⇒
+
+Parameters and arguments are related but refer to different stages of function execution.
+
+1. Parameters
+
+ Parameters are variables listed in the function definition.
+ They act as placeholders to receive values when the function is called.
+ Defined at function creation time.
+
+Example explanation:
+When you define a function and specify inputs, those inputs are parameters.
+
+---
+
+2. Arguments
+
+ Arguments are the actual values passed to the function when it is invoked.
+ Supplied at function call time.
+ These values are assigned to the corresponding parameters.
+
+---
+
+Key Difference
+
+| Aspect       | Parameters          | Arguments     |
+| ------------ | ------------------- | ------------- |
+| Defined when | Function definition | Function call |
+| Nature       | Variables           | Actual values |
+| Purpose      | Receive data        | Provide data  |
+
+---
+
+Q3. What happens if you call a function with fewer arguments than parameters?
+
+Ans ⇒
+
+JavaScript does not throw an error when a function is called with fewer arguments.
+
+What actually happens
+
+ Missing arguments are automatically assigned the value `undefined`.
+ The corresponding parameters receive `undefined`.
+ The function still executes normally.
+
+Implications
+
+ Operations using those parameters may produce unexpected results.
+ This can lead to logical bugs if not handled properly.
+ Developers often use:
+
+   Default values
+   Conditional checks
+    to avoid issues.
+
+Important Point
+
+JavaScript functions are lenient, meaning:
+
+ Fewer arguments → missing values become `undefined`
+ More arguments → extra values are ignored unless accessed explicitly
+
+
+Q4. What is the difference between a `return` statement and `console.log` inside a function?
+
+Ans ⇒
+
+Although both are used inside functions, they serve very different purposes.
+
+1. `return` statement
+
+ Sends a value back to the place where the function was called.
+ Stops function execution immediately.
+ Allows the returned value to be stored, reused, or passed to other logic.
+
+Example idea:
+A function that calculates a result must use `return` so the result can be used elsewhere.
+
+---
+
+2. `console.log()`
+
+ Only prints output to the console for debugging or visibility.
+ Does not return any value.
+ Function execution continues after `console.log`.
+
+---
+
+Key Differences
+
+| Aspect             | `return`         | `console.log`       |
+| ------------------ | ---------------- | ------------------- |
+| Purpose            | Sends value back | Displays value      |
+| Stops function     | Yes              | No                  |
+| Value usable later | Yes              | No                  |
+| Used in logic      | Yes              | No (debugging only) |
+
+---
+
+Important takeaway
+
+> `console.log` is for developers, `return` is for program logic.
+
+---
+
+Q5. Explain what default parameters are with an example.
+
+Ans ⇒
+
+Default parameters
+
+ Default parameters allow a function parameter to have a predefined value.
+ If no argument (or `undefined`) is passed, the default value is used.
+ Introduced to avoid manual checks inside functions.
+
+---
+
+Why they are useful
+
+ Prevent `undefined` values
+ Make functions safer and cleaner
+ Improve readability
+
+---
+
+Example
+
+```js
+const greet = (name = "Guest") => {
+  return `Hello, ${name}`;
+};
+```
+
+ If no argument is passed → `"Guest"` is used
+ If an argument is passed → that value overrides the default
+
+---
+
+Key Point
+
+> Default parameters activate only when the argument is missing or `undefined`.
+
+---
+
+Q6. What does the keyword `this` inside a function refer to (in non-strict mode)?
+
+Ans ⇒
+
+In non-strict mode, the value of `this` depends on how the function is called.
+
+1. Regular function call
+
+ `this` refers to the global object.
+ In browsers, this is the `window` object.
+
+---
+
+2. Method call (function inside an object)
+
+ `this` refers to the object that owns the method.
+
+---
+
+Important Notes
+
+ In non-strict mode, `this` never becomes `undefined`.
+ If context is missing, JavaScript defaults to the global object.
+
+---
+
+One-line summary
+
+> In non-strict mode, `this` points to the caller, and defaults to the global object if no explicit context exists.
+
+---
+
+Q7. What is the difference between regular functions and arrow functions?
+
+Ans ⇒
+
+Regular functions and arrow functions differ mainly in syntax, behavior of `this`, and flexibility.
+
+---
+
+1. Regular Functions
+
+ Have their own `this` context.
+ Can be used as constructors.
+ Support `arguments` object.
+ Suitable for object methods.
+
+---
+
+2. Arrow Functions
+
+ Do not have their own `this`.
+ `this` is lexically inherited from the surrounding scope.
+ Cannot be used as constructors.
+ No `arguments` object.
+
+---
+
+Comparison Table
+
+| Feature         | Regular Function | Arrow Function  |
+| --------------- | ---------------- | --------------- |
+| `this` binding  | Dynamic          | Lexical         |
+| Constructor use | Yes              | No              |
+| `arguments`     | Available        | Not available   |
+| Syntax          | Verbose          | Short & concise |
+
+---
+
+When to use what
+
+ Use regular functions for object methods and constructors
+ Use arrow functions for callbacks and functional-style code
+
+---
+

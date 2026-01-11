@@ -1,0 +1,19 @@
+Q1. How does the JavaScript call stack work when executing nested functions?
+Ans=>
+
+
+Q2. How do you implement currying in JavaScript? Give an example.
+Ans=>
+
+
+Q3. Compare function composition and function chaining.
+Ans=>
+
+
+Q4. What are the pros and cons of using anonymous functions vs named functions in debugging?
+Ans=>
+
+
+Q5. How would you design a retry-until-success mechanism using functions (e.g., for an API call)?
+Ans=>
+

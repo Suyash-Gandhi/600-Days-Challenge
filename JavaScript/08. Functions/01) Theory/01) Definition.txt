@@ -1,0 +1,286 @@
+## Functions in JavaScript
+
+A function in JavaScript is a reusable block of code designed to perform a specific task. Functions help you avoid repetition, organize logic, and write cleaner, maintainable code.
+
+In simple terms:
+
+> Functions = input → processing → output
+
+---
+
+## 1. Why Functions Are Important
+
+Functions allow you to:
+
+ Reuse code instead of writing it again and again
+ Break large programs into smaller, understandable pieces
+ Improve readability and debugging
+ Follow clean coding principles (DRY – Don’t Repeat Yourself)
+
+---
+
+## 2. Basic Function Syntax
+
+### Function Declaration
+
+```js
+function greet() {
+  console.log("Hello, World!");
+}
+```
+
+ `function` → keyword
+ `greet` → function name
+ `{}` → function body
+
+Calling the function:
+
+```js
+greet();
+```
+
+---
+
+## 3. Functions with Parameters & Arguments
+
+### Parameters
+
+Variables listed in the function definition.
+
+### Arguments
+
+Actual values passed while calling the function.
+
+```js
+function greetUser(name) {
+  console.log(`Hello, ${name}`);
+}
+
+greetUser("Suyash");
+```
+
+ `name` → parameter
+ `"Suyash"` → argument
+
+---
+
+## 4. Return Statement
+
+Functions can return values using `return`.
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+const result = add(3, 5);
+console.log(result); // 8
+```
+
+Key points:
+
+ `return` sends data back
+ Code after `return` does not execute
+
+---
+
+## 5. Function Expressions
+
+Functions can be stored in variables.
+
+```js
+const multiply = function (a, b) {
+  return a * b;
+};
+
+console.log(multiply(4, 5));
+```
+
+Difference from declaration:
+
+ Cannot be used before definition (no hoisting)
+
+---
+
+## 6. Arrow Functions (ES6 – Most Common Today)
+
+Shorter and cleaner syntax.
+
+```js
+const add = (a, b) => {
+  return a + b;
+};
+```
+
+### Implicit Return (one-liner)
+
+```js
+const square = n => n  n;
+```
+
+Advantages:
+
+ Less boilerplate
+ Cleaner syntax
+ Lexical `this` binding
+
+---
+
+## 7. Default Parameters
+
+Used when arguments are not provided.
+
+```js
+const greet = (name = "Guest") => {
+  console.log(`Hello, ${name}`);
+};
+
+greet(); // Hello, Guest
+```
+
+---
+
+## 8. Rest Parameters
+
+Handle multiple arguments.
+
+```js
+const sum = (...numbers) => {
+  return numbers.reduce((acc, val) => acc + val, 0);
+};
+
+sum(1, 2, 3, 4);
+```
+
+---
+
+## 9. Callback Functions
+
+Functions passed as arguments to other functions.
+
+```js
+const process = (callback) => {
+  callback();
+};
+
+process(() => {
+  console.log("Callback executed");
+});
+```
+
+Used heavily in:
+
+ Event handling
+ Asynchronous code
+ Array methods
+
+---
+
+## 10. Higher-Order Functions
+
+Functions that:
+
+ Take another function as an argument OR
+ Return a function
+
+```js
+const multiplier = factor => {
+  return number => number * factor;
+};
+
+const double = multiplier(2);
+console.log(double(5));
+```
+
+---
+
+## 11. Immediately Invoked Function Expression (IIFE)
+
+Executes immediately after creation.
+
+```js
+(() => {
+  console.log("IIFE executed");
+})();
+```
+
+Used for:
+
+ Avoiding global scope pollution
+ Encapsulation
+
+---
+
+## 12. Pure vs Impure Functions
+
+### Pure Function
+
+```js
+const add = (a, b) => a + b;
+```
+
+ Same input → same output
+ No side effects
+
+### Impure Function
+
+```js
+let total = 0;
+const add = n => total += n;
+```
+
+ Depends on external state
+
+---
+
+## 13. Function Hoisting
+
+Only function declarations are hoisted.
+
+```js
+sayHi();
+
+function sayHi() {
+  console.log("Hi!");
+}
+```
+
+This works, but:
+
+```js
+hello(); // ❌ error
+
+const hello = () => console.log("Hello");
+```
+
+---
+
+## 14. Best Practices
+
+ Use arrow functions for most cases
+ Keep functions small and focused
+ Name functions clearly (`calculateTotal`, not `calc`)
+ Avoid side effects unless necessary
+ Prefer pure functions when possible
+
+---
+
+## 15. Real-World Example
+
+```js
+const calculateDiscount = (price, discount = 10) => {
+  return price - (price  discount) / 100;
+};
+
+calculateDiscount(100);      // 90
+calculateDiscount(100, 20);  // 80
+```
+
+---
+
+## Summary
+
+ Functions are the backbone of JavaScript
+ They support modular, reusable, and clean code
+ Modern JS favors arrow functions, callbacks, and higher-order functions
+
