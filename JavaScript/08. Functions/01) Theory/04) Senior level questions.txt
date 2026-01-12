@@ -1,19 +1,424 @@
 Q1. How does the JavaScript call stack work when executing nested functions?
-Ans=>
 
+Ans ⇒
+
+What is the Call Stack?
+
+ The call stack is a LIFO (Last In, First Out) data structure.
+ It keeps track of function execution order in JavaScript.
+ Every time a function is called, it is pushed onto the stack.
+ When a function finishes execution, it is popped off the stack.
+
+---
+
+Execution of Nested Functions (Step-by-Step)
+
+Consider this example:
+
+```js
+const first = () => {
+  second();
+};
+
+const second = () => {
+  third();
+};
+
+const third = () => {
+  console.log("Hello");
+};
+
+first();
+```
+
+Call Stack Flow
+
+1. Global Execution Context is pushed first.
+2. `first()` is called → pushed onto the stack.
+3. Inside `first()`, `second()` is called → pushed.
+4. Inside `second()`, `third()` is called → pushed.
+5. `third()` executes `console.log()` and finishes → popped.
+6. `second()` finishes → popped.
+7. `first()` finishes → popped.
+8. Stack becomes empty → program ends.
+
+---
+
+Important Characteristics
+
+ JavaScript is single-threaded, so only one stack frame executes at a time.
+ Deep or infinite nesting can cause stack overflow.
+ The call stack works synchronously (async code goes to task queues).
+
+---
+
+Key Takeaway
+
+> Nested functions execute by stacking calls on top of each other and resolving them in reverse order once execution completes.
+
+---
 
 Q2. How do you implement currying in JavaScript? Give an example.
-Ans=>
 
+Ans ⇒
+
+What is Currying?
+
+ Currying transforms a function that takes multiple arguments into a sequence of functions that take one argument at a time.
+ It allows partial application and better function reuse.
+
+---
+
+Basic Example (Without Currying)
+
+```js
+const add = (a, b) => a + b;
+```
+
+---
+
+Curried Version
+
+```js
+const add = a => b => a + b;
+
+add(5)(3); // 8
+```
+
+---
+
+How It Works
+
+ `add(5)` returns a function.
+ That returned function remembers `a = 5` (closure).
+ When `b` is passed, calculation happens.
+
+---
+
+Reusable Partial Function
+
+```js
+const multiply = a => b => a * b;
+
+const double = multiply(2);
+double(10); // 20
+```
+
+---
+
+Why Currying Is Useful
+
+ Helps in functional programming
+ Improves readability
+ Enables function composition
+ Reduces repetition
+
+---
+
+Key Takeaway
+
+> Currying breaks a multi-argument function into smaller, reusable, single-argument functions using closures.
+
+---
 
 Q3. Compare function composition and function chaining.
-Ans=>
 
+Ans ⇒
+
+1. Function Composition
+
+Definition
+
+ Combines multiple functions into one function.
+ Output of one function becomes input of the next.
+ Execution happens right → left.
+
+```js
+const compose = (f, g) => x => f(g(x));
+
+const add1 = x => x + 1;
+const double = x => x * 2;
+
+const result = compose(add1, double);
+result(5); // 11
+```
+
+---
+
+Characteristics
+
+ Used heavily in functional programming
+ Functions are independent
+ Easier to test
+ No shared state
+
+---
+
+2. Function Chaining
+
+Definition
+
+ Functions are called one after another on the same object
+ Execution happens left → right
+ Common in array methods
+
+```js
+const result = [1, 2, 3, 4]
+  .map(x => x * 2)
+  .filter(x => x > 4)
+  .reduce((a, b) => a + b);
+
+console.log(result); // 18
+```
+
+---
+
+Characteristics
+
+ Improves readability
+ Works best when methods return `this` or a value
+ Often used in OOP and arrays
+
+---
+
+Comparison Table
+
+| Aspect          | Function Composition | Function Chaining   |
+| --------------- | -------------------- | ------------------- |
+| Execution Order | Right → Left         | Left → Right        |
+| Style           | Functional           | Object/Method-based |
+| Readability     | Abstract             | Very readable       |
+| Reusability     | High                 | Medium              |
+| Usage           | Pure functions       | Arrays, classes     |
+
+---
+
+Key Difference
+
+> Composition builds new functions, while chaining executes methods step-by-step on a value.
+
+---
+
+Final Summary
+
+ Call Stack manages execution order using LIFO.
+ Currying enables partial application using closures.
+ Composition focuses on function combination, while chaining focuses on sequential execution.
+
+If you want, I can also:
+
+ Convert these into interview-ready answers
+ Add real-world analogies
+ Or give one-liner revision notes
+
+Below are clear, practical, and example-driven answers, written in points + explanation, focused purely on JavaScript (no unnecessary theory).
+
+---
 
 Q4. What are the pros and cons of using anonymous functions vs named functions in debugging?
-Ans=>
 
+Ans ⇒
+
+1. Anonymous Functions
+
+What are they?
+
+ Functions without a name
+ Commonly used as:
+
+   Callbacks
+   Event handlers
+   IIFEs
+
+```js
+setTimeout(() => {
+  throw new Error("Something broke");
+}, 1000);
+```
+
+---
+
+Pros of Anonymous Functions
+
+ ✅ Concise & clean syntax
+ ✅ Good for short-lived logic
+ ✅ Reduces global namespace pollution
+ ✅ Ideal for callbacks and inline logic
+
+---
+
+Cons of Anonymous Functions (Debugging Issues)
+
+ ❌ Stack traces are unclear
+
+```txt
+Error at <anonymous>
+```
+
+ ❌ Harder to identify which function failed
+ ❌ Cannot be reused easily
+ ❌ Harder to set breakpoints in DevTools
+
+---
+
+2. Named Functions
+
+What are they?
+
+ Functions with an explicit name
+
+```js
+const fetchData = () => {
+  throw new Error("API failed");
+};
+```
+
+---
+
+Pros of Named Functions
+
+ ✅ Readable stack traces
+
+```txt
+Error at fetchData
+```
+
+ ✅ Easier debugging
+ ✅ Easier to reuse
+ ✅ Better for recursion
+ ✅ Clear intent in logs and errors
+
+---
+
+Cons of Named Functions
+
+ ❌ Slightly more verbose
+ ❌ Overkill for tiny one-line callbacks
+
+---
+
+Comparison Table
+
+| Aspect        | Anonymous Function      | Named Function       |
+| ------------- | ----------------------- | -------------------- |
+| Stack Trace   | Poor                    | Clear                |
+| Debugging     | Difficult               | Easy                 |
+| Reusability   | Low                     | High                 |
+| Readability   | Medium                  | High                 |
+| Best Use Case | Callbacks, inline logic | Business logic, APIs |
+
+---
+
+Best Practice (Industry Rule)
+
+> Use named functions for business logic and APIs.
+> Use anonymous functions only for short callbacks.
+
+---
 
 Q5. How would you design a retry-until-success mechanism using functions (e.g., for an API call)?
-Ans=>
+
+Ans ⇒
+
+Problem Statement
+
+ An API may fail due to:
+
+   Network issues
+   Temporary server errors
+ We need a mechanism that:
+
+   Retries automatically
+   Stops after success or max attempts
+
+---
+
+Core Design Principles
+
+ Use a function wrapper
+ Retry using recursion or loops
+ Add:
+
+   Max retry limit
+   Delay between retries
+   Proper error handling
+
+---
+
+Basic Retry Using Recursion
+
+```js
+const retryUntilSuccess = (fn, retries) => {
+  return fn().catch(error => {
+    if (retries === 0) {
+      throw error;
+    }
+    return retryUntilSuccess(fn, retries - 1);
+  });
+};
+```
+
+---
+
+Usage Example
+
+```js
+const fakeApiCall = () =>
+  new Promise((resolve, reject) => {
+    Math.random() > 0.7 ? resolve("Success") : reject("Failed");
+  });
+
+retryUntilSuccess(fakeApiCall, 5)
+  .then(console.log)
+  .catch(console.error);
+```
+
+---
+
+Retry With Delay (More Realistic)
+
+```js
+const retryWithDelay = async (fn, retries, delay) => {
+  try {
+    return await fn();
+  } catch (error) {
+    if (retries === 0) throw error;
+    await new Promise(res => setTimeout(res, delay));
+    return retryWithDelay(fn, retries - 1, delay);
+  }
+};
+```
+
+---
+
+Why This Design Is Good
+
+ ✅ Clean separation of logic
+ ✅ Reusable for any async task
+ ✅ Prevents infinite loops
+ ✅ Easy to configure retries & delay
+
+---
+
+Real-World Enhancements
+
+ Exponential backoff
+ Retry only for specific error codes
+ Logging attempts
+ Cancellation support
+
+---
+
+Key Takeaway
+
+> A retry mechanism is best designed as a higher-order function that wraps an async operation and controls failure recovery.
+
+---
+
+Quick Revision
+
+ Anonymous functions → short, disposable, harder to debug
+ Named functions → reusable, debuggable, production-ready
+ Retry logic → recursion + async/await + retry limit
+
 
