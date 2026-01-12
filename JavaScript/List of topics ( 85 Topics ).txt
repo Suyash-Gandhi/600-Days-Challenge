@@ -115,3 +115,144 @@
 83. Security issues (XSS, CSRF, prototype pollution)
 84. Concurrency model in JavaScript
 85. Design patterns (singleton, observer, factory, module, etc.)
+
+
+ 🧠 Theory-only / concept-clarity enough
+ 💻 Must practice coding
+ 🧠💻 Both theory + heavy coding (interview gold)
+
+---
+
+## 1. Core Fundamentals
+
+| #  | Topic                             | What you should do |
+| -- | --------------------------------- | ------------------ |
+| 1  | Variables (`var`, `let`, `const`) | 🧠 Theory          |
+| 2  | Data types                        | 🧠 Theory          |
+| 3  | Type coercion & conversion        | 🧠💻 Both          |
+| 4  | Truthy / falsy                    | 🧠 Theory          |
+| 5  | Operators                         | 🧠 Theory          |
+| 7  | Control flow                      | 💻 Coding          |
+| 8  | Functions types                   | 🧠💻 Both          |
+| 9  | `this` keyword                    | 🧠💻 Both          |
+| 10 | Scope                             | 🧠💻 Both          |
+| 11 | Execution context & call stack    | 🧠 Theory          |
+| 12 | Hoisting                          | 🧠💻 Both          |
+| 13 | Closures                          | 🧠💻 Both          |
+| 14 | Lexical environment               | 🧠 Theory          |
+| 15 | Rest / spread / defaults          | 💻 Coding          |
+| 16 | Destructuring                     | 💻 Coding          |
+| 17 | Short-circuiting                  | 🧠💻 Both          |
+| 18 | Nullish coalescing                | 🧠 Theory          |
+| 19 | Optional chaining                 | 🧠 Theory          |
+| 20 | `typeof` / `instanceof`           | 🧠💻 Both          |
+
+---
+
+## 2. Objects & Arrays
+
+| #  | Topic                      | Do        |
+| -- | -------------------------- | --------- |
+| 21 | Object creation patterns   | 🧠💻 Both |
+| 22 | Object methods             | 💻 Coding |
+| 23 | Property descriptors       | 🧠💻 Both |
+| 24 | Freeze / seal              | 🧠 Theory |
+| 25 | Shallow vs deep copy       | 🧠💻 Both |
+| 26 | Nested object manipulation | 💻 Coding |
+| 27 | map / filter / reduce      | 💻 Coding |
+| 28 | find / some / every        | 💻 Coding |
+| 29 | sort / localeCompare       | 💻 Coding |
+| 30 | Flatten arrays             | 💻 Coding |
+| 31 | Array-like objects         | 🧠💻 Both |
+| 32 | Set & Map                  | 💻 Coding |
+| 33 | WeakSet / WeakMap          | 🧠 Theory |
+
+---
+
+## 3. Functions & Advanced
+
+| #  | Topic                  | Do        |
+| -- | ---------------------- | --------- |
+| 34 | Higher-order functions | 💻 Coding |
+| 35 | Pure vs impure         | 🧠 Theory |
+| 36 | Currying               | 💻 Coding |
+| 37 | Function composition   | 💻 Coding |
+| 38 | IIFE                   | 🧠 Theory |
+| 39 | Call / Apply / Bind    | 🧠💻 Both |
+| 40 | Debounce               | 💻 Coding |
+| 41 | Throttle               | 💻 Coding |
+| 42 | Memoization            | 💻 Coding |
+| 43 | Tail call optimization | 🧠 Theory |
+| 44 | Recursion              | 💻 Coding |
+| 45 | Generators             | 🧠💻 Both |
+| 46 | Iterators              | 🧠💻 Both |
+| 47 | Async iterators        | 🧠💻 Both |
+
+---
+
+## 4. Async JavaScript
+
+| #  | Topic                 | Do        |
+| -- | --------------------- | --------- |
+| 48 | Event loop            | 🧠💻 Both |
+| 49 | Callbacks             | 💻 Coding |
+| 50 | Promises              | 💻 Coding |
+| 51 | Promise combinators   | 💻 Coding |
+| 52 | Async/Await           | 💻 Coding |
+| 53 | Async error handling  | 💻 Coding |
+| 54 | setTimeout / Interval | 💻 Coding |
+| 55 | requestAnimationFrame | 🧠 Theory |
+| 56 | AbortController       | 🧠💻 Both |
+| 57 | Fetch advanced        | 💻 Coding |
+| 58 | XHR                   | 🧠 Theory |
+| 59 | Web Workers           | 🧠 Theory |
+
+---
+
+## 5. DOM & Browser
+
+| #  | Topic                | Do        |
+| -- | -------------------- | --------- |
+| 60 | DOM traversal        | 💻 Coding |
+| 61 | DOM manipulation     | 💻 Coding |
+| 62 | Bubbling / capturing | 🧠💻 Both |
+| 63 | Event delegation     | 💻 Coding |
+| 64 | Custom events        | 🧠💻 Both |
+| 65 | MutationObserver     | 🧠 Theory |
+| 66 | IntersectionObserver | 🧠 Theory |
+| 67 | Storage & cookies    | 🧠 Theory |
+| 68 | Clipboard API        | 🧠 Theory |
+| 69 | File API             | 🧠 Theory |
+| 70 | Canvas basics        | 🧠 Theory |
+
+---
+
+## 6. Advanced / Senior
+
+| #  | Topic                | Do        |
+| -- | -------------------- | --------- |
+| 71 | Prototype chain      | 🧠💻 Both |
+| 72 | Inheritance patterns | 🧠💻 Both |
+| 73 | Strict mode          | 🧠 Theory |
+| 74 | Module systems       | 🧠 Theory |
+| 75 | Dynamic imports      | 🧠 Theory |
+| 76 | Pub-Sub pattern      | 💻 Coding |
+| 77 | GC & weak refs       | 🧠 Theory |
+| 78 | Symbol               | 🧠💻 Both |
+| 79 | Reflect API          | 🧠 Theory |
+| 80 | Proxy API            | 🧠💻 Both |
+| 81 | Custom iterables     | 💻 Coding |
+| 82 | BigInt / precision   | 🧠 Theory |
+| 83 | Security issues      | 🧠 Theory |
+| 84 | Concurrency model    | 🧠 Theory |
+| 85 | Design patterns      | 🧠💻 Both |
+
+---
+
+## Final Truth
+
+ 🧠 Theory-only topics → ~30
+ 💻 Must-code topics → 41 (this is where interviews are won)
+ 🧠💻 Both → 14 (these decide junior vs senior)
+
+If you master the 💻 + 🧠💻 group, no JavaScript interview will scare you again.

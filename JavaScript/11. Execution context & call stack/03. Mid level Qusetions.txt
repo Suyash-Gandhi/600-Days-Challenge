@@ -1,0 +1,370 @@
+
+Q1. How does variable hoisting work within an execution context?
+
+Short idea
+
+Variable hoisting is the process where variable and function declarations are moved to the top of their execution context during the creation phase, before the code is executed.
+
+---
+
+Execution context phases
+
+Every execution context is created in two phases:
+
+1. Creation Phase
+
+ Memory is allocated
+ Variables and functions are registered
+
+2. Execution Phase
+
+ Code is executed line by line
+ Values are assigned
+
+---
+
+How different declarations behave
+
+`var`
+
+ Hoisted and initialized with `undefined`
+ Accessible before declaration (but value is `undefined`)
+
+```js
+console.log(a); // undefined
+var a = 10;
+```
+
+Reason: during creation phase
+`a → undefined`
+
+---
+
+`let` and `const`
+
+ Hoisted but NOT initialized
+ Placed in the Temporal Dead Zone (TDZ)
+ Accessing before declaration → ReferenceError
+
+```js
+console.log(b); // ReferenceError
+let b = 10;
+```
+
+---
+
+Function declarations
+
+ Fully hoisted (both definition and body)
+
+```js
+sayHi(); // works
+
+function sayHi() {
+  console.log("Hi");
+}
+```
+
+---
+
+Function expressions
+
+ Hoisting depends on the variable type (`var`, `let`, `const`)
+ Function body is not hoisted
+
+```js
+sayHello(); // TypeError (if var)
+var sayHello = function () {};
+```
+
+---
+
+Interview takeaway
+
+ Hoisting happens per execution context
+ `var` → hoisted + `undefined`
+ `let/const` → hoisted + TDZ
+ Function declarations → fully hoisted
+
+---
+
+Q2. How does the call stack behave with nested function calls?
+
+Short idea
+
+The call stack follows LIFO (Last In, First Out) order to manage function execution.
+
+---
+
+What happens step by step
+
+1. Global execution context is pushed first
+2. When a function is called:
+
+    A new execution context is pushed onto the stack
+3. When a function finishes:
+
+    Its context is popped off
+4. Control returns to the previous function
+
+---
+
+Nested call example
+
+```js
+function A() {
+  B();
+}
+
+function B() {
+  C();
+}
+
+function C() {
+  console.log("Hello");
+}
+
+A();
+```
+
+Call stack flow
+
+```
+Global
+→ A
+→ B
+→ C
+← C completes
+← B completes
+← A completes
+```
+
+---
+
+Key rules
+
+ Only one function runs at a time
+ JavaScript is single-threaded
+ Deep nesting = deeper call stack
+
+---
+
+Interview takeaway
+
+ Nested calls increase stack depth
+ Stack strictly follows execution order
+ Functions must complete before returning control
+
+---
+
+Q3. What happens to the call stack during recursion?
+
+Short idea
+
+In recursion, each recursive call creates a new execution context, which is pushed onto the call stack until a base condition is met.
+
+---
+
+Recursive flow
+
+```js
+function countDown(n) {
+  if (n === 0) return;
+  countDown(n - 1);
+}
+
+countDown(3);
+```
+
+Call stack buildup
+
+```
+countDown(3)
+countDown(2)
+countDown(1)
+countDown(0)
+```
+
+Stack unwinding
+
+After base case:
+
+```
+← countDown(0)
+← countDown(1)
+← countDown(2)
+← countDown(3)
+```
+
+---
+
+Important points
+
+ Each call has:
+
+   Its own variables
+   Its own parameters
+ If recursion is too deep → Stack Overflow
+ Missing base case = infinite recursion
+
+---
+
+Tail recursion (conceptual)
+
+ If the recursive call is the last operation, stack growth can be optimized
+ JavaScript engines do not reliably support tail-call optimization
+
+---
+
+Interview takeaway
+
+ Recursion = multiple stack frames
+ Base condition prevents stack overflow
+ Stack grows first, then unwinds in reverse order
+
+---
+
+Quick comparison summary
+
+| Scenario          | Stack behavior                           |
+| ----------------- | ---------------------------------------- |
+| Hoisting          | Happens before execution                 |
+| Nested calls      | Stack grows with each call               |
+| Recursion         | Stack grows repeatedly for same function |
+| Missing base case | Stack overflow                           |
+
+---
+
+If you want, next I can:
+
+ Convert these into perfect interview answers (spoken format)
+ Explain execution context + hoisting + stack together
+ Tell you which of these need coding practice vs theory only
+
+Below are clear, high-level, interview-ready explanations for Q4–Q6.
+I’ll keep them conceptual, structured, and easy to recall in interviews—no unnecessary code.
+
+---
+
+Q4. How does the call stack interact with the event loop at a high level?
+
+Short idea
+
+The call stack executes synchronous code, while the event loop decides when asynchronous callbacks are pushed to the call stack after it becomes empty.
+
+---
+
+High-level interaction flow
+
+1. Global code enters the call stack
+2. Synchronous code executes immediately (stack is busy)
+3. Asynchronous operations (timers, promises, events) are:
+
+    Handed off to the browser / runtime environment
+4. When async tasks finish:
+
+    Their callbacks are placed into queues
+5. Event loop continuously checks:
+
+    Is the call stack empty?
+    If yes → move a task from queue to stack
+
+---
+
+Queues involved
+
+ Microtask queue
+
+   Promises (`.then`, `catch`, `finally`)
+   `queueMicrotask`
+ Macrotask queue
+
+   `setTimeout`, `setInterval`
+   DOM events
+
+Priority rule:
+
+```
+Call Stack
+→ Microtasks
+→ Macrotasks
+```
+
+---
+
+Interview takeaway
+
+ Call stack never pulls tasks
+ Event loop pushes tasks only when stack is empty
+ Microtasks run before macrotasks
+
+---
+
+Q5. Why doesn’t asynchronous code block the call stack?
+
+Short idea
+
+Because asynchronous operations are delegated to the runtime environment, not executed on the call stack.
+
+---
+
+What actually happens
+
+ JavaScript engine handles:
+
+   Call stack
+   Memory
+ Browser / runtime handles:
+
+   Timers
+   Network requests
+   DOM events
+
+When async code is encountered:
+
+1. The operation is registered
+2. JS continues executing remaining code
+3. Once async work completes:
+
+    Callback is queued
+4. Event loop schedules it later
+
+---
+
+Why blocking doesn’t happen
+
+ JS does not wait for async operations
+ Long-running tasks happen outside the call stack
+ Stack stays free for synchronous execution
+
+---
+
+Interview analogy
+
+> “JavaScript places an order (async task) and keeps working.
+> When the order is ready, it gets notified.”
+
+---
+
+Interview takeaway
+
+ Async ≠ multithreaded JS
+ Async tasks run outside the stack
+ Stack executes callbacks later
+
+---
+
+Q6. How does `this` get determined inside an execution context?
+
+Short idea
+
+`this` is determined at the time a function is called, not where it is written.
+
+---
+
+Rules for `this` binding (most important)
+
+1. Global context
+
+ In browsers: `this` → `window`
+ In strict mode: `this` → `undefined

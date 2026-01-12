@@ -1,0 +1,287 @@
+Q1. How does JavaScript use the call stack during function execution?
+
+Answer:
+
+The call stack is a data structure used by JavaScript to keep track of function execution order.
+
+How it works step by step:
+
+1. Global Execution Context
+
+    When a JavaScript program starts, the global execution context is created.
+    This is the first thing pushed onto the call stack.
+
+2. Function Call
+
+    When a function is called, a new execution context for that function is created.
+    This execution context is pushed onto the top of the call stack.
+
+3. Nested Function Calls
+
+    If a function calls another function, the new function’s execution context is pushed on top.
+    JavaScript always executes the function at the top of the stack (LIFO – Last In, First Out).
+
+4. Function Return
+
+    When a function finishes execution, its execution context is popped off the stack.
+    Control returns to the function below it in the stack.
+
+5. Program End
+
+    Once all functions finish, the global execution context is removed.
+    The call stack becomes empty.
+
+Key points for interviews:
+
+ Call stack follows LIFO order
+ Each function call creates a new execution context
+ Helps JavaScript know where to return after a function finishes
+
+---
+
+Q2. Why is JavaScript described as a single-threaded language?
+
+Answer:
+
+JavaScript is called single-threaded because it can execute only one piece of code at a time in a single call stack.
+
+What this means:
+
+ JavaScript has only one call stack
+ Only one function can be executed at any given moment
+ No true parallel execution of JavaScript code
+
+Why JavaScript was designed this way:
+
+1. Simplicity
+
+    Managing shared memory across multiple threads is complex and error-prone.
+    Single-threading avoids issues like race conditions and deadlocks.
+
+2. Browser Safety
+
+    JavaScript was designed to manipulate the DOM.
+    Multiple threads changing the DOM simultaneously could cause unpredictable behavior.
+
+But then how does JavaScript handle async tasks?
+
+Although JavaScript is single-threaded:
+
+ It uses Web APIs (browser / Node.js)
+ The event loop, task queue, and microtask queue
+ This creates non-blocking behavior, not multi-threading
+
+👉 Important interview line:
+
+> JavaScript is single-threaded, but asynchronous and non-blocking.
+
+---
+
+Q3. What causes a “Maximum call stack size exceeded” error?
+
+Answer:
+
+This error occurs when the call stack limit is exceeded, meaning too many function calls are pushed onto the stack without being removed.
+
+Main causes:
+
+1. Infinite Recursion (Most Common)
+
+ A function keeps calling itself without a proper base condition
+ Stack keeps growing until memory limit is reached
+
+2. Very Deep Recursion
+
+ Even with a base condition, extremely deep recursive calls can overflow the stack
+
+3. Indirect Recursion
+
+ Function A calls Function B, and Function B calls Function A repeatedly
+
+4. Excessive Nested Function Calls
+
+ Rare, but deeply nested synchronous calls can also cause this
+
+Why the error happens:
+
+ The call stack has a fixed size limit
+ Once this limit is exceeded, JavaScript throws:
+
+  > “RangeError: Maximum call stack size exceeded”
+
+How to prevent it:
+
+ Always define a clear base condition in recursion
+ Prefer loops instead of recursion for large datasets
+ Use tail recursion where supported
+ Break recursive logic into smaller chunks using async techniques if needed
+
+---
+
+Quick Interview Summary (One-liners)
+
+ Call stack: Tracks function execution using LIFO order
+ Single-threaded: JavaScript runs one task at a time in one call stack
+ Stack overflow error: Happens due to infinite or very deep recursion
+
+
+
+Q4. How is the call stack related to synchronous code execution?
+
+Answer:
+
+The call stack is the core reason JavaScript executes synchronous code in order.
+
+Key relationship:
+
+1. One task at a time
+
+    Synchronous code is executed line by line.
+    Each statement must finish before the next one starts.
+
+2. Call stack enforces order
+
+    Every synchronous function call is pushed onto the call stack.
+    JavaScript executes the function at the top of the stack.
+    A function must complete and be popped off before the next one runs.
+
+3. Blocking behavior
+
+    While a synchronous function is running:
+
+      Nothing else can execute
+      The call stack remains busy
+    Long-running synchronous code blocks the entire program
+
+4. Nested synchronous calls
+
+    Deeper calls increase stack depth
+    Execution only moves forward when the stack unwinds
+
+Interview takeaway:
+
+> Synchronous code execution is possible because JavaScript processes the call stack in a strict LIFO order, completing one function fully before moving to the next.
+
+---
+
+Q5. How are function declarations and function expressions handled differently in the execution context?
+
+Answer:
+
+The difference comes from hoisting behavior during the creation phase of the execution context.
+
+---
+
+1. Function Declarations
+
+Handled as:
+
+ Fully hoisted during the memory creation phase
+
+What happens:
+
+ The entire function (name + body) is stored in memory before code execution starts
+
+Result:
+
+ Can be called before its definition appears in the code
+
+Important point:
+
+ They are available throughout their scope
+
+---
+
+2. Function Expressions
+
+Handled as:
+
+ Hoisted like variables, not like functions
+
+What happens:
+
+ The variable name is hoisted
+ Its value is set to `undefined` during the creation phase
+ The function is assigned only during execution phase
+
+Result:
+
+ Cannot be called before assignment
+ Doing so leads to an error
+
+---
+
+Why this difference exists:
+
+ Execution context creation phase treats:
+
+   Functions differently from
+   Variables
+ Function declarations are prioritized for usability and predictability
+
+Interview summary:
+
+> Function declarations are fully hoisted, while function expressions are hoisted only as variables.
+
+---
+
+Q6. What is the difference between the global execution context and function execution context in terms of scope?
+
+Answer:
+
+The difference lies in what variables they can access and how scope chains are formed.
+
+---
+
+1. Global Execution Context (GEC)
+
+Scope characteristics:
+
+ Created when the program starts
+ Defines the global scope
+ Variables and functions declared globally belong here
+
+Access:
+
+ Accessible from anywhere in the program
+ In browsers, global variables become properties of the global object
+
+Only one GEC exists per program
+
+---
+
+2. Function Execution Context (FEC)
+
+Scope characteristics:
+
+ Created every time a function is invoked
+ Defines a local scope
+ Contains:
+
+   Function parameters
+   Local variables
+   Inner function declarations
+
+Access:
+
+ Can access:
+
+   Its own local variables
+   Variables from outer scopes (via scope chain)
+ Cannot be accessed from outside the function
+
+Multiple FECs can exist at the same time
+
+---
+
+Scope chain difference:
+
+ Global context is at the top of the scope chain
+ Function contexts form nested scope chains
+ JavaScript resolves variables from inner → outer → global
+
+Interview one-liner:
+
+> Global execution context provides global scope, while function execution context creates local scope and accesses outer scopes through the scope chain.
+
+---
