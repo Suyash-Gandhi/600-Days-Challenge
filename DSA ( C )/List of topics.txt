@@ -18,9 +18,9 @@ Goal: Build strong fundamentals of programming, logic, and simple data structure
 7. Arrays basics (insertion, deletion, traversal)
 8. Searching: Linear Search, Binary Search
 9. Ternary Search (on unimodal functions)
-10. Sorting basics: Bubble, Selection, Insertion
-11. Merge Sort, QuickSort
-12. Counting Sort, Radix Sort, Bucket Sort
+10. Comparison-Based Sorting Algorithms - Sorting basics: Bubble, Selection, Insertion
+11. Comparison-Based Sorting Algorithms - Advance sorting: Merge Sort, QuickSort, Heap sort 
+12. Non-Comparison Sorting Algorithms - Counting Sort, Radix Sort, Bucket Sort 
 13. Prefix sum, sliding window, two pointers
 14. String manipulation (palindrome, substring, anagram)
 
@@ -192,4 +192,196 @@ Goal: Tackle toughest problems asked in FAANG & competitive coding.
 102. Skip List
 103. Bloom Filters
 
+
+
+  🟢 RULE OF THUMB (IMPORTANT)
+
+For job interviews:
+
+ Coding skill is tested on common + medium-level topics
+ Theory is tested on advanced / niche topics
+ Interviewers care more about how you think, not whether you can implement Tarjan from memory
+
 ---
+
+  🧑‍💻 I. JUNIOR LEVEL — CODE EVERYTHING
+
+👉 These build your thinking muscle. No skipping coding here.
+
+  🔹 Programming & Math Foundations
+
+1. Time & Space Complexity → 📘 theory + analyze code
+2. Recursion basics → ✅ code
+3. Iterative vs Recursive → ✅ code
+4. Math problems → ✅ code
+5. Amortized Analysis → 📘 theory
+6. Probabilistic Analysis → 📖 theory
+
+  🔹 Arrays & Strings
+
+7–14 → ALL MUST CODE
+
+ Searching
+ Sorting
+ Prefix sums
+ Sliding window
+ Two pointers
+ String problems
+
+  🔹 Basic Data Structures
+
+15–17 → ALL MUST CODE
+
+ Stack
+ Queue
+ Hashing
+
+✅ Verdict (Junior):
+
+ 90% coding
+ This is non-negotiable
+
+---
+
+  🟡 II. INTERMEDIATE LEVEL — MOSTLY CODE
+
+👉 This is the core interview zone
+
+  🔹 Advanced Arrays & Strings
+
+18–20 → ✅ MUST CODE
+
+  🔹 Linked Lists
+
+21–24 → ✅ MUST CODE
+
+  🔹 Trees
+
+25–28 → ✅ MUST CODE
+
+  🔹 Heaps & Priority Queue
+
+29–32 → ✅ MUST CODE
+
+  🔹 Advanced Hashing
+
+33–35 → ✅ MUST CODE
+
+✅ Verdict (Intermediate):
+
+ 100% coding
+ These appear directly in interviews
+
+---
+
+  🔵 III. SENIOR LEVEL — MIXED (IMPORTANT SECTION)
+
+  🔹 Graphs
+
+36–39 → ✅ MUST CODE
+
+ BFS, DFS, Dijkstra
+
+40–41 → 📘 theory + 1 implementation
+
+ Bellman-Ford
+ Floyd-Warshall
+
+42 → 📖 theory only (Johnson’s Algorithm)
+
+43–45 → ✅ MUST CODE
+
+ MST
+ Topological sort
+
+46 → ✅ code
+47 → 📘 theory + read implementation
+48 → ✅ MUST CODE (DSU)
+
+---
+
+  🔹 Advanced Trees
+
+49–52 → 📘 theory + light coding
+
+ Segment Tree
+ Fenwick Tree
+ Trie
+
+53 → 📖 theory only
+54 → 📖 theory only
+
+---
+
+  🔹 Dynamic Programming (VERY IMPORTANT)
+
+55–59 → ✅ MUST CODE
+60–62 → 📘 theory + practice 1–2 problems
+
+---
+
+  🔹 Backtracking
+
+63–66 → ✅ MUST CODE
+
+✅ Verdict (Senior):
+
+ ~70% coding
+ ~30% theory
+
+---
+
+  🔴 IV. EXPERT / ADVANCED — MOSTLY THEORY
+
+👉 These are NOT expected to be coded in interviews
+
+  🔹 Advanced Graphs
+
+67–71 → 📖 theory only
+(Understand ideas, don’t memorize code)
+
+  🔹 Advanced DP
+
+72 → 📘 theory + 1 example
+73 → 📖 theory
+74 → 📘 theory + pattern
+75 → 📖 theory
+
+  🔹 Advanced Strings
+
+76 → 📘 theory
+77–80 → 📖 theory only
+
+  🔹 Geometry & Math
+
+81–88 → 📖 theory only
+
+  🔹 Advanced Data Structures
+
+89 → 📘 theory
+90–94 → 📖 theory only
+
+---
+
+  🟣 V. MASTERY LEVEL — THEORY + DESIGN THINKING
+
+  🔹 Problem-Solving Patterns
+
+95 → ✅ code common greedy
+96–97 → 📖 theory
+
+  🔹 Randomized & Approximation
+
+98–99 → 📖 theory
+
+  🔹 Game Theory
+
+100 → 📖 theory
+
+  🔹 System-Level DS
+
+101 → 📘 theory + design
+102–103 → 📖 theory
+
+---
+
