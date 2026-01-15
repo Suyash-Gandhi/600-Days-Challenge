@@ -1,159 +1,285 @@
 
+# Time & Space Complexity in DSA (Using C)
 
-# Time & Space Complexity (Big-O, Big-Theta, Big-Omega) in DSA
-
- 1. Introduction
-
-In Data Structures & Algorithms (DSA), complexity analysis is used to evaluate the efficiency of an algorithm.
-We mainly consider two aspects:
-
-1. Time Complexity → How execution time grows with input size.
-2. Space Complexity → How memory usage grows with input size.
-
-We express these complexities using asymptotic notations:
-
- Big-O (O) → Worst-case growth rate.
- Big-Theta (Θ) → Tight bound (average/balanced growth rate).
- Big-Omega (Ω) → Best-case growth rate.
+Understanding time and space complexity helps you predict performance, compare algorithms, and write efficient C programs, especially for large inputs.
 
 ---
 
- 2. Asymptotic Notations
+## 1. What is Time Complexity?
 
-1. Big-O (O): Upper Bound
+Time Complexity measures how the execution time of an algorithm grows as the input size `n` increases.
 
-    Describes maximum time/space algorithm can take.
-    Example: If sorting algorithm takes at most `n²` steps, we say O(n²).
+> It does not measure actual seconds
+> It measures number of operations
 
-2. Big-Theta (Θ): Tight Bound
+### Why it matters in C
 
-    Describes average/typical case.
-    If an algorithm always grows proportional to `n log n`, we write Θ(n log n).
-
-3. Big-Omega (Ω): Lower Bound
-
-    Describes best-case scenario.
-    Example: Linear search has Ω(1) (if element found at first index).
+ C is fast, but bad algorithms are still slow
+ Competitive programming & interviews focus heavily on this
 
 ---
 
- 3. Common Complexities
+## 2. What is Space Complexity?
 
-| Complexity | Example Operations                   |
-| ---------- | ------------------------------------ |
-| O(1)       | Accessing array element, hash lookup |
-| O(log n)   | Binary search                        |
-| O(n)       | Linear search, traversing array      |
-| O(n log n) | Merge Sort, Quick Sort (avg)         |
-| O(n²)      | Bubble Sort, Insertion Sort          |
-| O(2^n)     | Recursive Fibonacci                  |
-| O(n!)      | Traveling Salesman (brute force)     |
+Space Complexity measures how much extra memory an algorithm uses relative to input size.
 
----
+Includes:
 
- 4. Python Examples
-
-# (a) Constant Time – O(1)
-
-
-def get_first_element(arr):
-    return arr[0]  # Always one operation
-
-
- O(1) → Constant time (independent of `n`).
+1. Input space
+2. Extra variables
+3. Recursion stack
+4. Dynamic memory (`malloc`)
 
 ---
 
-# (b) Linear Time – O(n)
+## 3. Asymptotic Notations (Core Concept)
 
+As input size `n → ∞`, we analyze behavior using asymptotic notations:
 
-def print_all(arr):
-    for x in arr:
-        print(x)  # Runs n times
-
-
- O(n) → Grows linearly with `n`.
-
----
-
-# (c) Quadratic Time – O(n²)
-
-
-def print_pairs(arr):
-    for i in arr:
-        for j in arr:
-            print(i, j)
-
-
- O(n²) → Two nested loops.
+| Notation          | Meaning                              |
+| ----------------- | ------------------------------------ |
+| Big-O (O)     | Upper bound (Worst case)             |
+| Big-Theta (Θ) | Tight bound (Average / Exact growth) |
+| Big-Omega (Ω) | Lower bound (Best case)              |
 
 ---
 
-# (d) Logarithmic Time – O(log n)
+# 4. Big-O Notation (Worst Case)
 
+### Definition
 
-def binary_search(arr, target):
-    left, right = 0, len(arr)-1
-    while left <= right:
-        mid = (left + right)//2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return -1
+Big-O describes the maximum time an algorithm can take.
 
-
- O(log n) → Each step halves the search space.
+> “At worst, this algorithm will not be slower than O(f(n))”
 
 ---
 
-# (e) Exponential Time – O(2^n)
+### Example 1: Constant Time – O(1)
 
+```c
+int getFirst(int arr[], int n) {
+    return arr[0];
+}
+```
 
-def fib(n):
-    if n <= 1:
-        return n
-    return fib(n-1) + fib(n-2)
+ Always 1 operation
+ Independent of `n`
 
-
- O(2^n) → Recursive calls double each time.
-
----
-
- 5. Space Complexity
-
- O(1): Uses fixed memory (e.g., swapping two numbers).
- O(n): Memory grows with input (e.g., storing array).
- O(n²): 2D matrix storage.
-
-Example in Python (space O(n)):
-
-
-def create_list(n):
-    return [i for i in range(n)]
-
+✅ Time: O(1)
+✅ Space: O(1)
 
 ---
 
- 6. Key Comparisons
+### Example 2: Linear Time – O(n)
 
- Big-O (O): Worst-case → Ensures performance won’t be worse.
- Big-Theta (Θ): Average-case → Balanced expectation.
- Big-Omega (Ω): Best-case → Optimistic bound.
+```c
+int sum(int arr[], int n) {
+    int s = 0;
+    for(int i = 0; i < n; i++) {
+        s += arr[i];
+    }
+    return s;
+}
+```
 
-Example (Linear Search):
+ Loop runs `n` times
 
- Ω(1) → If element is at index 0.
- Θ(n) → On average, traverse half the list.
- O(n) → If element is at last index or not present.
+✅ Time: O(n)
+✅ Space: O(1)
 
 ---
 
- 7. Best Practices in DSA (Python)
+### Example 3: Quadratic Time – O(n²)
 
-1. Always aim for O(log n) or O(n) algorithms when possible.
-2. Use built-in Python libraries (`bisect`, `heapq`, `collections`) as they are optimized.
-3. Watch out for hidden costs → e.g., string concatenation in Python is O(n).
+```c
+void printPairs(int arr[], int n) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            printf("%d %d\n", arr[i], arr[j]);
+        }
+    }
+}
+```
 
+ Nested loops
+
+✅ Time: O(n²)
+❌ Very slow for large `n`
+
+---
+
+### Example 4: Logarithmic Time – O(log n)
+
+```c
+int binarySearch(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+
+    while(low <= high) {
+        int mid = (low + high) / 2;
+        if(arr[mid] == key)
+            return mid;
+        else if(arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+```
+
+ Input halves every step
+
+✅ Time: O(log n)
+✅ Very efficient
+
+---
+
+# 5. Big-Theta Notation (Tight Bound)
+
+### Definition
+
+Big-Theta describes exact growth rate, when best and worst case are the same.
+
+> “This algorithm always grows at this rate”
+
+---
+
+### Example: Θ(n)
+
+```c
+void printArray(int arr[], int n) {
+    for(int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+}
+```
+
+ Always `n` operations
+
+✅ Best = Worst = Average = Θ(n)
+
+---
+
+### Example: Θ(n log n)
+
+ Merge Sort
+ Heap Sort
+
+They always run in `n log n` time regardless of input.
+
+---
+
+# 6. Big-Omega Notation (Best Case)
+
+### Definition
+
+Big-Omega describes the minimum time required.
+
+> “At best, this algorithm will take at least Ω(f(n)) time”
+
+---
+
+### Example: Linear Search
+
+```c
+int linearSearch(int arr[], int n, int key) {
+    for(int i = 0; i < n; i++) {
+        if(arr[i] == key)
+            return i;
+    }
+    return -1;
+}
+```
+
+| Case                     | Time |
+| ------------------------ | ---- |
+| Best (first element)     | Ω(1) |
+| Worst (last / not found) | O(n) |
+| Average                  | Θ(n) |
+
+---
+
+# 7. Time Complexity Comparison Table
+
+| Complexity | Name         | Practical Meaning   |
+| ---------- | ------------ | ------------------- |
+| O(1)       | Constant     | Best                |
+| O(log n)   | Logarithmic  | Excellent           |
+| O(n)       | Linear       | Acceptable          |
+| O(n log n) | Linearithmic | Very good           |
+| O(n²)      | Quadratic    | Slow                |
+| O(2ⁿ)      | Exponential  | Useless for large n |
+
+---
+
+# 8. Space Complexity in C
+
+### Example 1: Constant Space – O(1)
+
+```c
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+```
+
+ Only variables
+ No extra memory
+
+---
+
+### Example 2: Linear Space – O(n)
+
+```c
+int copyArray(int arr[], int n) {
+    int copy = (int)malloc(n  sizeof(int));
+    for(int i = 0; i < n; i++) {
+        copy[i] = arr[i];
+    }
+    return copy;
+}
+```
+
+ Extra array of size `n`
+
+---
+
+### Example 3: Recursion Stack – O(n)
+
+```c
+int factorial(int n) {
+    if(n == 0)
+        return 1;
+    return n  factorial(n - 1);
+}
+```
+
+ Recursive calls stored in stack
+
+---
+
+# 9. How to Calculate Time Complexity (Exam & Interview Method)
+
+### Step-by-step:
+
+1. Ignore constants
+   `O(3n + 5) → O(n)`
+2. Ignore lower terms
+   `O(n² + n) → O(n²)`
+3. Nested loops → multiply
+4. Sequential loops → add
+5. Recursion → write recurrence relation
+
+---
+
+# 10. Key Interview Takeaways (Very Important)
+
+ Big-O = worst case (most asked)
+ Always mention time + space
+ Prefer:
+
+   O(log n)
+   O(n)
+   O(n log n)
+ Avoid O(n²) when `n > 10⁴`
+
+---

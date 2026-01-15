@@ -1,0 +1,203 @@
+## 2. Recursion Basics
+
+Recursion is a problem-solving technique where a function solves a problem by calling itself on a smaller version of the same problem. It is widely used in DSA, especially for problems that naturally break down into similar subproblems.
+
+---
+
+## 1. What is Recursion?
+
+In simple terms:
+
+> A function is recursive if it calls itself directly or indirectly.
+
+Instead of solving the whole problem at once, recursion:
+
+ Solves a smaller part
+ Trusts that the same logic will solve the rest
+
+This continues until a stopping condition is reached.
+
+---
+
+## 2. Two Mandatory Components of Recursion
+
+Every correct recursive solution must have both of these:
+
+### 1️⃣ Base Case
+
+ The stopping condition
+ Prevents infinite calls
+ Without it → program crashes (stack overflow)
+
+Example (conceptually):
+
+ If `n == 0`, stop.
+
+### 2️⃣ Recursive Case
+
+ The part where the function calls itself
+ Moves the problem closer to the base case
+
+If either is missing → recursion is invalid.
+
+---
+
+## 3. How Recursion Works (Call Stack Concept)
+
+Recursion works using the call stack:
+
+1. Each function call is pushed onto the stack
+2. Calls keep stacking until the base case is hit
+3. Then functions start returning one by one
+4. Stack unwinds in reverse order
+
+### Key idea:
+
+> Recursive calls go down, results come up
+
+This is why understanding the flow is more important than memorizing code.
+
+---
+
+## 4. Types of Recursion
+
+### 1️⃣ Direct Recursion
+
+A function calls itself directly
+
+reminded example:
+
+ factorial
+ fibonacci
+ printing numbers
+
+---
+
+### 2️⃣ Indirect Recursion
+
+A function calls another function, which eventually calls the first one again.
+
+Example (conceptual):
+
+ Function A → Function B → Function A
+
+Used less often but important to know.
+
+---
+
+### 3️⃣ Tail Recursion
+
+ The recursive call is the last operation
+ No work left after the call returns
+ Can be optimized by compilers
+
+Why it matters:
+
+ Uses less memory
+ Similar to loops internally
+
+---
+
+### 4️⃣ Non-Tail Recursion
+
+ Some work remains after the recursive call
+ Uses more stack memory
+
+Example:
+
+ factorial
+ tree traversal
+
+---
+
+## 5. Recursion vs Iteration (Loop)
+
+| Aspect       | Recursion                       | Iteration          |
+| ------------ | ------------------------------- | ------------------ |
+| Memory usage | More (call stack)               | Less               |
+| Code clarity | Cleaner for some problems       | Usually faster     |
+| Risk         | Stack overflow                  | Infinite loop      |
+| Best for     | Trees, graphs, divide & conquer | Simple repetitions |
+
+👉 Rule of thumb:
+If the problem is naturally recursive → use recursion
+If performance & memory are critical → prefer iteration
+
+---
+
+## 6. Common Problems Solved Using Recursion
+
+You’ll see recursion heavily in:
+
+ Factorial calculation
+ Fibonacci series
+ Power calculation
+ Array reversal
+ Binary search
+ Merge sort & Quick sort
+ Tree traversals (DFS, inorder, preorder, postorder)
+ Backtracking problems (N-Queens, permutations, subsets)
+
+---
+
+## 7. Common Mistakes Beginners Make
+
+❌ Forgetting base case
+❌ Base case never reached
+❌ Modifying the wrong variable
+❌ Assuming recursion is always faster
+❌ Not tracing the call stack
+
+👉 Always dry-run recursion with small inputs.
+
+---
+
+## 8. How to Think Recursively (Very Important)
+
+When solving recursion problems:
+
+1. Define the problem clearly
+2. Assume recursion works for smaller input
+3. Write logic for:
+
+    Base case
+    One recursive step
+4. Do NOT try to track all calls at once
+5. Trust the recursion
+
+This mindset shift is crucial.
+
+---
+
+## 9. When NOT to Use Recursion
+
+Avoid recursion when:
+
+ Input size is very large
+ Stack overflow is possible
+ Simple loop is clearer
+ Performance is critical
+
+---
+
+## 10. Why Recursion is Important in DSA
+
+Recursion is the foundation for:
+
+ Divide & Conquer
+ Dynamic Programming
+ Tree & Graph algorithms
+ Backtracking
+
+If you don’t understand recursion well, advanced DSA becomes very hard.
+
+---
+
+### Summary
+
+ Recursion = function calling itself
+ Needs base case + recursive case
+ Uses call stack
+ Powerful but memory-heavy
+ Essential for advanced algorithms
+
