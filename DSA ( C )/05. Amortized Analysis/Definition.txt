@@ -1,0 +1,211 @@
+## 5. Amortized Analysis
+
+Amortized analysis is a technique used in algorithm analysis to determine the average cost per operation over a sequence of operations, rather than focusing on the worst-case cost of a single operation.
+
+It is especially useful when:
+
+ Most operations are cheap
+ A few operations are expensive
+ But the expensive ones happen rarely
+
+---
+
+## 1. Why Amortized Analysis Is Needed
+
+Traditional time complexity analysis looks at:
+
+ Worst case
+ Best case
+ Average case (probabilistic)
+
+However, these approaches sometimes give a misleading picture.
+
+### Example Problem
+
+Suppose an operation:
+
+ Usually takes O(1) time
+ Occasionally takes O(n) time
+
+Worst-case analysis would say: O(n)
+But in reality, the expensive operation may occur once in many operations
+
+👉 Amortized analysis gives a more realistic long-term cost
+
+---
+
+## 2. Definition (Simple Words)
+
+> Amortized Analysis calculates the average time per operation over a worst-case sequence of operations, without using probability.
+
+Key points:
+
+ Looks at a sequence, not a single operation
+ Guarantees performance no matter how inputs behave
+ Stronger than average-case analysis
+
+---
+
+## 3. Amortized Analysis vs Average Case Analysis
+
+| Feature                      | Amortized Analysis       | Average Case Analysis  |
+| ---------------------------- | ------------------------ | ---------------------- |
+| Uses probability?            | ❌ No                     | ✅ Yes                  |
+| Input distribution required? | ❌ No                     | ✅ Yes                  |
+| Guarantee                    | Worst-case over sequence | Expected performance   |
+| Reliability                  | High                     | Depends on assumptions |
+
+---
+
+## 4. When Amortized Analysis Is Used
+
+Amortized analysis is commonly applied in:
+
+ Dynamic arrays
+ Stack operations
+ Binary counters
+ Union-Find data structure
+ Garbage collection systems
+
+---
+
+## 5. Types of Amortized Analysis
+
+There are three standard methods:
+
+---
+
+### 1️⃣ Aggregate Method
+
+Idea:
+Calculate the total cost of n operations, then divide by n.
+
+#### Steps:
+
+1. Consider a sequence of n operations
+2. Compute the total cost in the worst case
+3. Divide by n → amortized cost per operation
+
+#### Example (Dynamic Array Insertion):
+
+ Most insertions: O(1)
+ Occasionally resize: O(n)
+ Total cost of n insertions = O(n)
+ Amortized cost per insertion = O(1)
+
+✔ Simple and intuitive
+❌ Not flexible for complex cases
+
+---
+
+### 2️⃣ Accounting Method (Banker’s Method)
+
+Idea:
+
+ Assign extra cost (credits) to cheap operations
+ Use saved credits to pay for expensive operations later
+
+#### Concept:
+
+ Cheap operations overpay
+ Expensive operations use stored credit
+ Credit balance never goes negative
+
+#### Example:
+
+ Push operation charged cost = 2 units
+ Actual cost = 1 unit
+ Extra 1 unit saved as credit
+ Pop operation uses saved credit
+
+✔ Easy to visualize
+✔ Good for stack-like structures
+
+---
+
+### 3️⃣ Potential Method (Physicist’s Method)
+
+Idea:
+
+ Define a potential function Φ(state)
+ Potential represents stored “energy” in the data structure
+
+#### Formula:
+
+[
+\text{Amortized Cost} = \text{Actual Cost} + \Delta \text{Potential}
+]
+
+Where:
+[
+\Delta \text{Potential} = \Phi(\text{after}) - \Phi(\text{before})
+]
+
+#### Key Rules:
+
+ Potential is always ≥ 0
+ Initial potential = 0
+
+✔ Very powerful
+✔ Used in advanced data structures
+❌ Harder to design potential function
+
+---
+
+## 6. Classic Example: Dynamic Array
+
+### Scenario:
+
+ Array doubles size when full
+ Resizing costs O(n)
+
+### Observation:
+
+ Resizing happens rarely
+ Total resizing cost across n insertions = O(n)
+
+### Result:
+
+[
+\text{Amortized insertion cost} = O(1)
+]
+
+Even though individual insertion can take O(n)
+
+---
+
+## 7. Important Characteristics
+
+ Amortized cost is not random
+ Guarantees performance even in the worst input order
+ Applies only to sequences, not individual operations
+
+---
+
+## 8. Common Interview Mistakes
+
+❌ Saying amortized = average case
+❌ Applying it to a single operation
+❌ Ignoring worst-case sequences
+❌ Forgetting to justify rare expensive operations
+
+---
+
+## 9. Key Takeaways
+
+ Amortized analysis gives a tight bound over many operations
+ It is stronger and more reliable than average-case analysis
+ Three methods:
+
+   Aggregate
+   Accounting
+   Potential
+ Widely used in real-world data structures
+
+---
+
+## 10. One-Line Summary (Exam Ready)
+
+> Amortized Analysis ensures that although some operations are costly, the average cost per operation over a sequence remains small, typically O(1).
+
+---

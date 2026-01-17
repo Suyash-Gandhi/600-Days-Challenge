@@ -1,0 +1,160 @@
+## 3. Iterative vs Recursive Solutions
+
+
+![Image](https://edward-huang.com/images/is-recursion-really-slower-than-iteration-/Recursion%20vs%20Iteration.png)
+
+![Image](https://miro.medium.com/1%2AKcVIy-BMNuJ7H6wh4yS8kw.png)
+
+![Image](https://i.sstatic.net/FqKSJ.jpg)
+
+![Image](https://images.edrawmax.com/article2023/loop-in-flowchart/what-are-flowchart-loops.jpg)
+
+---
+
+## 1. What is an Iterative Solution?
+
+An iterative solution solves a problem by repeating a set of instructions using loops such as:
+
+ `for`
+ `while`
+ `do-while`
+
+### Key idea
+
+➡️ The program controls repetition explicitly using loop conditions.
+
+### Characteristics
+
+ Uses loops
+ Does not use function call stack repeatedly
+ State (variables) is managed manually
+ Usually faster and memory-efficient
+
+### Example problems
+
+ Traversing an array
+ Calculating factorial using a loop
+ Binary search (iterative version)
+
+---
+
+## 2. What is a Recursive Solution?
+
+A recursive solution solves a problem by calling itself on a smaller input until a base condition is met.
+
+### Key idea
+
+➡️ A problem is broken into smaller sub-problems of the same type.
+
+### Two mandatory parts of recursion
+
+1. Base Case – stops recursion
+2. Recursive Case – function calls itself
+
+### Characteristics
+
+ Uses function calls
+ Relies on the call stack
+ Code is often shorter and cleaner
+ Risk of stack overflow if not handled properly
+
+### Example problems
+
+ Factorial
+ Fibonacci
+ Tree traversal (DFS)
+ Divide & Conquer algorithms
+
+---
+
+## 3. Core Differences (Iterative vs Recursive)
+
+| Aspect              | Iterative            | Recursive                  |
+| ------------------- | -------------------- | -------------------------- |
+| Approach            | Loop-based           | Function calls itself      |
+| Memory Usage        | Low (constant space) | Higher (call stack)        |
+| Speed               | Generally faster     | Slightly slower (overhead) |
+| Readability         | Sometimes complex    | Often more elegant         |
+| Stack Overflow Risk | ❌ No                 | ✅ Yes                      |
+| Best for            | Simple repetition    | Hierarchical problems      |
+
+---
+
+## 4. Time & Space Complexity Comparison
+
+### Time Complexity
+
+ Same in most cases
+
+   Example: factorial → `O(n)` for both
+
+### Space Complexity
+
+ Iterative: `O(1)` (constant extra space)
+ Recursive: `O(n)` (call stack grows)
+
+📌 Important insight
+Even if time complexity is same, space complexity differs, which matters in interviews and real systems.
+
+---
+
+## 5. When to Use Iteration?
+
+Use iteration when:
+
+ Problem is linear
+ Performance and memory are critical
+ Input size can be very large
+ Stack overflow must be avoided
+
+✔ Example:
+
+ Array traversal
+ Simple counting problems
+ Sliding window techniques
+
+---
+
+## 6. When to Use Recursion?
+
+Use recursion when:
+
+ Problem has self-similar structure
+ Divide & Conquer is natural
+ Code clarity is more important
+ Problem involves trees or graphs
+
+✔ Example:
+
+ Tree traversal
+ Merge sort, Quick sort
+ Backtracking problems
+
+---
+
+## 7. Interview Perspective (Very Important)
+
+### What interviewers expect
+
+ You should understand both
+ Be able to convert recursion → iteration
+ Explain stack behavior clearly
+
+### Common interview trick
+
+> “Can you solve this recursively?
+> Now do it iteratively.”
+
+If you understand how recursion uses the stack, iteration becomes easier.
+
+---
+
+## 8. Key Takeaways
+
+ Iteration = loop + efficiency
+ Recursion = elegance + stack usage
+ Same logic, different execution model
+ Prefer recursion for trees & divide-and-conquer
+ Prefer iteration for large inputs & performance
+
+---

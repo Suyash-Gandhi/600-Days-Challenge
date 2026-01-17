@@ -1,0 +1,160 @@
+## 6. Probabilistic Analysis (DSA)
+
+Probabilistic analysis is a technique used to evaluate the expected performance of an algorithm by considering the probability of different inputs or events, rather than assuming only the best or worst case.
+
+It answers the question:
+
+> “On average, how will this algorithm behave if inputs follow a certain probability distribution?”
+
+---
+
+## 1. Why Probabilistic Analysis is Needed
+
+In real-world scenarios:
+
+ Worst-case inputs rarely occur
+ Best-case inputs are unrealistic
+ Inputs are often random or unpredictable
+
+So instead of analyzing extreme cases, probabilistic analysis helps us understand realistic average behavior.
+
+---
+
+## 2. Core Idea
+
+Probabilistic analysis involves three main steps:
+
+1. Define the set of possible inputs
+2. Assign probabilities to each input
+3. Compute the expected cost (time or operations)
+
+The result is called the Expected Time Complexity.
+
+---
+
+## 3. Expected Value in Algorithms
+
+The backbone of probabilistic analysis is expected value.
+
+### Expected Value (Conceptually)
+
+If an operation takes:
+
+ Cost ( C₁ ) with probability ( P₁ )
+ Cost ( C₂ ) with probability ( P₂ )
+ …
+
+Then the expected cost is:
+
+> Expected Cost = Σ (Cost × Probability)
+
+This allows us to quantify average behavior mathematically.
+
+---
+
+## 4. Probabilistic Analysis vs Average Case Analysis
+
+| Aspect             | Average Case               | Probabilistic Analysis            |
+| ------------------ | -------------------------- | --------------------------------- |
+| Input assumption   | All inputs equally likely  | Inputs have defined probabilities |
+| Precision          | Less realistic             | More realistic                    |
+| Mathematical rigor | Moderate                   | High                              |
+| Used when          | Input distribution unknown | Input distribution known          |
+
+👉 Probabilistic analysis is more powerful because it models real input behavior.
+
+---
+
+## 5. Common Examples Where It’s Used
+
+### a) Randomized Algorithms
+
+ Randomized QuickSort
+ Randomized Selection
+ Hashing with random hash functions
+
+### b) Hash Tables
+
+ Expected search time depends on:
+
+   Load factor
+   Uniform distribution assumption
+
+### c) Skip Lists
+
+ Height of nodes determined probabilistically
+ Expected search time is logarithmic
+
+---
+
+## 6. Example (Conceptual – No Code)
+
+### Scenario: Linear Search
+
+Assume:
+
+ Array size = n
+ Target element is equally likely to be at any position
+
+Then:
+
+ Probability of finding element at position i = 1/n
+ Cost at position i = i comparisons
+
+Expected comparisons:
+
+> (1/n) × (1 + 2 + 3 + … + n)
+> = (n + 1) / 2
+> = O(n)
+
+Even though worst case is O(n), probabilistic analysis confirms the expected behavior is also linear.
+
+---
+
+## 7. Key Assumptions in Probabilistic Analysis
+
+For results to be valid, we assume:
+
+1. Input distribution is known
+2. Events are independent
+3. Random choices are uniform
+
+⚠️ If these assumptions fail, the analysis may not reflect reality.
+
+---
+
+## 8. Advantages
+
+ Reflects real-world performance
+ Helps analyze randomized algorithms
+ Avoids pessimistic worst-case thinking
+ Gives strong theoretical guarantees
+
+---
+
+## 9. Limitations
+
+ Requires knowledge of input probability distribution
+ More mathematically complex
+ Not always applicable to deterministic systems
+
+---
+
+## 10. When to Use Probabilistic Analysis
+
+Use it when:
+
+ Inputs are random or unpredictable
+ Algorithm uses randomness
+ Worst-case analysis is too pessimistic
+ You want realistic performance metrics
+
+---
+
+## 11. Summary
+
+ Probabilistic analysis studies expected algorithm performance
+ It uses probability theory and expected value
+ More realistic than worst-case or simple average-case analysis
+ Essential for hashing, randomized algorithms, and advanced data structures
+
