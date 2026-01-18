@@ -1,0 +1,130 @@
+
+### 1. What is Bubble Sort?
+
+Bubble Sort is one of the simplest comparison-based sorting algorithms.
+It works by repeatedly comparing adjacent elements and swapping them if they are in the wrong order.
+With each pass, the largest (or smallest) element “bubbles” to its correct position, hence the name.
+
+---
+
+### 2. Why is it called a Comparison-Based Sort?
+
+ Decisions are made only by comparing two elements
+ Uses relational operators like `>` or `<`
+ Does not rely on counting, hashing, or digit positions
+
+---
+
+### 3. How Bubble Sort Works (Conceptual Flow)
+
+1. Start from the first element
+2. Compare it with the next element
+3. If they are in the wrong order → swap
+4. Move one step forward and repeat
+5. After one full pass, the largest element is fixed at the end
+6. Repeat for the remaining unsorted portion
+
+Each pass reduces the unsorted array size by 1
+
+---
+
+### 4. Example (Conceptual)
+
+Array:
+`[5, 1, 4, 2, 8]`
+
+ Pass 1 → Largest element `8` moves to the end
+ Pass 2 → Next largest settles
+ Continue until no swaps are needed
+
+Eventually → `[1, 2, 4, 5, 8]`
+
+---
+
+### 5. Time Complexity Analysis
+
+| Case             | Time Complexity | Explanation                              |
+| ---------------- | --------------- | ---------------------------------------- |
+| Best Case    | O(n)        | Array already sorted (with optimization) |
+| Average Case | O(n²)       | Random order                             |
+| Worst Case   | O(n²)       | Reverse sorted array                     |
+
+---
+
+### 6. Space Complexity
+
+ O(1) (In-place algorithm)
+ No extra memory required
+
+---
+
+### 7. Is Bubble Sort Stable?
+
+✅ Yes, Bubble Sort is stable
+
+ Equal elements retain their relative order
+ Important when sorting objects with multiple keys
+
+---
+
+### 8. Is Bubble Sort Adaptive?
+
+ Basic Bubble Sort → ❌ Not adaptive
+ Optimized Bubble Sort (using a swap flag) → ✅ Adaptive
+
+   Stops early if no swaps occur in a pass
+
+---
+
+### 9. Advantages
+
+ Very easy to understand
+ Simple logic
+ Useful for teaching sorting concepts
+ Stable and in-place
+
+---
+
+### 10. Disadvantages
+
+ Extremely inefficient for large datasets
+ High time complexity
+ Rarely used in real-world applications
+
+---
+
+### 11. When Should You Use Bubble Sort?
+
+Use Bubble Sort only when:
+
+ Dataset is very small
+ You need a quick educational demonstration
+ Code clarity matters more than performance
+
+Avoid it for:
+
+ Large inputs
+ Production-level systems
+ Performance-critical applications
+
+---
+
+### 12. Comparison with Other Basic Sorting Algorithms
+
+| Algorithm      | Time (Avg) | Stable | In-Place |
+| -------------- | ---------- | ------ | -------- |
+| Bubble Sort    | O(n²)      | ✅      | ✅        |
+| Selection Sort | O(n²)      | ❌      | ✅        |
+| Insertion Sort | O(n²)      | ✅      | ✅        |
+
+---
+
+### 13. Key Takeaways
+
+ Bubble Sort is a basic comparison-based algorithm
+ Best for learning, not for performance
+ Easy logic but poor efficiency
+ Forms the foundation for understanding better sorting techniques
+
+---
+

@@ -1,0 +1,154 @@
+
+
+### 1. What is Selection Sort?
+
+Selection Sort is a comparison-based sorting algorithm that works by repeatedly selecting the smallest element from the unsorted portion of the array and placing it at its correct position.
+
+Unlike Bubble Sort, Selection Sort focuses on finding the correct element first, then doing at most one swap per pass.
+
+---
+
+### 2. Why is it a Comparison-Based Sort?
+
+ Elements are ordered only by comparing values
+ Uses relational comparisons (`<`, `>`)
+ No extra data structures or counting logic involved
+
+---
+
+### 3. Core Idea (Very Important)
+
+At any moment, the array is divided into two parts:
+
+1. Sorted part (left side)
+2. Unsorted part (right side)
+
+Each pass:
+
+ Find the minimum element in the unsorted part
+ Swap it with the first element of the unsorted part
+ Increase the size of the sorted part by 1
+
+---
+
+### 4. How Selection Sort Works (Step-by-Step Concept)
+
+Example array:
+`[64, 25, 12, 22, 11]`
+
+Pass 1
+
+ Smallest = `11`
+ Swap with first element → `[11, 25, 12, 22, 64]`
+
+Pass 2
+
+ Smallest in remaining array = `12`
+ Swap → `[11, 12, 25, 22, 64]`
+
+Pass 3
+
+ Smallest = `22`
+ Swap → `[11, 12, 22, 25, 64]`
+
+Continue until fully sorted.
+
+---
+
+### 5. Time Complexity Analysis
+
+| Case             | Time Complexity | Reason                              |
+| ---------------- | --------------- | ----------------------------------- |
+| Best Case    | O(n²)       | Always scans the remaining array    |
+| Average Case | O(n²)       | Same number of comparisons          |
+| Worst Case   | O(n²)       | Reverse order still needs full scan |
+
+👉 Important: Selection Sort does not adapt to already sorted data.
+
+---
+
+### 6. Space Complexity
+
+ O(1) (In-place)
+ Only a constant amount of extra memory is used
+
+---
+
+### 7. Is Selection Sort Stable?
+
+❌ No, Selection Sort is NOT stable
+
+Reason:
+
+ Swapping can change the relative order of equal elements
+
+Example:
+
+```
+(5A, 3, 5B) → after sorting → (3, 5B, 5A)
+```
+
+---
+
+### 8. Is Selection Sort Adaptive?
+
+❌ No
+
+ Performs the same number of comparisons regardless of input order
+ Already sorted array gives no performance improvement
+
+---
+
+### 9. Advantages
+
+ Very simple and intuitive
+ Minimal number of swaps
+ Works well when swap operations are costly
+ In-place algorithm
+
+---
+
+### 10. Disadvantages
+
+ Poor time complexity (O(n²))
+ Not stable
+ Not adaptive
+ Inefficient for large datasets
+
+---
+
+### 11. When Should You Use Selection Sort?
+
+Use Selection Sort when:
+
+ Dataset size is small
+ Memory usage must be minimal
+ Swap cost is high but comparison cost is low
+ Learning and academic purposes
+
+Avoid it when:
+
+ Performance matters
+ Large datasets are involved
+
+---
+
+### 12. Comparison with Other Basic Sorting Algorithms
+
+| Algorithm          | Avg Time | Stable | Adaptive      | Swaps       |
+| ------------------ | -------- | ------ | ------------- | ----------- |
+| Bubble Sort        | O(n²)    | ✅      | ✅ (optimized) | Many        |
+| Selection Sort | O(n²)    | ❌      | ❌             | Minimal |
+| Insertion Sort     | O(n²)    | ✅      | ✅             | Few         |
+
+---
+
+### 13. Key Takeaways
+
+ Selection Sort repeatedly selects the minimum element
+ Time complexity is always O(n²)
+ Uses fewer swaps than Bubble Sort
+ Simple but not practical for large inputs
+
+---
+
