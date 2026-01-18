@@ -1,0 +1,138 @@
+## Binary Search
+
+Binary Search is an efficient searching technique used to find an element in a sorted array or list by repeatedly dividing the search space into halves.
+
+---
+
+### 1. Core Idea
+
+Binary Search follows the principle of divide and conquer.
+
+Instead of checking elements one by one (like Linear Search), it:
+
+ Compares the target with the middle element
+ Eliminates half of the remaining elements in each step
+
+This drastic reduction makes Binary Search very fast.
+
+---
+
+### 2. Mandatory Condition (Very Important)
+
+✅ Data must be sorted (ascending or descending)
+
+If the data is not sorted, Binary Search will not work correctly.
+
+---
+
+### 3. Step-by-Step Working
+
+Example array (sorted):
+`[5, 10, 15, 20, 25, 30, 35]`
+Target element: `25`
+
+Steps:
+
+1. Find the middle element → `20`
+2. Compare `25` with `20`
+
+    `25 > 20` → search in right half
+3. New middle → `30`
+4. Compare `25` with `30`
+
+    `25 < 30` → search in left half
+5. New middle → `25`
+6. Match found → search ends
+
+---
+
+### 4. How the Search Space Shrinks
+
+At every step:
+
+ First check → `n` elements
+ Next → `n / 2`
+ Next → `n / 4`
+ Next → `n / 8`
+ …
+
+This halving continues until the element is found or the range becomes empty.
+
+---
+
+### 5. Time Complexity Analysis
+
+| Case             | Explanation                        | Time         |
+| ---------------- | ---------------------------------- | ------------ |
+| Best Case    | Element is the middle              | O(1)     |
+| Average Case | Element found after several splits | O(log n) |
+| Worst Case   | Element not present                | O(log n) |
+
+➡️ Much faster than Linear Search (O(n)).
+
+---
+
+### 6. Space Complexity
+
+ Iterative Binary Search → O(1)
+ Recursive Binary Search → O(log n) (due to recursion stack)
+
+---
+
+### 7. Advantages
+
+ Very fast for large datasets
+ Efficient searching with minimal comparisons
+ Ideal for static, sorted data
+
+---
+
+### 8. Disadvantages
+
+ Requires sorted data
+ Sorting itself costs time if data is unsorted
+ Not suitable for linked lists (no direct access to middle)
+
+---
+
+### 9. Binary Search vs Linear Search
+
+| Feature         | Linear Search | Binary Search    |
+| --------------- | ------------- | ---------------- |
+| Data order      | Any           | Must be sorted   |
+| Time complexity | O(n)          | O(log n)         |
+| Approach        | Sequential    | Divide & conquer |
+| Large data      | Inefficient   | Highly efficient |
+
+---
+
+### 10. Real-Life Analogy
+
+Searching a word in a dictionary:
+
+ You open the middle page
+ Decide left or right based on alphabet order
+ Repeat until the word is found
+  ➡️ This is exactly Binary Search
+
+---
+
+### 11. Common Mistakes Students Make
+
+ Applying Binary Search on unsorted arrays ❌
+ Incorrect mid calculation (overflow in some languages)
+ Infinite loops due to wrong boundary updates
+
+---
+
+### 12. When to Use Binary Search
+
+Use Binary Search when:
+
+ Data is sorted
+ Dataset is large
+ Fast lookup is required
+ Random access is possible (arrays)
+
+---
+

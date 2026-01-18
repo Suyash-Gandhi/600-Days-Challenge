@@ -1,0 +1,112 @@
+## 9. Ternary Search
+
+![Image](https://cdn.educba.com/academy/wp-content/uploads/2024/05/Ternary-Search.jpg)
+
+![Image](https://d8it4huxumps7.cloudfront.net/bites/wp-content/banners/2025/3/67e3852697609_ternary_search.jpg)
+
+### Definition
+
+Ternary Search is a divide-and-conquer searching algorithm used to find an element in a sorted array (or to locate the maximum/minimum of a unimodal function).
+Instead of dividing the search space into two parts (like Binary Search), it divides it into three parts using two mid points.
+
+---
+
+## How Ternary Search Works (Array Version)
+
+Assume we are searching for a value `x` in a sorted array between indices `low` and `high`.
+
+1. Calculate two mid points
+
+    `mid1 = low + (high - low) / 3`
+    `mid2 = high - (high - low) / 3`
+
+2. Compare the target with mid elements
+
+    If `arr[mid1] == x` → element found
+    Else if `arr[mid2] == x` → element found
+
+3. Reduce the search space
+
+    If `x < arr[mid1]` → search in left one-third
+    If `x > arr[mid2]` → search in right one-third
+    Otherwise → search in the middle one-third
+
+4. Repeat until `low > high` or the element is found
+
+---
+
+## Why Ternary Search Works
+
+ The array is sorted, so comparisons give directional information.
+ Each step eliminates 2/3 of the search space, leaving only 1/3 to search further.
+ This makes it a logarithmic-time algorithm.
+
+---
+
+## Time & Space Complexity
+
+### Time Complexity
+
+ Best Case: `O(1)` (element found at mid)
+ Average Case: `O(log₃ n)`
+ Worst Case: `O(log₃ n)`
+
+> Note:
+> Although `log₃ n` is mathematically smaller than `log₂ n`, ternary search involves more comparisons, so it is usually slower than Binary Search in practice for arrays.
+
+### Space Complexity
+
+ Iterative version: `O(1)`
+ Recursive version: `O(log n)` (due to recursion stack)
+
+---
+
+## Ternary Search vs Binary Search
+
+| Feature              | Binary Search | Ternary Search  |
+| -------------------- | ------------- | --------------- |
+| Array requirement    | Sorted        | Sorted          |
+| Divisions            | 2             | 3               |
+| Mid points           | 1             | 2               |
+| Comparisons per step | Fewer         | More            |
+| Practical speed      | Faster        | Slower          |
+| Common usage         | Very common   | Rare for arrays |
+
+✅ Conclusion:
+For searching in arrays, Binary Search is preferred.
+
+---
+
+## Where Ternary Search Is Actually Useful
+
+Ternary Search is most useful for unimodal functions, not arrays.
+
+### Unimodal Function
+
+A function that:
+
+ First increases
+ Reaches a single maximum or minimum
+ Then decreases
+
+### Applications
+
+ Finding maximum/minimum of a unimodal function
+ Optimization problems
+ Competitive programming (math-heavy problems)
+
+Example scenarios:
+
+ Maximum profit curve
+ Minimum distance problems
+ Physics / optimization equations
+
+---
+
+## Key Takeaways
+
+ Ternary Search divides the search space into three parts
+ Works only on sorted arrays or unimodal functions
+ Time complexity is logarithmic
+ Not better than Binary Search for array searching
+ Very powerful for optimization problems

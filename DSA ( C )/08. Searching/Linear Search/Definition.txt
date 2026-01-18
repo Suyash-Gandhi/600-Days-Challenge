@@ -1,0 +1,118 @@
+## Linear Search (Sequential Search)
+
+Linear Search is the simplest searching algorithm.
+It works by checking each element one by one from the beginning of a list until the required element is found or the list ends.
+
+---
+
+### 1. Basic Idea
+
+ Start from the first element
+ Compare it with the target value
+ If it matches → search ends
+ If not → move to the next element
+ Continue until:
+
+   the element is found, or
+   all elements are checked
+
+---
+
+### 2. Where Linear Search is Used
+
+Linear Search is useful when:
+
+ The data is unsorted
+ The dataset is small
+ Simplicity is more important than performance
+ You don’t want to modify or sort the data
+
+---
+
+### 3. Step-by-Step Working
+
+Example array:
+`[10, 25, 7, 30, 18]`
+Target element: `30`
+
+Steps:
+
+1. Compare `10` with `30` → not equal
+2. Compare `25` with `30` → not equal
+3. Compare `7` with `30` → not equal
+4. Compare `30` with `30` → found
+
+Search stops here.
+
+---
+
+### 4. Time Complexity Analysis
+
+| Case             | Explanation                                | Time     |
+| ---------------- | ------------------------------------------ | -------- |
+| Best Case    | Element is at first position               | O(1) |
+| Average Case | Element is somewhere in the middle         | O(n) |
+| Worst Case   | Element is at last position or not present | O(n) |
+
+---
+
+### 5. Space Complexity
+
+ O(1) (constant space)
+ No extra memory required
+
+---
+
+### 6. Advantages
+
+ Very easy to understand and implement
+ Works on unsorted data
+ No preprocessing required
+ Suitable for small datasets
+
+---
+
+### 7. Disadvantages
+
+ Slow for large datasets
+ Inefficient compared to Binary Search
+ Performance degrades as data size increases
+
+---
+
+### 8. Linear Search vs Binary Search
+
+| Feature          | Linear Search         | Binary Search       |
+| ---------------- | --------------------- | ------------------- |
+| Data requirement | Unsorted              | Must be sorted      |
+| Time complexity  | O(n)                  | O(log n)            |
+| Implementation   | Very simple           | More complex        |
+| Best use case    | Small / unsorted data | Large / sorted data |
+
+---
+
+### 9. Real-Life Analogy
+
+Imagine searching for a name in an unsorted attendance list:
+
+ You read each name one by one until you find the correct one
+  → that’s Linear Search
+
+---
+
+### 10. When NOT to Use Linear Search
+
+Avoid Linear Search when:
+
+ Data size is very large
+ Data is already sorted (use Binary Search instead)
+ Performance is critical
+
+---
+
+If you want, I can next explain:
+
+ Linear Search algorithm steps
+ Linear Search in C
+ Optimized variations
+ DSA interview questions based on Linear Search

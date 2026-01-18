@@ -1,0 +1,261 @@
+## 7. Arrays – Basics (DSA)
+
+Arrays are one of the most fundamental data structures in Data Structures & Algorithms. Almost every advanced structure (strings, matrices, heaps, hash tables, graphs using adjacency matrices) is built on top of arrays, so mastering them is non-negotiable.
+
+---
+
+## 1. What is an Array?
+
+An array is a collection of elements of the same data type, stored in contiguous memory locations, and accessed using an index.
+
+📌 Key idea:
+
+> One name → multiple values → fixed memory block
+
+Example (conceptual):
+
+```
+Index:   0   1   2   3   4
+Value: 10  20  30  40  50
+```
+
+---
+
+## 2. Why Arrays Are Important
+
+Arrays are important because they provide:
+
+ Fast access to elements using index
+ Efficient memory usage (no extra pointers like linked lists)
+ Foundation for many algorithms (sorting, searching, DP)
+
+Without arrays, concepts like binary search, sliding window, prefix sums, dynamic programming would not exist.
+
+---
+
+## 3. Array Declaration and Initialization (C)
+
+### Declaration
+
+```c
+int arr[5];
+```
+
+### Initialization
+
+```c
+int arr[5] = {10, 20, 30, 40, 50};
+```
+
+### Partial Initialization
+
+```c
+int arr[5] = {1, 2};
+// Remaining elements become 0
+```
+
+### Size Inference
+
+```c
+int arr[] = {5, 10, 15};  // Size = 3
+```
+
+---
+
+## 4. Indexing in Arrays
+
+ Array indexing starts from 0
+ Last index = `size - 1`
+
+Example:
+
+```c
+arr[0] → first element  
+arr[4] → last element (for size 5)
+```
+
+⚠️ Accessing out of bounds (like `arr[5]`) causes undefined behavior
+
+---
+
+## 5. Memory Representation
+
+Arrays are stored in contiguous memory locations.
+
+If:
+
+ `arr[0]` is at address `1000`
+ `int` size = 4 bytes
+
+Then:
+
+```
+arr[0] → 1000
+arr[1] → 1004
+arr[2] → 1008
+```
+
+📌 This is why:
+
+```c
+arr[i] = (arr + i)
+```
+
+---
+
+## 6. Types of Arrays
+
+### 1️⃣ One-Dimensional Array
+
+```c
+int arr[5] = {1, 2, 3, 4, 5};
+```
+
+Used for:
+
+ Lists
+ Scores
+ Frequencies
+
+---
+
+### 2️⃣ Two-Dimensional Array (Matrix)
+
+```c
+int mat[2][3] = {
+  {1, 2, 3},
+  {4, 5, 6}
+};
+```
+
+Used for:
+
+ Matrices
+ Grids
+ DP tables
+
+---
+
+### 3️⃣ Multi-Dimensional Arrays
+
+```c
+int arr[3][4][5];
+```
+
+Used rarely, but common in:
+
+ 3D DP
+ Scientific computing
+
+---
+
+## 7. Basic Operations on Arrays
+
+### 1. Traversal
+
+Accessing each element once.
+
+```c
+for(int i = 0; i < n; i++) {
+    printf("%d ", arr[i]);
+}
+```
+
+⏱ Time Complexity: O(n)
+
+---
+
+### 2. Insertion
+
+ At end → O(1)
+ At beginning / middle → O(n) (shifting required)
+
+---
+
+### 3. Deletion
+
+ Requires shifting elements
+ Time Complexity: O(n)
+
+---
+
+### 4. Searching
+
+ Linear Search → O(n)
+ Binary Search (sorted array) → O(log n)
+
+---
+
+## 8. Advantages of Arrays
+
+✅ Fast random access
+✅ Simple and easy to use
+✅ Cache-friendly (due to contiguous memory)
+✅ Efficient for fixed-size data
+
+---
+
+## 9. Limitations of Arrays
+
+❌ Fixed size (cannot grow dynamically in C)
+❌ Insertion & deletion are costly
+❌ Memory wastage if size is overestimated
+❌ Homogeneous data only (same type)
+
+These limitations lead to Linked Lists, Vectors, and Dynamic Arrays.
+
+---
+
+## 10. Common Mistakes Beginners Make
+
+⚠️ Accessing out-of-bound index
+⚠️ Forgetting array size during traversal
+⚠️ Confusing index with value
+⚠️ Assuming array size can change dynamically in C
+
+---
+
+## 11. Important Array Concepts for DSA (Must Know)
+
+You should be comfortable with:
+
+ Prefix sum arrays
+ Sliding window technique
+ Two-pointer technique
+ Subarray problems
+ Kadane’s Algorithm
+ Array rotation
+ Frequency arrays
+
+---
+
+## 12. Typical Interview Questions on Arrays
+
+ Find the largest / smallest element
+ Reverse an array
+ Find duplicate elements
+ Rotate array by K steps
+ Maximum subarray sum
+ Merge two sorted arrays
+
+---
+
+## 13. When to Use Arrays vs Others
+
+| Scenario               | Best Choice            |
+| ---------------------- | ---------------------- |
+| Fixed-size data        | Array                  |
+| Fast indexing          | Array                  |
+| Frequent insert/delete | Linked List            |
+| Dynamic resizing       | Vector / Dynamic Array |
+
+---
+
+## Summary
+
+ Arrays store same-type elements in contiguous memory
+ Provide O(1) access
+ Poor at insertion/deletion
+ Backbone of most DSA problems
+
+
