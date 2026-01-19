@@ -1,0 +1,134 @@
+
+### What is Quick Sort?
+
+Quick Sort is an advanced, comparison-based sorting algorithm that also follows the Divide and Conquer strategy.
+
+Unlike Merge Sort, Quick Sort:
+
+ Sorts the array in-place
+ Uses a pivot element to partition the array
+ Is usually the fastest sorting algorithm in practice
+
+---
+
+### Why Quick Sort is Considered an Advanced Sorting Algorithm
+
+Quick Sort is classified as advanced because:
+
+ It uses divide & conquer
+ It involves partitioning logic
+ Its performance depends on pivot selection
+ It introduces recursion + in-place rearrangement
+
+It is much more efficient than basic sorts for large inputs.
+
+---
+
+### Core Idea of Quick Sort
+
+1. Choose a pivot element
+2. Rearrange elements such that:
+
+    Elements smaller than pivot go to the left
+    Elements greater than pivot go to the right
+3. Recursively apply Quick Sort to left and right subarrays
+
+---
+
+### Step-by-Step Working
+
+Given array:
+`[10, 80, 30, 90, 40, 50, 70]`
+
+1. Choose pivot (commonly last element → `70`)
+2. Partition:
+
+    Left side: `[10, 30, 40, 50]`
+    Pivot: `70`
+    Right side: `[80, 90]`
+3. Recursively sort left and right subarrays
+4. Final sorted array:
+   `[10, 30, 40, 50, 70, 80, 90]`
+
+---
+
+### Partitioning (Most Important Concept)
+
+Partitioning places the pivot in its correct final position.
+
+Common partition schemes:
+
+ Lomuto partition (simple, more swaps)
+ Hoare partition (fewer swaps, slightly complex)
+
+---
+
+### Time Complexity Analysis
+
+| Case         | Time Complexity |
+| ------------ | --------------- |
+| Best Case    | O(n log n)  |
+| Average Case | O(n log n)  |
+| Worst Case   | O(n²) ❌     |
+
+⚠️ Worst case occurs when:
+
+ Array is already sorted
+ Pivot is always smallest or largest
+
+---
+
+### Space Complexity
+
+ O(log n) (recursive call stack)
+ In-place sorting (no extra arrays)
+
+This is a major advantage over Merge Sort.
+
+---
+
+### Key Properties of Quick Sort
+
+ ❌ Not stable
+ ✅ In-place
+ ✅ Very fast in practice
+ ❌ Worst-case O(n²)
+ ✅ Cache-friendly
+ ✅ Widely used in real systems
+
+---
+
+### Quick Sort vs Merge Sort
+
+| Feature         | Quick Sort | Merge Sort |
+| --------------- | ---------- | ---------- |
+| Time (Avg)      | O(n log n) | O(n log n) |
+| Worst Case      | O(n²)      | O(n log n) |
+| Space           | O(log n)   | O(n)       |
+| In-place        | ✅ Yes      | ❌ No       |
+| Stability       | ❌ No       | ✅ Yes      |
+| Practical Speed | ⭐⭐⭐⭐       | ⭐⭐⭐        |
+
+---
+
+### Where Quick Sort is Used
+
+ Standard library sorting (with optimizations)
+ Competitive programming
+ Large in-memory datasets
+ Systems where memory efficiency matters
+
+---
+
+### When NOT to Use Quick Sort
+
+ When worst-case performance must be avoided
+ When stability is required
+ When input is nearly sorted and pivot is poor
+
+---
+
+### One-Line Summary
+
+> Quick Sort is a fast, in-place divide-and-conquer sorting algorithm that performs exceptionally well in practice but has a worst-case time complexity of O(n²).
+

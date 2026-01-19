@@ -1,0 +1,125 @@
+
+
+### What is Merge Sort?
+
+Merge Sort is an advanced, comparison-based sorting algorithm that follows the Divide and Conquer strategy.
+
+The core idea is simple:
+
+ Divide the array into smaller subarrays
+ Sort each subarray
+ Merge the sorted subarrays to form a fully sorted array
+
+It is widely used because of its predictable performance and stability.
+
+---
+
+### Why is Merge Sort called an Advanced Sorting Algorithm?
+
+Merge Sort is considered advanced because:
+
+ It uses a non-trivial algorithmic strategy (Divide & Conquer)
+ It has guaranteed time complexity
+ It performs well on large datasets
+ It introduces concepts like recursion and merging logic
+
+Unlike Bubble, Selection, or Insertion Sort, it is not intuitive brute force.
+
+---
+
+### How Merge Sort Works (Step-by-Step)
+
+1. Divide
+
+    Split the array into two halves
+    Keep dividing until each subarray has one element
+
+2. Conquer
+
+    A single-element array is already sorted
+
+3. Merge
+
+    Combine two sorted arrays by comparing elements
+    Place smaller elements first
+    Continue until one sorted array remains
+
+---
+
+### Example
+
+Array:
+`[38, 27, 43, 3, 9, 82, 10]`
+
+Process:
+
+ Split → `[38,27,43]` and `[3,9,82,10]`
+ Split further until single elements
+ Merge step-by-step in sorted order
+ Final result → `[3, 9, 10, 27, 38, 43, 82]`
+
+---
+
+### Time Complexity Analysis
+
+| Case         | Time Complexity |
+| ------------ | --------------- |
+| Best Case    | O(n log n)  |
+| Average Case | O(n log n)  |
+| Worst Case   | O(n log n)  |
+
+👉 Unlike Quick Sort, Merge Sort never degrades to O(n²).
+
+---
+
+### Space Complexity
+
+ O(n) (extra memory required for merging)
+
+This is the main drawback of Merge Sort.
+
+---
+
+### Key Properties of Merge Sort
+
+ ✅ Stable (preserves order of equal elements)
+ ✅ Deterministic performance
+ ❌ Not in-place
+ ❌ Uses extra memory
+ ✅ Excellent for linked lists
+ ✅ Used in external sorting (large files, databases)
+
+---
+
+### Merge Sort vs Basic Sorting Algorithms
+
+| Feature                 | Merge Sort       | Bubble / Selection / Insertion |
+| ----------------------- | ---------------- | ------------------------------ |
+| Strategy                | Divide & Conquer | Brute Force                    |
+| Time Complexity         | O(n log n)       | O(n²)                          |
+| Suitable for Large Data | ✅ Yes            | ❌ No                           |
+| Stability               | ✅ Yes            | Depends                        |
+| Memory Usage            | High             | Low                            |
+
+---
+
+### Where Merge Sort is Used
+
+ Sorting large datasets
+ External sorting (files too large for memory)
+ Sorting linked lists
+ Foundation for hybrid algorithms (like Timsort concepts)
+
+---
+
+### When NOT to Use Merge Sort
+
+ When memory is limited
+ When sorting small arrays (Insertion Sort may be faster)
+ When in-place sorting is required
+
+---
+
+### One-Line Summary
+
+> Merge Sort is a powerful, stable, and efficient sorting algorithm with guaranteed O(n log n) performance, making it ideal for large-scale and real-world applications.
