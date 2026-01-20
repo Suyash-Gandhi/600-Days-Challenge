@@ -1,0 +1,211 @@
+### 25. The `__name__ == "__main__"` idiom (Python)
+
+
+
+## 1️⃣ What is `__name__`?
+
+ `__name__` is a built-in variable in Python
+ Python automatically assigns a value to it
+
+The value depends on how the file is used.
+
+---
+
+## 2️⃣ Two ways a Python file can be used
+
+A Python file can be:
+
+### 🔹 Case 1: Run directly
+
+```bash
+python file.py
+```
+
+### 🔹 Case 2: Imported into another file
+
+```python
+import file
+```
+
+Python needs a way to know which case is happening
+That’s where `__name__` comes in.
+
+---
+
+## 3️⃣ What values can `__name__` have?
+
+### ✅ If the file is run directly
+
+```python
+__name__ == "__main__"
+```
+
+### ✅ If the file is imported
+
+```python
+__name__ == "filename"
+```
+
+(Where `filename` is the file’s name without `.py`)
+
+---
+
+## 4️⃣ Basic example (very important)
+
+### 📄 `example.py`
+
+```python
+print(__name__)
+```
+
+### ▶ Running directly
+
+```bash
+python example.py
+```
+
+Output:
+
+```text
+__main__
+```
+
+### 📄 `main.py`
+
+```python
+import example
+```
+
+Output:
+
+```text
+example
+```
+
+👉 Same file, different `__name__` value
+
+---
+
+## 5️⃣ Why do we use `if __name__ == "__main__"`?
+
+Because we don’t want certain code to run when the file is imported.
+
+### Without the idiom ❌
+
+```python
+def add(a, b):
+    return a + b
+
+print(add(2, 3))
+```
+
+If you import this file:
+
+```python
+import example
+```
+
+➡️ The `print(add(2, 3))` will run automatically
+This is often undesirable
+
+---
+
+## 6️⃣ Using the idiom (correct way) ✅
+
+```python
+def add(a, b):
+    return a + b
+
+if __name__ == "__main__":
+    print(add(2, 3))
+```
+
+### Behavior now:
+
+| Situation    | What runs                 |
+| ------------ | ------------------------- |
+| Run directly | Function + print          |
+| Import file  | Only functions are loaded |
+
+---
+
+## 7️⃣ Real-world interpretation (important intuition)
+
+Think of it like this:
+
+> “Run this code ONLY if this file is the main program, not if it’s being reused.”
+
+---
+
+## 8️⃣ Common real-world use cases
+
+### ✅ Testing code
+
+```python
+def square(x):
+    return x  x
+
+if __name__ == "__main__":
+    print(square(5))
+```
+
+### ✅ Scripts + libraries combined
+
+ File works as a standalone program
+ Same file works as a reusable module
+
+---
+
+## 9️⃣ Example with multiple files (clear mental model)
+
+### 📄 `math_utils.py`
+
+```python
+def multiply(a, b):
+    return a  b
+
+if __name__ == "__main__":
+    print(multiply(3, 4))
+```
+
+### 📄 `app.py`
+
+```python
+import math_utils
+
+print(math_utils.multiply(5, 6))
+```
+
+### Output:
+
+```text
+30
+```
+
+🚫 `print(multiply(3, 4))` does NOT run
+Because `math_utils` is imported, not executed
+
+---
+
+## 🔟 Why `"__main__"` specifically?
+
+ `"__main__"` is a special reserved name
+ Python assigns it to the entry-point file
+ Only one file gets `__name__ == "__main__"`
+
+---
+
+## 1️⃣1️⃣ Interview-ready one-liner
+
+> The `if __name__ == "__main__"` idiom ensures that code runs only when a file is executed directly, not when it is imported as a module.
+
+---
+
+## 1️⃣2️⃣ Key takeaways (memorize this)
+
+ `__name__` tells Python how a file is being used
+ `"__main__"` means this file is the starting point
+ The idiom prevents unwanted execution on import
+ Essential for clean, reusable, professional code
+
+---
