@@ -1,0 +1,207 @@
+## 23. Closures in Python
+
+A closure in Python is a powerful concept that allows a function to remember and access variables from its enclosing (outer) function even after the outer function has finished execution.
+
+This idea is central to understanding function behavior, decorators, callbacks, and functional programming patterns in Python.
+
+---
+
+## 1. What Exactly Is a Closure?
+
+In simple terms:
+
+ A closure is a function
+ That captures variables from its outer scope
+ And retains access to those variables even when the outer function is no longer running
+
+So, a closure is not just a function — it is:
+
+> A function + the environment it was created in
+
+---
+
+## 2. Why Do Closures Exist? (Intuition)
+
+Normally, when a function finishes execution:
+
+ Its local variables are destroyed
+ Memory is freed
+
+But Python allows inner functions to remember the outer function’s variables if:
+
+ Those variables are used inside the inner function
+
+This “remembering” behavior is what creates a closure.
+
+---
+
+## 3. Conditions for a Closure
+
+A closure is created only if all three conditions are met:
+
+1. There is a nested function (a function inside another function)
+2. The inner function uses variables from the outer function
+3. The outer function returns the inner function (not calling it)
+
+If any of these conditions is missing, a closure does not exist.
+
+---
+
+## 4. How Closures Work Internally (Very Important)
+
+When Python creates a closure:
+
+ The outer function’s variables are not copied
+ They are referenced
+ Python stores them in a special structure called a cell
+
+Even after the outer function finishes:
+
+ These variables stay alive in memory
+ Because the inner function still needs them
+
+That’s why closures are sometimes called:
+
+> “Functions with persistent memory”
+
+---
+
+## 5. Lifetime of Variables in a Closure
+
+Normally:
+
+ Local variables die when a function ends
+
+In closures:
+
+ Variables survive as long as the inner function exists
+ Memory is freed only when:
+
+   The inner function is deleted, or
+   There are no references to it
+
+This is why closures must be used carefully — they can unintentionally retain memory.
+
+---
+
+## 6. Closures vs Global Variables
+
+| Aspect        | Closures             | Global Variables                 |
+| ------------- | -------------------- | -------------------------------- |
+| Scope         | Limited & controlled | Accessible everywhere            |
+| Safety        | Safer                | Risky (can be modified anywhere) |
+| Encapsulation | Strong               | Weak                             |
+| Debugging     | Easier               | Harder                           |
+
+Closures provide data hiding without using classes.
+
+---
+
+## 7. Modifying Outer Variables (`nonlocal`)
+
+By default:
+
+ Outer variables captured by a closure are read-only
+
+To modify them:
+
+ Python provides the `nonlocal` keyword
+
+Without `nonlocal`:
+
+ Python treats the variable as a new local variable
+ This leads to logical or runtime errors
+
+So:
+
+ Read → automatic
+ Write → requires `nonlocal`
+
+---
+
+## 8. Practical Use Cases of Closures
+
+Closures are not theoretical — they are widely used.
+
+### 1. Decorators
+
+Decorators are closures by design:
+
+ Outer function receives a function
+ Inner function wraps extra behavior
+ Returned inner function remembers the original function
+
+### 2. Function Factories
+
+Creating customized functions dynamically:
+
+ Example: multiplier creators, validators, formatters
+
+### 3. Data Encapsulation
+
+Closures allow private variables without classes:
+
+ No direct access
+ Only controlled interaction through functions
+
+### 4. Callbacks & Event Handlers
+
+Closures help:
+
+ Remember state
+ Avoid global variables
+ Maintain clean logic
+
+---
+
+## 9. Closures vs Classes
+
+| Feature      | Closure          | Class                    |
+| ------------ | ---------------- | ------------------------ |
+| Syntax       | Lightweight      | Heavier                  |
+| State        | Limited          | Complex & scalable       |
+| Readability  | Simple use cases | Better for large systems |
+| OOP features | ❌                | ✅                        |
+
+Rule of thumb:
+
+ Small state → Closure
+ Large state & behavior → Class
+
+---
+
+## 10. Common Mistakes with Closures
+
+1. Late binding
+
+    Loop variables captured incorrectly
+2. Forgetting `nonlocal`
+
+    Leads to unexpected behavior
+3. Memory leaks
+
+    Holding references longer than needed
+4. Overusing closures
+
+    Classes may be clearer
+
+---
+
+## 11. How to Identify a Closure (Quick Test)
+
+Ask yourself:
+
+ Is there an inner function?
+ Does it use outer variables?
+ Is the inner function returned or stored?
+
+If yes → It’s a closure
+
+---
+
+## 12. One-Line Summary
+
+> A closure is a function that remembers variables from its outer scope even after the outer function has finished execution.
+
+---
+

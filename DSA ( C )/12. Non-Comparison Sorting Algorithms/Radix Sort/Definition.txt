@@ -1,0 +1,181 @@
+
+
+### 1. What is Radix Sort?
+
+Radix Sort is a non-comparison sorting algorithm that sorts numbers digit by digit, instead of comparing whole values.
+
+It processes elements starting from:
+
+ Least Significant Digit (LSD) → most common
+  or
+ Most Significant Digit (MSD) → used in some advanced variants
+
+Radix Sort uses another stable sorting algorithm internally, most commonly Counting Sort.
+
+---
+
+### 2. Why is Radix Sort Non-Comparison?
+
+ No direct element-to-element comparison (`<`, `>`)
+ Ordering is based on digit positions
+ Sorting is achieved using counting and grouping
+
+Because of this, Radix Sort can achieve linear time complexity under suitable conditions.
+
+---
+
+### 3. Core Idea (How Radix Sort Thinks)
+
+Instead of sorting numbers as a whole:
+
+1. Sort by units digit
+2. Then tens digit
+3. Then hundreds digit
+4. Continue until the highest digit
+
+Each pass refines the order while keeping previous ordering intact (this is why stability is critical).
+
+---
+
+### 4. Step-by-Step Example (LSD Radix Sort)
+
+#### Input
+
+```
+[170, 45, 75, 90, 802, 24, 2, 66]
+```
+
+---
+
+#### Pass 1 – Sort by Units Digit
+
+```
+Digits: 0,5,5,0,2,4,2,6
+Result: [170, 90, 802, 2, 24, 45, 75, 66]
+```
+
+---
+
+#### Pass 2 – Sort by Tens Digit
+
+```
+Digits: 7,9,0,0,2,4,7,6
+Result: [802, 2, 24, 45, 66, 170, 75, 90]
+```
+
+---
+
+#### Pass 3 – Sort by Hundreds Digit
+
+```
+Digits: 8,0,0,0,0,1,0,0
+Result: [2, 24, 45, 66, 75, 90, 170, 802]
+```
+
+✅ Array is now fully sorted.
+
+---
+
+### 5. Why Stability Matters in Radix Sort
+
+Radix Sort depends on stability because:
+
+ Each digit pass must preserve the order from previous passes
+ Unstable sorting would destroy earlier digit ordering
+
+👉 That’s why Counting Sort is used internally.
+
+---
+
+### 6. Time and Space Complexity
+
+| Aspect | Complexity         |
+| ------ | ------------------ |
+| Time   | O(d × (n + k)) |
+| Space  | O(n + k)       |
+
+Where:
+
+ `n` = number of elements
+ `d` = number of digits
+ `k` = range of each digit (usually 0–9)
+
+For fixed digit size (like integers), this becomes O(n).
+
+---
+
+### 7. Types of Radix Sort
+
+#### 1. LSD Radix Sort
+
+ Starts from least significant digit
+ Easier to implement
+ Most commonly used
+
+#### 2. MSD Radix Sort
+
+ Starts from most significant digit
+ More complex
+ Useful for strings and variable-length keys
+
+---
+
+### 8. When to Use Radix Sort
+
+Use Radix Sort when:
+
+ Data consists of integers or fixed-length strings
+ Range of digits is limited
+ Stability is required
+ Very large datasets need fast sorting
+
+---
+
+### 9. Limitations / Drawbacks
+
+❌ Not suitable when:
+
+ Numbers have very large digit counts
+ Data is floating-point (without transformation)
+ Extra memory usage is unacceptable
+
+---
+
+### 10. Radix Sort vs Other Sorting Algorithms
+
+| Feature          | Radix Sort         | Counting Sort | Quick Sort |
+| ---------------- | ------------------ | ------------- | ---------- |
+| Comparison-based | ❌ No               | ❌ No          | ✅ Yes      |
+| Time             | O(n)               | O(n + k)      | O(n log n) |
+| Stable           | ✅ Yes              | ✅ Yes         | ❌ No       |
+| Data Type        | Integers / Strings | Integers      | Any        |
+| Extra Space      | Moderate           | High          | Low        |
+
+---
+
+### 11. Real-World Applications
+
+ Sorting large integer datasets
+ Sorting IDs, phone numbers
+ Lexicographical string sorting
+ Used in databases and indexing systems
+ Preprocessing in high-performance systems
+
+---
+
+### 12. Exam & Interview Key Points
+
+ Radix Sort is digit-based
+ Uses Counting Sort internally
+ Stability is mandatory
+ Linear time for fixed digit size
+ Not truly in-place
+
+---
+
+### 13. One-Line Summary
+
+> Radix Sort sorts data digit by digit using a stable internal sort, achieving linear time for fixed-size keys without element comparisons.
+
+---
+
