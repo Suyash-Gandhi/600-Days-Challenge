@@ -1,601 +1,781 @@
-Alright, let’s slow this down completely and rebuild Counting Sort from zero, as if you’ve never seen it before.
-I’ll explain what each array means, why we do each step, and what problem that step solves.
-No rushing. No shortcuts.
+## 14. Non-Comparison Sorting Algorithms – Bucket Sort
+
+![Image](https://www.programiz.com/sites/tutorial2program/files/Bucket_2.png)
+
+![Image](https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Bucket_sort_1.svg/1280px-Bucket_sort_1.svg.png)
 
 ---
 
-## Counting Sort — explained clearly, patiently, and visually
+### 1. What is Bucket Sort?
 
-![Image](https://www.programiz.com/sites/tutorial2program/files/Counting-sort-4_1.png)
+Bucket Sort is a non-comparison sorting algorithm that works by:
 
-![Image](https://miro.medium.com/v2/resize%3Afit%3A1200/1%2AlmzbRxK0FNgxzu8owsm4cA.png)
+ Dividing elements into multiple buckets
+ Sorting each bucket individually
+ Concatenating all buckets to get the final sorted array
 
-![Image](https://www.researchgate.net/publication/371877094/figure/fig1/AS%3A11431281170668564%401687868177471/Counting-Sort-utilizes-the-cumulative-count-array-sums-to-determine-the-final-index.ppm)
-
-![Image](https://d8it4huxumps7.cloudfront.net/bites/wp-content/banners/2025/3/67ce8b7dcdfbc_counting_sort_algorithm.jpg)
-
----
-
-## 1️⃣ First: What problem are we solving?
-
-We want to sort numbers.
-
-Example input:
-
-```
-[4, 2, 2, 8, 3, 3, 1]
-```
-
-Sorted output should be:
-
-```
-[1, 2, 2, 3, 3, 4, 8]
-```
-
-Most sorting algorithms:
-
- Compare numbers (`2 < 4`, `3 > 1`, etc.)
- Swap elements again and again
-
-❌ Counting Sort does NOT do this
-
-Instead, it asks a different question:
-
-> “How many times does each number appear?”
+It is especially efficient when input data is uniformly distributed over a known range.
 
 ---
 
-## 2️⃣ Key observation (this is the heart of Counting Sort)
+### 2. Why is Bucket Sort Non-Comparison?
 
-Look at the array again:
-
-```
-[4, 2, 2, 8, 3, 3, 1]
-```
-
-What values do we have?
-
- Minimum = 1
- Maximum = 8
-
-So we know:
-👉 All numbers are between 1 and 8
-
-This means we can create a helper array of size 8 + 1
-(index 0 is usually ignored)
+ Elements are distributed into buckets based on range
+ Sorting is achieved by grouping, not global comparisons
+ Any comparison (if used) happens inside small buckets, not across the full dataset
 
 ---
 
-## 3️⃣ Step 1: Create the COUNT array (frequency array)
+### 3. Core Idea (How Bucket Sort Works)
 
-This array answers one question:
+Bucket Sort follows these steps:
 
-> “How many times does each number appear?”
-
-### Create count array
-
-Index = number
-Value = how many times it appears
-
-Initially:
-
-```
-count[0..8] = [0,0,0,0,0,0,0,0,0]
-```
-
-Now scan the input one element at a time:
-
-| Element seen | What we do |
-| ------------ | ---------- |
-| 4            | count[4]++ |
-| 2            | count[2]++ |
-| 2            | count[2]++ |
-| 8            | count[8]++ |
-| 3            | count[3]++ |
-| 3            | count[3]++ |
-| 1            | count[1]++ |
-
-### Final count array
-
-| Number (index) | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| -------------- | - | - | - | - | - | - | - | - |
-| Count          | 1 | 2 | 2 | 1 | 0 | 0 | 0 | 1 |
-
-Meaning (important):
-
- `1 appears 1 time`
- `2 appears 2 times`
- `3 appears 2 times`
- `4 appears 1 time`
- `8 appears 1 time`
-
-So far → no sorting yet
+1. Create empty buckets
+2. Distribute elements into buckets based on value range
+3. Sort each bucket (often using Insertion Sort)
+4. Concatenate buckets in order
 
 ---
 
-## 4️⃣ Step 2: Why frequency alone is NOT enough
+### 4. Step-by-Step Example
 
-If we stop here, we only know:
+#### Input
 
-> “How many times a number occurs”
+```
+[0.42, 0.32, 0.33, 0.52, 0.37, 0.47, 0.51]
+```
 
-But sorting needs:
+Assume:
 
-> “Where exactly should this number go in the final array?”
-
-For example:
-
- Where does `3` go?
- First index? Fifth index?
-
-To answer that, we need positions.
+ Values are in range [0, 1)
+ Number of buckets = number of elements
 
 ---
 
-## 5️⃣ Step 3: Convert count array into CUMULATIVE count
-
-Now we modify the count array so that:
-
-> `count[x] = number of elements ≤ x`
-
-This is called prefix sum.
-
-### How we compute it
+#### Step 1: Create Buckets
 
 ```
-count[i] = count[i] + count[i - 1]
-```
-
-Let’s do it slowly:
-
-| i | Calculation | New count |
-| - | ----------- | --------- |
-| 1 | 1           | 1         |
-| 2 | 2 + 1       | 3         |
-| 3 | 2 + 3       | 5         |
-| 4 | 1 + 5       | 6         |
-| 5 | 0 + 6       | 6         |
-| 6 | 0 + 6       | 6         |
-| 7 | 0 + 6       | 6         |
-| 8 | 1 + 6       | 7         |
-
-### Final cumulative count array
-
-| Number | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| ------ | - | - | - | - | - | - | - | - |
-| Count  | 1 | 3 | 5 | 6 | 6 | 6 | 6 | 7 |
-
----
-
-## 6️⃣ What does cumulative count ACTUALLY mean?
-
-This is the most confusing part, so read carefully.
-
-### Example meanings:
-
- `count[1] = 1` → All `1`s end at index 0
- `count[2] = 3` → All `2`s end at index 2
- `count[3] = 5` → All `3`s end at index 4
- `count[8] = 7` → All `8`s end at index 6
-
-(Remember: array index starts from 0)
-
-So:
-
-> count[x] tells the LAST position of x in the sorted array
-
----
-
-## 7️⃣ Step 4: Create OUTPUT array
-
-We create a new array of same size as input:
-
-```
-output[0..6]
-```
-
-Now we place elements one by one.
-
-⚠️ We traverse input from right to left
-This ensures stability (order of duplicates is preserved).
-
----
-
-## 8️⃣ Step 5: Placing elements (MOST IMPORTANT PART)
-
-Let’s do it manually.
-
-### Initial:
-
-```
-count = [1,3,5,6,6,6,6,7]
-output = [_,_,_,_,_,_,_]
+Bucket 0 → []
+Bucket 1 → []
+Bucket 2 → []
+Bucket 3 → []
+Bucket 4 → []
+Bucket 5 → []
+Bucket 6 → []
 ```
 
 ---
 
-### Take elements from right to left
+#### Step 2: Distribute Elements
 
-#### Element = 1
-
- count[1] = 1
- Position = 1 - 1 = 0
- Place `1` at output[0]
- Decrease count[1]
+Bucket index = `n × value`
 
 ```
-output = [1,_,_,_,_,_,_]
-count[1] = 0
-```
-
----
-
-#### Element = 3
-
- count[3] = 5
- Position = 5 - 1 = 4
-
-```
-output = [1,_,_,_,3,_,_]
-count[3] = 4
+0.42 → Bucket 2
+0.32 → Bucket 2
+0.33 → Bucket 2
+0.52 → Bucket 3
+0.37 → Bucket 2
+0.47 → Bucket 3
+0.51 → Bucket 3
 ```
 
 ---
 
-#### Next 3
-
- count[3] = 4
- Position = 3
+#### Step 3: Sort Individual Buckets
 
 ```
-output = [1,_,_,3,3,_,_]
-count[3] = 3
+Bucket 2 → [0.32, 0.33, 0.37, 0.42]
+Bucket 3 → [0.47, 0.51, 0.52]
 ```
+
+(Other buckets remain empty)
 
 ---
 
-#### Element = 8
-
- count[8] = 7
- Position = 6
+#### Step 4: Concatenate Buckets
 
 ```
-output = [1,_,_,3,3,_,8]
-count[8] = 6
+[0.32, 0.33, 0.37, 0.42, 0.47, 0.51, 0.52]
 ```
+
+✅ Array is sorted.
 
 ---
 
-#### Element = 2
+### 5. Time and Space Complexity
 
- count[2] = 3
- Position = 2
+| Case    | Time Complexity |
+| ------- | --------------- |
+| Best    | O(n)        |
+| Average | O(n + k)    |
+| Worst   | O(n²)       |
 
-```
-output = [1,_,2,3,3,_,8]
-count[2] = 2
-```
+| Aspect | Complexity   |
+| ------ | ------------ |
+| Space  | O(n + k) |
 
----
+Where:
 
-#### Next 2
-
- count[2] = 2
- Position = 1
-
-```
-output = [1,2,2,3,3,_,8]
-count[2] = 1
-```
+ `n` = number of elements
+ `k` = number of buckets
 
 ---
 
-#### Element = 4
+### 6. Stability
 
- count[4] = 6
- Position = 5
+✅ Bucket Sort can be stable
+(depends on the sorting algorithm used inside each bucket)
 
-```
-output = [1,2,2,3,3,4,8]
-```
-
----
-
-## 9️⃣ Final sorted array
-
-```
-[1, 2, 2, 3, 3, 4, 8]
-```
-
-🎉 Sorted — without a single comparison
+ Insertion Sort → Stable
+ Quick Sort → Not stable
 
 ---
 
-## 🔟 Why Counting Sort is FAST
+### 7. When to Use Bucket Sort
 
-| Reason           | Explanation                 |
-| ---------------- | --------------------------- |
-| No comparisons   | No `<` or `>`               |
-| Direct placement | Uses math to place elements |
-| Linear time      | O(n + k)                    |
+Use Bucket Sort when:
 
----
-
-## 1️⃣1️⃣ When Counting Sort is GOOD
-
-✅ Small range of integers
-✅ Non-negative values
-✅ Large input size
-✅ Used inside Radix Sort
+ Data is uniformly distributed
+ Input range is known
+ Floating-point numbers are involved
+ Average-case performance is critical
 
 ---
 
-## 1️⃣2️⃣ When Counting Sort is BAD
+### 8. When NOT to Use Bucket Sort
 
-❌ Large range (like up to 10⁹)
-❌ Floating point numbers
-❌ Memory limited systems
+❌ Avoid when:
 
----
-
-## 1️⃣3️⃣ One sentence intuition (remember this)
-
-> Counting Sort does not sort by comparing numbers; it sorts by counting how many numbers come before each value.
+ Data is heavily skewed
+ Range is unknown or very large
+ Memory usage must be minimal
 
 ---
 
-## First: What is `i`?
+### 9. Bucket Sort vs Other Non-Comparison Sorts
 
-`i` is NOT an element of the input array.
-
-`i` is:
-
-> An index of the count array
-
-And in Counting Sort:
-
- Index = value
- Value stored = information about that value
-
-So when you see:
-
-```
-count[i]
-```
-
-It means:
-
-> “Information stored about the number `i`”
+| Feature      | Bucket Sort   | Counting Sort   | Radix Sort         |
+| ------------ | ------------- | --------------- | ------------------ |
+| Data Type    | Floats / Ints | Integers        | Integers / Strings |
+| Distribution | Uniform       | Frequency-based | Digit-based        |
+| Stable       | Depends       | Yes             | Yes                |
+| Worst Case   | O(n²)         | O(n + k)        | O(d·n)             |
+| Extra Space  | High          | High            | Moderate           |
 
 ---
 
-## Second: What is the count array BEFORE this step?
+### 10. Real-World Applications
 
-From the input:
-
-```
-[4, 2, 2, 8, 3, 3, 1]
-```
-
-We first built the frequency array:
-
-| i (number) | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| ---------- | - | - | - | - | - | - | - | - |
-| count[i]   | 1 | 2 | 2 | 1 | 0 | 0 | 0 | 1 |
-
-👉 At this stage:
-
-Meaning of `count[i]`:
-
-> How many times the number `i` appears in the input
-
-Example:
-
- `count[3] = 2` → number `3` appears twice
+ Sorting floating-point numbers
+ Histogram-based data
+ Preprocessing for clustering
+ Uniformly distributed sensor data
+ Graphics and image processing
 
 ---
 
-## Third: Why are we changing `count[i]`?
+### 11. Exam & Interview Key Points
 
-Right now, `count[i]` only tells frequency.
-
-But to sort, we need:
-
-> “Where should number `i` go in the final sorted array?”
-
-So we transform the meaning of `count[i]`.
+ Bucket Sort assumes uniform distribution
+ Performance degrades if buckets are unbalanced
+ Choice of internal sort matters
+ Not truly in-place
 
 ---
 
-## Fourth: What does `count[i]` mean AFTER this step?
+### 12. One-Line Summary
 
-After doing:
-
-```
-count[i] = count[i] + count[i - 1]
-```
-
-The meaning becomes:
-
-> count[i] = total number of elements ≤ i
-
-This is the KEY idea.
+> Bucket Sort distributes elements into buckets, sorts each bucket individually, and merges them to efficiently sort uniformly distributed data.
 
 ---
 
-## Fifth: Now let’s understand the table line by line
 
-### Rule being applied
+## 1. First, forget the word “bucket”
 
-For each `i` from 1 to 8:
-
-```
-count[i] = count[i] + count[i - 1]
-```
-
----
-
-### i = 1
-
-```
-count[1] = 1
-```
-
-Meaning:
-
- There is 1 element ≤ 1
-
----
-
-### i = 2
-
-```
-count[2] = 2 + 1 = 3
-```
-
-Meaning:
-
- 1 element ≤ 1
- 2 elements equal to 2
- Total elements ≤ 2 = 3
-
----
-
-### i = 3
-
-```
-count[3] = 2 + 3 = 5
-```
-
-Meaning:
-
- 3 elements ≤ 2
- 2 elements equal to 3
- Total elements ≤ 3 = 5
-
----
-
-### i = 4
-
-```
-count[4] = 1 + 5 = 6
-```
-
-Meaning:
-
- 5 elements ≤ 3
- 1 element equal to 4
- Total elements ≤ 4 = 6
-
----
-
-### i = 5
-
-```
-count[5] = 0 + 6 = 6
-```
-
-Meaning:
-
- No 5s in input
- Still 6 elements ≤ 5
-
----
-
-### i = 6
-
-```
-count[6] = 0 + 6 = 6
-```
-
-Meaning:
-
- No 6s
- Still 6 elements ≤ 6
-
----
-
-### i = 7
-
-```
-count[7] = 0 + 6 = 6
-```
-
-Meaning:
-
- No 7s
- Still 6 elements ≤ 7
-
----
-
-### i = 8
-
-```
-count[8] = 1 + 6 = 7
-```
-
-Meaning:
-
- 6 elements ≤ 7
- 1 element equal to 8
- Total elements ≤ 8 = 7 (entire array)
-
----
-
-## Sixth: Final cumulative count array
-
-| i        | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
-| -------- | - | - | - | - | - | - | - | - |
-| count[i] | 1 | 3 | 5 | 6 | 6 | 6 | 6 | 7 |
-
----
-
-## Seventh: The ONE-LINE meaning (memorize this)
-
-> After cumulative sum, `count[i]` tells how many elements are ≤ `i`
-
-Or equivalently:
-
-> `count[i] - 1` is the last index where `i` should be placed in the sorted array
-
----
-
-## Eighth: Why this helps in sorting
-
-If:
-
-```
-count[3] = 5
-```
-
-That means:
-
- All `3`s must end at index `4` (because index starts from 0)
- The earlier slots are for smaller numbers
-
-So we can place `3` directly without comparing it to anything.
-
----
-
-## Ninth: Ultra-simple analogy (real life)
+Think of buckets as boxes or containers placed in order.
 
 Imagine:
 
- `i` = marks (0–100)
- `count[i]` = number of students scoring ≤ i
+ You have numbers spread across a known range
+ Instead of comparing every number with every other number,
+ You group nearby numbers together
 
-If:
-
-```
-count[75] = 40
-```
-
-Then:
-
- The 40th student in sorted rank has marks ≤ 75
-
-Same logic here.
+That grouping is the entire idea of Bucket Sort.
 
 ---
 
-👍
+## 2. Why buckets even work (core intuition)
+
+### Key assumption
+
+> Numbers that are close in value should end up close in position
+
+Example:
+
+ 0.31 and 0.32 → should be near each other
+ 0.31 and 0.95 → definitely far apart
+
+So instead of sorting everything at once:
+
+1. Divide the number line into ranges
+2. Put numbers into the range they belong to
+3. Sort only inside each small range
+
+This reduces work if numbers are evenly spread.
+
+---
+
+## 3. The input we are sorting
+
+We’ll use this exact array throughout:
+
+```
+[0.42, 0.32, 0.33, 0.52, 0.37, 0.47, 0.51]
+```
+
+### Important observation
+
+ All values are between 0 and 1
+ They are decimal numbers
+ Total elements = 7
+
+---
+
+## 4. How many buckets do we create?
+
+### Common rule (simple and safe):
+
+> Number of buckets = number of elements
+
+So:
+
+```
+n = 7
+Buckets = 7
+```
+
+We label them:
+
+```
+Bucket 0
+Bucket 1
+Bucket 2
+Bucket 3
+Bucket 4
+Bucket 5
+Bucket 6
+```
+
+Each bucket represents a range of values.
+
+---
+
+## 5. What range does each bucket represent?
+
+Since values are between 0 and 1:
+
+Each bucket size =
+
+```
+range / number of buckets = 1 / 7 ≈ 0.14
+```
+
+So buckets cover:
+
+| Bucket | Value Range |
+| ------ | ----------- |
+| 0      | 0.00 – 0.14 |
+| 1      | 0.14 – 0.28 |
+| 2      | 0.28 – 0.42 |
+| 3      | 0.42 – 0.56 |
+| 4      | 0.56 – 0.70 |
+| 5      | 0.70 – 0.84 |
+| 6      | 0.84 – 1.00 |
+
+---
+
+## 6. How do we decide which bucket a value goes into?
+
+We use this simple formula:
+
+```
+bucket_index = n × value
+```
+
+(Then take integer part)
+
+Why this works:
+
+ Value is between 0 and 1
+ Multiplying by `n` scales it into bucket numbers
+
+---
+
+## 7. Putting EACH value into a bucket (slowly)
+
+Let’s do this one number at a time.
+
+---
+
+### 🔹 Value: 0.42
+
+```
+7 × 0.42 = 2.94 → Bucket 2
+```
+
+Bucket 2:
+
+```
+[0.42]
+```
+
+---
+
+### 🔹 Value: 0.32
+
+```
+7 × 0.32 = 2.24 → Bucket 2
+```
+
+Bucket 2:
+
+```
+[0.42, 0.32]
+```
+
+---
+
+### 🔹 Value: 0.33
+
+```
+7 × 0.33 = 2.31 → Bucket 2
+```
+
+Bucket 2:
+
+```
+[0.42, 0.32, 0.33]
+```
+
+---
+
+### 🔹 Value: 0.52
+
+```
+7 × 0.52 = 3.64 → Bucket 3
+```
+
+Bucket 3:
+
+```
+[0.52]
+```
+
+---
+
+### 🔹 Value: 0.37
+
+```
+7 × 0.37 = 2.59 → Bucket 2
+```
+
+Bucket 2:
+
+```
+[0.42, 0.32, 0.33, 0.37]
+```
+
+---
+
+### 🔹 Value: 0.47
+
+```
+7 × 0.47 = 3.29 → Bucket 3
+```
+
+Bucket 3:
+
+```
+[0.52, 0.47]
+```
+
+---
+
+### 🔹 Value: 0.51
+
+```
+7 × 0.51 = 3.57 → Bucket 3
+```
+
+Bucket 3:
+
+```
+[0.52, 0.47, 0.51]
+```
+
+---
+
+## 8. Situation after distribution (VERY IMPORTANT)
+
+Buckets now look like this:
+
+```
+Bucket 0 → []
+Bucket 1 → []
+Bucket 2 → [0.42, 0.32, 0.33, 0.37]
+Bucket 3 → [0.52, 0.47, 0.51]
+Bucket 4 → []
+Bucket 5 → []
+Bucket 6 → []
+```
+
+### 🔑 Key realization
+
+ All numbers in Bucket 2 are smaller than all numbers in Bucket 3
+ So no comparison is needed across buckets
+
+That’s the magic.
+
+---
+
+## 9. Why do we sort INSIDE each bucket?
+
+Because:
+
+ Values in the same bucket are close together
+ Buckets are small
+ Simple sorting (Insertion Sort) is very fast here
+
+---
+
+### Sorting Bucket 2
+
+```
+[0.42, 0.32, 0.33, 0.37]
+→ [0.32, 0.33, 0.37, 0.42]
+```
+
+### Sorting Bucket 3
+
+```
+[0.52, 0.47, 0.51]
+→ [0.47, 0.51, 0.52]
+```
+
+Other buckets are empty.
+
+---
+
+## 10. Final step: concatenate buckets
+
+Now we join buckets in order:
+
+```
+Bucket 0
+Bucket 1
+Bucket 2
+Bucket 3
+Bucket 4
+Bucket 5
+Bucket 6
+```
+
+Result:
+
+```
+[0.32, 0.33, 0.37, 0.42, 0.47, 0.51, 0.52]
+```
+
+🎉 Sorted array achieved
+
+---
+
+## 11. Why this is fast (when it works)
+
+Bucket Sort is fast ONLY IF:
+
+ Data is uniformly distributed
+ Buckets stay small
+
+Then:
+
+ Distribution → O(n)
+ Sorting tiny buckets → almost O(1)
+ Total ≈ O(n)
+
+---
+
+## 12. Why it can become slow
+
+Worst case:
+
+ All values fall into one bucket
+ That bucket needs full sorting
+ Time → O(n²)
+
+This is why uniform distribution is critical.
+
+---
+
+## 13. One mental model to remember forever
+
+> Bucket Sort = divide number line → group nearby values → sort locally → merge
+
+No magic. No shortcuts. Just controlled grouping.
+
+---
+
+
+
+# ❓ Core Confusion You Have
+
+> “How do I know that 0.42 should go to Bucket 2?
+> I only know the range is 0–1.
+> Who decided Bucket 2?”
+
+✅ Correct doubt. You are thinking properly.
+
+---
+
+## 1. The MOST IMPORTANT RULE (that answers everything)
+
+Bucket Sort does NOT automatically know bucket ranges.
+
+👉 WE define the rule.
+
+The algorithm designer must decide:
+
+1. How many buckets
+2. How to map a value to a bucket
+
+There is NO universal bucket rule.
+
+---
+
+## 2. What we KNOW before creating buckets
+
+From the problem:
+
+ Values lie in range [0, 1)
+ Number of elements `n = 7`
+
+That’s all the information we start with.
+
+---
+
+## 3. Why do we choose `n` buckets?
+
+This is a design choice, not a law.
+
+Why it’s common:
+
+ Average case → ~1 element per bucket
+ Keeps buckets small
+ Makes sorting inside buckets cheap
+
+But we could choose:
+
+ 5 buckets
+ 10 buckets
+ 100 buckets
+
+Algorithm still works (performance changes).
+
+---
+
+## 4. Once we choose number of buckets, ranges AUTOMATICALLY appear
+
+We chose:
+
+```
+Buckets = 7
+Total range = 1 (from 0 to 1)
+```
+
+So each bucket covers:
+
+```
+bucket_width = total_range / number_of_buckets
+             = 1 / 7 ≈ 0.14
+```
+
+⚠️ This is the missing step most explanations skip
+
+---
+
+## 5. Now buckets DO have ranges (derived, not given)
+
+| Bucket | Range        |
+| ------ | ------------ |
+| 0      | [0.00, 0.14) |
+| 1      | [0.14, 0.28) |
+| 2      | [0.28, 0.42) |
+| 3      | [0.42, 0.56) |
+| 4      | [0.56, 0.70) |
+| 5      | [0.70, 0.84) |
+| 6      | [0.84, 1.00) |
+
+✅ These ranges were calculated, not assumed.
+
+---
+
+## 6. Now answer your exact example: 0.42
+
+Let’s place `0.42`.
+
+### Method 1 (Range logic — intuitive)
+
+Check ranges:
+
+ Bucket 2 → ends at 0.42
+ Bucket 3 → starts at 0.42
+
+👉 Convention:
+
+ Left inclusive
+ Right exclusive
+
+So:
+
+```
+0.42 ∈ [0.42, 0.56)
+→ Bucket 3
+```
+
+💡 So logically, 0.42 belongs to Bucket 3
+
+---
+
+## 7. Then why did formula put it in Bucket 2?
+
+Now comes the IMPORTANT PART.
+
+### Formula used:
+
+```
+bucket_index = floor(n × value)
+```
+
+For 0.42:
+
+```
+7 × 0.42 = 2.94
+floor(2.94) = 2
+```
+
+This slightly shifts boundaries due to:
+
+ Floating-point rounding
+ Simplification for implementation
+
+---
+
+## 8. Is this a mistake? ❌ NO
+
+Because:
+
+ 0.42 is close to the boundary
+ Whether it goes to Bucket 2 or 3:
+
+   It will still be sorted inside the bucket
+   Final result remains correct
+
+👉 Bucket Sort is approximate during distribution, exact during final sorting.
+
+---
+
+## 9. The REAL invariant (this is what matters)
+
+Bucket Sort only needs ONE condition:
+
+> If x < y, then bucket(x) ≤ bucket(y)
+
+That’s it.
+
+As long as:
+
+ Smaller numbers don’t go to higher buckets
+ Larger numbers don’t go to lower buckets
+
+The algorithm is correct.
+
+---
+
+## 10. Why the formula works mathematically
+
+Let value `v ∈ [0,1)`.
+
+Multiply:
+
+```
+0 ≤ v < 1
+0 ≤ n×v < n
+```
+
+Taking floor:
+
+```
+bucket_index ∈ {0, 1, 2, ..., n-1}
+```
+
+So:
+
+ All values map cleanly into valid buckets
+ Order is preserved approximately
+
+---
+
+## 11. Think of buckets as “rough zones”, NOT exact boxes
+
+Bucket Sort does NOT say:
+
+> “This is the final position”
+
+It says:
+
+> “These numbers belong roughly here”
+
+Final correctness comes from sorting inside buckets.
+
+---
+
+## 12. If this were integers, it would feel obvious
+
+Example:
+
+```
+Range: 0–99
+Buckets: 10
+```
+
+Bucket size = 10
+
+```
+34 → bucket 3
+87 → bucket 8
+```
+
+No confusion.
+
+For decimals, it feels confusing because ranges are implicit.
+
+---
+
+## 13. Final mental model (remember this forever)
+
+> Buckets are created by dividing the range evenly after choosing how many buckets.
+> The formula is just a shortcut to compute the same thing.
+
+---
+
+## 14. Short answer to your question
+
+> ❓ “How do I know 0.42 goes to bucket 2?”
+
+You don’t “know” it beforehand.
+You DEFINE the mapping rule.
+The formula creates bucket ranges automatically.
+
+---
+
