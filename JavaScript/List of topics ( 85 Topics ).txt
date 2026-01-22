@@ -116,11 +116,6 @@
 84. Concurrency model in JavaScript
 85. Design patterns (singleton, observer, factory, module, etc.)
 
-
- 🧠 Theory-only / concept-clarity enough
- 💻 Must practice coding
- 🧠💻 Both theory + heavy coding (interview gold)
-
 ---
 
 ## 1. Core Fundamentals
@@ -249,10 +244,7 @@
 
 ---
 
-## Final Truth
-
  🧠 Theory-only topics → ~30
  💻 Must-code topics → 41 (this is where interviews are won)
  🧠💻 Both → 14 (these decide junior vs senior)
 
-If you master the 💻 + 🧠💻 group, no JavaScript interview will scare you again.

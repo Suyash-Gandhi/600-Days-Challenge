@@ -204,184 +204,210 @@ For job interviews:
 
 ---
 
-  🧑‍💻 I. JUNIOR LEVEL — CODE EVERYTHING
+## 1. Programming & Math Foundations
 
-👉 These build your thinking muscle. No skipping coding here.
-
-  🔹 Programming & Math Foundations
-
-1. Time & Space Complexity → 📘 theory + analyze code
-2. Recursion basics → ✅ code
-3. Iterative vs Recursive → ✅ code
-4. Math problems → ✅ code
-5. Amortized Analysis → 📘 theory
-6. Probabilistic Analysis → 📖 theory
-
-  🔹 Arrays & Strings
-
-7–14 → ALL MUST CODE
-
- Searching
- Sorting
- Prefix sums
- Sliding window
- Two pointers
- String problems
-
-  🔹 Basic Data Structures
-
-15–17 → ALL MUST CODE
-
- Stack
- Queue
- Hashing
-
-✅ Verdict (Junior):
-
- 90% coding
- This is non-negotiable
+| # | Topic                                                 | What you should do |
+| - | ----------------------------------------------------- | ------------------ |
+| 1 | Time & Space Complexity (Big-O, Θ, Ω)                 | 🧠 Theory          |
+| 2 | Recursion basics (factorial, Fibonacci, gcd)          | 💻 Coding          |
+| 3 | Iterative vs Recursive solutions                      | 💻 Coding          |
+| 4 | Mathematical problems (prime, GCD/LCM, power, modulo) | 💻 Coding          |
+| 5 | Amortized Analysis (dynamic arrays, union-find)       | 🧠 Theory          |
+| 6 | Probabilistic Analysis (expected runtime, hashing)    | 🧠 Theory          |
 
 ---
 
-  🟡 II. INTERMEDIATE LEVEL — MOSTLY CODE
+## 2. Arrays & Strings
 
-👉 This is the core interview zone
-
-  🔹 Advanced Arrays & Strings
-
-18–20 → ✅ MUST CODE
-
-  🔹 Linked Lists
-
-21–24 → ✅ MUST CODE
-
-  🔹 Trees
-
-25–28 → ✅ MUST CODE
-
-  🔹 Heaps & Priority Queue
-
-29–32 → ✅ MUST CODE
-
-  🔹 Advanced Hashing
-
-33–35 → ✅ MUST CODE
-
-✅ Verdict (Intermediate):
-
- 100% coding
- These appear directly in interviews
+| #  | Topic                                            | What you should do |
+| -- | ------------------------------------------------ | ------------------ |
+| 7  | Arrays basics (insert, delete, traverse)         | 💻 Coding          |
+| 8  | Linear Search, Binary Search                     | 💻 Coding          |
+| 9  | Ternary Search                                   | 🧠 Theory          |
+| 10 | Bubble, Selection, Insertion Sort                | 💻 Coding          |
+| 11 | Merge Sort, QuickSort, Heap Sort                 | 💻 Coding          |
+| 12 | Counting, Radix, Bucket Sort                     | 🧠💻 Both          |
+| 13 | Prefix sum, sliding window, two pointers         | 💻 Coding          |
+| 14 | String problems (palindrome, anagram, substring) | 💻 Coding          |
 
 ---
 
-  🔵 III. SENIOR LEVEL — MIXED (IMPORTANT SECTION)
+## 3. Basic Data Structures
 
-  🔹 Graphs
-
-36–39 → ✅ MUST CODE
-
- BFS, DFS, Dijkstra
-
-40–41 → 📘 theory + 1 implementation
-
- Bellman-Ford
- Floyd-Warshall
-
-42 → 📖 theory only (Johnson’s Algorithm)
-
-43–45 → ✅ MUST CODE
-
- MST
- Topological sort
-
-46 → ✅ code
-47 → 📘 theory + read implementation
-48 → ✅ MUST CODE (DSU)
+| #  | Topic                                 | What you should do |
+| -- | ------------------------------------- | ------------------ |
+| 15 | Stacks (infix→postfix, parentheses)   | 💻 Coding          |
+| 16 | Queues (linear, circular, deque)      | 💻 Coding          |
+| 17 | Hashing basics (collisions, chaining) | 💻 Coding          |
 
 ---
 
-  🔹 Advanced Trees
+## 4. Advanced Arrays & Strings
 
-49–52 → 📘 theory + light coding
-
- Segment Tree
- Fenwick Tree
- Trie
-
-53 → 📖 theory only
-54 → 📖 theory only
+| #  | Topic                        | What you should do |
+| -- | ---------------------------- | ------------------ |
+| 18 | Kadane’s Algorithm           | 💻 Coding          |
+| 19 | Binary Search on Answer      | 💻 Coding          |
+| 20 | KMP, Rabin-Karp, Z-Algorithm | 🧠💻 Both          |
 
 ---
 
-  🔹 Dynamic Programming (VERY IMPORTANT)
+## 5. Linked Lists
 
-55–59 → ✅ MUST CODE
-60–62 → 📘 theory + practice 1–2 problems
-
----
-
-  🔹 Backtracking
-
-63–66 → ✅ MUST CODE
-
-✅ Verdict (Senior):
-
- ~70% coding
- ~30% theory
+| #  | Topic                            | What you should do |
+| -- | -------------------------------- | ------------------ |
+| 21 | Singly & Doubly Linked Lists     | 💻 Coding          |
+| 22 | Reverse, middle, cycle detection | 💻 Coding          |
+| 23 | Merge two sorted linked lists    | 💻 Coding          |
+| 24 | LRU Cache                        | 🧠💻 Both          |
 
 ---
 
-  🔴 IV. EXPERT / ADVANCED — MOSTLY THEORY
+## 6. Trees
 
-👉 These are NOT expected to be coded in interviews
-
-  🔹 Advanced Graphs
-
-67–71 → 📖 theory only
-(Understand ideas, don’t memorize code)
-
-  🔹 Advanced DP
-
-72 → 📘 theory + 1 example
-73 → 📖 theory
-74 → 📘 theory + pattern
-75 → 📖 theory
-
-  🔹 Advanced Strings
-
-76 → 📘 theory
-77–80 → 📖 theory only
-
-  🔹 Geometry & Math
-
-81–88 → 📖 theory only
-
-  🔹 Advanced Data Structures
-
-89 → 📘 theory
-90–94 → 📖 theory only
+| #  | Topic                            | What you should do |
+| -- | -------------------------------- | ------------------ |
+| 25 | Binary tree traversals           | 💻 Coding          |
+| 26 | Binary Search Tree operations    | 💻 Coding          |
+| 27 | Lowest Common Ancestor (LCA)     | 💻 Coding          |
+| 28 | Height, diameter, balanced trees | 💻 Coding          |
 
 ---
 
-  🟣 V. MASTERY LEVEL — THEORY + DESIGN THINKING
+## 7. Heaps & Priority Queue
 
-  🔹 Problem-Solving Patterns
-
-95 → ✅ code common greedy
-96–97 → 📖 theory
-
-  🔹 Randomized & Approximation
-
-98–99 → 📖 theory
-
-  🔹 Game Theory
-
-100 → 📖 theory
-
-  🔹 System-Level DS
-
-101 → 📘 theory + design
-102–103 → 📖 theory
+| #  | Topic                  | What you should do |
+| -- | ---------------------- | ------------------ |
+| 29 | Min-Heap, Max-Heap     | 💻 Coding          |
+| 30 | Heap Sort              | 💻 Coding          |
+| 31 | Kth smallest / largest | 💻 Coding          |
+| 32 | Median in a stream     | 💻 Coding          |
 
 ---
+
+## 8. Advanced Hashing
+
+| #  | Topic                                   | What you should do |
+| -- | --------------------------------------- | ------------------ |
+| 33 | HashMap / Unordered Map                 | 💻 Coding          |
+| 34 | Frequency counting problems             | 💻 Coding          |
+| 35 | Subarray sum / longest unique substring | 💻 Coding          |
+
+---
+
+## 9. Graphs
+
+| #  | Topic                        | What you should do |
+| -- | ---------------------------- | ------------------ |
+| 36 | Graph representation         | 💻 Coding          |
+| 37 | BFS, DFS                     | 💻 Coding          |
+| 38 | Connected components, cycles | 💻 Coding          |
+| 39 | Dijkstra                     | 💻 Coding          |
+| 40 | Bellman-Ford                 | 🧠💻 Both          |
+| 41 | Floyd-Warshall               | 🧠💻 Both          |
+| 42 | Johnson’s Algorithm          | 🧠 Theory          |
+| 43 | Kruskal                      | 💻 Coding          |
+| 44 | Prim                         | 💻 Coding          |
+| 45 | Topological Sort             | 💻 Coding          |
+| 46 | Bipartite Graph check        | 💻 Coding          |
+| 47 | Bipartite Matching           | 🧠 Theory          |
+| 48 | Union-Find (DSU)             | 💻 Coding          |
+
+---
+
+## 10. Advanced Trees
+
+| #  | Topic                       | What you should do |
+| -- | --------------------------- | ------------------ |
+| 49 | Segment Tree                | 🧠💻 Both          |
+| 50 | Segment Tree (Lazy)         | 🧠 Theory          |
+| 51 | Fenwick Tree                | 🧠💻 Both          |
+| 52 | Tries                       | 💻 Coding          |
+| 53 | AVL / Red-Black Trees       | 🧠 Theory          |
+| 54 | Tree Centroid Decomposition | 🧠 Theory          |
+
+---
+
+## 11. Dynamic Programming
+
+| #  | Topic                       | What you should do |
+| -- | --------------------------- | ------------------ |
+| 55 | 1D DP                       | 💻 Coding          |
+| 56 | 2D DP                       | 💻 Coding          |
+| 57 | DP on Strings               | 💻 Coding          |
+| 58 | DP on Trees                 | 🧠💻 Both          |
+| 59 | DP on Graphs                | 🧠 Theory          |
+| 60 | Matrix Chain Multiplication | 🧠💻 Both          |
+| 61 | Interval DP                 | 🧠💻 Both          |
+| 62 | Catalan DP                  | 🧠 Theory          |
+
+---
+
+## 12. Backtracking
+
+| #  | Topic         | What you should do |
+| -- | ------------- | ------------------ |
+| 63 | N-Queens      | 💻 Coding          |
+| 64 | Rat in a Maze | 💻 Coding          |
+| 65 | Sudoku Solver | 💻 Coding          |
+| 66 | Word Search   | 💻 Coding          |
+
+---
+
+## 13. Expert / Advanced
+
+| #  | Topic                         | What you should do |
+| -- | ----------------------------- | ------------------ |
+| 67 | Bridges & Articulation Points | 🧠 Theory          |
+| 68 | Strongly Connected Components | 🧠 Theory          |
+| 69 | Euler Tour                    | 🧠 Theory          |
+| 70 | Maximum Flow                  | 🧠 Theory          |
+| 71 | Min-Cut                       | 🧠 Theory          |
+| 72 | Bitmask DP                    | 🧠💻 Both          |
+| 73 | Digit DP                      | 🧠 Theory          |
+| 74 | DP with states                | 🧠💻 Both          |
+| 75 | DP optimizations              | 🧠 Theory          |
+| 76 | Manacher’s Algorithm          | 🧠 Theory          |
+| 77 | Suffix Array                  | 🧠 Theory          |
+| 78 | Suffix Tree                   | 🧠 Theory          |
+| 79 | Suffix Automaton              | 🧠 Theory          |
+| 80 | Aho-Corasick                  | 🧠 Theory          |
+
+---
+
+## 14. Geometry, Math & System DS
+
+| #   | Topic                     | What you should do |
+| --- | ------------------------- | ------------------ |
+| 81  | Convex Hull               | 🧠 Theory          |
+| 82  | Closest Pair              | 🧠 Theory          |
+| 83  | Rotating Calipers         | 🧠 Theory          |
+| 84  | Line Sweep                | 🧠 Theory          |
+| 85  | Modular arithmetic        | 🧠💻 Both          |
+| 86  | Extended Euclid           | 🧠💻 Both          |
+| 87  | CRT                       | 🧠 Theory          |
+| 88  | Number theory algorithms  | 🧠 Theory          |
+| 89  | DSU advanced              | 🧠 Theory          |
+| 90  | Treap                     | 🧠 Theory          |
+| 91  | Splay Tree                | 🧠 Theory          |
+| 92  | Heavy-Light Decomposition | 🧠 Theory          |
+| 93  | K-D Tree                  | 🧠 Theory          |
+| 94  | Order Statistics Tree     | 🧠 Theory          |
+| 95  | Greedy algorithms         | 💻 Coding          |
+| 96  | Advanced Divide & Conquer | 🧠 Theory          |
+| 97  | Meet in the Middle        | 🧠 Theory          |
+| 98  | Randomized Algorithms     | 🧠 Theory          |
+| 99  | Approximation Algorithms  | 🧠 Theory          |
+| 100 | Game Theory               | 🧠 Theory          |
+| 101 | LRU Cache (design)        | 🧠💻 Both          |
+| 102 | Skip List                 | 🧠 Theory          |
+| 103 | Bloom Filter              | 🧠 Theory          |
+
+---
+
+### ✅ Final takeaway
+
+ 💻 Code ~60 topics
+ 🧠💻 Understand + light coding ~20 topics
+ 🧠 Pure theory ~25 topics
 

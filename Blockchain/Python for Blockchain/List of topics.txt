@@ -19,7 +19,7 @@
 11. Sets & frozensets
 12. Control flow (`if`, `for`, `while`, `break`, `continue`)
 13. Functions (`def`, return values, arguments)
-14. Default, keyword, and variable-length arguments (`*args`, `kwargs`)
+14. Default, keyword, and variable-length arguments (`args`, `kwargs`)
 15. Scope rules (LEGB: Local, Enclosing, Global, Built-in)
 
 ---
@@ -148,4 +148,174 @@
 100. Deploying Python apps (Docker, Gunicorn, WSGI, ASGI)
 
 ---
+
+
+## 1. Core Fundamentals
+
+| #  | Topic                                                | What you should do |
+| -- | ---------------------------------------------------- | ------------------ |
+| 1  | Python syntax & indentation rules                    | 💻 Coding          |
+| 2  | Variables & constants                                | 💻 Coding          |
+| 3  | Data types (int, float, str, bool, complex)          | 💻 Coding          |
+| 4  | Type casting (implicit & explicit)                   | 💻 Coding          |
+| 5  | Truthy & falsy values                                | 🧠 Theory          |
+| 6  | Operators (arithmetic, comparison, logical, bitwise) | 🧠💻 Both          |
+| 7  | String basics & methods (`split`, `join`, slicing)   | 💻 Coding          |
+| 8  | List basics & methods                                | 💻 Coding          |
+| 9  | Tuples & immutability                                | 🧠 Theory          |
+| 10 | Dictionaries & methods                               | 💻 Coding          |
+| 11 | Sets & frozensets                                    | 🧠💻 Both          |
+| 12 | Control flow (`if`, `for`, `while`)                  | 💻 Coding          |
+| 13 | Functions (`def`, return, arguments)                 | 💻 Coding          |
+| 14 | `args` & `kwargs`                                 | 🧠💻 Both          |
+| 15 | Scope rules (LEGB)                                   | 🧠💻 Both          |
+
+---
+
+## 2. Intermediate Python
+
+| #  | Topic                                   | What you should do |
+| -- | --------------------------------------- | ------------------ |
+| 16 | List comprehensions                     | 💻 Coding          |
+| 17 | Dict & set comprehensions               | 💻 Coding          |
+| 18 | Lambda functions                        | 💻 Coding          |
+| 19 | Map / Filter / Reduce                   | 💻 Coding          |
+| 20 | Iterators (`iter`, `next`)              | 🧠💻 Both          |
+| 21 | Generators & `yield`                    | 💻 Coding          |
+| 22 | Decorators                              | 💻 Coding          |
+| 23 | Closures                                | 🧠💻 Both          |
+| 24 | Modules & importing                     | 🧠💻 Both          |
+| 25 | `__name__ == "__main__"`                | 🧠💻 Both          |
+| 26 | Packages & `__init__.py`                | 🧠 Theory          |
+| 27 | Virtual environments (`venv`, `pipenv`) | 🧠 Theory          |
+| 28 | Package management (`pip`, PyPI)        | 🧠 Theory          |
+| 29 | F-strings & formatting                  | 💻 Coding          |
+| 30 | Exception handling                      | 💻 Coding          |
+
+---
+
+## 3. Object-Oriented Python
+
+| #  | Topic                                | What you should do |
+| -- | ------------------------------------ | ------------------ |
+| 31 | Classes & objects                    | 💻 Coding          |
+| 32 | Instance vs class vs static methods  | 💻 Coding          |
+| 33 | Instance vs class attributes         | 🧠💻 Both          |
+| 34 | Constructors (`__init__`)            | 💻 Coding          |
+| 35 | Dunder methods (`__str__`, `__eq__`) | 💻 Coding          |
+| 36 | Operator overloading                 | 🧠💻 Both          |
+| 37 | Inheritance                          | 💻 Coding          |
+| 38 | Method overriding & `super()`        | 💻 Coding          |
+| 39 | Abstract classes (`abc`)             | 🧠💻 Both          |
+| 40 | Interfaces & duck typing             | 🧠 Theory          |
+| 41 | Encapsulation                        | 🧠💻 Both          |
+| 42 | Polymorphism                         | 🧠💻 Both          |
+| 43 | Metaclasses                          | 🧠 Theory          |
+
+---
+
+## 4. Data Structures & Algorithms (Python)
+
+| #  | Topic                      | What you should do |
+| -- | -------------------------- | ------------------ |
+| 44 | Stack / Queue / Deque      | 💻 Coding          |
+| 45 | PriorityQueue & `heapq`    | 💻 Coding          |
+| 46 | Linked list implementation | 💻 Coding          |
+| 47 | Binary trees               | 💻 Coding          |
+| 48 | Graph representation       | 💻 Coding          |
+| 49 | Sorting with custom keys   | 💻 Coding          |
+| 50 | Linear & binary search     | 💻 Coding          |
+| 51 | Kadane / Two pointers      | 💻 Coding          |
+| 52 | `bisect`, `itertools`      | 💻 Coding          |
+
+---
+
+## 5. Functional & Advanced Features
+
+| #  | Topic                          | What you should do |
+| -- | ------------------------------ | ------------------ |
+| 53 | First-class functions          | 🧠💻 Both          |
+| 54 | Higher-order functions         | 💻 Coding          |
+| 55 | Currying & `functools.partial` | 🧠💻 Both          |
+| 56 | Memoization (`lru_cache`)      | 💻 Coding          |
+| 57 | Context managers               | 🧠💻 Both          |
+| 58 | Custom context managers        | 💻 Coding          |
+| 59 | `itertools` module             | 💻 Coding          |
+| 60 | `collections` module           | 💻 Coding          |
+| 61 | Dataclasses                    | 🧠💻 Both          |
+| 62 | Typing & type hints            | 🧠 Theory          |
+
+---
+
+## 6. Asynchronous Python
+
+| #  | Topic                       | What you should do |
+| -- | --------------------------- | ------------------ |
+| 63 | Multithreading basics       | 🧠💻 Both          |
+| 64 | GIL                         | 🧠 Theory          |
+| 65 | Multiprocessing             | 🧠💻 Both          |
+| 66 | AsyncIO basics              | 💻 Coding          |
+| 67 | Async tasks & `gather`      | 💻 Coding          |
+| 68 | Event loop                  | 🧠💻 Both          |
+| 69 | Futures & coroutines        | 💻 Coding          |
+| 70 | Third-party async libraries | 🧠 Theory          |
+
+---
+
+## 7. File Handling & OS
+
+| #  | Topic              | What you should do |
+| -- | ------------------ | ------------------ |
+| 71 | File operations    | 💻 Coding          |
+| 72 | `with open`        | 💻 Coding          |
+| 73 | CSV & JSON         | 💻 Coding          |
+| 74 | `os` module        | 💻 Coding          |
+| 75 | `glob` & `pathlib` | 💻 Coding          |
+| 76 | `shutil`           | 💻 Coding          |
+| 77 | Pickle             | 🧠💻 Both          |
+| 78 | Logging            | 🧠💻 Both          |
+
+---
+
+## 8. Testing, Debugging & Best Practices
+
+| #  | Topic                  | What you should do |
+| -- | ---------------------- | ------------------ |
+| 79 | `unittest`             | 💻 Coding          |
+| 80 | Pytest                 | 💻 Coding          |
+| 81 | Mocking & patching     | 💻 Coding          |
+| 82 | Debugging (`pdb`)      | 💻 Coding          |
+| 83 | Profiling              | 🧠💻 Both          |
+| 84 | Clean code & PEP 8     | 🧠 Theory          |
+| 85 | Type checking (`mypy`) | 🧠 Theory          |
+| 86 | Linting                | 🧠 Theory          |
+| 87 | Dependency management  | 🧠 Theory          |
+
+---
+
+## 9. Senior-Level & Ecosystem Knowledge
+
+| #   | Topic                                    | What you should do |
+| --- | ---------------------------------------- | ------------------ |
+| 88  | Memory management & GC                   | 🧠 Theory          |
+| 89  | Weak references                          | 🧠 Theory          |
+| 90  | Performance optimization                 | 🧠 Theory          |
+| 91  | Packaging (`setup.py`, `pyproject.toml`) | 🧠💻 Both          |
+| 92  | Virtualenv vs Conda                      | 🧠 Theory          |
+| 93  | REST APIs (Flask / FastAPI)              | 🧠💻 Both          |
+| 94  | Web frameworks overview                  | 🧠 Theory          |
+| 95  | ORM basics                               | 🧠💻 Both          |
+| 96  | Data science stack                       | 🧠 Theory          |
+| 97  | ML basics                                | 🧠 Theory          |
+| 98  | Async web frameworks                     | 🧠 Theory          |
+| 99  | Security best practices                  | 🧠 Theory          |
+| 100 | Deployment                               | 🧠 Theory          |
+
+---
+
+### 📊 Summary
+
+ 🧠 Theory-only → ~32 topics
+ 💻 Must-code → ~45 topics (this is where interviews are won)
+ 🧠💻 Both → ~23 topics (this separates junior from senior)
 
