@@ -1,0 +1,193 @@
+### 2.3.1 Full Node, Light Node, Miners / Validators
+
+This topic explains the different types of participants (nodes) in a blockchain network and what role each one plays in keeping the system decentralized, secure, and functional.
+
+---
+
+## 1. What is a Node (quick context)
+
+A node is any computer connected to a blockchain network that follows the protocol rules.
+Not all nodes do the same job—some store data, some verify data, and some create new blocks.
+
+---
+
+## 2. Full Node
+
+### Definition
+
+A full node is a node that downloads, stores, and independently verifies the entire blockchain from the genesis block to the latest block.
+
+### Key Responsibilities
+
+ Stores the complete blockchain history
+ Verifies:
+
+   Transactions
+   Blocks
+   Consensus rules
+ Rejects invalid blocks or transactions
+ Helps propagate valid data to other nodes
+
+### What a Full Node Does NOT Do
+
+ It does not necessarily create new blocks
+ It does not earn rewards by default
+
+### Why Full Nodes Are Important
+
+ They enforce the rules of the blockchain
+ They prevent invalid transactions from being accepted
+ They are the backbone of decentralization
+
+### Trade-offs
+
+ High storage requirement
+ Higher bandwidth usage
+ Needs more powerful hardware
+
+### Example
+
+ Bitcoin Core
+ Ethereum full node (Geth, Nethermind)
+
+---
+
+## 3. Light Node (Light Client)
+
+### Definition
+
+A light node does not store the full blockchain. Instead, it downloads only block headers and relies on full nodes for detailed data.
+
+### Key Responsibilities
+
+ Verifies transactions using simplified proofs
+ Queries full nodes when needed
+ Maintains minimal blockchain data
+
+### What Light Nodes Do NOT Do
+
+ Do not store full transaction history
+ Do not validate every transaction independently
+ Do not create blocks
+
+### Why Light Nodes Exist
+
+ Enable blockchain usage on:
+
+   Mobile phones
+   Browsers
+   Low-resource devices
+ Improve accessibility and scalability
+
+### Security Model
+
+ Trust-minimized, not trustless
+ Assumes that most full nodes are honest
+
+### Example
+
+ MetaMask
+ Mobile crypto wallets
+ Browser-based dApps
+
+---
+
+## 4. Miners (Proof of Work Networks)
+
+### Definition
+
+A miner is a specialized node that creates new blocks by solving cryptographic puzzles in Proof of Work (PoW) blockchains.
+
+### Key Responsibilities
+
+ Collect pending transactions
+ Solve PoW puzzles (hash computations)
+ Propose new blocks
+ Secure the network against attacks
+
+### Incentives
+
+ Block rewards
+ Transaction fees
+
+### Why Miners Are Critical
+
+ They make attacks computationally expensive
+ They ensure immutability
+ They decide the next block producer (probabilistically)
+
+### Trade-offs
+
+ High energy consumption
+ Expensive hardware
+ Centralization risks (mining pools)
+
+### Example
+
+ Bitcoin miners
+ Early Ethereum (before PoS)
+
+---
+
+## 5. Validators (Proof of Stake Networks)
+
+### Definition
+
+A validator replaces miners in Proof of Stake (PoS) systems. Validators create and verify blocks based on staked tokens, not computing power.
+
+### Key Responsibilities
+
+ Propose new blocks
+ Validate blocks proposed by others
+ Vote on block finality
+ Maintain consensus
+
+### Incentives & Penalties
+
+ Earn staking rewards
+ Can lose stake (slashing) for malicious behavior
+
+### Why Validators Matter
+
+ Energy-efficient consensus
+ Economic security through stake
+ Faster finality compared to PoW
+
+### Trade-offs
+
+ Requires capital to stake
+ Risk of stake centralization
+ More complex protocol logic
+
+### Example
+
+ Ethereum (post-merge)
+ Solana
+ Cardano
+ Polkadot
+
+---
+
+## 6. Comparison Summary
+
+| Aspect                 | Full Node | Light Node   | Miner       | Validator   |
+| ---------------------- | --------- | ------------ | ----------- | ----------- |
+| Stores full blockchain | ✅ Yes     | ❌ No         | Usually yes | Usually yes |
+| Verifies transactions  | ✅ Fully   | ⚠️ Partially | ✅ Yes       | ✅ Yes       |
+| Creates blocks         | ❌ No      | ❌ No         | ✅ Yes (PoW) | ✅ Yes (PoS) |
+| Earns rewards          | ❌ No      | ❌ No         | ✅ Yes       | ✅ Yes       |
+| Hardware demand        | High      | Very low     | Very high   | Medium      |
+
+---
+
+## 7. Big Picture (How They Work Together)
+
+ Full nodes protect decentralization and rule enforcement
+ Light nodes make blockchain usable for everyday users
+ Miners / Validators secure the network and extend the blockchain
+
+Without full nodes, the system becomes trust-based.
+Without miners or validators, the blockchain stops growing.
+
+---
+
