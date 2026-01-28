@@ -1,0 +1,174 @@
+
+
+## 1. What is Keccak?
+
+Keccak is a cryptographic hash function.
+
+In simple words:
+👉 It takes any input data and converts it into a fixed-length output (a hash) that looks random.
+
+Example idea (not real values):
+
+```
+"hello"  →  0x3f8a9c...
+"hello!" →  0x91bd02...
+```
+
+Even tiny input changes → completely different output.
+
+---
+
+## 2. Why Ethereum uses Keccak
+
+Ethereum uses Keccak-256 as its core hashing algorithm.
+
+Ethereum calls it `keccak256`.
+
+It is used for:
+
+ Creating transaction hashes
+ Creating block hashes
+ Generating contract addresses
+ Hashing function signatures
+ Storage & state verification
+
+👉 Without Keccak, Ethereum cannot function securely.
+
+---
+
+## 3. Keccak vs SHA-3 (very important exam/interview point)
+
+This is where many people get confused.
+
+| Feature            | Keccak              | SHA-3                |
+| ------------------ | ------------------- | -------------------- |
+| Relationship       | Original algorithm  | Standardized version |
+| Used by Ethereum   | ✅ Yes               | ❌ No                 |
+| Padding difference | Different           | Different            |
+| Output size        | 256 bits (Ethereum) | 256 bits             |
+
+⚠️ Ethereum uses the pre-standard version of Keccak, not the final SHA-3 standard.
+
+That’s why:
+
+```
+keccak256("abc") ≠ sha3_256("abc")
+```
+
+---
+
+## 4. What makes Keccak special? (Sponge construction)
+
+Keccak uses a Sponge Function.
+
+### Simple mental model:
+
+ You absorb input data into a sponge
+ You squeeze out the hash
+
+### Why this matters:
+
+ Strong resistance to attacks
+ Flexible output size
+ Efficient and secure
+
+This design is different from SHA-2 (Bitcoin), which uses Merkle–Damgård construction.
+
+---
+
+## 5. How Ethereum actually uses Keccak
+
+### (a) Transaction Hash
+
+Every Ethereum transaction is hashed using `keccak256` to get a transaction ID.
+
+```
+Transaction data → keccak256 → tx hash
+```
+
+---
+
+### (b) Block Hash
+
+Blocks are identified using Keccak hashes.
+
+```
+Block header → keccak256 → block hash
+```
+
+---
+
+### (c) Smart Contract Function Calls
+
+Ethereum converts function signatures like:
+
+```
+transfer(address,uint256)
+```
+
+into:
+
+```
+keccak256("transfer(address,uint256)")
+```
+
+Then it takes first 4 bytes → function selector.
+
+That’s how Ethereum knows which function to execute.
+
+---
+
+### (d) Contract Address Generation
+
+When a contract is deployed:
+
+```
+(sender address + nonce) → keccak256 → contract address
+```
+
+---
+
+## 6. Security properties of Keccak
+
+Keccak provides all essential cryptographic guarantees:
+
+1. Deterministic
+
+    Same input → same output
+
+2. Collision resistance
+
+    Extremely hard to find two inputs with same hash
+
+3. Pre-image resistance
+
+    Cannot reverse hash to original data
+
+4. Avalanche effect
+
+    Small input change → massive output change
+
+These properties are critical for blockchain security.
+
+---
+
+## 7. Why Ethereum didn’t switch to SHA-3 later
+
+Good conceptual question.
+
+Ethereum:
+
+ Was already live when SHA-3 was standardized
+ Changing hash function would break compatibility
+ Risk > benefit
+
+So Ethereum kept Keccak.
+
+---
+
+## 8. One-line summary (perfect for revision)
+
+> Keccak is the cryptographic hash function used by Ethereum to secure transactions, blocks, smart contracts, and state, implemented as keccak256 (not SHA-3).
+
+---
+

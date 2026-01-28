@@ -1,0 +1,186 @@
+
+## 1. Deterministic
+
+Meaning
+
+ The same input will always produce the same hash output.
+
+Why it matters
+
+ If I hash `"Hello"` today or tomorrow, on any computer, the output is identical.
+ This consistency allows different blockchain nodes to independently verify data.
+
+Blockchain context
+
+ Every node can recompute a block hash and confirm it matches the stored value.
+
+---
+
+## 2. Fixed Output Length
+
+Meaning
+
+ No matter how big or small the input is, the hash output has a fixed size.
+
+Example
+
+ Input: `"A"` → 256-bit output
+ Input: `"A very long transaction list..."` → still 256-bit output
+
+Why it matters
+
+ Makes storage predictable.
+ Enables efficient comparison and indexing.
+
+Blockchain context
+
+ Block hashes remain uniform even though blocks contain different amounts of data.
+
+---
+
+## 3. Fast to Compute (Efficient)
+
+Meaning
+
+ Computing the hash of any input is computationally easy and fast.
+
+Why it matters
+
+ Nodes must hash data constantly (transactions, blocks).
+ Verification should be cheap.
+
+Blockchain context
+
+ Validators/miners can quickly verify transactions and blocks.
+
+---
+
+## 4. Pre-image Resistance (One-Way Property)
+
+Meaning
+
+ Given a hash value, it is computationally infeasible to find the original input.
+
+In simple terms
+
+ You can go input → hash
+ But you cannot go hash → input
+
+Why it matters
+
+ Protects sensitive data.
+
+Blockchain context
+
+ Wallet addresses are derived from public keys via hashing.
+ Even if you see the hash, you can’t reverse it to steal keys.
+
+---
+
+## 5. Second Pre-image Resistance
+
+Meaning
+
+ Given an input `X`, it is infeasible to find a different input `Y` such that
+  `hash(X) = hash(Y)`
+
+Why it matters
+
+ Prevents attackers from replacing legitimate data with fake data that has the same hash.
+
+Blockchain context
+
+ A transaction cannot be swapped with another transaction without changing the block hash.
+
+---
+
+## 6. Collision Resistance
+
+Meaning
+
+ It is infeasible to find any two different inputs that produce the same hash.
+
+Important distinction
+
+ Collisions are theoretically possible (finite hash space)
+ But practically impossible with secure hash functions
+
+Why it matters
+
+ Ensures data integrity.
+
+Blockchain context
+
+ Two different blocks cannot realistically have the same hash.
+ Prevents double-spending and fraud.
+
+---
+
+## 7. Avalanche Effect
+
+Meaning
+
+ A small change in input results in a completely different hash.
+
+Example intuition
+
+ Changing one letter or one bit flips ~50% of output bits.
+
+Why it matters
+
+ Makes patterns impossible to detect.
+ Enhances security.
+
+Blockchain context
+
+ Even a tiny change in a transaction changes the entire block hash.
+ This is why tampering with old blocks is easily detected.
+
+---
+
+## 8. Pseudo-Randomness
+
+Meaning
+
+ Hash outputs appear random, even for similar inputs.
+
+Why it matters
+
+ Prevents attackers from predicting hashes.
+ Enhances security against pattern-based attacks.
+
+Blockchain context
+
+ Block hashes look random, making manipulation extremely difficult.
+
+---
+
+## 9. Non-Reversibility Without Brute Force
+
+Meaning
+
+ The only way to guess the original input is by trying all possibilities.
+
+Why it matters
+
+ With modern hash sizes (e.g., 256-bit), brute force is computationally infeasible.
+
+Blockchain context
+
+ Protects passwords, private keys, and transaction commitments.
+
+---
+
+## Summary Table (Quick Revision)
+
+| Property                    | Purpose                |
+| --------------------------- | ---------------------- |
+| Deterministic               | Same input → same hash |
+| Fixed length                | Uniform output size    |
+| Fast computation            | Efficient verification |
+| Pre-image resistance        | One-way security       |
+| Second pre-image resistance | Prevents substitution  |
+| Collision resistance        | Ensures uniqueness     |
+| Avalanche effect            | Detects tiny changes   |
+| Pseudo-randomness           | Prevents prediction    |
+
