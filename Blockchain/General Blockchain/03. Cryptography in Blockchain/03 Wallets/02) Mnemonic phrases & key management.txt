@@ -14,7 +14,7 @@ This topic answers two core questions:
 A mnemonic phrase (also called seed phrase or recovery phrase) is:
 
  A set of 12 / 18 / 24 simple English words
- That represents all your private key
+ That represents all your private keys
  It is the master backup of your wallet
 
 Example (fake):
