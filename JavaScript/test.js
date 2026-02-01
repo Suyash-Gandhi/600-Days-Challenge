@@ -1,10 +1,14 @@
-const greet = (name, callback) => {
-  console.log("Hello", name);
-  callback();
-};
+const arr = [1, 2, 3, 4, 5,2,2,2];
+ const num=2
+let count=0
 
-const sayBye = () => {
-  console.log("Goodbye!");
-};
+ for(let i=0;i<arr.length;i++){
+  if (arr[i]==num) {
+    count++
+  }
+ 
+ }
+  console.log(count);
 
-greet("Suyash", sayBye);
+
+ 
