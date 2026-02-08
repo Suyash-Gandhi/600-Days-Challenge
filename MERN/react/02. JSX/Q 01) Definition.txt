@@ -1,0 +1,297 @@
+## 2. JSX – syntax, rules, and why it’s needed
+
+JSX is one of those things in React that feels weird at first (“Why am I writing HTML inside JavaScript?”) but once it clicks, React suddenly makes a lot of sense. Let’s break it down properly.
+
+---
+
+## What JSX actually is
+
+JSX stands for JavaScript XML.
+
+ It lets you write UI markup that looks like HTML directly inside JavaScript.
+ Browsers do not understand JSX.
+ JSX is compiled (by Babel) into plain JavaScript function calls before it runs.
+
+So JSX is not a new language, and it’s not HTML.
+It’s just a syntax sugar to make React code readable and expressive.
+
+---
+
+## Why JSX is needed in React
+
+### 1. UI and logic are tightly connected
+
+In traditional web development:
+
+ HTML → structure
+ CSS → styling
+ JS → logic
+
+In React:
+
+ A component controls structure + logic + behavior together.
+
+JSX allows this co-location:
+
+ Conditions
+ Loops
+ Props
+ Event handlers
+
+all live right next to the UI they affect.
+
+Without JSX, React code becomes hard to read very quickly.
+
+---
+
+### 2. JSX is more readable than plain React API calls
+
+JSX:
+
+```js
+const element = <h1>Hello World</h1>;
+```
+
+Without JSX (what React actually uses internally):
+
+```js
+const element = React.createElement("h1", null, "Hello World");
+```
+
+Now imagine a full page UI written like that 😵‍💫
+JSX exists to save your sanity.
+
+---
+
+### 3. JavaScript power inside UI
+
+With JSX, UI is not static markup.
+
+You can:
+
+ Use variables
+ Run expressions
+ Render conditionally
+ Render lists dynamically
+
+This is the core reason React scales well for complex apps.
+
+---
+
+## JSX syntax rules (very important)
+
+JSX looks like HTML, but it follows JavaScript rules, not HTML rules.
+
+---
+
+### 1. You must return a single parent element
+
+❌ Invalid:
+
+```js
+return (
+  <h1>Hello</h1>
+  <p>World</p>
+);
+```
+
+✅ Valid:
+
+```js
+return (
+  <div>
+    <h1>Hello</h1>
+    <p>World</p>
+  </div>
+);
+```
+
+or using fragments:
+
+```js
+return (
+  <>
+    <h1>Hello</h1>
+    <p>World</p>
+  </>
+);
+```
+
+Reason: JSX compiles to one JavaScript expression, so it must have one root.
+
+---
+
+### 2. JavaScript expressions go inside `{}`
+
+JSX does not allow statements, only expressions.
+
+✅ Allowed:
+
+```js
+<h1>{user.name}</h1>
+<h1>{isLoggedIn ? "Welcome" : "Please login"}</h1>
+```
+
+❌ Not allowed:
+
+```js
+<h1>{if (isLoggedIn) { ... }}</h1>
+```
+
+Think of `{}` as:
+
+> “Pause JSX, run JavaScript here.”
+
+---
+
+### 3. Attribute names are camelCase
+
+Because JSX becomes JavaScript:
+
+| HTML     | JSX       |
+| -------- | --------- |
+| class    | className |
+| for      | htmlFor   |
+| onclick  | onClick   |
+| tabindex | tabIndex  |
+
+Example:
+
+```js
+<button className="btn" onClick={handleClick}>
+  Click me
+</button>
+```
+
+---
+
+### 4. All tags must be properly closed
+
+HTML allows this:
+
+```html
+<img src="logo.png">
+```
+
+JSX does not.
+
+JSX requires:
+
+```js
+<img src="logo.png" />
+```
+
+Same for:
+
+ `<input />`
+ `<br />`
+ `<hr />`
+
+Reason: JSX follows XML-style strictness.
+
+---
+
+### 5. JSX values are JavaScript, not strings
+
+❌ Wrong:
+
+```js
+<button disabled="true">Submit</button>
+```
+
+✅ Correct:
+
+```js
+<button disabled={true}>Submit</button>
+```
+
+Same for:
+
+```js
+<input maxLength={10} />
+```
+
+If it’s not text, it’s probably JavaScript.
+
+---
+
+### 6. You cannot use reserved JavaScript keywords
+
+For example:
+
+ `class` → `className`
+ `for` → `htmlFor`
+
+Because JSX runs inside JavaScript, JavaScript rules win.
+
+---
+
+## JSX is expressions, not templates
+
+This is a key mental shift.
+
+JSX:
+
+ Is not a string
+ Is not a template
+ Is not HTML
+
+JSX:
+
+ Evaluates to a JavaScript object
+ That object describes what the UI should look like
+
+That’s why you can do things like:
+
+ Assign JSX to variables
+ Pass JSX as props
+ Return JSX from functions
+
+---
+
+## What happens to JSX under the hood
+
+This:
+
+```js
+const element = <h1>Hello</h1>;
+```
+
+Becomes something like:
+
+```js
+const element = React.createElement("h1", null, "Hello");
+```
+
+React then:
+
+1. Creates a virtual representation
+2. Compares changes (Virtual DOM)
+3. Updates the real DOM efficiently
+
+JSX is just the developer-friendly layer on top.
+
+---
+
+## When JSX feels confusing (normal phase)
+
+Most beginners struggle because:
+
+ It looks like HTML
+ It behaves like JavaScript
+
+Once you accept:
+
+> “JSX is JavaScript first, markup second”
+
+everything becomes easier.
+
+---
+
+## Key takeaways (lock these in)
+
+ JSX is syntax sugar for `React.createElement`
+ Browsers don’t understand JSX → Babel compiles it
+ JSX allows dynamic, logic-driven UI
+ It follows JavaScript rules, not HTML rules
+ `{}` is your gateway from JSX to JavaScript
