@@ -1,0 +1,264 @@
+
+## 1. What are Props in React?
+
+ Props (short for properties) are used to pass data from a parent component to a child component.
+ Props are read-only → a child cannot modify the props it receives.
+ They make components reusable and dynamic.
+
+Think of props like arguments passed to a function.
+
+---
+
+## 2. Passing Props
+
+### Parent Component → Child Component
+
+### Example 1: Passing simple props
+
+#### Parent Component
+
+```jsx
+const App = () => {
+  return (
+    <UserCard name="Suyash" age={22} isStudent={true} />
+  );
+};
+
+export default App;
+```
+
+#### Child Component
+
+```jsx
+const UserCard = (props) => {
+  return (
+    <div>
+      <h2>Name: {props.name}</h2>
+      <p>Age: {props.age}</p>
+      <p>Student: {props.isStudent ? "Yes" : "No"}</p>
+    </div>
+  );
+};
+
+export default UserCard;
+```
+
+### Key Points
+
+ String → `"Suyash"`
+ Number → `{22}`
+ Boolean → `{true}`
+ Access using `props.propertyName`
+
+---
+
+## 3. Destructuring Props (Best Practice)
+
+Instead of writing `props.name` again and again, we destructure.
+
+### Example 2: Destructured props
+
+```jsx
+const UserCard = ({ name, age, isStudent }) => {
+  return (
+    <div>
+      <h2>Name: {name}</h2>
+      <p>Age: {age}</p>
+      <p>Student: {isStudent ? "Yes" : "No"}</p>
+    </div>
+  );
+};
+
+export default UserCard;
+```
+
+### Why use destructuring?
+
+ Cleaner code
+ More readable
+ Industry standard
+
+---
+
+## 4. Passing Functions as Props
+
+Props can also pass functions (very common in React).
+
+### Example 3: Passing a function
+
+#### Parent
+
+```jsx
+const App = () => {
+  const greetUser = (name) => {
+    alert(`Hello, ${name}!`);
+  };
+
+  return <Button onClick={greetUser} />;
+};
+
+export default App;
+```
+
+#### Child
+
+```jsx
+const Button = ({ onClick }) => {
+  return (
+    <button onClick={() => onClick("Suyash")}>
+      Greet User
+    </button>
+  );
+};
+
+export default Button;
+```
+
+### Use case
+
+ Handling button clicks
+ Updating parent state
+ Triggering events
+
+---
+
+## 5. Default Props
+
+Default props are used when a prop is not passed.
+
+### Example 4: defaultProps
+
+```jsx
+const UserCard = ({ name, age }) => {
+  return (
+    <div>
+      <h2>Name: {name}</h2>
+      <p>Age: {age}</p>
+    </div>
+  );
+};
+
+UserCard.defaultProps = {
+  name: "Guest",
+  age: 18,
+};
+
+export default UserCard;
+```
+
+### Usage
+
+```jsx
+<UserCard />
+```
+
+### Output
+
+```
+Name: Guest
+Age: 18
+```
+
+### Why default props?
+
+ Prevents `undefined`
+ Makes components safer
+ Improves UX
+
+---
+
+## 6. propTypes (Type Checking for Props)
+
+`propTypes` help you validate the type of props during development.
+
+> ⚠️ Works only in development mode, not production.
+
+### Step 1: Install prop-types
+
+```bash
+npm install prop-types
+```
+
+---
+
+### Example 5: Using propTypes
+
+```jsx
+import PropTypes from "prop-types";
+
+const UserCard = ({ name, age, isStudent }) => {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>Age: {age}</p>
+      <p>Student: {isStudent ? "Yes" : "No"}</p>
+    </div>
+  );
+};
+
+UserCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number,
+  isStudent: PropTypes.bool,
+};
+
+export default UserCard;
+```
+
+### What this does
+
+ Warns if `name` is missing
+ Warns if `age` is not a number
+ Prevents wrong prop usage
+
+---
+
+## 7. Common propTypes Examples
+
+```jsx
+Component.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.number,
+  isActive: PropTypes.bool,
+  hobbies: PropTypes.array,
+  user: PropTypes.object,
+  callback: PropTypes.func,
+  element: PropTypes.element,
+};
+```
+
+---
+
+## 8. defaultProps + propTypes Together (Realistic Pattern)
+
+```jsx
+import PropTypes from "prop-types";
+
+const Badge = ({ label, color }) => {
+  return <span style={{ color }}>{label}</span>;
+};
+
+Badge.defaultProps = {
+  color: "blue",
+};
+
+Badge.propTypes = {
+  label: PropTypes.string.isRequired,
+  color: PropTypes.string,
+};
+
+export default Badge;
+```
+
+---
+
+## 9. Important Interview Notes
+
+ Props are immutable
+ Data flows one-way (parent → child)
+ Use defaultProps for fallback values
+ Use propTypes for safety and debugging
+ Functions can be passed as props
+
+---
+

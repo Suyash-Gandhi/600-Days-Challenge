@@ -1,0 +1,180 @@
+
+## 3. React Components: Function vs Class Components
+
+In React, components are reusable building blocks of the UI.
+Historically, React had two ways to define components:
+
+ Class Components (older approach)
+ Function Components (modern, preferred approach)
+
+Today, function components dominate, but understanding both is important.
+
+---
+
+## 1. What is a Class Component?
+
+A class component is an ES6 class that extends React’s base component class.
+
+### Key characteristics
+
+ Uses classes
+ Manages state using `this.state`
+ Uses lifecycle methods like:
+
+   `componentDidMount`
+   `componentDidUpdate`
+   `componentWillUnmount`
+ Requires `this` keyword frequently
+ More verbose and harder to read
+
+### Mental model
+
+Think of class components as:
+
+> “Objects with lifecycle phases and internal state handled through methods.”
+
+### Downsides
+
+ Boilerplate-heavy
+ Confusing `this` binding
+ Harder to reuse logic
+ More error-prone for beginners
+
+---
+
+## 2. What is a Function Component?
+
+A function component is a plain JavaScript function that returns UI.
+
+Originally, function components were stateless.
+That changed with the introduction of Hooks.
+
+### Key characteristics
+
+ Uses functions
+ State & side effects handled using Hooks
+ No `this`
+ Cleaner, shorter, more readable
+ Easier logic reuse via custom hooks
+
+### Mental model
+
+Think of function components as:
+
+> “Pure functions enhanced with hooks to manage state and lifecycle behavior.”
+
+---
+
+## 3. Lifecycle: Class vs Function (Conceptual Mapping)
+
+| Class Component        | Function Component              |
+| ---------------------- | ------------------------------- |
+| `constructor`          | `useState`                      |
+| `componentDidMount`    | `useEffect ([])`                |
+| `componentDidUpdate`   | `useEffect ([deps])`            |
+| `componentWillUnmount` | cleanup function in `useEffect` |
+| `this.state`           | `useState`                      |
+| `this.setState`        | state setter function           |
+
+👉 Hooks replace lifecycle methods entirely.
+
+---
+
+## 4. State Management Comparison
+
+### Class Components
+
+ State is an object
+ Updates are merged automatically
+ Uses `this.setState`
+
+### Function Components
+
+ State is independent variables
+ Updates are explicit
+ Multiple `useState` calls allowed
+ Easier to reason about changes
+
+This makes function components more predictable and modular.
+
+---
+
+## 5. Logic Reusability
+
+### Class Components
+
+ Logic reuse required:
+
+   Higher Order Components (HOCs)
+   Render props
+ These patterns increase complexity
+
+### Function Components
+
+ Logic reuse via custom hooks
+ Clean, readable, composable
+ Industry-standard approach
+
+👉 This is one of the biggest reasons hooks won.
+
+---
+
+## 6. Performance Considerations
+
+ Function components are lighter
+ No class instantiation
+ Easier for React to optimize
+ Better compatibility with modern React features like:
+
+   Concurrent rendering
+   Server components
+
+Performance difference isn’t massive for small apps, but scales better with function components.
+
+---
+
+## 7. Current Industry Standard (Very Important)
+
+ Class components are NOT deprecated
+ But:
+
+   New React features target function components
+   Official React docs now teach functions first
+   Most production codebases use functions + hooks
+
+👉 If you’re learning React in 2026:
+
+> Function components are mandatory knowledge
+> Class components are legacy knowledge
+
+---
+
+## 8. When Would You Still See Class Components?
+
+ Old enterprise projects
+ Legacy codebases
+ Some older tutorials
+ Maintenance work
+
+Knowing them helps you read and refactor, not write new code.
+
+---
+
+## 9. Quick Comparison Summary
+
+| Feature              | Function Component | Class Component     |
+| -------------------- | ------------------ | ------------------- |
+| Syntax               | Simple             | Verbose             |
+| State                | Hooks              | `this.state`        |
+| Lifecycle            | Hooks              | Lifecycle methods   |
+| `this` keyword       | ❌ No               | ✅ Yes               |
+| Logic reuse          | Custom hooks       | HOCs / render props |
+| Modern React support | ✅ Full             | ❌ Limited           |
+| Recommended today    | ✅ Yes              | ❌ No                |
+
+---
+
+## Final Verdict
+
+Use Function Components for everything new.
+Understand Class Components to read legacy code.
