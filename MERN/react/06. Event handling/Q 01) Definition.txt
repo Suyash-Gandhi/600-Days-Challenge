@@ -1,0 +1,299 @@
+## 6. Event Handling in React (Synthetic Events)
+
+Event handling in React is how we respond to user interactions such as clicks, form submissions, key presses, mouse movements, etc. React provides a Synthetic Event system, which is slightly different from traditional DOM event handling.
+
+---
+
+# 1️⃣ What is Event Handling in React?
+
+In React, events are handled using:
+
+ CamelCase naming (`onClick`, `onChange`)
+ JSX attributes
+ Functions as event handlers
+
+### ✅ Basic Example
+
+```jsx
+const App = () => {
+  const handleClick = () => {
+    console.log("Button clicked!");
+  };
+
+  return (
+    <button onClick={handleClick}>
+      Click Me
+    </button>
+  );
+};
+```
+
+### Key Points:
+
+ `onClick` is camelCase (not `onclick`)
+ We pass a function reference, not a function call
+ React automatically handles event binding in function components
+
+---
+
+# 2️⃣ What Are Synthetic Events?
+
+A Synthetic Event is a wrapper around the browser’s native event.
+
+React creates its own event system to ensure:
+
+ Cross-browser compatibility
+ Consistent behavior across all browsers
+ Better performance via event delegation
+
+### Definition:
+
+> A Synthetic Event is a cross-browser wrapper around the browser’s native event object, following the W3C event specification.
+
+---
+
+# 3️⃣ How Synthetic Events Work Internally
+
+React uses event delegation:
+
+ Instead of attaching events to every DOM node,
+ React attaches a single event listener at the root,
+ Then internally manages which component triggered the event.
+
+This improves performance, especially in large applications.
+
+---
+
+# 4️⃣ Accessing Event Object
+
+React passes the synthetic event object automatically.
+
+```jsx
+const App = () => {
+  const handleClick = (event) => {
+    console.log(event);
+    console.log(event.target);
+  };
+
+  return (
+    <button onClick={handleClick}>
+      Click
+    </button>
+  );
+};
+```
+
+You can access:
+
+ `event.target`
+ `event.preventDefault()`
+ `event.stopPropagation()`
+
+---
+
+# 5️⃣ Prevent Default Behavior
+
+In normal HTML:
+
+```html
+<form onsubmit="return false;">
+```
+
+In React:
+
+```jsx
+const App = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+```
+
+React requires explicit use of `e.preventDefault()`.
+
+---
+
+# 6️⃣ Passing Arguments to Event Handlers
+
+If you want to pass parameters:
+
+### ❌ Wrong way:
+
+```jsx
+<button onClick={handleClick(5)}>Click</button>
+```
+
+This executes immediately.
+
+### ✅ Correct way:
+
+```jsx
+<button onClick={() => handleClick(5)}>
+  Click
+</button>
+```
+
+Example:
+
+```jsx
+const App = () => {
+  const handleClick = (id) => {
+    console.log("ID:", id);
+  };
+
+  return (
+    <button onClick={() => handleClick(10)}>
+      Click
+    </button>
+  );
+};
+```
+
+---
+
+# 7️⃣ Handling Input Events
+
+```jsx
+const App = () => {
+  const handleChange = (e) => {
+    console.log(e.target.value);
+  };
+
+  return (
+    <input type="text" onChange={handleChange} />
+  );
+};
+```
+
+Used commonly in:
+
+ Controlled components
+ Forms
+ Search inputs
+
+---
+
+# 8️⃣ Event Binding in Class Components (Important for Interviews)
+
+In class components, `this` must be handled properly.
+
+### Method 1: Bind in Constructor
+
+```jsx
+class App extends React.Component {
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    console.log("Clicked");
+  }
+
+  render() {
+    return <button onClick={this.handleClick}>Click</button>;
+  }
+}
+```
+
+### Method 2: Arrow Function (Recommended)
+
+```jsx
+class App extends React.Component {
+  handleClick = () => {
+    console.log("Clicked");
+  };
+
+  render() {
+    return <button onClick={this.handleClick}>Click</button>;
+  }
+}
+```
+
+---
+
+# 9️⃣ React Events vs Native DOM Events
+
+| Feature          | React             | Native DOM            |
+| ---------------- | ----------------- | --------------------- |
+| Naming           | CamelCase         | lowercase             |
+| Event object     | SyntheticEvent    | Native Event          |
+| Event attachment | Delegated at root | Attached individually |
+| Cross-browser    | Consistent        | May vary              |
+
+---
+
+# 🔟 Event Propagation (Bubbling)
+
+React follows the same event bubbling model.
+
+```jsx
+const App = () => {
+  const parentClick = () => {
+    console.log("Parent clicked");
+  };
+
+  const childClick = (e) => {
+    e.stopPropagation();
+    console.log("Child clicked");
+  };
+
+  return (
+    <div onClick={parentClick}>
+      <button onClick={childClick}>
+        Click
+      </button>
+    </div>
+  );
+};
+```
+
+If `stopPropagation()` is removed:
+
+ Child click
+ Then parent click (bubbling)
+
+---
+
+# 1️⃣1️⃣ Important Interview Points
+
+1. React uses Synthetic Events
+2. Events are camelCase
+3. We pass function references
+4. React uses event delegation
+5. Must use `preventDefault()` manually
+6. Arrow functions avoid binding issues
+7. Synthetic events are pooled (older versions) – React 17+ removed pooling
+
+---
+
+# 1️⃣2️⃣ Best Practices
+
+✔ Keep event handlers small
+✔ Avoid inline complex logic in JSX
+✔ Use separate functions
+✔ Use controlled components for forms
+✔ Use arrow functions in class components
+
+---
+
+# 🔎 Final Summary
+
+React event handling:
+
+ Uses SyntheticEvent
+ Ensures cross-browser consistency
+ Uses event delegation for performance
+ Requires camelCase syntax
+ Requires explicit `preventDefault()`
+
+Understanding synthetic events helps you write scalable, optimized React applications.
+
+---

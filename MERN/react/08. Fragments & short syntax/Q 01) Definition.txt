@@ -1,0 +1,97 @@
+### 8. Fragments & short syntax (`<>...</>`)
+
+Fragments are a feature in React that let you group multiple elements without adding an extra DOM node. Think of them as an invisible wrapper.
+
+---
+
+#### Why Fragments exist
+
+In React, a component must return one parent element. Before fragments, developers often wrapped everything in an extra `<div>`, which caused:
+
+ Unnecessary DOM nodes
+ Broken layouts (especially with flex/grid, tables, lists)
+ Messy HTML structure
+
+Fragments solve this cleanly.
+
+---
+
+#### What a Fragment actually does
+
+ Groups sibling elements
+ Renders nothing extra in the DOM
+ Keeps HTML output clean and semantically correct
+
+So instead of:
+
+> “I’ll add one more `<div>` just to make React happy”
+
+You say:
+
+> “Group these elements, but don’t touch my DOM.”
+
+---
+
+#### Short syntax: `<>...</>`
+
+React provides a short-hand fragment syntax:
+
+ `<>` works like a fragment
+ `</>` closes it
+ No props allowed (important!)
+
+This is the most commonly used form in day-to-day React work because it’s:
+
+ Cleaner
+ Faster to read
+ Less visual noise
+
+---
+
+#### When you should use Fragments
+
+Use fragments when:
+
+ Returning multiple sibling elements from a component
+ Rendering table rows (`tr`, `td`) correctly
+ Avoiding layout bugs caused by extra wrappers
+ Keeping semantic HTML intact
+
+In modern React projects, fragments are considered best practice, not optional.
+
+---
+
+#### When short syntax won’t work
+
+The short syntax `<>...</>` cannot accept props.
+
+So if you need:
+
+ `key` (very common when rendering lists)
+ Any attribute at all
+
+You must use the full fragment form instead.
+
+Rule of thumb:
+
+ No props needed → short syntax
+ Props needed → full fragment
+
+---
+
+#### Performance & best practices
+
+ Fragments do not add DOM nodes → better performance
+ Cleaner DOM = easier debugging
+ Preferred over unnecessary `<div>` wrappers
+ Widely used in production-grade React apps
+
+---
+
+#### Mental model (easy to remember)
+
+> A Fragment is a logical wrapper, not a visual wrapper
+
+If it shouldn’t exist in the DOM, it shouldn’t be a `<div>` — use a Fragment.
+
+---
