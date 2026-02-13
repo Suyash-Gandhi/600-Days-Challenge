@@ -81,7 +81,7 @@ Goal: Understand why React re-renders and how to control it
 
 ---
 
-# ✅ PHASE 7 — Styling in React (NEW – Critical Gap Filled)
+# ✅ PHASE 7 — Styling in React - NOT NEEDED
 
 Goal: Style React apps cleanly and scalably
 
@@ -95,8 +95,7 @@ Goal: Style React apps cleanly and scalably
 
 ---
 
-# ✅ PHASE 8 — Accessibility (a11y) (NEW – Job Critical)
-
+# ✅ PHASE 8 — Accessibility (a11y)
 Goal: Build inclusive, production-ready UIs
 
 41. Semantic HTML in React
@@ -188,7 +187,9 @@ Goal: Structure scalable React applications
 79. Barrel files (`index.js`)
 80. Absolute imports
 
----
+---------------------------------------------------------------------------
+
+EXTRA - GOOD TO DO BUT NOT REALLY NEEDED
 
 # ✅ PHASE 15 — Performance & Production React (Expanded)
 

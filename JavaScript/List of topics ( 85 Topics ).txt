@@ -77,6 +77,10 @@
 55. requestAnimationFrame
 56. AbortController & cancellation
 57. Fetch API basics & advanced (timeouts, retries, streaming)
+-------------------------------------------------------------------------
+
+EXTRA - GOOD TO DO BUT NOT REALLY NEEDED
+
 58. XMLHttpRequest (legacy)
 59. Web Workers
 
