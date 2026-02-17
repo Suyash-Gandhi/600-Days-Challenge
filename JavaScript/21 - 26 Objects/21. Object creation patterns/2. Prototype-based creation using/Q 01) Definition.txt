@@ -1,0 +1,206 @@
+## 21. Object Creation Patterns – 2. Prototype-Based Creation (Using `Object.create()`)
+
+
+# 1️⃣ What is Prototype-Based Creation?
+
+In JavaScript, every object has an internal link to another object called its prototype.
+
+When you try to access a property:
+
+ JavaScript first checks the object itself.
+ If not found, it checks its prototype.
+ This continues up the prototype chain until it reaches `null`.
+
+Prototype-based creation means:
+
+> Creating a new object that directly inherits from another object.
+
+The most common way to do this is:
+
+```js
+Object.create(proto, propertiesObject)
+```
+
+---
+
+# 2️⃣ Basic Example of `Object.create()`
+
+```js
+const personPrototype = {
+  greet() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+};
+
+const user = Object.create(personPrototype);
+
+user.name = "Suyash";
+user.greet();
+```
+
+### 🔎 What Happens Internally?
+
+ `user` does NOT contain `greet`.
+ `user.__proto__` points to `personPrototype`.
+ When `user.greet()` runs, JS finds it in the prototype.
+
+This is pure prototype inheritance — no constructor function, no class.
+
+---
+
+# 3️⃣ Prototype Chain Visualization
+
+```js
+console.log(Object.getPrototypeOf(user) === personPrototype); // true
+```
+
+Chain:
+
+```
+user → personPrototype → Object.prototype → null
+```
+
+---
+
+# 4️⃣ Adding Properties During Creation
+
+You can define properties while creating the object:
+
+```js
+const user = Object.create(personPrototype, {
+  name: {
+    value: "Suyash",
+    writable: true,
+    enumerable: true,
+    configurable: true
+  }
+});
+```
+
+This allows fine-grained control over property descriptors.
+
+---
+
+# 5️⃣ Real-World Pattern (Cleaner Version)
+
+Instead of repeating logic:
+
+```js
+const carPrototype = {
+  start() {
+    console.log(`${this.brand} started`);
+  }
+};
+
+const car1 = Object.create(carPrototype);
+car1.brand = "Tesla";
+
+const car2 = Object.create(carPrototype);
+car2.brand = "BMW";
+```
+
+Here:
+
+ Methods are shared (memory efficient)
+ Each object has its own data
+ No duplication of methods
+
+---
+
+# 6️⃣ How This Differs from Constructor Functions
+
+### Constructor Function Pattern
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.greet = function() {
+  console.log(`Hello ${this.name}`);
+};
+
+const p1 = new Person("Suyash");
+```
+
+### Behind the Scenes
+
+`new Person()` internally:
+
+1. Creates empty object
+2. Links it to `Person.prototype`
+3. Binds `this`
+4. Returns object
+
+👉 `Object.create()` lets you manually control this process.
+
+---
+
+# 7️⃣ Comparison: Factory vs Prototype-Based vs Class
+
+| Pattern                           | Inheritance            | Memory Efficiency        | Control   |
+| --------------------------------- | ---------------------- | ------------------------ | --------- |
+| Factory Function                  | No automatic prototype | Low (methods duplicated) | High      |
+| Prototype-based (`Object.create`) | Yes                    | High                     | Very High |
+| Class                             | Yes (syntactic sugar)  | High                     | Medium    |
+
+Remember:
+
+> `class` in JavaScript is just syntactic sugar over prototypes.
+
+---
+
+# 8️⃣ When Should You Use Prototype-Based Creation?
+
+### ✅ Use When:
+
+ You want manual control over inheritance
+ You want to create objects without constructor functions
+ You want to avoid `new`
+ You want lightweight prototype delegation
+
+### ❌ Avoid When:
+
+ You need complex instance initialization
+ Team prefers class syntax for readability
+ Codebase follows OOP-heavy structure
+
+---
+
+# 9️⃣ Advanced Insight (Interview-Level)
+
+You can create an object with no prototype:
+
+```js
+const obj = Object.create(null);
+```
+
+Now:
+
+ `obj.toString()` → ❌ Error
+ No inherited properties
+ Useful for creating pure dictionaries (like maps)
+
+---
+
+# 🔟 Key Interview Takeaways
+
+1. JavaScript uses prototype-based inheritance, not classical inheritance.
+2. `Object.create()` directly sets the prototype.
+3. It allows property descriptor control.
+4. It is more fundamental than classes.
+5. All object creation patterns ultimately rely on prototypes.
+
+---
+
+# 🚀 Final Concept Summary
+
+Prototype-based creation:
+
+ Is the purest form of inheritance in JS.
+ Avoids constructor boilerplate.
+ Makes the prototype chain explicit.
+ Is the foundation behind classes.
+
+---
+

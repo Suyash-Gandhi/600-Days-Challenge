@@ -1,0 +1,269 @@
+## 21. Object Creation Patterns – Object Literals
+
+### 1️⃣ What is an Object Literal?
+
+An object literal is the simplest and most commonly used way to create an object in JavaScript.
+
+It uses curly braces `{}` to define key–value pairs directly.
+
+```js
+const user = {
+  name: "Suyash",
+  age: 22,
+  isDeveloper: true
+};
+```
+
+Here:
+
+ `name`, `age`, `isDeveloper` → properties (keys)
+ `"Suyash"`, `22`, `true` → values
+
+---
+
+## 2️⃣ Why Object Literals Are Important
+
+Object literals are:
+
+ ✅ Simple and readable
+ ✅ Fast to write
+ ✅ Ideal for small objects
+ ✅ Common in configuration objects (very important in React and Node.js)
+
+Example (React-style config pattern):
+
+```js
+const buttonConfig = {
+  text: "Submit",
+  disabled: false,
+  onClick: () => console.log("Clicked")
+};
+```
+
+---
+
+## 3️⃣ Object Literal Syntax (Modern ES6 Features)
+
+### A) Shorthand Property Names
+
+If variable name and property name are same:
+
+```js
+const name = "Suyash";
+const age = 22;
+
+const user = {
+  name,
+  age
+};
+```
+
+Instead of:
+
+```js
+const user = {
+  name: name,
+  age: age
+};
+```
+
+---
+
+### B) Method Shorthand
+
+```js
+const user = {
+  name: "Suyash",
+  greet() {
+    console.log(`Hello, I am ${this.name}`);
+  }
+};
+
+user.greet();
+```
+
+Instead of:
+
+```js
+greet: function() {}
+```
+
+---
+
+### C) Computed Property Names
+
+Dynamic keys:
+
+```js
+const key = "role";
+
+const user = {
+  name: "Suyash",
+  [key]: "Developer"
+};
+
+console.log(user.role); // Developer
+```
+
+Very useful in dynamic forms and reducers.
+
+---
+
+## 4️⃣ How Object Literals Work Internally
+
+When you create:
+
+```js
+const obj = { a: 10 };
+```
+
+JavaScript:
+
+1. Allocates memory
+2. Creates the object
+3. Links it to `Object.prototype`
+4. Assigns properties
+
+So:
+
+```js
+console.log(obj.__proto__ === Object.prototype); // true
+```
+
+That means object literals still use prototypal inheritance.
+
+---
+
+## 5️⃣ When to Use Object Literals
+
+Use them when:
+
+ You need a single object
+ You don’t need multiple instances
+ You don’t need shared behavior across instances
+ You want simple configuration/data objects
+
+Example:
+
+```js
+const appSettings = {
+  theme: "dark",
+  version: "1.0",
+  debug: true
+};
+```
+
+---
+
+## 6️⃣ Limitations of Object Literals
+
+Object literals are not ideal when:
+
+### ❌ You need multiple objects of same structure
+
+```js
+const user1 = { name: "A", age: 20 };
+const user2 = { name: "B", age: 21 };
+const user3 = { name: "C", age: 22 };
+```
+
+This repeats structure.
+
+Better: Factory Function or Constructor Function.
+
+---
+
+### ❌ Methods are duplicated
+
+```js
+const user1 = {
+  name: "A",
+  greet() {
+    console.log("Hello");
+  }
+};
+
+const user2 = {
+  name: "B",
+  greet() {
+    console.log("Hello");
+  }
+};
+```
+
+Each object stores its own copy of `greet`.
+
+Better: Prototype-based pattern.
+
+---
+
+## 7️⃣ Object Literal vs Other Object Creation Patterns
+
+| Pattern              | When to Use      | Memory Efficient?         | Reusable? |
+| -------------------- | ---------------- | ------------------------- | --------- |
+| Object Literal       | Single object    | ❌ No (methods duplicated) | ❌ Limited |
+| Factory Function     | Multiple objects | ❌ Methods duplicated      | ✅ Yes     |
+| Constructor Function | Multiple objects | ✅ Yes (via prototype)     | ✅ Yes     |
+| ES6 Class            | Structured OOP   | ✅ Yes                     | ✅ Yes     |
+
+---
+
+## 8️⃣ Real Interview Perspective
+
+Interviewers may ask:
+
+ How is object literal different from constructor?
+ Does object literal use prototype?
+ Are methods shared?
+ What happens internally?
+
+Strong answer:
+
+> Object literals create a new object linked to `Object.prototype`. They are simple and readable but not memory-efficient when creating multiple instances because methods are not shared via prototype.
+
+---
+
+## 9️⃣ Advanced Concept – Object Literal as Module Pattern
+
+Before ES6 modules, developers used object literals for encapsulation:
+
+```js
+const counterModule = {
+  count: 0,
+  increment() {
+    this.count++;
+  },
+  getCount() {
+    return this.count;
+  }
+};
+```
+
+This acts like a simple module.
+
+---
+
+## 🔥 Best Practices
+
+ Use object literals for:
+
+   Configuration objects
+   JSON-like data
+   Temporary objects
+ Avoid using them for:
+
+   Creating many similar instances
+   Complex object hierarchies
+
+---
+
+## 🚀 Final Summary
+
+Object Literals are:
+
+ The most basic and common way to create objects
+ Simple, readable, and powerful
+ Enhanced by ES6 features (shorthand, computed keys, methods)
+ Not ideal for reusable instance-based object creation
+
+---
