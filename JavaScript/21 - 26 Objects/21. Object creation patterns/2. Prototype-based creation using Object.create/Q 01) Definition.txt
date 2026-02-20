@@ -1,0 +1,223 @@
+## 21. Object Creation Patterns – 2. Prototype-Based Creation (Using `Object.create()`)
+
+## 2️⃣ Prototype-Based Object Creation using `Object.create()`
+
+Prototype-based creation is one of the most powerful object creation patterns in JavaScript. Instead of copying properties like in constructor functions, it directly links objects through the prototype chain.
+
+---
+
+# 1. What is `Object.create()`?
+
+`Object.create()` is a built-in JavaScript method that creates a new object and sets its prototype to the object you pass as an argument.
+
+### Syntax:
+
+```js
+const newObj = Object.create(proto, propertiesObject)
+```
+
+ `proto` → The object that will become the prototype of the new object.
+ `propertiesObject` (optional) → Property descriptors.
+
+---
+
+# 2. How It Works (Core Concept)
+
+When you create an object using `Object.create(proto)`:
+
+ The new object is empty.
+ Its internal `[[Prototype]]` (or `__proto__`) points to `proto`.
+ If a property is not found in the object, JavaScript looks in its prototype.
+
+This is pure prototypal inheritance.
+
+---
+
+# 3. Basic Example
+
+```js
+const personPrototype = {
+  greet() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+};
+
+const user = Object.create(personPrototype);
+user.name = "Suyash";
+
+user.greet(); 
+// Hello, my name is Suyash
+```
+
+### What’s happening?
+
+ `user` does NOT have `greet` directly.
+ JavaScript looks up the prototype chain.
+ It finds `greet` inside `personPrototype`.
+
+---
+
+# 4. Memory Efficiency Advantage
+
+If you create 1000 users:
+
+```js
+const user1 = Object.create(personPrototype);
+const user2 = Object.create(personPrototype);
+```
+
+All users share the SAME `greet` method in memory.
+
+This is much more memory efficient than defining methods inside object literals repeatedly.
+
+---
+
+# 5. Adding Properties Using Property Descriptors
+
+You can define properties with full control:
+
+```js
+const user = Object.create(personPrototype, {
+  name: {
+    value: "Suyash",
+    writable: true,
+    enumerable: true,
+    configurable: true
+  }
+});
+```
+
+This gives you control over:
+
+ writability
+ enumerability
+ configurability
+
+This is useful in advanced system design.
+
+---
+
+# 6. Creating Objects with Null Prototype
+
+```js
+const obj = Object.create(null);
+```
+
+This creates a completely clean object:
+
+ No `toString`
+ No `hasOwnProperty`
+ No default Object methods
+
+Useful when:
+
+ Creating pure dictionaries
+ Avoiding prototype pollution
+
+---
+
+# 7. Comparison with Other Patterns
+
+| Pattern              | Inheritance | Memory Efficient | Modern Usage  |
+| -------------------- | ----------- | ---------------- | ------------- |
+| Object Literal       | ❌ No        | ❌ No             | Basic usage   |
+| Constructor Function | ✅ Yes       | ✅ Yes            | Traditional   |
+| `Object.create()`    | ✅ Yes       | ✅ Yes            | Very powerful |
+| ES6 Class            | ✅ Yes       | ✅ Yes            | Most common   |
+
+Important:
+
+ES6 classes internally use prototypes.
+`Object.create()` is the raw prototype mechanism.
+
+---
+
+# 8. Real-World Use Case Pattern (Factory + Object.create)
+
+This is a clean pattern used in scalable apps:
+
+```js
+const userMethods = {
+  login() {
+    console.log(`${this.name} logged in`);
+  }
+};
+
+const createUser = (name, email) => {
+  const user = Object.create(userMethods);
+  user.name = name;
+  user.email = email;
+  return user;
+};
+
+const u1 = createUser("Suyash", "test@mail.com");
+u1.login();
+```
+
+This combines:
+
+ Factory function
+ Prototype sharing
+ Clean separation of data and behavior
+
+Very scalable pattern.
+
+---
+
+# 9. Advantages
+
+✔ True prototypal inheritance
+✔ Memory efficient
+✔ More control than constructor functions
+✔ Cleaner than manually setting prototypes
+✔ Useful for advanced object composition
+
+---
+
+# 10. Disadvantages
+
+❌ Slightly harder to understand initially
+❌ Property descriptors syntax is verbose
+❌ Less commonly used in beginner code
+
+---
+
+# 11. Internally What Happens?
+
+When you run:
+
+```js
+const user = Object.create(personPrototype);
+```
+
+JavaScript roughly does:
+
+1. Create empty object {}
+2. Set its internal `[[Prototype]]` to `personPrototype`
+3. Return object
+
+---
+
+# 12. When Should You Use It?
+
+Use `Object.create()` when:
+
+ You want clean prototype linking
+ You are building libraries
+ You want to separate shared methods
+ You want fine-grained property control
+ You want objects without default Object prototype
+
+In interviews, this shows deep understanding of JavaScript internals.
+
+---
+
+# Final Conceptual Understanding
+
+Think of `Object.create()` as:
+
+> “Create a new object and tell it who its parent is.”
+
+It is the purest form of inheritance in JavaScript.
+
+---
