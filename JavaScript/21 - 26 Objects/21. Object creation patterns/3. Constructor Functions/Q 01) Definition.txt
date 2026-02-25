@@ -1,0 +1,219 @@
+## 21. Object Creation Pattern – Constructor Functions (JavaScript)
+
+Constructor functions are one of the classical object creation patterns in JavaScript (before ES6 classes were introduced). They are used to create multiple objects with the same structure and behavior.
+
+This pattern is very important because:
+
+ It was the primary OOP approach before ES6.
+ ES6 `class` is internally based on constructor functions + prototypes.
+ It helps understand how JavaScript’s prototype system works.
+
+---
+
+# 1️⃣ What is a Constructor Function?
+
+A constructor function is a normal function that is used with the `new` keyword to create objects.
+
+By convention:
+
+ The function name starts with a capital letter.
+ It uses `this` to assign properties.
+
+---
+
+# 2️⃣ Basic Syntax
+
+```javascript
+function User(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+const user1 = new User("Suyash", 22);
+const user2 = new User("Rahul", 25);
+
+console.log(user1);
+```
+
+---
+
+# 3️⃣ What Happens When We Use `new`?
+
+When you write:
+
+```javascript
+const user1 = new User("Suyash", 22);
+```
+
+JavaScript does 4 steps internally:
+
+1. Creates a new empty object `{}`
+2. Sets the object's prototype to `User.prototype`
+3. Binds `this` to that new object
+4. Returns the object automatically
+
+So internally it behaves like:
+
+```javascript
+const obj = {};
+obj.__proto__ = User.prototype;
+User.call(obj, "Suyash", 22);
+return obj;
+```
+
+---
+
+# 4️⃣ Adding Methods (Wrong Way ❌)
+
+```javascript
+function User(name) {
+    this.name = name;
+
+    this.sayHello = function() {
+        console.log(`Hello, I am ${this.name}`);
+    };
+}
+```
+
+⚠ Problem:
+
+ Every object gets its own copy of `sayHello`
+ Wastes memory
+
+---
+
+# 5️⃣ Correct Way – Using Prototype ✅
+
+```javascript
+function User(name) {
+    this.name = name;
+}
+
+User.prototype.sayHello = function() {
+    console.log(`Hello, I am ${this.name}`);
+};
+
+const user1 = new User("Suyash");
+const user2 = new User("Rahul");
+
+user1.sayHello();
+```
+
+### Why this is better?
+
+ `sayHello` is stored once
+ All objects share it
+ Memory efficient
+ Follows JavaScript prototype pattern
+
+---
+
+# 6️⃣ Constructor Function vs Factory Function
+
+| Feature           | Constructor Function | Factory Function    |
+| ----------------- | -------------------- | ------------------- |
+| Uses `new`        | ✅ Yes                | ❌ No                |
+| Uses `this`       | ✅ Yes                | ❌ Usually no        |
+| Prototype sharing | ✅ Yes                | ❌ Not automatically |
+| OOP style         | Classical            | Functional          |
+
+Example Factory:
+
+```javascript
+const createUser = (name, age) => {
+    return {
+        name,
+        age
+    };
+};
+```
+
+---
+
+# 7️⃣ Constructor Functions vs ES6 Classes
+
+```javascript
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+
+    sayHello() {
+        console.log(`Hello, I am ${this.name}`);
+    }
+}
+```
+
+Important:
+
+👉 ES6 classes are syntactic sugar
+👉 Internally they still use constructor functions + prototype
+
+---
+
+# 8️⃣ Common Mistake – Forgetting `new`
+
+```javascript
+const user1 = User("Suyash", 22); // ❌
+```
+
+Problem:
+
+ `this` refers to global object (or undefined in strict mode)
+ Can cause bugs
+
+To protect:
+
+```javascript
+function User(name) {
+    if (!new.target) {
+        return new User(name);
+    }
+    this.name = name;
+}
+```
+
+---
+
+# 9️⃣ When Should You Use Constructor Functions?
+
+Use them when:
+
+ You want multiple similar objects
+ You want prototype-based shared methods
+ You want classical OOP structure
+ You are working with older JavaScript codebases
+
+---
+
+# 🔟 Real Example – Bank Account
+
+```javascript
+function BankAccount(owner, balance) {
+    this.owner = owner;
+    this.balance = balance;
+}
+
+BankAccount.prototype.deposit = function(amount) {
+    this.balance += amount;
+};
+
+BankAccount.prototype.withdraw = function(amount) {
+    this.balance -= amount;
+};
+
+const acc1 = new BankAccount("Suyash", 1000);
+acc1.deposit(500);
+```
+
+---
+
+# 🔥 Key Takeaways
+
+ Constructor functions are functions used with `new`
+ `this` refers to the new object
+ Shared methods should go on `.prototype`
+ ES6 classes are built on constructor functions
+ Important for understanding JavaScript internals
+
+---
