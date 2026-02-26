@@ -1,10 +1,15 @@
 const proto = {
-  get number() {
-    return this._number * 2;
+  get name() {
+    return this._name;
   }
 };
 
 const obj = Object.create(proto);
-obj._number = 10;
 
-console.log(obj.number);
+Object.defineProperty(obj, '_name', {
+  value: "JS",
+  enumerable: false
+});
+
+console.log(Object.keys(obj));
+console.log(obj.name);

@@ -87,6 +87,8 @@ obj1 and obj2 do not have there own count property so they look up prototype cha
 This creates new property on obj1 and obj2 which is then updated and proto is left untouched
 
 
+
+
 Q3. const proto = {
   value: 5
 };
@@ -120,6 +122,9 @@ Object.defineProperty() is used then to change its value for 5 to 20 and since w
 
 console.log(obj.value) -> output = 20
 console.log(proto.value)-> output = 5
+
+
+
 
 Q4. const proto = {
   get number() {
@@ -188,6 +193,287 @@ obj._number * 2
 Result:
 
 20
+
+
+
+Q5. const proto = {
+  items: []
+};
+
+const obj1 = Object.create(proto);
+const obj2 = Object.create(proto);
+
+obj1.items.push("A");
+
+console.log(obj2.items);
+
+Ans 5.
+Since items is reference type when we push in obj1 it will be reflected in obj2 as well because both obj1 and obj2 share same reference of items.
+
+output = ['A']
+
+
+Q6. const proto = { a: 1 };
+const obj = Object.create(proto);
+
+console.log(obj.hasOwnProperty('a'));
+console.log('a' in obj);
+
+Ans 6.
+
+hasOwnProperty() checks only the object's own properties.It does not check the prototype chain.
+
+while in operator checks both object and prototype chain
+
+console.log(obj.hasOwnProperty('a')); output = false
+console.log('a' in obj); output = true
+
+
+
+
+Q7. const proto = { x: 10 };
+const obj = Object.create(proto);
+
+delete proto.x;
+
+console.log(obj.x);
+
+
+Ans 7. deleding proto.x will give undefined because This removes the property from the object itself so proto becomes {} and no x is found
+
+
+
+
+Q8. const proto = { value: 100 };
+const obj = Object.create(proto);
+
+Object.setPrototypeOf(obj, null);
+
+console.log(obj.value);
+
+Ans 8. setPrototypeOf changes from what object obj inherits 
+from and since it is set to null obj becomes a standalone 
+object without any prototype chain and since it does not have object with value property it gives undefined
+
+
+
+Q9.const proto = { a: 1 };
+const obj = Object.create(proto);
+
+proto.a = 5;
+
+console.log(obj.a);
+
+
+Ans 9. Object.create(proto) does not copy properties it refrences them to prototype
+
+hear we are changing the value of proto directly so it reflects in obj as long as it does not have its "a" property declared
+
+
+
+Q10. const proto = {
+  get name() {
+    return this._name;
+  }
+};
+
+const obj = Object.create(proto);
+
+Object.defineProperty(obj, '_name', {
+  value: "JS",
+  enumerable: false
+});
+
+console.log(Object.keys(obj));
+console.log(obj.name);
+
+
+Ans 10. enumerable controls whether a property:
+
+Shows up in property iteration
+Appears in Object.keys()
+Appears in for...in loops
+Appears in JSON.stringify()
+
+It does NOT affect:
+
+Direct access (obj._name)
+Property lookup (obj.name)
+Internal usage
+
+So:
+
+enumerable = “Should this property be visible when listing properties?”
+
+
+since enumerable is false console.log(Object.keys(obj)); will return []
+ 
+and console.log(obj.name) work normally and return "JS"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
