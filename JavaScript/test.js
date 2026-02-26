@@ -1,8 +1,10 @@
-/*Can you chain multiple nullish coalescing operators?
-Example:*/
-let a
-let b
-let c=3
+const proto = {
+  get number() {
+    return this._number * 2;
+  }
+};
 
- console.log(a ?? b ?? c);
- 
+const obj = Object.create(proto);
+obj._number = 10;
+
+console.log(obj.number);
