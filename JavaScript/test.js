@@ -1,15 +1,7 @@
-const proto = {
-  get name() {
-    return this._name;
-  }
-};
-
-const obj = Object.create(proto);
-
-Object.defineProperty(obj, '_name', {
-  value: "JS",
-  enumerable: false
+const proto = {};
+const obj = Object.create(proto, {
+  name: { value: "Suyash" }
 });
 
-console.log(Object.keys(obj));
+obj.name = "JS";
 console.log(obj.name);
