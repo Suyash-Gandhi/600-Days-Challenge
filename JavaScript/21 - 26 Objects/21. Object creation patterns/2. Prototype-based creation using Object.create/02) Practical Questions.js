@@ -6,22 +6,22 @@ Create two animals using Object.create() and demonstrate method sharing.
 
 // Ans 1
 
-const animalPrototype={
-    speak(){
+const animalPrototype = {
+    speak() {
         console.log(`${this.name} ${this.sound}`)
-        
+
     }
 }
 
-const a1=Object.create(animalPrototype)
+const a1 = Object.create(animalPrototype)
 
-a1.name="dog"
-a1.sound="bark"
+a1.name = "dog"
+a1.sound = "bark"
 a1.speak()
-const a2=Object.create(animalPrototype)
+const a2 = Object.create(animalPrototype)
 
-a2.name="cat"
-a2.sound="meow"
+a2.name = "cat"
+a2.sound = "meow"
 a2.speak()
 /*
 2. How can you check whether a property belongs to the object itself or its prototype?
@@ -35,10 +35,10 @@ Write an example.
 // way 1: hasOwnProperty - lives on object.property so every object can access it. It can break in 2 situations if using Object.create(null) and Object Overrides method
 console.log(a1.hasOwnProperty("name"))  // "name" → directly added to a1
 console.log(a1.hasOwnProperty("speak")) // "speak" → comes from animalPrototype
- 
+
 // way 2: hasOwn - A static method on Object. It fixes both problems with hasOwnProperty 
-console.log(Object.hasOwn(a1,"name"))
-console.log(Object.hasOwn(a1,"speak"))
+console.log(Object.hasOwn(a1, "name"))
+console.log(Object.hasOwn(a1, "speak"))
 
 // way 3 : in opretor - Checks both Own proberties and prototype properties
 console.log("speak" in a1)
@@ -80,7 +80,7 @@ const obj2 = Object.create(proto)
 
 obj1.count++
 
-console.log(obj1.count,obj2.count,proto.count)
+console.log(obj1.count, obj2.count, proto.count)
 
 
 /*
@@ -89,37 +89,32 @@ console.log(obj1.count,obj2.count,proto.count)
 */
 
 // Ans 5
+const proto2 = {
 
-const user = {
-    password:"password",
-    login(){
-        console.log(`${this.name} is logged in`)
-        
-    }
-}
+    login(input) {
+        if (this.password !== input) {
+            console.log("invalid");
 
-const userPrototype = {
-    login(inputPassword) {
-        if (this.password === inputPassword) {
-            console.log(`${this.name} logged in successfully`)
-        } else {
-            console.log("Invalid password")
         }
+        else {
+            console.log(`${this.name} logged in`);
+        }
+
+
     }
 }
 
 const createUser = (name, password) => {
-    const user = Object.create(userPrototype)
+    const user = Object.create(proto2)
     user.name = name
     user.password = password
     return user
 }
 
-const u1 = createUser("Suyash", "1234")
-const u2 = createUser("Rahul", "abcd")
+user1 = createUser("suyash", "1234")
+user1.login("1234")
+user1.login("123")
 
-u1.login("1234")   
-u2.login("wrong")  
 
 /*
 6. What is the difference between: const obj = {}; and const obj = Object.create(Object.prototype);
@@ -300,3 +295,85 @@ Both create a normal object inheriting from `Object.prototype`.
 */
 
 
+
+/* Q7. Build a prototype-based Car system where:
+
+Speed is instance-specific
+
+accelerate() is shared
+
+Prevent direct modification of maxSpeed
+
+*/
+// Ans 7.
+
+const carProto = {
+    maxSpeed: 100,
+    accelerate() {
+        if (this.speed < this.maxSpeed) {
+            this.speed++
+            console.log(`${this.speed}km/h`);
+        }
+        else {
+            console.log("max speed reached");
+
+        }
+    },
+
+    constantAccelaration(num) {
+        while (this.speed<num&&this.speed<this.maxSpeed) {
+            this.speed++
+            console.log(`${this.speed} km/h`);
+            
+        }
+    }
+}
+
+const createCar = (speed) => {
+    const car = Object.create(carProto)
+    car.speed = speed
+    return car
+}
+const car1 = createCar(25)
+
+car1.accelerate()
+car1.accelerate()
+car1.constantAccelaration(30)
+
+
+
+/*
+
+Q8. Implement a prototype chain of 3 levels:
+grandParent → parent → child
+
+Access a method defined only in grandParent.
+
+*/
+
+//Ans 8.
+
+const grandParent={
+    grandParentMethod(){
+        console.log("grandpa walks whith a stick");
+        
+    }
+}
+
+const parent=Object.create(grandParent)
+
+parent.parentMethod=function(){
+        console.log("father walks with a normally while grandpa walks whith a stick");
+    }
+
+
+const child=Object.create(parent)
+
+child.childMethod=function(){
+        console.log("child runs ahead while father walks normally and grandpa walks whit a stick");
+    }
+
+
+child.grandParentMethod()
+child.parentMethod()
+child.childMethod()

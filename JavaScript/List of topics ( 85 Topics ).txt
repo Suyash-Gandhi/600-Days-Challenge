@@ -79,7 +79,7 @@
 57. Fetch API basics & advanced (timeouts, retries, streaming)
 -------------------------------------------------------------------------
 
-EXTRA - GOOD TO DO BUT NOT REALLY NEEDED
+EXTRA - GOOD TO DO BUT MOST NOT REALLY NEEDED
 
 58. XMLHttpRequest (legacy)
 59. Web Workers
@@ -104,7 +104,7 @@ EXTRA - GOOD TO DO BUT NOT REALLY NEEDED
 
 ## 6. Advanced JavaScript Concepts (Senior-level Core)
 
-71. Prototypes & prototype chain
+71. Prototypes & prototype chain -> completed in object creation patterns
 72. Inheritance (ES5 prototype vs ES6 class)
 73. Strict mode
 74. Module systems (CommonJS, AMD, ESM)
