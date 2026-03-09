@@ -1,0 +1,246 @@
+## 14. Passing Callbacks Between Components in React
+
+Passing callbacks between components is a core React pattern used for communication from child → parent.
+
+In React, data flows downward (parent → child) via props.
+But when a child needs to send data back to the parent (for example, a button click inside a child component), we pass a function (callback) from the parent to the child.
+
+---
+
+# 1️⃣ Why Do We Need Callback Passing?
+
+React follows the one-way data flow principle:
+
+ Parent → Child (via props)
+ Child → Parent ❌ (not directly possible)
+
+So how does a child update parent state?
+
+👉 The parent sends a function to the child.
+👉 The child calls that function when needed.
+👉 The parent updates its own state.
+
+This maintains React’s predictable data flow model.
+
+---
+
+# 2️⃣ Basic Concept
+
+### 🔹 Step-by-step Flow
+
+1. Parent defines a function.
+2. Parent passes that function as a prop.
+3. Child receives it.
+4. Child calls the function when an event happens.
+
+---
+
+# 3️⃣ Simple Example
+
+### 📌 Parent Component
+
+```jsx
+const Parent = () => {
+  const handleMessage = (data) => {
+    console.log("Message from child:", data);
+  };
+
+  return <Child sendMessage={handleMessage} />;
+};
+```
+
+### 📌 Child Component
+
+```jsx
+const Child = ({ sendMessage }) => {
+  return (
+    <button onClick={() => sendMessage("Hello Parent!")}>
+      Click Me
+    </button>
+  );
+};
+```
+
+---
+
+## 🔎 What Happens Here?
+
+1. `Parent` creates `handleMessage`.
+2. `Parent` passes it as `sendMessage`.
+3. `Child` calls `sendMessage()` on button click.
+4. Parent function runs and logs the message.
+
+This is called lifting state up communication pattern.
+
+---
+
+# 4️⃣ Real-World Example – Updating Parent State
+
+Let’s say the parent stores a counter.
+
+### 🔹 Parent
+
+```jsx
+import { useState } from "react";
+
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    setCount(prev => prev + 1);
+  };
+
+  return (
+    <>
+      <h2>Count: {count}</h2>
+      <Child onIncrement={increment} />
+    </>
+  );
+};
+```
+
+### 🔹 Child
+
+```jsx
+const Child = ({ onIncrement }) => {
+  return (
+    <button onClick={onIncrement}>
+      Increase Count
+    </button>
+  );
+};
+```
+
+---
+
+## 🔎 Flow Analysis
+
+ Parent owns the state (`count`)
+ Child triggers the update
+ State logic remains centralized
+
+This is clean, scalable React architecture.
+
+---
+
+# 5️⃣ Passing Arguments from Child to Parent
+
+Sometimes you need to pass data upward.
+
+### 🔹 Parent
+
+```jsx
+const Parent = () => {
+  const handleUser = (name) => {
+    console.log("User selected:", name);
+  };
+
+  return <Child onSelect={handleUser} />;
+};
+```
+
+### 🔹 Child
+
+```jsx
+const Child = ({ onSelect }) => {
+  return (
+    <button onClick={() => onSelect("Suyash")}>
+      Select User
+    </button>
+  );
+};
+```
+
+---
+
+# 6️⃣ Why Not Just Change Parent State Directly?
+
+Because:
+
+ Child cannot access parent’s state directly
+ React enforces component isolation
+ It keeps components reusable and predictable
+
+If children could directly mutate parent state:
+
+ Debugging becomes difficult
+ State management becomes chaotic
+
+---
+
+# 7️⃣ Callback with Event Object
+
+You can also pass the event:
+
+```jsx
+const Child = ({ onInput }) => {
+  return (
+    <input onChange={(e) => onInput(e.target.value)} />
+  );
+};
+```
+
+Parent:
+
+```jsx
+const Parent = () => {
+  const handleInput = (value) => {
+    console.log(value);
+  };
+
+  return <Child onInput={handleInput} />;
+};
+```
+
+---
+
+# 8️⃣ Best Practices
+
+### ✅ 1. Name callback props clearly
+
+ `onClick`
+ `onSubmit`
+ `onChange`
+ `onIncrement`
+
+### ✅ 2. Keep state in the closest common ancestor
+
+### ✅ 3. Avoid deeply nested callback chains
+
+If passing callbacks 3–4 levels down, consider:
+
+ Context API
+ Redux
+ Zustand
+
+### ✅ 4. Use functional updates when depending on previous state
+
+```jsx
+setCount(prev => prev + 1);
+```
+
+---
+
+# 9️⃣ Common Mistakes
+
+❌ Calling function immediately:
+
+```jsx
+<button onClick={onIncrement()}>
+```
+
+This runs during render.
+
+✔ Correct:
+
+```jsx
+<button onClick={onIncrement}>
+```
+
+or
+
+```jsx
+<button onClick={() => onIncrement()}>
+```
+
+---

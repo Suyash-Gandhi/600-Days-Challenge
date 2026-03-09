@@ -1,0 +1,225 @@
+## 12. Controlled vs Uncontrolled Components in React
+
+When building forms in React, input elements can be handled in two different ways:
+
+1. Controlled Components
+2. Uncontrolled Components
+
+The key difference lies in who controls the form data — React or the DOM.
+
+---
+
+# 1️⃣ Controlled Components
+
+### 🔹 Definition
+
+A controlled component is an input form element whose value is controlled by React state.
+
+In this approach:
+
+ React state is the single source of truth
+ The input value is stored in state
+ Every change updates state using an event handler
+ The UI always reflects the state
+
+---
+
+### 🔹 How It Works (Step-by-Step)
+
+1. Create a state variable using `useState`
+2. Bind the input’s `value` to that state
+3. Update state inside `onChange`
+4. React re-renders with updated value
+
+---
+
+### 🔹 Example (ES6 Syntax)
+
+```jsx
+import { useState } from "react";
+
+const ControlledInput = () => {
+  const [name, setName] = useState("");
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted:", name);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        type="text"
+        value={name}
+        onChange={handleChange}
+        placeholder="Enter your name"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+export default ControlledInput;
+```
+
+---
+
+### 🔹 What’s Happening Here?
+
+ `value={name}` → React controls the input value
+ `onChange` → updates state on every keystroke
+ The input and state are always synchronized
+
+---
+
+### 🔹 Advantages
+
+ Easier validation
+ Easy conditional rendering
+ Predictable data flow
+ Better debugging
+ Works well with form libraries
+
+---
+
+### 🔹 Disadvantages
+
+ Slightly more code
+ Re-renders on every change
+
+---
+
+# 2️⃣ Uncontrolled Components
+
+### 🔹 Definition
+
+An uncontrolled component stores form data inside the DOM itself, not in React state.
+
+Instead of storing input value in state, we use:
+
+ `useRef()` to directly access the DOM node
+
+React does not control the value — the browser does.
+
+---
+
+### 🔹 How It Works (Step-by-Step)
+
+1. Create a ref using `useRef`
+2. Attach it to input using `ref`
+3. Access value when needed (usually on submit)
+
+---
+
+### 🔹 Example
+
+```jsx
+import { useRef } from "react";
+
+const UncontrolledInput = () => {
+  const inputRef = useRef();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted:", inputRef.current.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        type="text"
+        ref={inputRef}
+        placeholder="Enter your name"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+export default UncontrolledInput;
+```
+
+---
+
+### 🔹 What’s Happening Here?
+
+ No state is used
+ The value is stored in the DOM
+ React reads the value only when needed
+
+---
+
+### 🔹 Advantages
+
+ Less code
+ No re-render on every keystroke
+ Useful for simple forms
+ Good when integrating with non-React libraries
+
+---
+
+### 🔹 Disadvantages
+
+ Harder validation
+ Less control over UI
+ Not ideal for dynamic forms
+ Breaks one-way data flow concept
+
+---
+
+# 🔍 Side-by-Side Comparison
+
+| Feature               | Controlled  | Uncontrolled  |
+| --------------------- | ----------- | ------------- |
+| Data stored in        | React state | DOM           |
+| Source of truth       | React       | DOM           |
+| Uses                  | `useState`  | `useRef`      |
+| Real-time validation  | Easy        | Hard          |
+| Re-render on input    | Yes         | No            |
+| Recommended in React? | ✅ Yes       | ⚠️ Rare cases |
+
+---
+
+# 🧠 When Should You Use Which?
+
+### ✅ Use Controlled Components When:
+
+ You need validation
+ You need dynamic UI updates
+ You are building real-world applications
+ You are using libraries like Formik or React Hook Form
+ You care about predictable state management
+
+### ✅ Use Uncontrolled Components When:
+
+ Very simple forms
+ Quick prototypes
+ File inputs (`<input type="file">`)
+ Integrating with third-party DOM-based libraries
+
+---
+
+# 🔥 Best Practice (Industry Level)
+
+In modern React applications:
+
+> Controlled components are the standard approach.
+
+They align with:
+
+ One-way data flow
+ Predictable UI
+ Centralized state management
+ Clean architecture
+
+Uncontrolled components are mainly used for:
+
+ Performance-sensitive edge cases
+ File inputs
+ Legacy code integration
+
+---

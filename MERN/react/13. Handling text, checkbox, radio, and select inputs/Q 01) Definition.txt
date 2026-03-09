@@ -1,0 +1,314 @@
+## 13. Handling Text, Checkbox, Radio, and Select Inputs in React
+
+
+# 1️⃣ Controlled Components (Core Concept)
+
+In React, we usually use controlled components.
+
+👉 A controlled component means:
+
+ React state controls the input value
+ The input does NOT manage its own internal state
+ `onChange` updates React state
+ `value` (or `checked`) is linked to state
+
+### Flow:
+
+User types → `onChange` fires → state updates → UI re-renders → new value shown
+
+This maintains one-way data flow, which you studied earlier.
+
+---
+
+# 2️⃣ Handling Text Input
+
+### Example: Text Field
+
+```javascript
+import { useState } from "react";
+
+const TextInputExample = () => {
+  const [name, setName] = useState("");
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={name}
+        onChange={handleChange}
+        placeholder="Enter your name"
+      />
+      <p>Your name is: {name}</p>
+    </div>
+  );
+};
+
+export default TextInputExample;
+```
+
+### Key Points:
+
+ `value={name}` → React controls input
+ `e.target.value` → Current input value
+ Always use `onChange` for real-time updates
+
+---
+
+# 3️⃣ Handling Checkbox Input
+
+Checkboxes work differently.
+
+Instead of `value`, we use:
+
+ `checked` property
+ `e.target.checked`
+
+---
+
+### Example: Single Checkbox
+
+```javascript
+import { useState } from "react";
+
+const CheckboxExample = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleChange = (e) => {
+    setIsSubscribed(e.target.checked);
+  };
+
+  return (
+    <div>
+      <label>
+        <input
+          type="checkbox"
+          checked={isSubscribed}
+          onChange={handleChange}
+        />
+        Subscribe to newsletter
+      </label>
+
+      <p>Subscribed: {isSubscribed ? "Yes" : "No"}</p>
+    </div>
+  );
+};
+
+export default CheckboxExample;
+```
+
+### Important Difference:
+
+| Text Input     | Checkbox         |
+| -------------- | ---------------- |
+| value          | checked          |
+| e.target.value | e.target.checked |
+
+---
+
+# 4️⃣ Handling Radio Buttons
+
+Radio buttons allow selecting one option from many.
+
+They work using:
+
+ Same `name` attribute
+ Different `value`
+ Controlled via state
+
+---
+
+### Example: Gender Selection
+
+```javascript
+import { useState } from "react";
+
+const RadioExample = () => {
+  const [gender, setGender] = useState("");
+
+  const handleChange = (e) => {
+    setGender(e.target.value);
+  };
+
+  return (
+    <div>
+      <label>
+        <input
+          type="radio"
+          name="gender"
+          value="male"
+          checked={gender === "male"}
+          onChange={handleChange}
+        />
+        Male
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          name="gender"
+          value="female"
+          checked={gender === "female"}
+          onChange={handleChange}
+        />
+        Female
+      </label>
+
+      <p>Selected: {gender}</p>
+    </div>
+  );
+};
+
+export default RadioExample;
+```
+
+### Important Logic:
+
+```
+checked={gender === "male"}
+```
+
+This ensures only one radio button is selected.
+
+---
+
+# 5️⃣ Handling Select Dropdown
+
+Dropdowns are controlled using:
+
+ `value`
+ `onChange`
+ `e.target.value`
+
+---
+
+### Example: Select Input
+
+```javascript
+import { useState } from "react";
+
+const SelectExample = () => {
+  const [country, setCountry] = useState("");
+
+  const handleChange = (e) => {
+    setCountry(e.target.value);
+  };
+
+  return (
+    <div>
+      <select value={country} onChange={handleChange}>
+        <option value="">Select a country</option>
+        <option value="india">India</option>
+        <option value="usa">USA</option>
+        <option value="uk">UK</option>
+      </select>
+
+      <p>Selected Country: {country}</p>
+    </div>
+  );
+};
+
+export default SelectExample;
+```
+
+---
+
+# 6️⃣ Handling Multiple Inputs with One Handler (Best Practice)
+
+In real projects, you don’t create separate handlers for every field.
+
+Instead:
+
+```javascript
+import { useState } from "react";
+
+const FormExample = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    subscribed: false,
+    gender: "",
+    country: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  return (
+    <form>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
+
+      <input
+        type="checkbox"
+        name="subscribed"
+        checked={formData.subscribed}
+        onChange={handleChange}
+      />
+
+      <input
+        type="radio"
+        name="gender"
+        value="male"
+        checked={formData.gender === "male"}
+        onChange={handleChange}
+      />
+
+      <select
+        name="country"
+        value={formData.country}
+        onChange={handleChange}
+      >
+        <option value="">Select</option>
+        <option value="india">India</option>
+      </select>
+    </form>
+  );
+};
+
+export default FormExample;
+```
+
+---
+
+# 7️⃣ Controlled vs Uncontrolled (Interview Concept)
+
+### Controlled:
+
+ React state manages value
+ Predictable
+ Recommended approach
+
+### Uncontrolled:
+
+ Uses `ref`
+ DOM manages state
+ Used in special cases (file inputs, performance cases)
+
+---
+
+# 8️⃣ Common Mistakes (Very Important)
+
+1. ❌ Forgetting `onChange` while using `value`
+   → Input becomes read-only
+
+2. ❌ Mixing `defaultValue` with `value`
+
+3. ❌ Not setting initial state properly
+   → Leads to controlled/uncontrolled warnings
+
+4. ❌ Forgetting `name` attribute in multi-input forms
+
+---
