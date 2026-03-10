@@ -1,0 +1,234 @@
+## 16. Lifting State Up in React
+
+### 1️⃣ Introduction
+
+Lifting state up is a fundamental concept in React where you move state from a child component to its closest common parent component so that multiple components can share and stay synchronized with the same data.
+
+React follows one-way data flow, meaning:
+
+ Data flows from parent → child
+ Children cannot directly modify parent state
+ Instead, parents pass data via props and receive updates via callback functions
+
+When two or more components need access to the same state, the correct architectural solution is to lift the state up.
+
+---
+
+## 2️⃣ Why Do We Need to Lift State?
+
+Imagine this structure:
+
+```
+App
+ ├── InputComponent
+ └── DisplayComponent
+```
+
+If:
+
+ `InputComponent` changes some value (e.g., text input)
+ `DisplayComponent` needs to show that value
+
+If the state lives inside `InputComponent`, `DisplayComponent` cannot access it.
+
+### ❌ Wrong Approach:
+
+Keep separate state in both components → results in inconsistent data.
+
+### ✅ Correct Approach:
+
+Move the state to `App` (their common parent) and pass it down as props.
+
+---
+
+## 3️⃣ Basic Example (Without Lifting State)
+
+```jsx
+const Input = () => {
+  const [text, setText] = React.useState("");
+
+  return (
+    <input 
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+    />
+  );
+};
+
+const Display = () => {
+  return <h2>Text will show here</h2>;
+};
+```
+
+Problem:
+
+ `Display` does not know what `Input`'s state is.
+ No communication between siblings.
+
+---
+
+## 4️⃣ Lifting State Up (Correct Approach)
+
+### Step 1: Move state to parent
+
+```jsx
+const App = () => {
+  const [text, setText] = React.useState("");
+
+  return (
+    <>
+      <Input text={text} setText={setText} />
+      <Display text={text} />
+    </>
+  );
+};
+```
+
+---
+
+### Step 2: Update child components
+
+```jsx
+const Input = ({ text, setText }) => {
+  return (
+    <input
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+    />
+  );
+};
+
+const Display = ({ text }) => {
+  return <h2>{text}</h2>;
+};
+```
+
+---
+
+### 🔥 What Happens Now?
+
+1. User types in `Input`
+2. `setText` updates state in `App`
+3. `App` re-renders
+4. Updated `text` flows down to both children
+5. `Display` shows updated value
+
+This ensures single source of truth.
+
+---
+
+## 5️⃣ Real-World Example – Temperature Converter
+
+This is the classic example from React documentation.
+
+Two inputs:
+
+ Celsius
+ Fahrenheit
+
+When you type in one, the other should update automatically.
+
+### If both inputs manage their own state:
+
+They won’t stay synchronized.
+
+### Correct approach:
+
+ Store temperature state in parent
+ Convert value before passing it down
+
+This ensures both inputs always display consistent values.
+
+---
+
+## 6️⃣ Key Principles Behind Lifting State
+
+### ✅ 1. Single Source of Truth
+
+State should live in one place only.
+
+### ✅ 2. Closest Common Ancestor
+
+Lift state to the nearest parent that needs access.
+
+### ✅ 3. Controlled Components
+
+Inputs become controlled because value comes from parent state.
+
+### ✅ 4. Predictable Data Flow
+
+Parent controls data → children request updates via callbacks.
+
+---
+
+## 7️⃣ When Should You Lift State Up?
+
+You should lift state when:
+
+ Two sibling components need the same data
+ You want to synchronize UI elements
+ You need shared validation
+ You want consistent behavior across components
+
+---
+
+## 8️⃣ When NOT to Lift State Up?
+
+Do NOT lift state unnecessarily.
+
+If state is used by:
+
+ Only one component
+ Only locally
+ Does not need synchronization
+
+Then keep it local.
+
+Over-lifting state can cause:
+
+ Unnecessary re-renders
+ Large, messy parent components
+
+---
+
+## 9️⃣ Advanced Perspective (Very Important)
+
+In large applications:
+
+ Lifting state up too much leads to prop drilling
+ Passing props through many layers becomes messy
+
+Solutions:
+
+ Context API
+ Redux
+ Zustand
+ Recoil
+
+But lifting state up is the foundation before learning those.
+
+---
+
+## 🔟 Interview Insight
+
+If asked:
+
+> “How do you share data between sibling components?”
+
+Correct Answer:
+
+> “By lifting the state up to their closest common parent and passing it down through props.”
+
+---
+
+## 11️⃣ Summary
+
+Lifting state up means:
+
+ Move shared state to parent
+ Pass state down via props
+ Pass updater functions down as callbacks
+ Maintain single source of truth
+ Follow React’s one-way data flow
+
+---

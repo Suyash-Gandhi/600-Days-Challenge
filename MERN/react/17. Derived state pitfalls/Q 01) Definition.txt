@@ -1,0 +1,246 @@
+## 17. Derived State Pitfalls (Duplicating Props in State)
+
+This is one of the most common React mistakes, especially among beginners.
+
+Derived state means:
+
+> You copy a value from `props` into `state` and then use that state instead of the prop.
+
+At first, it looks harmless. But it often creates data inconsistency, unnecessary complexity, and bugs.
+
+---
+
+# 🔹 1. What Is Derived State?
+
+Derived state happens when you do something like this:
+
+```jsx
+const UserProfile = ({ name }) => {
+  const [userName, setUserName] = useState(name); // ❌ copying prop into state
+
+  return <h1>{userName}</h1>;
+};
+```
+
+Here:
+
+ `name` is already coming from the parent
+ But we create another `userName` state based on it
+
+Now we have two sources of truth:
+
+ `props.name`
+ `state.userName`
+
+That’s dangerous.
+
+---
+
+# 🔹 2. Why It Becomes a Problem
+
+## ⚠️ Problem 1: It Doesn’t Update Automatically
+
+If the parent changes `name`, the state will NOT automatically update.
+
+Example:
+
+```jsx
+<UserProfile name="Suyash" />
+```
+
+Later:
+
+```jsx
+<UserProfile name="Rahul" />
+```
+
+The component will still show "Suyash" because `useState(name)` only runs on the first render.
+
+This creates a stale UI bug.
+
+---
+
+## ⚠️ Problem 2: Two Sources of Truth
+
+If both `props` and `state` represent the same data:
+
+ Which one is correct?
+ What if they get out of sync?
+
+React works best when there is one single source of truth.
+
+---
+
+## ⚠️ Problem 3: Extra Complexity
+
+Developers often try to “fix” it like this:
+
+```jsx
+useEffect(() => {
+  setUserName(name);
+}, [name]);
+```
+
+Now:
+
+ You added extra logic
+ You added more renders
+ You added synchronization overhead
+
+All of this was unnecessary.
+
+---
+
+# 🔹 3. Why Developers Do This
+
+Usually for one of these reasons:
+
+1. They want to “modify” the prop locally.
+2. They think every dynamic value must be state.
+3. They misunderstand how React re-renders.
+
+But remember:
+
+> Props already re-render when they change. You don’t need state for that.
+
+---
+
+# 🔹 4. When It Is WRONG to Duplicate Props
+
+❌ If you're just displaying the prop
+❌ If you're computing something simple from it
+❌ If you don't need independent control
+
+Example of wrong usage:
+
+```jsx
+const Price = ({ amount }) => {
+  const [price] = useState(amount); // ❌ unnecessary
+  return <p>{price}</p>;
+};
+```
+
+Correct version:
+
+```jsx
+const Price = ({ amount }) => {
+  return <p>{amount}</p>;
+};
+```
+
+Simple. Clean. Correct.
+
+---
+
+# 🔹 5. When Derived State Is Actually Valid
+
+There are very few legitimate cases.
+
+## ✅ Case 1: Editable Form Fields
+
+If you receive initial data but want to allow local editing:
+
+```jsx
+const EditProfile = ({ initialName }) => {
+  const [name, setName] = useState(initialName);
+
+  return (
+    <input
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+  );
+};
+```
+
+Here it’s valid because:
+
+ The prop is only the initial value
+ The component manages its own version after that
+
+Important distinction:
+
+ `initialName` → starting value
+ `name` → local editable state
+
+That’s not duplication — it’s intentional independence.
+
+---
+
+## ✅ Case 2: Expensive Computation Based on Props
+
+Instead of storing derived state, prefer `useMemo`:
+
+```jsx
+const User = ({ firstName, lastName }) => {
+  const fullName = useMemo(() => {
+    return `${firstName} ${lastName}`;
+  }, [firstName, lastName]);
+
+  return <h1>{fullName}</h1>;
+};
+```
+
+No state needed.
+
+---
+
+# 🔹 6. Correct Mental Model
+
+### 🔥 React Rule:
+
+If something can be calculated from props/state — do not store it separately.
+
+Store only:
+
+ User input
+ UI control flags
+ Truly independent state
+
+Everything else → derive during render.
+
+---
+
+# 🔹 7. Better Architectural Alternatives
+
+Instead of duplicating props:
+
+### ✅ Lift state up
+
+Let the parent manage it.
+
+### ✅ Use controlled components
+
+Parent controls value directly.
+
+### ✅ Compute values on the fly
+
+No state needed.
+
+---
+
+# 🔹 8. Interview-Level Insight
+
+If asked:
+
+"Why is duplicating props into state dangerous?"
+
+Strong answer:
+
+> Because it creates multiple sources of truth, breaks React’s one-way data flow, causes stale UI bugs, and adds unnecessary synchronization logic. State should only be used for data that changes independently inside the component.
+
+---
+
+# 🔹 9. Quick Summary Table
+
+| Situation                   | Should You Copy to State? |
+| --------------------------- | ------------------------- |
+| Just displaying prop        | ❌ No                      |
+| Formatting prop             | ❌ No                      |
+| Filtering prop              | ❌ No                      |
+| Editable form initial value | ✅ Yes                     |
+| Temporary UI interaction    | ✅ Yes                     |
+| Expensive calculation       | ❌ Use `useMemo`           |
+
+---
+
