@@ -1,0 +1,379 @@
+## 22. `useRef` in React
+
+`useRef` is a React Hook used to create a mutable reference object that persists across component renders without causing re-renders when it changes.
+
+It is commonly used for:
+
+ Accessing DOM elements directly
+ Storing values that persist between renders
+ Keeping mutable variables that should not trigger re-renders
+
+---
+
+# 1. What `useRef` Is
+
+`useRef` returns an object with a single property:
+
+```javascript
+const ref = useRef(initialValue)
+```
+
+Structure of the returned object:
+
+```javascript
+{
+  current: initialValue
+}
+```
+
+Key characteristics:
+
+ The object persists across renders
+ Updating `ref.current` does NOT trigger a re-render
+ Mainly used to store DOM references or mutable values
+
+Example:
+
+```javascript
+const countRef = useRef(0)
+
+countRef.current += 1
+```
+
+Here:
+
+ `countRef.current` changes
+ React does not re-render the component
+
+---
+
+# 2. Basic Syntax
+
+```javascript
+import { useRef } from "react"
+
+const Component = () => {
+  const ref = useRef(initialValue)
+
+  return <div ref={ref}></div>
+}
+```
+
+---
+
+# 3. Common Use Case 1 — Accessing DOM Elements
+
+One of the most common uses of `useRef` is direct DOM access.
+
+Example: Focus an input automatically
+
+```javascript
+import { useRef, useEffect } from "react"
+
+const InputFocus = () => {
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
+  return <input ref={inputRef} placeholder="Type here..." />
+}
+```
+
+Explanation:
+
+1. `useRef(null)` creates a reference.
+2. React attaches the DOM element to `inputRef.current`.
+3. `inputRef.current.focus()` accesses the actual DOM node.
+
+Flow:
+
+```
+useRef → attach ref → DOM element stored → access via ref.current
+```
+
+---
+
+# 4. Common Use Case 2 — Persist Values Without Re-render
+
+Sometimes we want to store data without triggering React updates.
+
+Example: Tracking previous value.
+
+```javascript
+import { useRef, useEffect } from "react"
+
+const PreviousValue = ({ value }) => {
+  const prevValue = useRef()
+
+  useEffect(() => {
+    prevValue.current = value
+  }, [value])
+
+  return (
+    <div>
+      <p>Current: {value}</p>
+      <p>Previous: {prevValue.current}</p>
+    </div>
+  )
+}
+```
+
+Why use `useRef` here?
+
+Because:
+
+ We want to store data
+ But not re-render the component
+
+---
+
+# 5. `useRef` vs `useState`
+
+This is a very common interview question.
+
+| Feature                 | useState | useRef |
+| ----------------------- | -------- | ------ |
+| Causes re-render        | Yes      | No     |
+| Stores mutable value    | Yes      | Yes    |
+| Used for UI state       | Yes      | No     |
+| Used for DOM access     | No       | Yes    |
+| Persists across renders | Yes      | Yes    |
+
+Example difference:
+
+### useState
+
+```javascript
+const [count, setCount] = useState(0)
+```
+
+Updating:
+
+```
+setCount(1)
+```
+
+Result:
+
+```
+Component re-renders
+```
+
+---
+
+### useRef
+
+```javascript
+const countRef = useRef(0)
+
+countRef.current = 1
+```
+
+Result:
+
+```
+No re-render
+```
+
+---
+
+# 6. Common Use Case 3 — Storing Timers
+
+Example: `setInterval`
+
+```javascript
+import { useRef, useEffect } from "react"
+
+const Timer = () => {
+  const intervalRef = useRef(null)
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      console.log("Running...")
+    }, 1000)
+
+    return () => clearInterval(intervalRef.current)
+  }, [])
+
+  return <div>Timer running</div>
+}
+```
+
+Why use `useRef`?
+
+Because:
+
+ We need a persistent variable
+ That doesn't cause re-renders
+
+---
+
+# 7. Common Use Case 4 — Preventing Repeated Execution
+
+Example: Running something only once.
+
+```javascript
+const hasRendered = useRef(false)
+
+if (!hasRendered.current) {
+  console.log("First render")
+  hasRendered.current = true
+}
+```
+
+This acts like a persistent flag.
+
+---
+
+# 8. How React Handles `useRef`
+
+During rendering:
+
+```
+Render 1
+ref = { current: initialValue }
+
+Render 2
+ref = SAME OBJECT
+```
+
+Important:
+
+React does not recreate the ref object.
+
+It keeps the same reference across renders.
+
+So:
+
+```
+ref.current can change
+but ref object stays same
+```
+
+---
+
+# 9. When You Should Use `useRef`
+
+Use `useRef` when you need:
+
+### 1. DOM manipulation
+
+Examples:
+
+ focus input
+ scroll to element
+ play video
+
+### 2. Persist value without re-render
+
+Examples:
+
+ previous state
+ timers
+ cached values
+
+### 3. Mutable variables
+
+Examples:
+
+ request status
+ flags
+ counters
+
+---
+
+# 10. When NOT to Use `useRef`
+
+Do not use `useRef` for UI state.
+
+Bad example:
+
+```javascript
+const count = useRef(0)
+
+const increment = () => {
+  count.current++
+}
+```
+
+UI will not update.
+
+Correct approach:
+
+```javascript
+const [count, setCount] = useState(0)
+```
+
+---
+
+# 11. Important Rules
+
+### 1. `useRef` does not trigger re-renders
+
+Changing:
+
+```
+ref.current
+```
+
+does not update UI.
+
+---
+
+### 2. The ref object stays the same
+
+```
+ref === ref
+```
+
+across renders.
+
+---
+
+### 3. `.current` stores the value
+
+Example:
+
+```
+ref.current = DOM element or value
+```
+
+---
+
+# 12. Real World Example
+
+Scroll to element button.
+
+```javascript
+import { useRef } from "react"
+
+const ScrollExample = () => {
+  const sectionRef = useRef(null)
+
+  const scrollToSection = () => {
+    sectionRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+
+  return (
+    <>
+      <button onClick={scrollToSection}>Go to section</button>
+
+      <div style={{ height: "1000px" }}></div>
+
+      <div ref={sectionRef}>
+        Target Section
+      </div>
+    </>
+  )
+}
+```
+
+---
+
+# 13. Interview Summary
+
+Definition
+
+`useRef` is a React hook that creates a mutable reference object whose value persists across renders without causing re-renders.

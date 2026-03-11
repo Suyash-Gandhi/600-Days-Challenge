@@ -1,0 +1,373 @@
+## 21. `useState` in React
+
+`useState` is one of the most important React Hooks. It allows functional components to store and manage state. Before hooks were introduced, state could only be used in class components. With `useState`, functional components can now handle dynamic data and re-render when that data changes.
+
+---
+
+# 1. What is State in React
+
+State refers to data that can change over time and affects what is rendered on the screen.
+
+Examples:
+
+ Counter value
+ Form input values
+ API response data
+ Toggle states (open/close, dark/light)
+
+Whenever state changes, React re-renders the component so the UI reflects the updated data.
+
+Example idea:
+
+```
+count = 0
+User clicks button
+count = 1
+UI updates automatically
+```
+
+Without state, React components would only display static content.
+
+---
+
+# 2. What is `useState`
+
+`useState` is a React Hook that allows functional components to store and update state.
+
+Syntax:
+
+```javascript
+const [state, setState] = useState(initialValue);
+```
+
+### Breakdown
+
+| Part           | Meaning                       |
+| -------------- | ----------------------------- |
+| `state`        | Current state value           |
+| `setState`     | Function used to update state |
+| `initialValue` | Initial value of the state    |
+
+Example:
+
+```javascript
+import { useState } from "react";
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </div>
+  );
+};
+```
+
+Explanation:
+
+ `count` starts at 0
+ Clicking button calls `setCount`
+ React updates state
+ Component re-renders with new value
+
+---
+
+# 3. How `useState` Works Internally (Conceptual)
+
+When a component renders:
+
+1. React creates a state variable
+2. React stores it internally
+3. React returns:
+
+    the current state
+    a setter function
+
+When `setState` is called:
+
+1. React updates stored state
+2. React re-renders the component
+3. UI updates automatically
+
+Important point:
+
+React does not reload the page — it only re-renders the component.
+
+---
+
+# 4. Multiple State Variables
+
+A component can use multiple `useState` hooks.
+
+Example:
+
+```javascript
+const UserProfile = () => {
+  const [name, setName] = useState("John");
+  const [age, setAge] = useState(20);
+  const [isOnline, setIsOnline] = useState(false);
+
+  return (
+    <div>
+      <p>{name}</p>
+      <p>{age}</p>
+      <p>{isOnline ? "Online" : "Offline"}</p>
+    </div>
+  );
+};
+```
+
+Best practice in React:
+
+Use multiple states instead of one large object state when values are unrelated.
+
+---
+
+# 5. Updating State
+
+State should never be modified directly.
+
+Wrong ❌
+
+```javascript
+count = count + 1
+```
+
+Correct ✅
+
+```javascript
+setCount(count + 1)
+```
+
+Why?
+
+Because React needs the setter function to detect changes and re-render the component.
+
+---
+
+# 6. Updating State Based on Previous State
+
+Sometimes the new state depends on the previous state value.
+
+Example:
+
+```javascript
+setCount(prev => prev + 1)
+```
+
+Example component:
+
+```javascript
+<button onClick={() => setCount(prev => prev + 1)}>
+  Increase
+</button>
+```
+
+Why this is better:
+
+React state updates can be asynchronous, so using `prev` ensures you always get the correct previous value.
+
+---
+
+# 7. Using `useState` with Objects
+
+State can store objects.
+
+Example:
+
+```javascript
+const [user, setUser] = useState({
+  name: "Alex",
+  age: 25
+});
+```
+
+Updating object state:
+
+```javascript
+setUser({
+  ...user,
+  age: 26
+});
+```
+
+Explanation:
+
+ `...user` keeps existing properties
+ Only `age` is updated
+
+---
+
+# 8. Using `useState` with Arrays
+
+Example:
+
+```javascript
+const [items, setItems] = useState([]);
+```
+
+Adding item:
+
+```javascript
+setItems([...items, "Apple"]);
+```
+
+Explanation:
+
+ Spread operator keeps previous items
+ New item added at the end
+
+---
+
+# 9. Lazy Initialization
+
+If the initial state requires heavy computation, React allows lazy initialization.
+
+Example:
+
+```javascript
+const [value, setValue] = useState(() => {
+  return expensiveCalculation();
+});
+```
+
+React runs this function only on the first render, not on every render.
+
+---
+
+# 10. Re-render Behavior
+
+When state changes:
+
+React will re-render the component where the state exists.
+
+Example:
+
+```
+Parent Component
+   ├── Child A
+   └── Child B
+```
+
+If state is in Parent, both children may re-render.
+
+If state is in Child A, only Child A re-renders.
+
+This is important for performance optimization.
+
+---
+
+# 11. Common Mistakes with `useState`
+
+### 1. Directly modifying state
+
+Wrong
+
+```javascript
+user.age = 30
+```
+
+Correct
+
+```javascript
+setUser({...user, age: 30})
+```
+
+---
+
+### 2. Forgetting previous state updates
+
+Wrong
+
+```javascript
+setCount(count + 1)
+setCount(count + 1)
+```
+
+Result: only +1
+
+Correct
+
+```javascript
+setCount(prev => prev + 1)
+setCount(prev => prev + 1)
+```
+
+Result: +2
+
+---
+
+### 3. Using state for non-changing values
+
+Example:
+
+```javascript
+const [pi] = useState(3.14)
+```
+
+This is unnecessary.
+
+Use normal variables instead.
+
+---
+
+# 12. `useState` vs Variables
+
+| Feature                  | Normal Variable | useState |
+| ------------------------ | --------------- | -------- |
+| Persists between renders | ❌ No            | ✅ Yes    |
+| Triggers re-render       | ❌ No            | ✅ Yes    |
+| Used for UI data         | ❌ No            | ✅ Yes    |
+
+Example:
+
+```
+let count = 0   // resets on every render
+```
+
+React state:
+
+```
+const [count, setCount] = useState(0) // persists
+```
+
+---
+
+# 13. Real World Example (Form Input)
+
+```javascript
+const Form = () => {
+  const [name, setName] = useState("");
+
+  return (
+    <div>
+      <input 
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <p>Hello {name}</p>
+    </div>
+  );
+};
+```
+
+Flow:
+
+```
+User types → onChange fires → setName() → state updates → component re-renders
+```
+
+---
+
+# 14. Best Practices
+
+1. Use separate state variables for unrelated data
+2. Never mutate state directly
+3. Use functional updates when depending on previous state
+4. Keep state minimal
+5. Lift state up when multiple components need it
+
+---
+
