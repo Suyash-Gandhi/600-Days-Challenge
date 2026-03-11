@@ -1,0 +1,210 @@
+## 20. React.StrictMode and Its Importance
+
+### 1️⃣ Introduction
+
+`React.StrictMode` is a special wrapper component in React that helps developers identify potential problems in their application during development.
+
+It does not render anything in the UI and does not affect production builds.
+Its purpose is purely to highlight unsafe practices, deprecated APIs, and side-effect issues.
+
+It is mainly used during development to make your application more robust and future-proof.
+
+---
+
+### 2️⃣ Where It Is Used
+
+In modern React applications (like those created using `createRoot`), `StrictMode` is typically used at the root level.
+
+Example (conceptually):
+
+```
+<StrictMode>
+   <App />
+</StrictMode>
+```
+
+This tells React:
+
+> “Run additional checks and warnings for everything inside this tree.”
+
+---
+
+### 3️⃣ What StrictMode Actually Does
+
+`StrictMode` enables extra development-only checks, including:
+
+---
+
+### 🔹 A) Detects Unsafe Lifecycle Methods
+
+In older class components, certain lifecycle methods were unsafe (e.g., `componentWillMount`, `componentWillReceiveProps`, etc.).
+
+StrictMode warns if you use deprecated lifecycle methods.
+
+This is important because React’s future rendering strategies (like concurrent rendering) may break code that depends on unsafe lifecycles.
+
+---
+
+### 🔹 B) Detects Unexpected Side Effects
+
+One of the most important behaviors:
+
+In development, React intentionally calls some functions twice (like components and `useEffect` setup functions).
+
+Why?
+
+To help detect side effects.
+
+For example:
+
+ API calls
+ Modifying global variables
+ Mutating state incorrectly
+ Direct DOM manipulation
+
+If something breaks when called twice, that means your logic is not pure.
+
+This helps enforce pure component behavior.
+
+---
+
+### 🔹 C) Warns About Deprecated APIs
+
+StrictMode warns when:
+
+ Using legacy string refs
+ Using deprecated context API
+ Using `findDOMNode`
+ Other outdated React patterns
+
+This ensures your code stays modern and maintainable.
+
+---
+
+### 🔹 D) Ensures Reusable State
+
+React 18 introduced behaviors that simulate mounting and unmounting components.
+
+StrictMode checks whether:
+
+ Your effects clean up properly
+ Your state logic works correctly when components re-mount
+
+This is critical for features like:
+
+ Concurrent rendering
+ Suspense
+ Streaming UI
+
+---
+
+### 4️⃣ Why Double Rendering Happens in Development
+
+This is a very important concept.
+
+When StrictMode is enabled:
+
+ React renders components
+ Then immediately unmounts them
+ Then renders them again
+
+This helps detect:
+
+ Memory leaks
+ Improper cleanup
+ Side effects inside render
+ Impure functions
+
+⚠️ Important:
+This only happens in development, not in production.
+
+---
+
+### 5️⃣ Importance in Modern React Applications
+
+StrictMode is important because:
+
+1. It prepares your app for future React updates.
+2. It encourages writing pure and predictable components.
+3. It helps detect memory leaks early.
+4. It forces proper cleanup of effects.
+5. It improves code maintainability.
+6. It reduces unexpected production bugs.
+
+For serious projects, it should almost always remain enabled.
+
+---
+
+### 6️⃣ When Developers Get Confused
+
+Common confusion:
+
+> “Why is my API call happening twice?”
+
+Answer:
+Because StrictMode re-runs effects in development.
+
+If your logic breaks because of this, it means:
+
+ Your side effects are not handled properly.
+ Your cleanup function is missing or incorrect.
+
+Correct approach:
+
+ Use proper cleanup inside `useEffect`.
+ Avoid side effects inside render.
+
+---
+
+### 7️⃣ Should You Disable StrictMode?
+
+In most cases: No.
+
+Only disable temporarily when:
+
+ Debugging something specific.
+ Working with third-party libraries that are not StrictMode compatible.
+
+But long-term, you should keep it enabled.
+
+---
+
+### 8️⃣ StrictMode and Future React Features
+
+StrictMode is especially important for:
+
+ Concurrent Rendering
+ Automatic Batching
+ Suspense
+ Streaming Server Rendering
+
+It ensures your code works correctly under advanced rendering behaviors.
+
+---
+
+### 9️⃣ Summary
+
+`React.StrictMode` is a development tool that:
+
+ Detects unsafe patterns
+ Warns about deprecated APIs
+ Detects side effects
+ Forces proper cleanup
+ Prepares apps for concurrent rendering
+ Improves overall code quality
+
+It does not affect UI and does not run in production.
+
+---
+
+### 🔟 Final Insight (Very Important)
+
+StrictMode is not about fixing your app today.
+
+It is about ensuring:
+
+> Your React app remains stable, scalable, and compatible with future React versions.
+
+If you want to build professional, production-grade React applications — keep StrictMode enabled.
+
+---

@@ -138,7 +138,7 @@
 70. Smart vs dumb components
 71. State colocation principle
 72. Portals
-73. StrictMode behavior
+
 
 ---
 

@@ -44,7 +44,7 @@ Goal: Master standard data structures & classical algorithms.
 
 🔹 Linked Lists
 
-21. Singly & Doubly Linked Lists
+21. Singly, Doubly, Header, Circular Linked Lists
 22. Reversal, middle, cycle detection (Floyd’s algorithm)
 23. Merge two sorted linked lists
 24. LRU Cache (LinkedHashMap / custom)
@@ -59,7 +59,7 @@ Goal: Master standard data structures & classical algorithms.
 🔹 Heaps & Priority Queue
 
 29. Min-Heap, Max-Heap construction
-30. Heap Sort
+30. Heap Sort -> completed in comparasion based sorting algorithm
 31. Kth smallest/largest element
 32. Median in a stream
 
