@@ -1,41 +1,23 @@
-import { useState } from "react";
+import { useRef } from "react"
 
-const RadioExample = () => {
-  const [gender, setGender] = useState("");
+const ScrollExample = () => {
+  const sectionRef = useRef(null)
 
-  const handleChange = (e) => {
-    setGender(e.target.value);
-  };
+  const scrollToSection = () => {
+    sectionRef.current.scrollIntoView({ behavior: "smooth" })
+  }
 
   return (
-    <div>
-      <label>
-        <input
-          type="radio"
-          name="gender"
-          value="male"
-          checked={gender === "male"}
-          onChange={handleChange}
-        />
-        Male
-      </label>
+    <>
+      <button onClick={scrollToSection}>Go to section</button>
 
-      <label> 
-        <input
-          type="radio"
-          name="gender"
-          value="female"
-          checked={gender === "female"}
-          onChange={handleChange}
-        />
-        Female
-      </label>
+      <div style={{ height: "1000px" }}></div>
 
-      <p>Selected: {gender}</p>
-    </div>
-  );
-};
+      <div ref={sectionRef}>
+        Target Section
+      </div>
+    </>
+  )
+}
 
-export default RadioExample;
-
-
+export default ScrollExample

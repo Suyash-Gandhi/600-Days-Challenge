@@ -1,0 +1,434 @@
+## 23. `useContext` in React
+
+`useContext` is a React Hook used to access values from React Context without passing props manually through every component level.
+
+In large React applications, data often needs to be shared across many components (for example: theme, logged-in user, language, settings). Passing these values through props at every level leads to prop drilling.
+`useContext` solves this problem by allowing components to directly consume shared data from a context provider.
+
+---
+
+# 1. The Problem `useContext` Solves (Prop Drilling)
+
+### Example without Context
+
+```
+App
+ └─ Parent
+     └─ Child
+         └─ GrandChild
+```
+
+If `App` has user data and `GrandChild` needs it:
+
+```
+App → Parent → Child → GrandChild
+```
+
+Every component must pass props even if it doesn't use them.
+
+```
+<App user={user}>
+  <Parent user={user}>
+    <Child user={user}>
+      <GrandChild user={user} />
+```
+
+This is called prop drilling.
+
+Problems:
+
+ unnecessary props passing
+ messy code
+ hard to maintain
+ tightly coupled components
+
+React Context + `useContext` solves this.
+
+---
+
+# 2. What React Context Is
+
+React Context allows you to share data globally across components without manually passing props down the tree.
+
+Three parts exist in Context:
+
+1. Context creation
+2. Provider
+3. Consumer (`useContext`)
+
+---
+
+# 3. Syntax of `useContext`
+
+```
+const value = useContext(ContextName)
+```
+
+Explanation:
+
+ `ContextName` → the context object created with `createContext`
+ `value` → the data provided by the nearest Provider
+
+---
+
+# 4. Basic Example of `useContext`
+
+### Step 1 — Create Context
+
+```
+import { createContext } from "react"
+
+const ThemeContext = createContext()
+```
+
+---
+
+### Step 2 — Provide Context
+
+```
+<ThemeContext.Provider value="dark">
+    <App />
+</ThemeContext.Provider>
+```
+
+Now all children of `App` can access `"dark"`.
+
+---
+
+### Step 3 — Consume Context using `useContext`
+
+```
+import { useContext } from "react"
+
+const Component = () => {
+   const theme = useContext(ThemeContext)
+
+   return <div>{theme}</div>
+}
+```
+
+`theme` will be `"dark"`.
+
+---
+
+# 5. Realistic Example
+
+### Theme Example
+
+Imagine a website with dark / light mode.
+
+### Context
+
+```
+const ThemeContext = createContext()
+```
+
+### Provider
+
+```
+const App = () => {
+   const theme = "dark"
+
+   return (
+      <ThemeContext.Provider value={theme}>
+         <Navbar />
+      </ThemeContext.Provider>
+   )
+}
+```
+
+---
+
+### Nested Component Using `useContext`
+
+```
+const Navbar = () => {
+   return <Button />
+}
+
+const Button = () => {
+   const theme = useContext(ThemeContext)
+
+   return (
+      <button className={theme}>
+         Click
+      </button>
+   )
+}
+```
+
+Even though `Button` is deeply nested, it still gets the theme.
+
+---
+
+# 6. Context With Objects (Common Pattern)
+
+Usually we pass objects instead of simple values.
+
+```
+const AuthContext = createContext()
+```
+
+Provider:
+
+```
+<AuthContext.Provider value={{user, login, logout}}>
+   <App />
+</AuthContext.Provider>
+```
+
+Consumer:
+
+```
+const { user, logout } = useContext(AuthContext)
+```
+
+Now components can:
+
+ read user
+ call logout
+ call login
+
+---
+
+# 7. How React Finds the Context Value
+
+When `useContext` runs, React:
+
+1. Looks for the nearest Provider above the component
+2. Reads the value prop
+3. Returns that value
+
+Example tree:
+
+```
+<AuthProvider>
+   <Navbar>
+      <Profile />
+   </Navbar>
+</AuthProvider>
+```
+
+`Profile` will receive the value from `AuthProvider`.
+
+---
+
+# 8. Default Value of Context
+
+When creating context:
+
+```
+const ThemeContext = createContext("light")
+```
+
+If a component uses `useContext` without a provider, it receives the default value.
+
+Example:
+
+```
+const theme = useContext(ThemeContext)
+```
+
+Value = `"light"`.
+
+---
+
+# 9. Updating Context Value
+
+Context can also contain state.
+
+Example:
+
+```
+const ThemeProvider = ({ children }) => {
+   const [theme, setTheme] = useState("light")
+
+   return (
+      <ThemeContext.Provider value={{theme, setTheme}}>
+         {children}
+      </ThemeContext.Provider>
+   )
+}
+```
+
+Consumer:
+
+```
+const { theme, setTheme } = useContext(ThemeContext)
+```
+
+Now components can read and update shared state.
+
+---
+
+# 10. Advantages of `useContext`
+
+### 1. Eliminates Prop Drilling
+
+Components access shared data directly.
+
+### 2. Cleaner Component Hierarchy
+
+Intermediate components don't need unnecessary props.
+
+### 3. Centralized Global State
+
+Useful for:
+
+ authentication
+ theme
+ language
+ user preferences
+
+### 4. Works Well With Hooks
+
+Very simple syntax compared to older Context API.
+
+---
+
+# 11. Common Use Cases
+
+| Use Case       | Example           |
+| -------------- | ----------------- |
+| Authentication | Logged-in user    |
+| Theme          | Dark / light mode |
+| Localization   | Language          |
+| App settings   | Config values     |
+| Global state   | Cart data         |
+
+---
+
+# 12. Common Mistakes
+
+### 1. Overusing Context
+
+Context should not replace all state management.
+
+Bad for:
+
+ frequently changing data
+ very large states
+
+Because all consumers re-render.
+
+---
+
+### 2. Creating Context Inside Component
+
+Wrong:
+
+```
+const Component = () => {
+   const MyContext = createContext()
+}
+```
+
+Context must be created outside components.
+
+---
+
+### 3. Forgetting Provider
+
+If provider is missing:
+
+```
+const value = useContext(MyContext)
+```
+
+You get the default value, not the real data.
+
+---
+
+# 13. `useContext` vs Props
+
+| Feature       | Props               | useContext         |
+| ------------- | ------------------- | ------------------ |
+| Data passing  | Parent → child      | Any component      |
+| Prop drilling | Yes                 | No                 |
+| Setup         | Simple              | Needs context      |
+| Use case      | Local communication | Global/shared data |
+
+---
+
+# 14. `useContext` vs Redux
+
+| Feature          | useContext                    | Redux              |
+| ---------------- | ----------------------------- | ------------------ |
+| Built into React | Yes                           | No                 |
+| Complexity       | Low                           | Higher             |
+| Best for         | Small global state            | Large applications |
+| Performance      | Can re-render many components | Optimized updates  |
+
+---
+
+# 15. Best Practices
+
+1. Use Context for global data only
+
+Examples:
+
+ theme
+ auth
+ language
+
+---
+
+2. Create separate contexts
+
+Instead of:
+
+```
+AppContext
+```
+
+Use:
+
+```
+AuthContext
+ThemeContext
+SettingsContext
+```
+
+---
+
+3. Use custom hooks for cleaner usage
+
+Example:
+
+```
+const useAuth = () => useContext(AuthContext)
+```
+
+Then use:
+
+```
+const { user } = useAuth()
+```
+
+Much cleaner.
+
+---
+
+# 16. Simple Mental Model
+
+Think of `useContext` like a global data pipe inside React.
+
+Instead of passing data manually:
+
+```
+A → B → C → D
+```
+
+Context allows:
+
+```
+A → D (direct access)
+```
+
+---
+
+✅ In one sentence
+
+`useContext` is a React Hook that allows components to directly access shared data from React Context without prop drilling.
+
+---

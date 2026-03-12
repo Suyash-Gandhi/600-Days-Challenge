@@ -1,0 +1,264 @@
+## Rules of Hooks (React)
+
+The Rules of Hooks are strict guidelines defined by the React team to ensure that Hooks work correctly and predictably. Hooks rely on the order in which they are called during rendering. If this order changes between renders, React cannot correctly associate state and effects with the right component.
+
+Because of this, React enforces two fundamental rules.
+
+---
+
+# 1. Only Call Hooks at the Top Level
+
+### Explanation
+
+Hooks must always be called at the top level of a React component or custom hook.
+
+You must not call Hooks inside:
+
+ loops
+ conditions
+ nested functions
+ try/catch blocks
+ event handlers
+
+This rule ensures that Hooks are called in the same order every time a component renders.
+
+React internally keeps track of Hooks by their order of execution, not by name.
+
+---
+
+### Correct Example
+
+```javascript
+const Counter = () => {
+  const [count, setCount] = useState(0)
+  const [name, setName] = useState("Suyash")
+
+  return (
+    <div>
+      <p>{count}</p>
+    </div>
+  )
+}
+```
+
+Hooks are called directly inside the component body, always in the same order.
+
+---
+
+### Incorrect Example
+
+```javascript
+const Counter = () => {
+  if (true) {
+    const [count, setCount] = useState(0)
+  }
+
+  return <div>Hello</div>
+}
+```
+
+Problem:
+
+ The hook is inside a condition
+ On some renders it might execute, on others it might not
+
+This breaks the hook order.
+
+---
+
+### Correct Alternative
+
+Instead of conditionally calling the Hook, move the condition inside the Hook logic.
+
+```javascript
+const Counter = () => {
+  const [count, setCount] = useState(0)
+
+  if (count > 5) {
+    console.log("High count")
+  }
+
+  return <div>{count}</div>
+}
+```
+
+---
+
+# 2. Only Call Hooks from React Functions
+
+Hooks should only be used inside:
+
+1. React function components
+2. Custom Hooks
+
+You cannot use Hooks inside:
+
+ normal JavaScript functions
+ class components
+ event callbacks
+ utility functions
+
+---
+
+### Correct Example (Function Component)
+
+```javascript
+const Profile = () => {
+  const [name, setName] = useState("John")
+
+  return <h1>{name}</h1>
+}
+```
+
+---
+
+### Correct Example (Custom Hook)
+
+```javascript
+const useCounter = () => {
+  const [count, setCount] = useState(0)
+
+  const increment = () => setCount(count + 1)
+
+  return { count, increment }
+}
+```
+
+Custom hooks are allowed to use other hooks.
+
+---
+
+### Incorrect Example
+
+```javascript
+const calculate = () => {
+  const [count, setCount] = useState(0) 
+}
+```
+
+This is not a React component or custom hook, so Hooks cannot be used here.
+
+---
+
+# Why These Rules Exist
+
+React internally stores hooks in a linked list per component render.
+
+React does not track hooks by variable name, but by execution order.
+
+Example:
+
+First render:
+
+```
+1 → useState
+2 → useEffect
+3 → useState
+```
+
+Second render must be exactly the same order.
+
+If a Hook is skipped because of a condition:
+
+```
+1 → useState
+2 → useState
+```
+
+Now React gets confused and assigns the wrong state to the wrong hook.
+
+---
+
+# Example Showing the Problem
+
+Bad example:
+
+```javascript
+const Example = ({ show }) => {
+  const [count, setCount] = useState(0)
+
+  if (show) {
+    useEffect(() => {
+      console.log("Visible")
+    }, [])
+  }
+
+  const [name, setName] = useState("")
+}
+```
+
+Render 1:
+
+```
+1 useState
+2 useEffect
+3 useState
+```
+
+Render 2 (show = false):
+
+```
+1 useState
+2 useState
+```
+
+Now the second useState replaces useEffect, breaking React’s hook tracking.
+
+---
+
+# ESLint Plugin That Enforces These Rules
+
+React provides an official ESLint plugin:
+
+eslint-plugin-react-hooks
+
+It automatically warns you if you break Hook rules.
+
+Example warning:
+
+```
+React Hook "useEffect" is called conditionally.
+```
+
+This prevents many bugs during development.
+
+---
+
+# Summary
+
+### Rule 1 — Call Hooks at the Top Level
+
+Do not call Hooks inside:
+
+ loops
+ conditions
+ nested functions
+
+Always call them at the top of your component.
+
+---
+
+### Rule 2 — Call Hooks Only in React Functions
+
+Hooks can only be used inside:
+
+ React function components
+ Custom Hooks
+
+Not inside:
+
+ normal functions
+ classes
+ event handlers
+
+---
+
+# Best Practices
+
+1. Always call Hooks before any return statement
+2. Keep Hooks at the top of the component
+3. Use custom hooks to reuse hook logic
+4. Use the React Hooks ESLint plugin
+
+---
+
