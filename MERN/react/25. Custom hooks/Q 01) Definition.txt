@@ -1,0 +1,405 @@
+
+# 1. What Are Custom Hooks
+
+A Custom Hook is a JavaScript function that uses React Hooks internally and allows you to reuse logic across multiple components.
+
+In simple terms:
+
+ If multiple components use the same logic
+ Instead of copy-pasting that logic
+ You extract it into a reusable hook
+
+React requires custom hooks to start with `use`.
+
+Examples
+
+```
+useFetch()
+useAuth()
+useForm()
+useLocalStorage()
+```
+
+---
+
+# 2. Why Custom Hooks Are Needed
+
+Before Custom Hooks existed, developers reused logic using:
+
+1. Higher Order Components (HOC)
+2. Render Props
+
+Both approaches created problems like:
+
+ Deep component nesting
+ Harder debugging
+ Less readable code
+
+Custom Hooks solve this by allowing logic reuse without changing component structure.
+
+---
+
+# 3. Simple Example Without Custom Hook
+
+Suppose multiple components need to track window width.
+
+### Component A
+
+```javascript
+import { useState, useEffect } from "react";
+
+const ComponentA = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return <div>Width: {width}</div>;
+};
+
+export default ComponentA;
+```
+
+### Problem
+
+If ComponentB also needs this logic, you would have to copy the same code again.
+
+This violates the DRY principle (Don't Repeat Yourself).
+
+---
+
+# 4. Creating a Custom Hook
+
+We extract the reusable logic into a hook.
+
+### Custom Hook
+
+```javascript
+import { useState, useEffect } from "react";
+
+const useWindowWidth = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return width;
+};
+
+export default useWindowWidth;
+```
+
+---
+
+# 5. Using the Custom Hook
+
+Now any component can reuse it.
+
+```javascript
+import useWindowWidth from "./useWindowWidth";
+
+const ComponentA = () => {
+  const width = useWindowWidth();
+
+  return <div>Window width: {width}</div>;
+};
+
+export default ComponentA;
+```
+
+Another component:
+
+```javascript
+const ComponentB = () => {
+  const width = useWindowWidth();
+
+  return <p>Screen width is {width}</p>;
+};
+```
+
+Both components share the same logic but have separate states.
+
+---
+
+# 6. Key Rules of Custom Hooks
+
+Custom hooks must follow Rules of Hooks.
+
+### 1. Name must start with `use`
+
+Correct:
+
+```
+useFetch
+useAuth
+useForm
+```
+
+Incorrect:
+
+```
+fetchData
+getAuth
+```
+
+React uses this naming convention to detect hooks automatically.
+
+---
+
+### 2. Hooks must be called at the top level
+
+Wrong:
+
+```javascript
+if (condition) {
+  useState();
+}
+```
+
+Correct:
+
+```javascript
+const [data, setData] = useState(null);
+```
+
+---
+
+### 3. Hooks must only be called inside
+
+ React components
+ Custom hooks
+
+Not inside:
+
+ regular functions
+ loops
+ conditions
+
+---
+
+# 7. Example: Custom Hook for Fetching API Data
+
+A very common custom hook.
+
+### Hook
+
+```javascript
+import { useState, useEffect } from "react";
+
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(url);
+      const result = await res.json();
+
+      setData(result);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading };
+};
+
+export default useFetch;
+```
+
+---
+
+### Using it
+
+```javascript
+const Users = () => {
+  const { data, loading } = useFetch(
+    "https://jsonplaceholder.typicode.com/users"
+  );
+
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+---
+
+# 8. Advantages of Custom Hooks
+
+### 1. Code Reusability
+
+Same logic can be used across multiple components.
+
+Example:
+
+```
+useAuth
+useFetch
+useLocalStorage
+useDebounce
+```
+
+---
+
+### 2. Cleaner Components
+
+Instead of large components with lots of logic:
+
+```
+Component
+ ├ state
+ ├ fetch logic
+ ├ event listeners
+ ├ API calls
+```
+
+You move logic to hooks.
+
+```
+Component
+ ├ useAuth()
+ ├ useFetch()
+ ├ useWindowWidth()
+```
+
+Much cleaner.
+
+---
+
+### 3. Separation of Concerns
+
+Components focus on UI while hooks handle logic.
+
+---
+
+# 9. Real Custom Hooks Used in Production
+
+Common hooks developers create:
+
+### Authentication
+
+```
+useAuth()
+```
+
+Handles
+
+ login
+ logout
+ user session
+
+---
+
+### API calls
+
+```
+useFetch()
+useApi()
+```
+
+---
+
+### Forms
+
+```
+useForm()
+```
+
+Handles
+
+ input state
+ validation
+ submission
+
+---
+
+### Local Storage
+
+```
+useLocalStorage()
+```
+
+---
+
+### Debouncing
+
+```
+useDebounce()
+```
+
+---
+
+# 10. Folder Structure for Custom Hooks (Best Practice)
+
+A common structure in React projects:
+
+```
+src
+ ├ components
+ ├ hooks
+ │   ├ useFetch.js
+ │   ├ useAuth.js
+ │   ├ useLocalStorage.js
+ │   └ useDebounce.js
+ ├ pages
+ └ App.js
+```
+
+This keeps logic modular and scalable.
+
+---
+
+# 11. Important Concept: Custom Hooks Do NOT Share State
+
+A common misconception.
+
+If two components use the same hook:
+
+```javascript
+const value = useCounter();
+```
+
+Each component gets its own independent state.
+
+React executes the hook separately for each component instance.
+
+---
+
+# 12. When Should You Create a Custom Hook?
+
+Create one when:
+
+1. Logic is used in multiple components
+2. Logic is complex
+3. Component becomes too large
+4. You want better separation of logic
+
+Avoid creating hooks for very small logic.
+
+---
