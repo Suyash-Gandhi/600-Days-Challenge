@@ -1,0 +1,215 @@
+## 30. When React Components Re-render
+
+In React, re-rendering means React calls the component function again to calculate what the UI should look like. After that, React compares the new Virtual DOM with the previous Virtual DOM and updates only the parts of the real DOM that changed.
+
+Re-rendering does not always mean the DOM changes — it only means React recalculates the component output.
+
+---
+
+# 1. State Changes
+
+The most common reason a component re-renders is when its state changes.
+
+When `setState` (or `useState` setter) is called, React schedules a re-render for that component.
+
+### Example
+
+```javascript
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </div>
+  );
+};
+```
+
+### What happens
+
+1. User clicks button
+2. `setCount(count + 1)` runs
+3. React updates state
+4. Component function runs again
+5. React updates UI if needed
+
+Important:
+React re-renders the component even if the DOM output stays the same.
+
+---
+
+# 2. Parent Component Re-renders
+
+If a parent component re-renders, its child components also re-render by default.
+
+### Example
+
+```javascript
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Click</button>
+      <Child />
+    </>
+  );
+};
+```
+
+Even though Child has no state or props, it still re-renders when the parent updates.
+
+### Why?
+
+React re-executes the parent component → which recreates its children.
+
+To avoid unnecessary re-renders we can use:
+
+ `React.memo`
+ `useMemo`
+ `useCallback`
+
+---
+
+# 3. Props Changes
+
+If a component receives new props, it re-renders.
+
+### Example
+
+```javascript
+const Child = ({ name }) => {
+  return <p>{name}</p>;
+};
+```
+
+If the parent passes a new value:
+
+```javascript
+<Child name="Suyash" />
+```
+
+When the prop value changes, React re-renders the component.
+
+---
+
+# 4. Context Value Changes
+
+If a component uses Context, it re-renders when the context value changes.
+
+Example:
+
+```javascript
+const theme = useContext(ThemeContext);
+```
+
+If the provider updates its value:
+
+```javascript
+<ThemeContext.Provider value="dark">
+```
+
+Every component consuming this context re-renders.
+
+---
+
+# 5. Force Update (Rare)
+
+A component can be forced to re-render manually.
+
+Example:
+
+```javascript
+const [, forceUpdate] = useState();
+
+forceUpdate({});
+```
+
+This is rarely used and generally not recommended.
+
+---
+
+# 6. Key Changes in Lists
+
+When a component's key changes, React treats it as a new component.
+
+Example:
+
+```javascript
+<Item key={id} />
+```
+
+If the key changes:
+
+ Old component is destroyed
+ New component is created
+ Component re-renders
+
+---
+
+# 7. StrictMode (Development Only)
+
+If the app uses:
+
+```javascript
+<React.StrictMode>
+```
+
+React intentionally renders components twice in development to detect side effects.
+
+This does not happen in production.
+
+---
+
+# 8. State Updates with Same Value
+
+React may skip re-rendering if the state value is the same.
+
+Example:
+
+```javascript
+setCount(5);
+setCount(5);
+```
+
+React sees the value is unchanged and may skip the update.
+
+---
+
+# 9. Re-render vs DOM Update
+
+This is a very important React concept.
+
+| Step                   | Meaning                                    |
+| ---------------------- | ------------------------------------------ |
+| Component re-render    | React calls the component function again   |
+| Virtual DOM comparison | React compares new output with previous    |
+| DOM update             | Happens only if something actually changed |
+
+So:
+
+```
+Re-render ≠ DOM update
+```
+
+React uses Virtual DOM diffing to keep DOM updates minimal.
+
+---
+
+# 10. Summary
+
+React components re-render when:
+
+1. State changes
+2. Parent component re-renders
+3. Props change
+4. Context value changes
+5. Component key changes
+6. Force update
+7. StrictMode (development)
+
+But React will update the actual DOM only if something changed.
+
+---

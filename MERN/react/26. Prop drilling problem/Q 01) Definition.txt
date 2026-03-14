@@ -1,0 +1,248 @@
+## 26. Prop Drilling Problem in React
+
+### 1. What Prop Drilling Means
+
+Prop drilling happens when data needs to be passed from a parent component to a deeply nested child component, but the data must pass through multiple intermediate components that do not actually use the data.
+
+These intermediate components only forward the props down, which creates unnecessary complexity.
+
+In simple words:
+
+> Prop drilling = passing props through many layers of components just to reach the component that actually needs them.
+
+---
+
+### 2. Why Prop Drilling Happens
+
+React follows a one-way data flow:
+
+Parent → Child → Grandchild → etc.
+
+Because of this rule:
+
+ Data must travel down the component tree
+ Sibling components cannot directly share data
+ Deep components must receive data from the top
+
+So developers sometimes pass props like this:
+
+```
+App
+ └── Parent
+      └── Child
+           └── GrandChild
+```
+
+If `GrandChild` needs data from `App`, the prop must go through Parent and Child, even if they don't use it.
+
+---
+
+### 3. Example of Prop Drilling
+
+Suppose we have a user object that needs to reach `Profile`.
+
+#### App component
+
+```javascript
+const App = () => {
+  const user = { name: "Suyash" }
+
+  return <Dashboard user={user} />
+}
+```
+
+---
+
+#### Dashboard component
+
+```javascript
+const Dashboard = ({ user }) => {
+  return <Sidebar user={user} />
+}
+```
+
+---
+
+#### Sidebar component
+
+```javascript
+const Sidebar = ({ user }) => {
+  return <Profile user={user} />
+}
+```
+
+---
+
+#### Profile component
+
+```javascript
+const Profile = ({ user }) => {
+  return <h1>{user.name}</h1>
+}
+```
+
+Data flow:
+
+```
+App → Dashboard → Sidebar → Profile
+```
+
+But only Profile actually uses the user.
+
+Dashboard and Sidebar are just passing props down.
+
+This is prop drilling.
+
+---
+
+### 4. Problems Caused by Prop Drilling
+
+#### 1. Unnecessary complexity
+
+Components that don't need the data still receive it.
+
+Example:
+
+```
+Sidebar({ user })
+```
+
+But Sidebar doesn't use `user`.
+
+---
+
+#### 2. Harder to maintain
+
+If you add a new prop, you must update every component in the chain.
+
+Example:
+
+```
+App → Dashboard → Sidebar → Profile
+```
+
+All 3 components must be edited.
+
+---
+
+#### 3. Poor readability
+
+When many props are drilled:
+
+```
+<Component
+ user={user}
+ theme={theme}
+ permissions={permissions}
+ settings={settings}
+/>
+```
+
+It becomes messy.
+
+---
+
+#### 4. Tight coupling between components
+
+Intermediate components become dependent on props they don't care about.
+
+This makes the architecture less clean.
+
+---
+
+### 5. When Prop Drilling Is Actually Fine
+
+Prop drilling is not always bad.
+
+It is acceptable when:
+
+ The component tree is small
+ Data travels only 1–2 levels
+ The app is simple
+
+Example:
+
+```
+Parent → Child
+```
+
+This is completely normal.
+
+---
+
+### 6. Solutions to Prop Drilling
+
+React provides several ways to avoid it.
+
+---
+
+### Solution 1 — React Context API
+
+The Context API allows data to be shared globally without passing props manually.
+
+Instead of:
+
+```
+App → Dashboard → Sidebar → Profile
+```
+
+Profile can directly access the data from context.
+
+Example:
+
+```javascript
+const UserContext = React.createContext()
+```
+
+Provide the value:
+
+```javascript
+<UserContext.Provider value={user}>
+  <Dashboard />
+</UserContext.Provider>
+```
+
+Consume it:
+
+```javascript
+const user = useContext(UserContext)
+```
+
+Now no prop drilling is required.
+
+---
+
+### Solution 2 — State Management Libraries
+
+Large applications often use:
+
+ Redux
+ Zustand
+ Recoil
+ MobX
+
+These create global state stores that any component can access.
+
+Example idea:
+
+```
+Component → Global Store → Component
+```
+
+Instead of:
+
+```
+Component → Component → Component → Component
+```
+
+---
+
+### Solution 3 — Component Composition
+
+Sometimes you can avoid prop drilling by restructuring components.
+
+Example:
+
+Instead of passing props through layers, pass components as children.
+
+---

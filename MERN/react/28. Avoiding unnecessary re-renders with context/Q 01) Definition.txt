@@ -1,0 +1,359 @@
+Since you are learning React concepts step-by-step, this topic appears after Context API, because one of the biggest real-world issues with context is unnecessary re-renders. Understanding this properly is important for writing scalable React apps.
+
+I’ll explain it in a clear project-developer style with examples and best practices.
+
+---
+
+# 28. Avoiding Unnecessary Re-renders with Context
+
+## 1. First Understand the Problem
+
+React Context is used to share data across many components without prop drilling.
+
+Example data shared through context:
+
+ user information
+ theme
+ authentication
+ language
+ settings
+
+However, Context has an important performance issue.
+
+When the context value changes → every component consuming that context re-renders.
+
+Even if the component does not use the changed value.
+
+---
+
+### Example Scenario
+
+Suppose we have a context:
+
+```
+UserContext
+```
+
+Value:
+
+```
+{
+  user,
+  theme
+}
+```
+
+Components:
+
+```
+App
+ ├── Navbar  (uses theme)
+ ├── Profile (uses user)
+ └── Sidebar (uses theme)
+```
+
+Now imagine:
+
+```
+user changes
+```
+
+React behavior:
+
+```
+Navbar  → re-render
+Profile → re-render
+Sidebar → re-render
+```
+
+But Navbar and Sidebar only use theme.
+
+They should not re-render, but they do.
+
+This is called:
+
+Unnecessary re-render caused by context updates.
+
+---
+
+# 2. Why This Happens
+
+React compares context value by reference.
+
+If the object reference changes, React assumes the context changed.
+
+Example:
+
+```
+<UserContext.Provider value={{ user, theme }}>
+```
+
+Every render creates a new object.
+
+```
+{ user, theme }  ← new object each render
+```
+
+React thinks:
+
+```
+Context value changed → re-render all consumers
+```
+
+---
+
+# 3. Technique 1 — Split Contexts (Most Important)
+
+Instead of one big context:
+
+```
+AppContext
+{
+  user,
+  theme,
+  language,
+  notifications
+}
+```
+
+Create separate contexts.
+
+```
+UserContext
+ThemeContext
+LanguageContext
+NotificationContext
+```
+
+Now only relevant components re-render.
+
+### Example Structure
+
+```
+App
+ ├── ThemeProvider
+ │     ├── Navbar
+ │     └── Sidebar
+ │
+ └── UserProvider
+       └── Profile
+```
+
+Now if user changes:
+
+```
+Profile → re-render
+Navbar → no re-render
+Sidebar → no re-render
+```
+
+This is the best and most common optimization.
+
+---
+
+# 4. Technique 2 — Memoize Context Value
+
+Another common mistake is passing a new object every render.
+
+Bad example:
+
+```
+<UserContext.Provider value={{ user, login }}>
+```
+
+This object is recreated every render.
+
+Fix it using useMemo.
+
+Example concept:
+
+```
+const value = useMemo(() => {
+   return { user, login }
+}, [user])
+```
+
+Now React only updates the context when user actually changes.
+
+This prevents unnecessary re-renders.
+
+---
+
+# 5. Technique 3 — Memoize Components (React.memo)
+
+Even with context optimization, sometimes child components still re-render.
+
+You can wrap components with:
+
+```
+React.memo()
+```
+
+Example concept:
+
+```
+const Navbar = React.memo(() => {
+   ...
+})
+```
+
+Now the component only re-renders when its props change.
+
+This is useful when a component:
+
+ receives props
+ does expensive rendering
+ does not change frequently
+
+---
+
+# 6. Technique 4 — Move State Closer to Where It Is Used
+
+Sometimes developers store too much state in context.
+
+Example mistake:
+
+```
+Context stores:
+- user
+- cart
+- theme
+- modal state
+- form state
+```
+
+Instead:
+
+```
+Global context → user, theme
+Local component state → modal, forms
+```
+
+Rule of thumb:
+
+> Context should store global app state, not local UI state.
+
+---
+
+# 7. Technique 5 — Selector Pattern (Advanced)
+
+Libraries like:
+
+ Zustand
+ Redux
+ use-context-selector
+
+allow selecting only the part of state you need.
+
+Example idea:
+
+```
+const user = useUser(state => state.user)
+```
+
+Now the component only re-renders when user changes, not when other fields change.
+
+React’s default context does not support this well, which is why large apps often use state libraries.
+
+---
+
+# 8. Real World Example (Bad vs Good)
+
+### Bad Context
+
+```
+AppContext = {
+  user,
+  theme,
+  cart,
+  notifications
+}
+```
+
+Used everywhere.
+
+Result:
+
+```
+Every update → whole app re-renders
+```
+
+---
+
+### Good Architecture
+
+```
+UserContext
+ThemeContext
+CartContext
+NotificationContext
+```
+
+Now updates are isolated.
+
+---
+
+# 9. Performance Impact in Large Apps
+
+In small apps this doesn't matter.
+
+But in large applications:
+
+ dashboards
+ e-commerce sites
+ chat apps
+ admin panels
+
+Context misuse can cause:
+
+ slow UI
+ unnecessary renders
+ performance drops
+
+This is why experienced React developers carefully design context usage.
+
+---
+
+# 10. Best Practices Summary
+
+### Always follow these rules
+
+1. Split contexts by responsibility
+
+```
+UserContext
+ThemeContext
+AuthContext
+```
+
+2. Memoize context values
+
+Prevent new objects each render.
+
+3. Avoid storing too much data in context
+
+Only global data should go there.
+
+4. Use React.memo when needed
+
+For heavy components.
+
+5. Consider state libraries for large apps
+
+Redux / Zustand / Jotai etc.
+
+---
+
+# 11. Interview Insight
+
+A common interview question:
+
+> "Why can Context cause performance issues?"
+
+Good answer:
+
+ Context triggers re-render for all consuming components
+ Even if they do not use the changed value
+ This can cause unnecessary re-renders
+ Solution: split contexts, memoize values, use selector patterns
+

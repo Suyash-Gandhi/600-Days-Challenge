@@ -1,0 +1,225 @@
+When building React applications, one important architectural decision is where state should live.
+Some state should stay local inside a component, while other state must be shared globally across many components.
+
+Choosing correctly affects:
+
+ performance
+ maintainability
+ component reusability
+ complexity of your project
+
+Below is a complete explanation with examples and best-practice decision rules.
+
+---
+
+# 29. Global vs Local State Decisions in React
+
+## 1. What is Local State?
+
+Local state is state that belongs to a single component and is not needed elsewhere.
+
+It is usually managed with:
+
+ `useState`
+ `useReducer`
+
+The state lives inside the component that uses it.
+
+### Example
+
+Imagine a modal open/close toggle.
+
+Only the modal component needs this state.
+
+```javascript
+const Modal = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Open</button>
+
+      {isOpen && (
+        <div>
+          Modal Content
+          <button onClick={() => setIsOpen(false)}>Close</button>
+        </div>
+      )}
+    </>
+  )
+}
+```
+
+Here:
+
+ `isOpen` is local
+ No other component needs it
+
+So global state would be unnecessary complexity.
+
+---
+
+## 2. What is Global State?
+
+Global state is shared across multiple components in different parts of the app.
+
+Examples:
+
+ authenticated user
+ theme (dark/light)
+ shopping cart
+ language settings
+ notifications
+ app configuration
+
+This state is typically stored using:
+
+ Context API
+ Redux
+ Zustand
+ Recoil
+
+### Example
+
+User authentication status used across the app:
+
+```
+Navbar → shows user name
+Dashboard → fetch user data
+Profile → edit user info
+Settings → change password
+```
+
+Instead of passing user data through many components, we store it globally.
+
+Example with Context
+
+```javascript
+const AuthContext = createContext()
+
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
+
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+```
+
+Now any component can access user data.
+
+---
+
+# 3. Why This Decision Matters
+
+Choosing wrong leads to problems.
+
+### If everything is global
+
+Problems:
+
+ unnecessary re-renders
+ harder debugging
+ tight coupling
+ complex architecture
+
+### If everything is local
+
+Problems:
+
+ prop drilling
+ duplicated state
+ inconsistent data
+
+The goal is balance.
+
+---
+
+# 4. Decision Rule (Important)
+
+Use this 3-question rule.
+
+### Question 1
+
+Does only one component need this state?
+
+✅ Yes → Local state
+
+Example:
+
+ input field value
+ dropdown open state
+ loading spinner
+
+---
+
+### Question 2
+
+Do multiple sibling components need it?
+
+Then lift state up to their parent.
+
+Example:
+
+```
+Parent
+ ├── Filter
+ └── ProductList
+```
+
+Both need filter value → state lives in Parent.
+
+---
+
+### Question 3
+
+Do many unrelated components need it across the app?
+
+Then use Global state.
+
+Example:
+
+ logged in user
+ theme
+ cart items
+
+---
+
+# 5. Visual Comparison
+
+### Local State
+
+```
+Component A
+  └── state (private)
+```
+
+---
+
+### Lifted State
+
+```
+Parent
+ ├── Child A
+ └── Child B
+
+state lives in Parent
+```
+
+---
+
+### Global State
+
+```
+App
+ ├── Navbar
+ ├── Dashboard
+ ├── Sidebar
+ └── Profile
+
+All share same state
+```
+
+---

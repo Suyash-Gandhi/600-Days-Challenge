@@ -1,0 +1,410 @@
+# 27. Context API Usage in React
+
+## 1. What Context API Is
+
+The Context API is a feature in React that allows you to share data across many components without passing props manually at every level.
+
+Normally React follows one-way data flow:
+
+Parent → Child → Grandchild → Great-grandchild
+
+Data must travel through every intermediate component using props.
+
+This becomes messy when:
+
+ Many components need the same data
+ Components in the middle don't even use the data
+
+Context API solves this.
+
+Instead of passing props through every component, components can directly access shared data from a global context.
+
+---
+
+# 2. The Problem Context API Solves (Prop Drilling)
+
+Example component tree:
+
+```
+App
+ └── Layout
+      └── Sidebar
+           └── UserProfile
+```
+
+Suppose UserProfile needs the logged-in user data.
+
+Without Context API:
+
+```
+App → Layout → Sidebar → UserProfile
+```
+
+You must pass props through every level:
+
+```
+<App user={user}>
+  <Layout user={user}>
+    <Sidebar user={user}>
+      <UserProfile user={user} />
+    </Sidebar>
+  </Layout>
+</App>
+```
+
+Even though Layout and Sidebar don’t use the user data, they must pass it.
+
+This is prop drilling.
+
+Context API removes this problem.
+
+---
+
+# 3. Core Parts of Context API
+
+Context API has 3 main pieces.
+
+### 1️⃣ createContext()
+
+Creates the context object.
+
+Think of it as a shared data container.
+
+---
+
+### 2️⃣ Provider
+
+The Provider supplies data to components.
+
+Every component inside the provider can access the data.
+
+---
+
+### 3️⃣ useContext()
+
+A React hook that reads data from the context.
+
+---
+
+# 4. Basic Context API Flow
+
+Typical flow looks like this:
+
+```
+1. Create Context
+2. Wrap components with Provider
+3. Access data using useContext
+```
+
+Component tree:
+
+```
+UserContext Provider
+      ↓
+ App
+  └── Layout
+       └── Sidebar
+            └── UserProfile
+```
+
+Now UserProfile can directly access the user data without props.
+
+---
+
+# 5. Example (Simple)
+
+## Step 1 — Create Context
+
+```
+const UserContext = React.createContext();
+```
+
+---
+
+## Step 2 — Provide Data
+
+```
+<UserContext.Provider value={user}>
+   <App />
+</UserContext.Provider>
+```
+
+All children of this provider can access the data.
+
+---
+
+## Step 3 — Consume Context
+
+```
+const user = useContext(UserContext);
+```
+
+Now the component directly gets the value.
+
+No props required.
+
+---
+
+# 6. Real Example in Apps
+
+Context API is often used for global app data such as:
+
+### Authentication
+
+```
+User
+Login status
+User role
+```
+
+Example:
+
+```
+AuthContext
+```
+
+Components can check:
+
+ Is user logged in?
+ What is the role?
+
+---
+
+### Theme (Dark / Light Mode)
+
+```
+ThemeContext
+```
+
+Any component can change or read theme.
+
+---
+
+### Language (Localization)
+
+```
+LanguageContext
+```
+
+Useful for multi-language apps.
+
+---
+
+### Global Settings
+
+Example:
+
+```
+Currency
+Timezone
+App settings
+```
+
+---
+
+# 7. Example Component Tree with Context
+
+```
+AuthProvider
+   ↓
+App
+ ├── Navbar
+ │    └── Profile
+ ├── Dashboard
+ └── Settings
+```
+
+Now Navbar, Profile, Dashboard, Settings can all access:
+
+```
+user
+isLoggedIn
+logout()
+```
+
+without passing props.
+
+---
+
+# 8. Benefits of Context API
+
+### 1️⃣ Removes prop drilling
+
+Components don't need to pass data through multiple levels.
+
+---
+
+### 2️⃣ Cleaner component structure
+
+Intermediate components stay simple.
+
+---
+
+### 3️⃣ Centralized global data
+
+Shared state can be managed in one place.
+
+---
+
+### 4️⃣ Easier maintenance
+
+Updating context automatically updates all consumers.
+
+---
+
+# 9. When NOT to Use Context
+
+Context is not a full state management system.
+
+Avoid using it when:
+
+ Data changes very frequently
+ Too many components depend on it
+
+Because every update re-renders all consumers.
+
+In such cases tools like:
+
+ Redux
+ Zustand
+ Recoil
+
+may be better.
+
+---
+
+# 13. Key Interview Definition
+
+Context API is a React feature that allows components to share data globally without passing props through intermediate components. It is mainly used to solve prop drilling and manage application-wide data such as authentication, themes, or language settings.
+
+---
+
+Difference between context api and usecontext 
+
+They are related, but not the same.
+
+## Simple answer
+
+ Context API = the whole feature/system in React for sharing data across components without passing props manually at every level.
+ useContext = a React Hook used to read/access that shared context value inside a component.
+
+So:
+
+Context API is the concept/system
+useContext is the tool/hook used with it
+
+---
+
+## Easy way to understand it
+
+Think of it like this:
+
+ Context API is like a water tank
+ Provider is the pipe that supplies water
+ useContext is the tap you open to get the water
+
+So the hook does not replace Context API.
+It is just one part of working with it.
+
+---
+
+## What Context API includes
+
+When people say Context API, they usually mean all of this:
+
+1. `createContext()`
+2. `Provider`
+3. `Consumer` (older way)
+4. `useContext()` (modern way to consume context)
+
+So `useContext` is part of the broader Context API.
+
+---
+
+## Example
+
+### Creating context
+
+```jsx
+import { createContext } from "react";
+
+const ThemeContext = createContext();
+```
+
+### Providing value
+
+```jsx
+import { useState } from "react";
+
+function App() {
+  const [theme, setTheme] = useState("dark");
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <Navbar />
+    </ThemeContext.Provider>
+  );
+}
+```
+
+### Using it with `useContext`
+
+```jsx
+import { useContext } from "react";
+
+function Navbar() {
+  const theme = useContext(ThemeContext);
+
+  return <h1>Current theme: {theme}</h1>;
+}
+```
+
+Here:
+
+ `ThemeContext` is created using the Context API
+ `ThemeContext.Provider` is also part of the Context API
+ `useContext(ThemeContext)` is the hook used to read that value
+
+---
+
+## Difference in one line
+
+ Context API = mechanism for global-like shared data
+ useContext = hook to consume that data
+
+---
+
+## Why people confuse them
+
+People often say:
+
+> “I used context”
+> or
+> “I used useContext”
+
+because in modern React, when developers use Context API, they usually consume it through `useContext`.
+
+That is why both terms are often used like they mean the same thing, but technically they are different.
+
+---
+
+## Interview-style answer
+
+You can say:
+
+> Context API and useContext are not exactly the same. Context API is the overall React feature used for sharing data between components without prop drilling. `useContext` is a React Hook that allows functional components to access the value from a context. So, `useContext` is a part of the Context API, not the entire API itself.
+
+---
+
+## Best practice note
+
+Use Context API for things like:
+
+ theme
+ logged-in user
+ language
+ app settings
+
+Do not use it for every state in the app, because frequent updates in context can cause unnecessary re-renders.
+
+---
