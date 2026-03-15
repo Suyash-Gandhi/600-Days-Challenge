@@ -1,0 +1,307 @@
+## 36. `useLayoutEffect` in React
+
+`useLayoutEffect` is a React Hook used for running side effects synchronously after the DOM has been updated but before the browser paints the screen.
+
+It is very similar to `useEffect`, but the timing of execution is different, which makes it useful for certain UI-related operations.
+
+---
+
+# 1. Basic Definition
+
+`useLayoutEffect` runs after React updates the DOM but before the browser paints the UI to the screen.
+
+This means:
+
+1. React renders the component.
+2. React updates the DOM.
+3. `useLayoutEffect` runs synchronously.
+4. Browser paints the UI.
+
+Because it runs before painting, it can read layout values and make DOM adjustments without the user seeing flickers.
+
+---
+
+# 2. Syntax
+
+```javascript
+useLayoutEffect(() => {
+  // side effect code
+
+  return () => {
+    // cleanup function
+  };
+}, [dependencies]);
+```
+
+It has the same syntax as `useEffect`, including:
+
+ dependency array
+ cleanup function
+ effect function
+
+---
+
+# 3. Execution Timeline (Important)
+
+Understanding the difference between `useEffect` and `useLayoutEffect` requires understanding the rendering process.
+
+### React Rendering Steps
+
+1. Component renders
+2. DOM updates
+3. useLayoutEffect runs
+4. Browser paints the screen
+5. useEffect runs
+
+### Visual Timeline
+
+```
+Render → DOM Update → useLayoutEffect → Paint → useEffect
+```
+
+So:
+
+ `useLayoutEffect` blocks painting
+ `useEffect` does not block painting
+
+---
+
+# 4. Example of `useLayoutEffect`
+
+### Example: Reading DOM size
+
+```javascript
+import { useLayoutEffect, useRef } from "react";
+
+function Box() {
+  const boxRef = useRef();
+
+  useLayoutEffect(() => {
+    const height = boxRef.current.getBoundingClientRect().height;
+    console.log("Height:", height);
+  }, []);
+
+  return <div ref={boxRef}>Hello</div>;
+}
+```
+
+### What happens here
+
+1. Component renders
+2. DOM element `<div>` is created
+3. `useLayoutEffect` runs
+4. We read actual DOM layout values
+5. Browser paints
+
+This guarantees that DOM measurements are accurate.
+
+---
+
+# 5. Why `useLayoutEffect` Exists
+
+Sometimes you need to:
+
+ Measure DOM size
+ Calculate layout
+ Adjust scroll position
+ Move elements
+ Prevent flickering UI
+
+If this logic runs in `useEffect`, the browser will paint first, causing visible UI jumps.
+
+`useLayoutEffect` prevents that.
+
+---
+
+# 6. Practical Example: Prevent UI Flicker
+
+### Problem
+
+You want to reposition an element after measuring its size.
+
+If you use `useEffect`, the UI might flash in the wrong position first.
+
+### Using `useLayoutEffect`
+
+```javascript
+useLayoutEffect(() => {
+  const rect = elementRef.current.getBoundingClientRect();
+  setPosition(rect.width / 2);
+}, []);
+```
+
+Because it runs before paint, the user never sees the incorrect layout.
+
+---
+
+# 7. Common Use Cases
+
+### 1. Measuring DOM elements
+
+```
+getBoundingClientRect()
+offsetHeight
+offsetWidth
+```
+
+Example:
+
+ tooltips
+ modals
+ dynamic layouts
+
+---
+
+### 2. Scroll position adjustments
+
+Example:
+
+ chat apps
+ infinite scrolling
+
+```javascript
+useLayoutEffect(() => {
+  containerRef.current.scrollTop = containerRef.current.scrollHeight;
+});
+```
+
+---
+
+### 3. Animations
+
+Before animation starts, you may want to read and adjust layout properties.
+
+Libraries like:
+
+ Framer Motion
+ React Spring
+
+internally rely on layout effects.
+
+---
+
+### 4. Synchronizing DOM mutations
+
+Sometimes you must:
+
+ read DOM
+ immediately modify DOM
+
+before paint.
+
+---
+
+# 8. Difference Between `useEffect` and `useLayoutEffect`
+
+| Feature            | useEffect                    | useLayoutEffect  |
+| ------------------ | ---------------------------- | ---------------- |
+| Execution timing   | After paint                  | Before paint     |
+| Blocks UI painting | ❌ No                         | ✅ Yes            |
+| Performance        | Better                       | Slightly heavier |
+| Common usage       | Data fetching, subscriptions | DOM measurement  |
+| Risk of UI flicker | Yes                          | No               |
+
+---
+
+### Example Comparison
+
+#### useEffect
+
+```
+Render → DOM Update → Paint → useEffect
+```
+
+#### useLayoutEffect
+
+```
+Render → DOM Update → useLayoutEffect → Paint
+```
+
+---
+
+# 9. Performance Consideration
+
+Because `useLayoutEffect` runs synchronously and blocks painting, it should be used carefully.
+
+If overused, it can:
+
+ slow rendering
+ cause performance issues
+
+Therefore:
+
+Rule of thumb
+
+Use `useEffect` by default.
+Use `useLayoutEffect` only when DOM measurement or layout adjustments are required.
+
+---
+
+# 10. Relationship with `useRef`
+
+`useLayoutEffect` is often used together with `useRef`, because:
+
+ `useRef` gives access to DOM elements
+ `useLayoutEffect` lets you measure them before paint
+
+Example pattern:
+
+```
+useRef → access DOM
+useLayoutEffect → read/modify DOM
+```
+
+---
+
+# 11. Important Pitfall (Server Rendering)
+
+`useLayoutEffect` does not work on the server.
+
+During Server-Side Rendering (SSR), React cannot access the DOM.
+
+React will warn:
+
+```
+useLayoutEffect does nothing on the server
+```
+
+Therefore frameworks like:
+
+ Next.js
+
+sometimes replace it with `useEffect` during SSR.
+
+---
+
+# 12. When You Should Use It
+
+Use `useLayoutEffect` when you need to:
+
+ measure DOM
+ update layout immediately
+ avoid visual flicker
+ synchronize DOM changes before paint
+
+Example scenarios:
+
+ tooltips positioning
+ modals
+ drag-and-drop UI
+ scroll restoration
+ measuring component sizes
+
+---
+
+# 13. When You Should NOT Use It
+
+Avoid it for:
+
+ API calls
+ logging
+ subscriptions
+ timers
+ data fetching
+
+These belong in `useEffect`.
+
+---

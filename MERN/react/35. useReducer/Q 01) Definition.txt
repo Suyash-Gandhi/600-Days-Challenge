@@ -1,0 +1,336 @@
+### 35. `useReducer` in React
+
+`useReducer` is a React Hook used for managing complex state logic. It is an alternative to `useState`, especially when:
+
+ State updates depend on previous state
+ State has multiple related values
+ Logic for updating state is complex
+ You want predictable state transitions
+
+It follows a pattern similar to Redux, using a reducer function and actions.
+
+---
+
+# 1. What `useReducer` Is
+
+`useReducer` manages state using a reducer function.
+
+A reducer is a function that:
+
+ Receives the current state
+ Receives an action
+ Returns a new state
+
+```
+newState = reducer(currentState, action)
+```
+
+React provides a dispatch function to send actions to the reducer.
+
+---
+
+# 2. Syntax of `useReducer`
+
+```
+const [state, dispatch] = useReducer(reducer, initialState)
+```
+
+### Parameters
+
+1. reducer
+
+A function that decides how state changes.
+
+```
+(state, action) => newState
+```
+
+2. initialState
+
+The starting value of the state.
+
+---
+
+### Returns
+
+`useReducer` returns:
+
+1️⃣ state → current state value
+2️⃣ dispatch → function used to trigger state updates
+
+---
+
+# 3. Basic Example
+
+Imagine a counter with increment and decrement.
+
+### Reducer function
+
+```
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 }
+
+    case "decrement":
+      return { count: state.count - 1 }
+
+    default:
+      return state
+  }
+}
+```
+
+### Using `useReducer`
+
+```
+const Counter = () => {
+  const [state, dispatch] = useReducer(reducer, { count: 0 })
+
+  return (
+    <div>
+      <h2>{state.count}</h2>
+
+      <button onClick={() => dispatch({ type: "increment" })}>
+        +
+      </button>
+
+      <button onClick={() => dispatch({ type: "decrement" })}>
+        -
+      </button>
+    </div>
+  )
+}
+```
+
+---
+
+# 4. How the Flow Works
+
+Step-by-step:
+
+### Step 1 — Component renders
+
+```
+state = { count: 0 }
+```
+
+### Step 2 — User clicks button
+
+```
+dispatch({ type: "increment" })
+```
+
+### Step 3 — Reducer runs
+
+```
+reducer({ count:0 }, { type:"increment" })
+```
+
+### Step 4 — Reducer returns new state
+
+```
+{ count: 1 }
+```
+
+### Step 5 — React re-renders component
+
+UI updates with new state.
+
+---
+
+# 5. Why `useReducer` Exists
+
+`useState` becomes messy when:
+
+ You have multiple related state values
+ Many state updates depend on previous state
+ Logic is spread across many handlers
+
+`useReducer` solves this by centralizing update logic.
+
+---
+
+### Example of messy `useState`
+
+```
+const [count, setCount] = useState(0)
+const [step, setStep] = useState(1)
+```
+
+Update logic may become scattered.
+
+---
+
+### Cleaner with `useReducer`
+
+All logic stays inside the reducer.
+
+```
+dispatch({ type: "increment" })
+dispatch({ type: "setStep", value: 2 })
+```
+
+---
+
+# 6. Real-World Example
+
+Imagine a login form state.
+
+State contains multiple fields:
+
+```
+{
+  email: "",
+  password: "",
+  loading: false,
+  error: null
+}
+```
+
+Reducer handles all updates.
+
+```
+switch(action.type){
+ case "SET_EMAIL"
+ case "SET_PASSWORD"
+ case "LOGIN_START"
+ case "LOGIN_SUCCESS"
+ case "LOGIN_ERROR"
+}
+```
+
+This makes state predictable and organized.
+
+---
+
+# 7. `useReducer` vs `useState`
+
+| Feature        | useState                 | useReducer           |
+| -------------- | ------------------------ | -------------------- |
+| Complexity     | Simple state             | Complex state        |
+| Logic location | Inside components        | Inside reducer       |
+| State updates  | Direct setters           | Dispatch actions     |
+| Best for       | Simple counters, toggles | Forms, complex logic |
+| Pattern        | Simple                   | Redux-like           |
+
+---
+
+# 8. When to Use `useReducer`
+
+Use `useReducer` when:
+
+1️⃣ State has multiple fields
+
+```
+form state
+shopping cart
+game state
+```
+
+2️⃣ State logic is complex
+
+```
+login flows
+API states
+multi-step forms
+```
+
+3️⃣ Updates depend heavily on previous state
+
+---
+
+# 9. Best Practices
+
+### 1. Keep reducers pure
+
+Reducers should:
+
+ Not call APIs
+ Not modify state directly
+ Always return new state
+
+❌ Wrong
+
+```
+state.count++
+return state
+```
+
+✅ Correct
+
+```
+return { count: state.count + 1 }
+```
+
+---
+
+### 2. Use descriptive action types
+
+Good:
+
+```
+ADD_TODO
+REMOVE_TODO
+LOGIN_SUCCESS
+```
+
+Bad:
+
+```
+UPDATE
+CHANGE
+```
+
+---
+
+### 3. Keep reducers small
+
+Large reducers should be split into multiple reducers.
+
+---
+
+# 10. `useReducer` + Context (Common Pattern)
+
+A very common architecture is:
+
+```
+useReducer + Context API
+```
+
+This creates a global state management system similar to Redux.
+
+Example:
+
+```
+AuthContext
+CartContext
+ThemeContext
+```
+
+Each context contains:
+
+```
+reducer
+state
+dispatch
+```
+
+---
+
+# 11. Simple Analogy
+
+Think of a restaurant order system.
+
+ State → kitchen order list
+ Action → waiter request
+ Dispatch → sending order to kitchen
+ Reducer → chef updating order list
+
+```
+dispatch({ type: "ADD_ORDER" })
+```
+
+Chef (reducer) updates the order list.
+
+---
