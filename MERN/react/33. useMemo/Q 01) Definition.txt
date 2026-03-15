@@ -1,0 +1,331 @@
+## 33. `useMemo` in React
+
+`useMemo` is a React Hook used to memoize (cache) expensive calculations so they do not run on every re-render.
+
+In simple terms:
+
+> `useMemo` remembers the result of a calculation and only recomputes it when its dependencies change.
+
+This improves performance, especially when a component re-renders frequently but the calculation does not need to run again.
+
+---
+
+# 1. Why `useMemo` is Needed
+
+In React, components re-render often.
+
+A re-render can happen because:
+
+ State changed
+ Props changed
+ Parent component re-rendered
+
+When a component re-renders, everything inside it runs again, including:
+
+ calculations
+ loops
+ filters
+ sorting
+ heavy operations
+
+Example problem:
+
+```
+Component re-render → expensive calculation runs again → unnecessary work
+```
+
+If the calculation result did not actually need to change, we waste CPU time.
+
+`useMemo` solves this by caching the result.
+
+---
+
+# 2. Syntax of `useMemo`
+
+```javascript
+const memoizedValue = useMemo(() => {
+  return expensiveCalculation();
+}, [dependencies]);
+```
+
+### Parts explained
+
+1️⃣ Function
+
+```
+() => expensiveCalculation()
+```
+
+This is the computation React should cache.
+
+---
+
+2️⃣ Dependencies array
+
+```
+[dependencies]
+```
+
+React will recalculate only when these change.
+
+If dependencies do not change, React returns the previous cached value.
+
+---
+
+# 3. Example Without `useMemo`
+
+```javascript
+const Numbers = ({ numbers }) => {
+
+  const total = numbers.reduce((sum, num) => {
+    console.log("Calculating...");
+    return sum + num;
+  }, 0);
+
+  return <h2>Total: {total}</h2>;
+};
+```
+
+Problem:
+
+Every time the component re-renders:
+
+```
+Calculating...
+Calculating...
+Calculating...
+```
+
+Even if `numbers` did not change.
+
+---
+
+# 4. Example With `useMemo`
+
+```javascript
+import { useMemo } from "react";
+
+const Numbers = ({ numbers }) => {
+
+  const total = useMemo(() => {
+    console.log("Calculating...");
+    return numbers.reduce((sum, num) => sum + num, 0);
+  }, [numbers]);
+
+  return <h2>Total: {total}</h2>;
+};
+```
+
+Now behavior becomes:
+
+```
+numbers unchanged → cached result used
+numbers changed → recalculate
+```
+
+---
+
+# 5. Real Example (Heavy Computation)
+
+Imagine filtering a large dataset.
+
+```javascript
+const filteredUsers = useMemo(() => {
+  return users.filter(user => user.age > 30);
+}, [users]);
+```
+
+Without `useMemo`:
+
+Every render → filter runs again.
+
+With `useMemo`:
+
+```
+users unchanged → reuse previous result
+users changed → run filter again
+```
+
+---
+
+# 6. How `useMemo` Works Internally
+
+React keeps a memoized value.
+
+Conceptually:
+
+```
+Previous dependencies
+Previous result
+```
+
+During render React checks:
+
+```
+Did dependencies change?
+```
+
+If YES
+
+```
+Run function again
+Store new result
+```
+
+If NO
+
+```
+Return stored result
+```
+
+Flow:
+
+```
+Render
+   ↓
+Check dependencies
+   ↓
+Changed? ---- YES → run function
+   |
+   NO
+   ↓
+Return cached value
+```
+
+---
+
+# 7. `useMemo` vs Normal Variable
+
+Normal variable:
+
+```javascript
+const result = expensiveCalculation();
+```
+
+Runs every render.
+
+---
+
+With `useMemo`:
+
+```javascript
+const result = useMemo(() => expensiveCalculation(), []);
+```
+
+Runs only once (if dependency array empty).
+
+---
+
+# 8. `useMemo` vs `useCallback`
+
+Many people confuse these.
+
+| Hook          | Used For                |
+| ------------- | ----------------------- |
+| `useMemo`     | Memoizing values    |
+| `useCallback` | Memoizing functions |
+
+Example:
+
+### useMemo
+
+```
+const value = useMemo(() => compute(), []);
+```
+
+### useCallback
+
+```
+const func = useCallback(() => doSomething(), []);
+```
+
+---
+
+# 9. When You SHOULD Use `useMemo`
+
+Use it when:
+
+### 1️⃣ Expensive calculations
+
+Examples:
+
+ Sorting
+ Filtering
+ Large loops
+ Data transformations
+
+Example:
+
+```
+sorting 10,000 items
+```
+
+---
+
+### 2️⃣ Prevent unnecessary child re-renders
+
+If you pass a computed value as prop, `useMemo` can keep reference stable.
+
+---
+
+### 3️⃣ Derived data
+
+Example:
+
+```
+filtered list
+mapped data
+statistics
+```
+
+---
+
+# 10. When You SHOULD NOT Use `useMemo`
+
+Important rule:
+
+> `useMemo` is a performance optimization, not a requirement.
+
+Do NOT use it for simple calculations.
+
+Bad example:
+
+```javascript
+const sum = useMemo(() => a + b, [a, b]);
+```
+
+This is worse, because `useMemo` itself has overhead.
+
+---
+
+# 11. Common Mistakes
+
+### ❌ Missing dependency
+
+```javascript
+useMemo(() => calculate(a, b), [a]);
+```
+
+If `b` changes, calculation will not update.
+
+Correct:
+
+```javascript
+useMemo(() => calculate(a, b), [a, b]);
+```
+
+---
+
+### ❌ Using it everywhere
+
+Overusing `useMemo` makes code harder to read and may reduce performance.
+
+---
+
+### ❌ Expecting it to stop re-renders
+
+`useMemo` does not stop component re-renders.
+
+It only caches a value.
+
+---

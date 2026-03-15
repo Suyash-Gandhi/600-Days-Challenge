@@ -1,0 +1,238 @@
+
+## First idea: why this hook even exists
+
+When a React component re-renders, everything inside the component runs again.
+
+That includes functions too.
+
+Example:
+
+```javascript
+const Parent = () => {
+  const handleClick = () => {
+    console.log("clicked");
+  };
+
+  return <Child onClick={handleClick} />;
+};
+```
+
+Every time `Parent` re-renders:
+
+ `handleClick` is created again
+ so it becomes a new function
+ even if its code looks the same
+
+React compares by reference, not by “same code written again”.
+
+So for React:
+
+ old function !== new function
+
+That is the main problem `useCallback` solves.
+
+---
+
+# Simple meaning of `useCallback`
+
+`useCallback` tells React:
+
+> “Do not create a new function on every render. Keep the old one unless something important changes.”
+
+Syntax:
+
+```javascript
+const savedFunction = useCallback(() => {
+  // logic
+}, [dependencies]);
+```
+
+---
+
+# Very simple example without `useCallback`
+
+```javascript
+import { useState } from "react";
+
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  const sayHello = () => {
+    console.log("Hello");
+  };
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <Child sayHello={sayHello} />
+    </div>
+  );
+};
+```
+
+Here what happens?
+
+When you click Increase:
+
+ `count` changes
+ `Parent` re-renders
+ `sayHello` function is created again
+ `Child` gets a new function prop
+
+So child may re-render too.
+
+---
+
+# Same example with `useCallback`
+
+```javascript
+import { useState, useCallback } from "react";
+
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  const sayHello = useCallback(() => {
+    console.log("Hello");
+  }, []);
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <Child sayHello={sayHello} />
+    </div>
+  );
+};
+```
+
+Now when parent re-renders:
+
+ React keeps the same `sayHello` function
+ child does not get a new function reference
+
+So this helps avoid unnecessary re-renders.
+
+---
+
+# But why does React care?
+
+Because functions are compared by memory reference.
+
+Look at normal JavaScript:
+
+```javascript
+const a = () => {};
+const b = () => {};
+
+console.log(a === b); // false
+```
+
+Even though both look same, they are different functions.
+
+That is exactly what happens during React re-renders.
+
+---
+
+# What does dependency array mean?
+
+Example:
+
+```javascript
+const greet = useCallback(() => {
+  console.log(name);
+}, [name]);
+```
+
+This means:
+
+ keep same function while `name` is same
+ if `name` changes, create a new function
+
+So dependency array controls when the function should be recreated.
+
+---
+
+# When should you use it?
+
+Use `useCallback` mostly when:
+
+ you pass a function to a child component
+ that child is memoized with `React.memo`
+ or the function is used inside dependency array of another hook
+
+---
+
+# When not to use it
+
+Do not think:
+
+> “I should wrap every function in `useCallback`.”
+
+That is wrong.
+
+Because:
+
+ it adds extra complexity
+ sometimes gives no benefit
+ sometimes can even make code less readable
+
+So `useCallback` is a performance optimization tool, not something needed everywhere.
+
+---
+
+# Most important point
+
+`useCallback` does not make code faster automatically.
+
+It only helps in specific cases, mainly when function reference stability matters.
+
+---
+
+# One complete example
+
+```javascript
+import React, { useState, useCallback } from "react";
+
+const Child = React.memo(({ onClick }) => {
+  console.log("Child rendered");
+  return <button onClick={onClick}>Say Hello</button>;
+});
+
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  const handleHello = useCallback(() => {
+    console.log("Hello");
+  }, []);
+
+  return (
+    <div>
+      <h2>{count}</h2>
+      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+      <Child onClick={handleHello} />
+    </div>
+  );
+};
+
+export default Parent;
+```
+
+### What happens here?
+
+When Increase Count is clicked:
+
+ Parent re-renders
+ `handleHello` stays same because of `useCallback`
+ `Child` does not re-render unnecessarily because it is wrapped in `React.memo`
+
+---
+
+# Final easiest definition
+
+`useCallback` = save a function so React can reuse the same one between renders
+
+---
+
+# In one line
+
+`useCallback` is used to prevent a function from being recreated on every render, when keeping the same function reference is useful.
+
