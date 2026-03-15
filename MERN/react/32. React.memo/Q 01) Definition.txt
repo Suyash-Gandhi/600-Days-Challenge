@@ -1,0 +1,248 @@
+# React.memo
+
+## 1. What React.memo Is
+
+`React.memo` is a higher-order component (HOC) that prevents a functional component from re-rendering if its props have not changed.
+
+In simple terms:
+
+ React normally re-renders child components whenever the parent re-renders.
+ Even if the props are exactly the same, the child still re-renders.
+ `React.memo` memoizes the component output and skips rendering if props didn't change.
+
+Think of it like:
+
+> “If the props are the same as last time, reuse the previous result instead of rendering again.”
+
+---
+
+# 2. The Problem React.memo Solves
+
+Consider a situation:
+
+Parent component updates state → parent re-renders → child re-renders even if nothing changed.
+
+Example scenario:
+
+ Parent component has a counter
+ Child component shows static text
+
+When the counter updates, the child still re-renders unnecessarily.
+
+This becomes a performance problem in large applications.
+
+---
+
+# 3. Basic Example
+
+### Normal Component (Without React.memo)
+
+```javascript
+const Child = ({ name }) => {
+  console.log("Child rendered");
+
+  return <h2>Hello {name}</h2>;
+};
+```
+
+Parent:
+
+```javascript
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <Child name="Suyash" />
+      <button onClick={() => setCount(count + 1)}>
+        Increment {count}
+      </button>
+    </>
+  );
+}
+```
+
+### What happens
+
+Every time you click the button:
+
+```
+Parent renders
+Child renders
+```
+
+Even though `name` never changed.
+
+---
+
+# 4. Using React.memo
+
+We wrap the component with `React.memo`.
+
+```javascript
+const Child = React.memo(({ name }) => {
+  console.log("Child rendered");
+
+  return <h2>Hello {name}</h2>;
+});
+```
+
+Now the behavior becomes:
+
+```
+Parent renders
+Child DOES NOT render (props unchanged)
+```
+
+React compares props and skips rendering.
+
+---
+
+# 5. How React.memo Works Internally
+
+React.memo performs a shallow comparison of props.
+
+It checks:
+
+```
+previousProps === nextProps ?
+```
+
+Example:
+
+```
+name: "Suyash" === "Suyash"
+```
+
+If all props are equal, React skips the render.
+
+If any prop changed, React renders again.
+
+---
+
+# 6. Important: Shallow Comparison
+
+React.memo only compares top-level values.
+
+Example:
+
+```
+props = { user: { name: "Suyash" } }
+```
+
+Even if the object contains the same values:
+
+```
+{ name: "Suyash" } !== { name: "Suyash" }
+```
+
+Because they are different object references.
+
+So React will re-render.
+
+---
+
+# 7. Custom Comparison Function
+
+You can provide your own comparison function.
+
+Syntax:
+
+```javascript
+React.memo(Component, areEqual)
+```
+
+Example:
+
+```javascript
+const Child = React.memo(
+  ({ value }) => {
+    console.log("Child rendered");
+    return <h1>{value}</h1>;
+  },
+  (prevProps, nextProps) => {
+    return prevProps.value === nextProps.value;
+  }
+);
+```
+
+If the function returns:
+
+```
+true  → skip render
+false → re-render
+```
+
+---
+
+# 8. When You Should Use React.memo
+
+Use it when:
+
+### 1. Component renders frequently
+
+Example:
+
+ lists
+ dashboards
+ charts
+
+### 2. Rendering is expensive
+
+Example:
+
+ large UI trees
+ heavy calculations
+
+### 3. Props rarely change
+
+Example:
+
+```
+Sidebar
+Navbar
+Static UI sections
+```
+
+---
+
+# 9. When NOT to Use React.memo
+
+Do not use it blindly.
+
+Reasons:
+
+### 1. Small components
+
+Memoization has a comparison cost.
+
+If the component is tiny, memo might be slower.
+
+---
+
+### 2. Props change frequently
+
+Example:
+
+```
+<Child value={count} />
+```
+
+If `count` changes every render, memo gives no benefit.
+
+---
+
+### 3. If you pass new objects/functions each render
+
+Example:
+
+```
+<Child data={{ name: "Suyash" }} />
+```
+
+This creates a new object every render, so memo fails.
+
+---
+Interview Definition
+
+React.memo is a higher-order component that memoizes functional components and prevents unnecessary re-renders by performing a shallow comparison of props.

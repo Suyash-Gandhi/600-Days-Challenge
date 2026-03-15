@@ -1,0 +1,424 @@
+### 31. Reconciliation and Keys in React
+
+Understanding reconciliation and keys is essential for knowing how React updates the UI efficiently. When state or props change, React must decide what actually changed in the DOM and what needs to be updated. React solves this using a process called reconciliation.
+
+---
+
+# 1. What is Reconciliation in React?
+
+Reconciliation is the process React uses to compare the previous Virtual DOM with the new Virtual DOM and determine the minimum number of changes required to update the real DOM.
+
+Instead of rebuilding the entire DOM every time something changes, React:
+
+1. Creates a new Virtual DOM tree
+2. Compares it with the previous Virtual DOM
+3. Finds the differences
+4. Updates only the parts that changed
+
+This comparison process is called diffing.
+
+### Why React uses reconciliation
+
+Direct DOM manipulation is slow because:
+
+ DOM operations are expensive
+ Repainting and layout calculations take time
+
+React improves performance by:
+
+ Updating only the necessary nodes
+ Avoiding unnecessary DOM operations
+
+---
+
+# 2. How the Reconciliation Algorithm Works
+
+React’s diffing algorithm follows three main assumptions to stay fast.
+
+### Rule 1: Different element types → replace the entire subtree
+
+If two elements have different types, React destroys the old tree and creates a new one.
+
+Example:
+
+```
+<div>
+   <Counter />
+</div>
+```
+
+changes to
+
+```
+<span>
+   <Counter />
+</span>
+```
+
+React will:
+
+ Remove the `<div>`
+ Create a `<span>`
+ Re-render everything inside
+
+Because the root element type changed.
+
+---
+
+### Rule 2: Same element type → update only changed attributes
+
+Example:
+
+```
+<button class="blue">
+```
+
+changes to
+
+```
+<button class="red">
+```
+
+React will only update:
+
+```
+class="blue" → class="red"
+```
+
+The button element itself is reused.
+
+---
+
+### Rule 3: Lists are compared using keys
+
+When rendering lists, React needs help identifying which item changed, moved, or was removed.
+
+Without help, React compares items by position, which can cause unnecessary updates.
+
+This is why keys exist.
+
+---
+
+# 3. What are Keys in React?
+
+A key is a special prop that uniquely identifies elements in a list.
+
+Example:
+
+```
+{users.map(user => (
+   <User key={user.id} name={user.name} />
+))}
+```
+
+Here:
+
+ `key={user.id}` uniquely identifies each component.
+
+React uses this key to track elements between renders.
+
+---
+
+# 4. Why Keys Are Important
+
+Without keys, React cannot properly detect which list item changed.
+
+Example:
+
+Initial list
+
+```
+A
+B
+C
+```
+
+New list
+
+```
+D
+A
+B
+C
+```
+
+Without keys, React thinks:
+
+```
+A → D
+B → A
+C → B
+New → C
+```
+
+So it updates every element unnecessarily.
+
+With keys:
+
+```
+key="A"
+key="B"
+key="C"
+```
+
+React understands:
+
+```
+Insert D
+Keep A
+Keep B
+Keep C
+```
+
+Only one element is added.
+
+This makes rendering much faster.
+
+---
+
+# 5. Example of Keys in React
+
+```
+const items = ["Apple", "Banana", "Orange"]
+
+const List = () => {
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Each list item has a key.
+
+However, using index as key is usually discouraged.
+
+---
+
+# 6. Why Using Index as Key is Bad (Important)
+
+Example:
+
+Initial list:
+
+```
+A
+B
+C
+```
+
+Now remove `A`.
+
+New list:
+
+```
+B
+C
+```
+
+If index is used as key:
+
+```
+0 → A
+1 → B
+2 → C
+```
+
+After removal:
+
+```
+0 → B
+1 → C
+```
+
+React thinks:
+
+```
+A → B
+B → C
+```
+
+This causes:
+
+ wrong component state
+ incorrect UI behavior
+ unnecessary re-renders
+
+---
+
+# 7. Best Practices for Keys
+
+### 1️⃣ Use unique IDs
+
+Best option.
+
+```
+key={user.id}
+```
+
+---
+
+### 2️⃣ Avoid array index when items change order
+
+Bad when:
+
+ items are inserted
+ items are removed
+ items are sorted
+
+---
+
+### 3️⃣ Keys must be stable
+
+A key should not change between renders.
+
+Bad:
+
+```
+key={Math.random()}
+```
+
+React will recreate the element every render.
+
+---
+
+### 4️⃣ Keys are only required inside lists
+
+Keys are needed when React renders multiple siblings.
+
+Example:
+
+```
+items.map(...)
+```
+
+---
+
+# 8. Reconciliation Example
+
+Consider this list:
+
+```
+<ul>
+  <li key="1">A</li>
+  <li key="2">B</li>
+  <li key="3">C</li>
+</ul>
+```
+
+Now change to:
+
+```
+<ul>
+  <li key="2">B</li>
+  <li key="3">C</li>
+  <li key="4">D</li>
+</ul>
+```
+
+React understands:
+
+ Remove `1`
+ Keep `2`
+ Keep `3`
+ Add `4`
+
+Only two operations happen instead of rebuilding the entire list.
+
+---
+
+# 9. Common Mistakes with Keys
+
+### Mistake 1
+
+```
+<li key={Math.random()}>
+```
+
+Bad because keys change every render.
+
+---
+
+### Mistake 2
+
+Using index in dynamic lists.
+
+```
+key={index}
+```
+
+---
+
+### Mistake 3
+
+Duplicate keys.
+
+```
+key="1"
+key="1"
+```
+
+React will show warnings.
+
+---
+
+# 10. Real World Analogy
+
+Imagine a classroom attendance sheet.
+
+If students have roll numbers (keys):
+
+```
+1 - John
+2 - Emma
+3 - Alex
+```
+
+If a new student joins:
+
+```
+4 - Liam
+```
+
+Teacher simply adds roll number 4.
+
+Without roll numbers:
+
+The teacher must recount everyone to know what changed.
+
+Keys work like roll numbers for React elements.
+
+---
+
+# 11. Summary
+
+Reconciliation
+
+ Process React uses to update the DOM efficiently
+ Compares old Virtual DOM vs new Virtual DOM
+ Uses diffing algorithm
+ Updates only changed elements
+
+Keys
+
+ Unique identifier for elements in lists
+ Help React track items during reconciliation
+ Improve performance
+ Prevent incorrect UI updates
+
+Best practice:
+
+```
+key={uniqueId}
+```
+
+Avoid:
+
+```
+key={index}
+```
+
+---
