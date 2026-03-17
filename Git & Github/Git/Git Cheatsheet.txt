@@ -1,0 +1,504 @@
+
+# 🔥 Git Cheat Sheet (50 Commands + Detailed Explanation)
+
+---
+
+## 1. `git init`
+
+Initializes a new Git repository in your project folder.
+It creates a hidden `.git` directory that tracks all version control data.
+You run this once when starting a new project locally.
+After this, Git starts tracking changes in that directory.
+Without this, Git commands won’t work.
+
+---
+
+## 2. `git clone <url>`
+
+Creates a local copy of a remote repository (like GitHub).
+It downloads all files, commits, and branches.
+Useful when you want to work on an existing project.
+Automatically sets up remote tracking (`origin`).
+Saves time compared to manual setup.
+
+---
+
+## 3. `git status`
+
+Shows the current state of your working directory.
+It tells which files are modified, staged, or untracked.
+Helps you understand what will be committed.
+Very useful before committing changes.
+Think of it as your “Git dashboard.”
+
+---
+
+## 4. `git add <file>`
+
+Adds a specific file to the staging area.
+Staging area is where files prepare for commit.
+You must stage files before committing them.
+Allows selective commits instead of committing everything.
+Supports patterns like `git add .` for all files.
+
+---
+
+## 5. `git add .`
+
+Stages all changes in the current directory.
+Includes new, modified, and deleted files.
+Saves time when you want to commit everything.
+Be careful—it may include unwanted files.
+Often used before a full commit.
+
+---
+
+## 6. `git commit -m "message"`
+
+Saves staged changes as a snapshot (commit).
+The message should describe what changes were made.
+Each commit has a unique ID (hash).
+Commits form the project history.
+Think of it like saving progress in a game.
+
+---
+
+## 7. `git log`
+
+Displays commit history of the repository.
+Shows commit ID, author, date, and message.
+Helps you track changes over time.
+Useful for debugging or reviewing history.
+Can be long—use filters if needed.
+
+---
+
+## 8. `git log --oneline`
+
+Shows a compact version of commit history.
+Displays one commit per line.
+Useful for quick overview of project changes.
+Easier to read than full `git log`.
+Great for navigation and debugging.
+
+---
+
+## 9. `git diff`
+
+Shows differences between working directory and staged files.
+Helps you see exactly what changed in code.
+Useful before committing changes.
+Displays line-by-line differences.
+Essential for debugging mistakes.
+
+---
+
+## 10. `git diff --staged`
+
+Shows differences between staged changes and last commit.
+Useful to review what will be committed.
+Prevents accidental commits.
+Works after using `git add`.
+Helps ensure clean commits.
+
+---
+
+## 11. `git rm <file>`
+
+Deletes a file and stages the deletion.
+Removes file from both working directory and Git tracking.
+Useful when cleaning up files.
+Automatically prepares deletion for commit.
+Avoid manual deletion when using Git.
+
+---
+
+## 12. `git mv <old> <new>`
+
+Renames or moves a file.
+Git tracks this change properly.
+Better than renaming manually.
+Keeps file history intact.
+Useful for refactoring projects.
+
+---
+
+## 13. `git branch`
+
+Lists all branches in the repository.
+Shows current active branch with `*`.
+Branches allow parallel development.
+Helps manage features separately.
+Essential for team workflows.
+
+---
+
+## 14. `git branch <name>`
+
+Creates a new branch.
+Does not switch to it automatically.
+Used for feature development or bug fixes.
+Keeps main branch stable.
+Encourages clean workflow.
+
+---
+
+## 15. `git checkout <branch>`
+
+Switches to a different branch.
+Updates working directory accordingly.
+Lets you work on different versions.
+Older method (now replaced by `switch`).
+Still widely used.
+
+---
+
+## 16. `git switch <branch>`
+
+Modern alternative to checkout.
+Switches branches safely.
+Clearer and easier to understand.
+Avoids confusion with file checkout.
+Recommended in new projects.
+
+---
+
+## 17. `git checkout -b <branch>`
+
+Creates and switches to a new branch.
+Combines two steps into one command.
+Useful for quick feature development.
+Saves time.
+Commonly used in daily workflow.
+
+---
+
+## 18. `git merge <branch>`
+
+Merges another branch into current branch.
+Combines changes from both branches.
+May create merge conflicts.
+Used after feature completion.
+Keeps project unified.
+
+---
+
+## 19. `git rebase <branch>`
+
+Reapplies commits on top of another branch.
+Creates a cleaner commit history.
+Avoids unnecessary merge commits.
+Can be risky if used incorrectly.
+Best used for local branches.
+
+---
+
+## 20. `git stash`
+
+Temporarily saves uncommitted changes.
+Clears working directory.
+Useful when switching branches quickly.
+Does not commit changes permanently.
+Acts like a temporary storage.
+
+---
+
+## 21. `git stash pop`
+
+Restores stashed changes.
+Applies and removes stash.
+Used when you want to continue work.
+May cause conflicts.
+Useful in multitasking workflows.
+
+---
+
+## 22. `git stash list`
+
+Shows all saved stashes.
+Each stash has an index.
+Helps manage multiple stashes.
+Useful when working on multiple tasks.
+Keeps track of temporary work.
+
+---
+
+## 23. `git remote add origin <url>`
+
+Adds a remote repository.
+Links local repo to GitHub or other platforms.
+`origin` is default remote name.
+Needed before pushing code.
+Important for collaboration.
+
+---
+
+## 24. `git remote -v`
+
+Lists all remote repositories.
+Shows fetch and push URLs.
+Useful for verifying connections.
+Helps debug remote issues.
+Commonly used before push/pull.
+
+---
+
+## 25. `git push origin <branch>`
+
+Uploads local commits to remote repository.
+Shares your work with others.
+Requires remote setup.
+Can overwrite remote if forced.
+Essential for collaboration.
+
+---
+
+## 26. `git pull`
+
+Fetches and merges remote changes.
+Keeps your repo updated.
+Equivalent to fetch + merge.
+May create conflicts.
+Used frequently in teams.
+
+---
+
+## 27. `git fetch`
+
+Downloads changes without merging.
+Safer than pull.
+Lets you review changes first.
+Does not affect working files.
+Useful in cautious workflows.
+
+---
+
+## 28. `git reset <file>`
+
+Unstages a file.
+Moves file back to working directory.
+Does not delete changes.
+Useful when you added wrong file.
+Helps correct mistakes.
+
+---
+
+## 29. `git reset --hard`
+
+Resets everything to last commit.
+Deletes all uncommitted changes.
+Dangerous if used incorrectly.
+Use only when sure.
+Acts like a full rollback.
+
+---
+
+## 30. `git revert <commit>`
+
+Creates a new commit that reverses changes.
+Safe way to undo commits.
+Does not delete history.
+Preferred in shared repositories.
+Maintains clean log.
+
+---
+
+## 31. `git show <commit>`
+
+Displays details of a specific commit.
+Shows changes, author, and message.
+Useful for debugging.
+Helps inspect history deeply.
+Works with commit IDs.
+
+---
+
+## 32. `git blame <file>`
+
+Shows who modified each line.
+Displays author and commit info.
+Useful for debugging issues.
+Helps identify responsibility.
+Common in team projects.
+
+---
+
+## 33. `git tag <name>`
+
+Creates a tag for a commit.
+Used for versioning (v1.0, v2.0).
+Marks important points in history.
+Useful for releases.
+Helps organize versions.
+
+---
+
+## 34. `git tag`
+
+Lists all tags.
+Shows version history.
+Useful for release tracking.
+Quick overview of versions.
+Common in production projects.
+
+---
+
+## 35. `git branch -d <branch>`
+
+Deletes a branch.
+Only works if merged.
+Keeps repo clean.
+Prevents clutter.
+Safe deletion method.
+
+---
+
+## 36. `git branch -D <branch>`
+
+Force deletes a branch.
+Deletes even if not merged.
+Risky but sometimes necessary.
+Use with caution.
+Useful in cleanup.
+
+---
+
+## 37. `git config --global user.name "Name"`
+
+Sets your Git username globally.
+Used in commits.
+Applies to all repositories.
+Important for identity.
+Run once during setup.
+
+---
+
+## 38. `git config --global user.email "Email"`
+
+Sets your email globally.
+Used for commit tracking.
+Must match GitHub email.
+Ensures proper attribution.
+Required for collaboration.
+
+---
+
+## 39. `git config --list`
+
+Shows all Git configurations.
+Displays username, email, etc.
+Useful for debugging setup.
+Helps verify settings.
+Common troubleshooting command.
+
+---
+
+## 40. `git clean -f`
+
+Removes untracked files.
+Cleans working directory.
+Does not affect tracked files.
+Useful before fresh builds.
+Use carefully.
+
+---
+
+## 41. `git cherry-pick <commit>`
+
+Applies a specific commit to current branch.
+Useful for selective changes.
+Avoids full merges.
+Helps reuse code.
+Common in bug fixes.
+
+---
+
+## 42. `git reflog`
+
+Shows history of HEAD changes.
+Tracks branch switches and resets.
+Useful for recovery.
+Helps restore lost commits.
+Very powerful debugging tool.
+
+---
+
+## 43. `git bisect`
+
+Finds bugs using binary search.
+Helps locate problematic commit.
+Automates debugging process.
+Very useful in large projects.
+Saves time.
+
+---
+
+## 44. `git archive`
+
+Creates zip/tar archive of repo.
+Used for sharing code without Git history.
+Useful for deployment.
+Excludes unnecessary files.
+Clean distribution method.
+
+---
+
+## 45. `git shortlog`
+
+Summarizes commit history by author.
+Shows contribution statistics.
+Useful for teams.
+Helps track activity.
+Often used in reports.
+
+---
+
+## 46. `git submodule add <repo>`
+
+Adds another repo inside your repo.
+Used for dependencies.
+Keeps projects modular.
+Requires separate management.
+Common in large systems.
+
+---
+
+## 47. `git submodule update`
+
+Updates submodules.
+Syncs them with main repo.
+Required after cloning.
+Ensures correct versions.
+Important for dependencies.
+
+---
+
+## 48. `git worktree`
+
+Manages multiple working directories.
+Allows multiple branches at once.
+Useful for parallel work.
+Improves productivity.
+Advanced feature.
+
+---
+
+## 49. `git restore <file>`
+
+Restores file to previous state.
+Replaces old checkout behavior.
+Safer and clearer.
+Can undo changes.
+Useful in daily workflow.
+
+---
+
+## 50. `git switch -c <branch>`
+
+Creates and switches branch (modern way).
+Cleaner than checkout.
+Recommended in new Git versions.
+Simplifies workflow.
+Good practice for beginners.
+
+---

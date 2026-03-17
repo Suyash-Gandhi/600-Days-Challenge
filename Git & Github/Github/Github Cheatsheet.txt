@@ -1,0 +1,505 @@
+
+
+# 🚀 GitHub Cheat Sheet (50 Commands / Features + Explanation)
+
+---
+
+## 1. Create a Repository
+
+Creating a repository is the first step in using GitHub.
+It acts as a container for your project files and version history.
+You can create it from the GitHub UI or CLI.
+You can choose public or private visibility.
+It becomes your project’s central hub.
+
+---
+
+## 2. Repository Visibility (Public/Private)
+
+Public repositories are visible to everyone.
+Private repositories are restricted to selected collaborators.
+Public is good for portfolios and open-source.
+Private is useful for company or personal projects.
+You can change visibility later if needed.
+
+---
+
+## 3. README.md
+
+A README file explains your project.
+It usually includes description, setup, and usage instructions.
+Written in Markdown format.
+First thing recruiters or users see.
+Acts like documentation for your project.
+
+---
+
+## 4. Fork Repository
+
+Forking creates a copy of someone else’s repo.
+It allows you to modify it independently.
+Common in open-source contributions.
+You can later submit changes via pull request.
+Your fork remains linked to original repo.
+
+---
+
+## 5. Clone Repository
+
+Cloning downloads a repo to your local system.
+Allows you to work on code offline.
+Maintains connection with GitHub.
+You can push changes back later.
+Essential for development workflow.
+
+---
+
+## 6. Pull Request (PR)
+
+A pull request proposes changes to a repository.
+It allows others to review your code.
+Used in collaboration and open-source.
+Includes comments, discussions, and approvals.
+Merged after review.
+
+---
+
+## 7. Merge Pull Request
+
+Merging applies PR changes to main branch.
+Combines new code with existing codebase.
+Can be done after review approval.
+May involve conflict resolution.
+Final step in contribution process.
+
+---
+
+## 8. Issues
+
+Issues are used to track bugs, tasks, or ideas.
+You can assign, label, and comment on them.
+Acts like a lightweight task manager.
+Helps organize development workflow.
+Common in team collaboration.
+
+---
+
+## 9. Labels
+
+Labels categorize issues and PRs.
+Examples: bug, feature, enhancement.
+Help filter and organize tasks.
+Custom labels can be created.
+Improve project management.
+
+---
+
+## 10. Milestones
+
+Milestones group issues into goals.
+Used to track progress toward releases.
+Helps in planning project phases.
+Useful for teams and deadlines.
+Shows completion percentage.
+
+---
+
+## 11. GitHub Actions
+
+Automates workflows like testing and deployment.
+Runs scripts on events (push, PR).
+Used for CI/CD pipelines.
+Saves time and reduces manual work.
+Very powerful feature.
+
+---
+
+## 12. Workflow File (.yml)
+
+Defines GitHub Actions workflows.
+Written in YAML format.
+Specifies triggers and steps.
+Stored in `.github/workflows`.
+Controls automation behavior.
+
+---
+
+## 13. Branch Protection Rules
+
+Protects important branches like `main`.
+Prevents direct pushes or requires PR review.
+Ensures code quality.
+Used in team environments.
+Adds security to workflow.
+
+---
+
+## 14. Collaborators
+
+You can invite people to your repo.
+They can push, review, or manage code.
+Permissions can be controlled.
+Useful for team projects.
+Enables collaboration.
+
+---
+
+## 15. GitHub Pages
+
+Hosts static websites directly from repo.
+Used for portfolios or documentation.
+Supports HTML, CSS, JS.
+Easy deployment process.
+Free hosting service.
+
+---
+
+## 16. Releases
+
+Releases mark stable versions of your project.
+Often include binaries or zip files.
+Tagged with version numbers.
+Useful for users downloading your app.
+Organizes project versions.
+
+---
+
+## 17. Stars
+
+Users can “star” repositories.
+Indicates popularity or usefulness.
+Helps in visibility.
+Similar to likes/bookmarks.
+Useful for portfolio impact.
+
+---
+
+## 18. Watch
+
+Watching a repo sends notifications.
+You get updates on issues and PRs.
+Useful for active projects.
+Helps stay informed.
+Optional feature.
+
+---
+
+## 19. Insights Tab
+
+Shows analytics of repository.
+Includes contributors, commits, traffic.
+Helps understand project growth.
+Useful for teams and reporting.
+Visual representation of activity.
+
+---
+
+## 20. GitHub CLI (`gh`)
+
+Command-line tool for GitHub.
+Allows managing repos, PRs, issues.
+Speeds up workflow.
+Integrates with Git.
+Useful for advanced users.
+
+---
+
+## 21. `gh repo create`
+
+Creates a repository via CLI.
+Faster than using UI.
+Supports private/public options.
+Useful for automation.
+Saves time.
+
+---
+
+## 22. `gh repo clone`
+
+Clones a repository using GitHub CLI.
+Similar to `git clone`.
+Simplifies command usage.
+Integrates with GitHub account.
+Efficient workflow.
+
+---
+
+## 23. `gh pr create`
+
+Creates a pull request from CLI.
+Allows adding title and description.
+Useful for quick contributions.
+Avoids switching to browser.
+Speeds up development.
+
+---
+
+## 24. `gh pr list`
+
+Lists all pull requests.
+Shows open and closed PRs.
+Helps track contributions.
+Useful in large projects.
+Quick overview.
+
+---
+
+## 25. `gh issue create`
+
+Creates a new issue from CLI.
+Adds title and description.
+Useful for quick reporting.
+Saves time.
+Integrates with workflow.
+
+---
+
+## 26. GitHub Codespaces
+
+Cloud-based development environment.
+Runs VS Code in browser.
+No local setup required.
+Great for quick coding.
+Supports full dev environments.
+
+---
+
+## 27. Gists
+
+Used to share small code snippets.
+Can be public or secret.
+Useful for reusable code.
+Acts like mini repositories.
+Easy sharing.
+
+---
+
+## 28. Markdown Support
+
+GitHub supports Markdown formatting.
+Used in README, issues, PRs.
+Supports headings, lists, code blocks.
+Makes content readable.
+Essential for documentation.
+
+---
+
+## 29. Security Alerts
+
+GitHub scans dependencies for vulnerabilities.
+Alerts you if issues are found.
+Suggests fixes.
+Improves project security.
+Important for production apps.
+
+---
+
+## 30. Dependabot
+
+Automatically updates dependencies.
+Creates PRs for updates.
+Keeps project secure.
+Reduces manual work.
+Works with many package managers.
+
+---
+
+## 31. Code Review
+
+Reviewing code before merging.
+Includes comments and suggestions.
+Ensures quality and standards.
+Common in teams.
+Improves collaboration.
+
+---
+
+## 32. Draft Pull Request
+
+PR marked as “work in progress.”
+Not ready for review yet.
+Helps signal incomplete work.
+Prevents accidental merging.
+Useful for ongoing tasks.
+
+---
+
+## 33. Merge Conflicts UI
+
+GitHub shows conflicts in PRs.
+Helps resolve them visually.
+Avoids local debugging sometimes.
+Simplifies merging process.
+Important for collaboration.
+
+---
+
+## 34. Wiki
+
+Documentation section of repo.
+Separate from README.
+Useful for detailed guides.
+Supports Markdown.
+Organized documentation.
+
+---
+
+## 35. Topics
+
+Tags added to repositories.
+Improve discoverability.
+Examples: react, nodejs, ai.
+Helps users find projects.
+Good for portfolio visibility.
+
+---
+
+## 36. Sponsors
+
+Allows developers to receive funding.
+Users can support projects financially.
+Encourages open-source work.
+Integrated with GitHub.
+Optional feature.
+
+---
+
+## 37. Notifications
+
+GitHub sends updates for activity.
+Includes PRs, issues, comments.
+Can be customized.
+Helps stay updated.
+Important for teams.
+
+---
+
+## 38. Organization
+
+Groups multiple repositories.
+Used by companies or teams.
+Supports team permissions.
+Centralized management.
+Scales well.
+
+---
+
+## 39. Teams (within org)
+
+Groups users in organization.
+Assign permissions collectively.
+Simplifies management.
+Useful for large teams.
+Improves workflow.
+
+---
+
+## 40. Project Boards
+
+Kanban-style boards for tasks.
+Track issues and progress.
+Drag-and-drop interface.
+Visual project management.
+Useful for planning.
+
+---
+
+## 41. GitHub Discussions
+
+Forum-like feature for repos.
+Used for Q&A and ideas.
+Separate from issues.
+Encourages community interaction.
+Great for open-source.
+
+---
+
+## 42. Archive Repository
+
+Marks repo as read-only.
+Prevents further changes.
+Used for completed projects.
+Keeps history intact.
+Good for old projects.
+
+---
+
+## 43. Template Repository
+
+Used as a base for new projects.
+Allows reuse of structure.
+Saves setup time.
+Common in teams.
+Improves consistency.
+
+---
+
+## 44. Code Search
+
+Searches code across repos.
+Find functions, variables, etc.
+Powerful for large projects.
+Helps debugging.
+Very useful feature.
+
+---
+
+## 45. GitHub API
+
+Allows programmatic access.
+Used for automation and integrations.
+Supports REST and GraphQL.
+Useful for advanced developers.
+Enables custom tools.
+
+---
+
+## 46. Webhooks
+
+Triggers events to external apps.
+Used for integrations.
+Example: notify server on push.
+Real-time communication.
+Advanced feature.
+
+---
+
+## 47. GitHub Desktop
+
+GUI tool for GitHub.
+Simplifies Git operations.
+Beginner-friendly.
+No command line needed.
+Good for learning.
+
+---
+
+## 48. Contribution Graph
+
+Shows activity on profile.
+Displays commits over time.
+Used by recruiters.
+Encourages consistency.
+Visual representation of work.
+
+---
+
+## 49. Pin Repositories
+
+Highlight important repos on profile.
+Shows your best work.
+Improves portfolio.
+Helps recruiters notice projects.
+Strategic feature.
+
+---
+
+## 50. Profile README
+
+Special README for your profile.
+Shows when someone visits your profile.
+Used for introduction and portfolio.
+Highly customizable.
+Boosts personal branding.
+
+---
