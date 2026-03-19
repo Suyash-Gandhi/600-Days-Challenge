@@ -1,0 +1,221 @@
+### 47. `useNavigate` in React Router (v6+)
+
+`useNavigate` is a hook provided by React Router that allows you to programmatically navigate between routes (i.e., change pages using JavaScript instead of `<Link>`).
+
+---
+
+## 🔹 1. Why `useNavigate` is needed
+
+In React apps, navigation can happen in two ways:
+
+### A. Declarative navigation
+
+ Using `<Link>` component
+ Example: clicking a button or anchor
+
+### B. Programmatic navigation (useNavigate)
+
+ When navigation depends on logic
+ Example:
+
+   After login → redirect to dashboard
+   After form submit → go to success page
+   After timeout → redirect user
+
+👉 This is where `useNavigate` is used.
+
+---
+
+## 🔹 2. Basic Syntax
+
+```js
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
+```
+
+Now you can call:
+
+```js
+navigate("/path");
+```
+
+---
+
+## 🔹 3. Basic Example
+
+### Scenario: Navigate after button click
+
+```js
+const Home = () => {
+  const navigate = useNavigate();
+
+  const goToAbout = () => {
+    navigate("/about");
+  };
+
+  return <button onClick={goToAbout}>Go to About</button>;
+};
+```
+
+👉 When the button is clicked → user moves to `/about`
+
+---
+
+## 🔹 4. Navigation with Conditions (Important)
+
+### Example: After Login
+
+```js
+const Login = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    const isAuthenticated = true;
+
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  };
+
+  return <button onClick={handleLogin}>Login</button>;
+};
+```
+
+👉 This is the real-world use case
+You don’t always navigate immediately — only after logic runs.
+
+---
+
+## 🔹 5. Replace vs Push (VERY IMPORTANT)
+
+By default:
+
+```js
+navigate("/home");
+```
+
+👉 Works like push → adds a new entry in history
+
+---
+
+### Replace navigation
+
+```js
+navigate("/home", { replace: true });
+```
+
+👉 Replaces current page in history
+👉 User cannot go back
+
+### Use case:
+
+ Login page → Dashboard
+ Prevent going back to login after login
+
+---
+
+## 🔹 6. Navigating Back / Forward
+
+```js
+navigate(-1); // go back
+navigate(1);  // go forward
+```
+
+👉 Works like browser history buttons
+
+---
+
+## 🔹 7. Passing State (Very Useful)
+
+You can send data while navigating:
+
+```js
+navigate("/profile", { state: { userId: 101 } });
+```
+
+### Receiving it:
+
+```js
+import { useLocation } from "react-router-dom";
+
+const location = useLocation();
+console.log(location.state.userId);
+```
+
+👉 Used when:
+
+ You don’t want to use global state
+ Temporary data passing
+
+---
+
+## 🔹 8. Real-World Scenarios
+
+### ✅ Form submission
+
+```js
+handleSubmit → API call → navigate("/success")
+```
+
+### ✅ Authentication
+
+```js
+if (!user) navigate("/login")
+```
+
+### ✅ Protected routes
+
+```js
+if (!isAuthorized) navigate("/unauthorized")
+```
+
+### ✅ Logout
+
+```js
+logout → navigate("/login", { replace: true })
+```
+
+---
+
+## 🔹 9. Difference: `useNavigate` vs `<Link>`
+
+| Feature  | `useNavigate`          | `<Link>`      |
+| -------- | ---------------------- | ------------- |
+| Type     | Programmatic           | Declarative   |
+| Use case | Logic-based navigation | UI navigation |
+| Trigger  | Function call          | Click         |
+| Example  | After login            | Navbar        |
+
+---
+
+## 🔹 10. Common Mistakes
+
+### ❌ Using outside Router
+
+```js
+useNavigate()
+```
+
+👉 Must be inside `<BrowserRouter>`
+
+---
+
+### ❌ Calling directly (without function)
+
+```js
+navigate("/home"); // inside render ❌
+```
+
+👉 Should be inside:
+
+ event handler
+ useEffect
+
+---
+
+### ❌ Forgetting `replace` in auth flows
+
+👉 Leads to bad UX (user can go back to login)
+
+---

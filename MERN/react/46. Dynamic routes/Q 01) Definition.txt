@@ -1,0 +1,224 @@
+### 46. Dynamic Routes in React (React Router)
+
+Dynamic routes are used when part of the URL is variable and changes based on data.
+
+Instead of hardcoding routes like:
+
+```
+/user1
+/user2
+/user3
+```
+
+You create a single flexible route that can handle all:
+
+```
+/user/:id
+```
+
+---
+
+# 🔹 1. What are Dynamic Routes?
+
+Dynamic routes allow you to:
+
+ Pass parameters through the URL
+ Render different data using the same component
+ Build real-world apps like:
+
+   Product pages (`/product/101`)
+   User profiles (`/user/45`)
+   Blog posts (`/post/react-router-guide`)
+
+👉 `:id` is called a route parameter
+
+---
+
+# 🔹 2. Basic Syntax
+
+### Route definition
+
+```jsx
+<Route path="/user/:id" element={<User />} />
+```
+
+### URL examples
+
+```
+/user/1
+/user/42
+/user/suyash
+```
+
+All of these match the same route.
+
+---
+
+# 🔹 3. Accessing Params using `useParams`
+
+React Router provides a hook:
+
+```jsx
+import { useParams } from "react-router-dom";
+
+const User = () => {
+  const { id } = useParams();
+
+  return <h1>User ID: {id}</h1>;
+};
+```
+
+👉 If URL is `/user/42`
+→ `id = "42"`
+
+---
+
+# 🔹 4. Real Example (Important for Projects)
+
+### Scenario: Product Page
+
+### Route
+
+```jsx
+<Route path="/product/:productId" element={<Product />} />
+```
+
+### Component
+
+```jsx
+import { useParams } from "react-router-dom";
+
+const Product = () => {
+  const { productId } = useParams();
+
+  return <h2>Showing product: {productId}</h2>;
+};
+```
+
+---
+
+# 🔹 5. Navigating to Dynamic Routes
+
+You can pass dynamic values using `Link`:
+
+```jsx
+import { Link } from "react-router-dom";
+
+<Link to="/product/101">Product 101</Link>
+<Link to="/product/202">Product 202</Link>
+```
+
+Or dynamically:
+
+```jsx
+<Link to={`/product/${product.id}`}>
+  {product.name}
+</Link>
+```
+
+---
+
+# 🔹 6. Multiple Parameters
+
+You can have multiple params:
+
+```jsx
+<Route path="/user/:userId/post/:postId" element={<Post />} />
+```
+
+### Access them:
+
+```jsx
+const { userId, postId } = useParams();
+```
+
+### Example URL:
+
+```
+/user/10/post/55
+```
+
+---
+
+# 🔹 7. Important Things to Understand
+
+### 1. Params are always strings
+
+Even if it's a number:
+
+```js
+id === "42" // string
+```
+
+👉 Convert if needed:
+
+```js
+const numericId = Number(id);
+```
+
+---
+
+### 2. Route must match exactly
+
+If route is:
+
+```
+/user/:id
+```
+
+Then:
+
+```
+/user        ❌
+/user/123    ✅
+```
+
+---
+
+### 3. Use inside component only
+
+`useParams()` works only inside routed components.
+
+---
+
+# 🔹 8. Common Use Cases (Very Important)
+
+Dynamic routes are heavily used in real projects:
+
+### 🔸 E-commerce
+
+```
+/product/:id
+```
+
+### 🔸 Blog
+
+```
+/post/:slug
+```
+
+### 🔸 Dashboard
+
+```
+/user/:id/settings
+```
+
+---
+
+# 🔹 9. Combining with API Calls (Real Power)
+
+This is where dynamic routing becomes powerful:
+
+```jsx
+const { id } = useParams();
+
+useEffect(() => {
+  fetch(`/api/products/${id}`)
+    .then(res => res.json())
+    .then(data => setProduct(data));
+}, [id]);
+```
+
+👉 URL changes → fetch new data → UI updates
+
+---
