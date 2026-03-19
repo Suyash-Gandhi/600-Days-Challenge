@@ -1,0 +1,279 @@
+## Throttling in React
+
+Throttling is a performance optimization technique used to limit how frequently a function executes within a given time interval. Instead of running a function every time an event fires, throttling ensures the function runs at most once every specified period.
+
+In React applications, throttling is commonly used with high-frequency events, such as:
+
+ Scroll events
+ Window resize
+ Mouse movement
+ Input typing
+ Infinite scrolling
+ Dragging elements
+
+Without throttling, these events may trigger hundreds of function calls per second, causing unnecessary re-renders and poor performance.
+
+---
+
+# 1. Why Throttling is Needed in React
+
+Some browser events fire extremely frequently.
+
+Example:
+`scroll` can fire 60+ times per second.
+
+If React updates state every time:
+
+ The component re-renders repeatedly
+ The browser becomes slow
+ CPU usage increases
+ UI becomes laggy
+
+### Example Problem
+
+```javascript
+window.addEventListener("scroll", () => {
+  console.log("Scrolling...");
+});
+```
+
+If the user scrolls for 2 seconds, this function might run 100+ times.
+
+Throttling solves this by limiting execution frequency.
+
+Example:
+
+> Run the function once every 500ms, no matter how many scroll events happen.
+
+---
+
+# 2. How Throttling Works
+
+Throttling works by tracking the last execution time.
+
+Logic:
+
+1. Function executes.
+2. A timer starts.
+3. During the timer period → ignore new calls.
+4. After the timer expires → allow next execution.
+
+### Visualization
+
+User scroll events:
+
+```
+Scroll events:
+| | | | | | | | | | | | | |
+
+Throttled execution (500ms):
+|-----run-----|-----run-----|
+```
+
+Even if 20 events occur, the function runs only once every 500ms.
+
+---
+
+# 4. Throttling in React
+
+In React we typically throttle event handlers inside components.
+
+Example: Tracking scroll position
+
+```javascript
+import { useEffect } from "react";
+
+const throttle = (func, delay) => {
+  let lastCall = 0;
+
+  return (...args) => {
+    const now = Date.now();
+
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      func(...args);
+    }
+  };
+};
+
+function App() {
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      console.log(window.scrollY);
+    }, 300);
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return <div style={{ height: "2000px" }}>Scroll down</div>;
+}
+
+export default App;
+```
+
+### What happens here
+
+1. Scroll event fires many times.
+2. Throttle limits execution.
+3. `handleScroll` runs once every 300ms.
+4. Performance improves.
+
+---
+
+# 5. Throttling Using Lodash (Common in Real Projects)
+
+Most production React apps use Lodash throttle.
+
+Install:
+
+```
+npm install lodash
+```
+
+Example:
+
+```javascript
+import { throttle } from "lodash";
+
+const handleScroll = throttle(() => {
+  console.log(window.scrollY);
+}, 300);
+```
+
+Benefits:
+
+ Reliable
+ Handles edge cases
+ Supports leading/trailing calls
+
+---
+
+# 6. Real React Use Cases
+
+### 1️⃣ Infinite Scrolling
+
+Load new content while scrolling.
+
+Without throttle:
+
+ API may be called hundreds of times
+
+With throttle:
+
+ API checks every 300–500ms
+
+---
+
+### 2️⃣ Window Resize
+
+```javascript
+window.addEventListener("resize", throttledResizeHandler);
+```
+
+Used when:
+
+ Recalculating layout
+ Updating charts
+ Responsive UI logic
+
+---
+
+### 3️⃣ Mouse Movement Tracking
+
+For example:
+
+ drag & drop
+ drawing apps
+ cursor tracking
+
+Throttling reduces excessive updates.
+
+---
+
+# 7. Throttling vs Debouncing
+
+This is one of the most common interview questions.
+
+| Feature             | Throttling                      | Debouncing                   |
+| ------------------- | ------------------------------- | ---------------------------- |
+| Execution frequency | Runs at fixed intervals         | Runs after user stops action |
+| Event behavior      | Regular execution               | Single execution             |
+| Best for            | scroll, resize, drag            | search input                 |
+| Example             | Run every 300ms while scrolling | Run after typing stops       |
+
+### Example Timeline
+
+Typing:
+
+```
+User types: a b c d e
+```
+
+Debounce
+
+```
+-----wait------RUN
+```
+
+Throttle
+
+```
+RUN---RUN---RUN---RUN
+```
+
+---
+
+# 8. Throttling with `useCallback` (Optimization)
+
+In React, throttled functions can be wrapped with `useCallback` to prevent recreation.
+
+```javascript
+const throttledHandler = useCallback(
+  throttle(() => {
+    console.log("scroll");
+  }, 300),
+  []
+);
+```
+
+This ensures the function remains stable across renders.
+
+---
+
+# 9. Common Mistakes
+
+### ❌ Creating throttle inside render
+
+```javascript
+const handleScroll = throttle(() => {}, 300);
+```
+
+Every render creates a new throttle instance, breaking throttling.
+
+---
+
+### ❌ Not cleaning up event listeners
+
+Always remove listeners in `useEffect`.
+
+```javascript
+return () => window.removeEventListener("scroll", handler);
+```
+
+---
+
+### ❌ Using throttle for typing inputs
+
+For search inputs use debounce, not throttle.
+
+---
+
+# 10. Real Interview Definition
+
+Throttling is a technique that limits the execution of a function so that it runs at most once within a specified time interval, regardless of how many times the triggering event occurs. It is commonly used in React for performance optimization in high-frequency events like scroll, resize, and mouse movement.
+
+---
+
+---
