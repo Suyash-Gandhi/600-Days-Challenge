@@ -78,66 +78,67 @@
 40. File uploads
 41. Debouncing inputs
 42. Throttling inputs
+43. Explicit Trigger Model
 
 ---
 
 # PHASE 9 — Routing
 
-43. React Router basics
-44. Nested routes
-45. Dynamic routes
-46. useNavigate
-47. Protected routes
-48. Lazy loaded routes
-49. Client-side vs server-side routing
+44. React Router basics
+45. Nested routes
+46. Dynamic routes
+47. useNavigate
+48. Protected routes
+49. Lazy loaded routes
+50. Client-side vs server-side routing
 
 ---
 
 # PHASE 10 — Data Fetching & Server State
 
-50. Fetch / Axios with useEffect
-51. Loading / error / empty states
-52. Async error handling
-53. AbortController
-54. Race conditions
-55. Server vs client state
-56. React Query basics
-57. React Query caching
-58. React Query error handling
+51. Fetch / Axios with useEffect
+52. Loading / error / empty states
+53. Async error handling
+54. AbortController
+55. Race conditions
+56. Server vs client state
+57. React Query basics
+58. React Query caching
+59. React Query error handling
 
 ---
 
 # PHASE 11 — State Management
 
-59. Redux Toolkit OR Zustand
+60. Redux Toolkit OR Zustand
 
 ---
 
 # PHASE 12 — Security Basics
 
-60. XSS in React
-61. Token storage (localStorage vs cookies)
+61. XSS in React
+62. Token storage (localStorage vs cookies)
 
 ---
 
 # PHASE 13 — Concurrent React
 
-62. Suspense for lazy loading
-63. Concurrent rendering
-64. useTransition
-65. useDeferredValue
+63. Suspense for lazy loading
+64. Concurrent rendering
+65. useTransition
+66. useDeferredValue
 
 ---
 
 # PHASE 14 — React Architecture Patterns
 
-66. Error boundaries
-67. Higher-Order Components
-68. Render props
-69. Compound components
-70. Smart vs dumb components
-71. State colocation principle
-72. Portals
+67. Error boundaries
+68. Higher-Order Components
+69. Render props
+70. Compound components
+71. Smart vs dumb components
+72. State colocation principle
+73. Portals
 
 
 ---
