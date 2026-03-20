@@ -1,0 +1,180 @@
+### 🔐 48. Protected Routes in React (React Router)
+
+Protected routes are used to restrict access to certain pages unless a condition is met (usually authentication).
+
+---
+
+# 🧠 1. What are Protected Routes?
+
+A protected route is a route that:
+
+ Only allows access if the user is logged in / authorized
+ Otherwise redirects the user to another page (like login)
+
+👉 Example:
+
+ `/dashboard` → only logged-in users
+ `/login` → public
+
+---
+
+# ⚠️ 2. Why do we need Protected Routes?
+
+Without protection:
+
+ Anyone can manually type `/dashboard` in URL and access it
+
+With protection:
+
+ React checks auth before rendering the page
+
+---
+
+# ⚙️ 3. Basic Idea (Flow)
+
+```
+User tries to access /dashboard
+        ↓
+Check: isAuthenticated?
+        ↓
+YES → Show Dashboard
+NO  → Redirect to Login
+```
+
+---
+
+# 🏗️ 4. How to Implement Protected Routes
+
+### Step 1: Create Auth State
+
+You usually store auth state using:
+
+ Context API
+ Redux
+ Local state (for simple apps)
+
+Example:
+
+```js
+const isAuthenticated = true; // simulate login
+```
+
+---
+
+### Step 2: Create Protected Route Component
+
+```js
+import { Navigate } from "react-router-dom";
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = true; // replace with real logic
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+export default ProtectedRoute;
+```
+
+---
+
+### Step 3: Use it in Routes
+
+```js
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+
+<Routes>
+  <Route path="/login" element={<Login />} />
+
+  <Route
+    path="/dashboard"
+    element={
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    }
+  />
+</Routes>
+```
+
+---
+
+# 🔁 5. Redirect Behavior (Important)
+
+ `<Navigate to="/login" />` → redirects user
+ `replace` → prevents going back to protected page via back button
+
+👉 Best practice:
+
+```js
+<Navigate to="/login" replace />
+```
+
+---
+
+# 🔥 6. Real-World Authentication Check
+
+Instead of hardcoded value:
+
+```js
+const isAuthenticated = !!localStorage.getItem("token");
+```
+
+Or from context:
+
+```js
+const { user } = useAuth();
+```
+
+---
+
+# 🧩 7. Advanced Pattern (Layout Protection)
+
+Instead of wrapping every route:
+
+```js
+<Route element={<ProtectedRoute />}>
+  <Route path="/dashboard" element={<Dashboard />} />
+  <Route path="/profile" element={<Profile />} />
+</Route>
+```
+
+👉 ProtectedRoute:
+
+```js
+import { Outlet, Navigate } from "react-router-dom";
+
+const ProtectedRoute = () => {
+  const isAuthenticated = true;
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
+```
+
+---
+
+# ⚡ 8. Common Mistakes
+
+### ❌ 1. Checking auth inside components
+
+ Leads to repeated logic
+
+### ❌ 2. Not using `replace`
+
+ User can go back to restricted page
+
+### ❌ 3. Storing auth only in state
+
+ Refresh will reset login
+
+👉 Use:
+
+ localStorage
+ cookies
+ or backend session
+
+---
