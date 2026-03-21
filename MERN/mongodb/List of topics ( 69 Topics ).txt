@@ -1,0 +1,140 @@
+
+# 🟢 PHASE 1 — Core Fundamentals (Foundation)
+
+1. MongoDB & NoSQL vs SQL
+2. Collections vs Documents
+3. BSON vs JSON
+4. Setup (local + Atlas + Compass)
+5. CRUD operations (insert, find, update, delete)
+6. `find` vs `findOne`, `insertOne` vs `insertMany`
+7. Update & delete operations
+8. Data types & ObjectId (`_id`)
+9. Projections (field selection)
+10. Embedding vs referencing (intro)
+11. Connection basics (URI, pooling intro)
+
+---
+
+# 🟡 PHASE 2 — Querying & Real-World Patterns
+
+12. Query operators (`$eq`, `$in`, etc.)
+13. Comparison & logical operators
+14. Array queries (`$elemMatch`, `$size`)
+15. `$exists`, `$type`, `$regex`
+16. Sorting & pagination (`skip`, `limit`)
+
+### 🔥 Real-world patterns
+
+17. Filter + sort + paginate together
+18. Cursor-based pagination (infinite scroll)
+19. Search + filters combination
+20. Returning only required fields (projection optimization)
+
+---
+
+# 🔵 PHASE 3 — Indexing (Performance Core)
+
+21. What indexes are & why they matter
+22. Single vs compound indexes
+23. Unique & multikey indexes
+24. Text indexes (basic search)
+25. Using `explain()`
+
+### ⚡ Practical thinking
+
+26. Choosing correct index for queries
+27. Index tradeoffs (read vs write cost)
+28. Covered queries (optimization)
+
+---
+
+# 🟣 PHASE 4 — Aggregation (MOST IMPORTANT)
+
+29. Aggregation pipeline basics
+30. `$match`, `$project`, `$group`
+31. `$sort`, `$limit`, `$skip`
+32. `$lookup` (joins)
+33. `$unwind`, `$addFields`
+
+### 🔥 Real-world usage
+
+34. Dashboard queries (counts, stats)
+35. Search + aggregation pipelines
+36. Group + filter combined logic
+37. When aggregation becomes slow
+
+---
+
+# 🟠 PHASE 5 — Data Modeling (MAKE OR BREAK SKILL)
+
+38. Embedding vs referencing (deep)
+39. One-to-one, one-to-many relationships
+40. Schema design best practices
+41. Normalization vs denormalization
+42. Document size limits
+
+### ⚠️ Real-world decisions
+
+43. Designing for read-heavy vs write-heavy apps
+44. Avoiding large arrays & deep nesting
+45. Designing schemas for chat, feeds, comments
+
+---
+
+# 🔴 PHASE 6 — Scaling & Consistency (Essentials Only)
+
+46. Replication (primary/secondary basics)
+47. Sharding (concept only)
+48. Read/write concerns (basic idea)
+49. Transactions (when and why)
+
+---
+
+# ⚫ PHASE 7 — Performance & Optimization
+
+50. Query optimization strategies
+51. Avoiding bad schema patterns
+52. Bulk writes & batch inserts
+53. Connection pooling (practical understanding)
+
+---
+
+# 🟤 PHASE 8 — MongoDB in Real Projects (MERN)
+
+### Mongoose
+
+54. Schemas & models
+55. Validation & defaults
+56. Methods & middleware
+
+### Relationships
+
+57. `populate()`
+58. Referencing vs embedding in Mongoose
+
+### Performance
+
+59. `.lean()` queries
+60. Avoiding over-fetching
+
+### APIs
+
+61. Pagination APIs
+62. Search APIs (filters + text)
+63. Sorting APIs
+
+### Error handling
+
+64. Validation errors
+65. Duplicate key errors
+
+---
+
+# 🟣 PHASE 9 — Production & Advanced (Later)
+
+66. Change streams (real-time features)
+67. GridFS (large files)
+68. Backups & recovery (Atlas basics)
+69. Monitoring & environment configs
+
+---
