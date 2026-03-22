@@ -1,0 +1,554 @@
+
+# 🟢 1. VARIABLES (The Basics of Storage)
+
+## 📌 What is a Variable?
+
+A variable is a container that stores data.
+
+Think of it like:
+
+ A labeled box
+ You put something inside
+ You can change what’s inside anytime
+
+---
+
+## 📌 Example
+
+```python
+x = 10
+name = "Suyash"
+price = 99.99
+```
+
+Here:
+
+ `x` stores an integer
+ `name` stores a string
+ `price` stores a float
+
+---
+
+## 📌 Important Concept: Python is Dynamically Typed
+
+You don’t need to declare types.
+
+```python
+x = 10      # integer
+x = "hello" # now string
+```
+
+Python automatically understands the type.
+
+👉 This is different from languages like C/Java.
+
+---
+
+## 📌 Rules for Naming Variables
+
+### ✅ Valid
+
+```python
+age = 20
+user_name = "abc"
+totalPrice = 500
+```
+
+### ❌ Invalid
+
+```python
+2name = "abc"   # cannot start with number
+user-name = "a" # hyphen not allowed
+```
+
+---
+
+## 📌 Best Practices
+
+ Use meaningful names:
+
+```python
+# bad
+x = 10
+
+# good
+user_age = 10
+```
+
+ Use snake_case:
+
+```python
+total_price = 100
+```
+
+---
+
+## 📌 Multiple Assignments
+
+```python
+a, b, c = 1, 2, 3
+```
+
+```python
+x = y = z = 0
+```
+
+---
+
+## 📌 Checking Type
+
+```python
+x = 10
+print(type(x))  # <class 'int'>
+```
+
+---
+
+# 🟢 2. DATA TYPES (Types of Data in Python)
+
+Data types define what kind of data a variable holds.
+
+---
+
+## 🔷 1. Numeric Types
+
+### 📌 Integer (`int`)
+
+```python
+x = 10
+```
+
+ Whole numbers
+ No decimal
+
+---
+
+### 📌 Float (`float`)
+
+```python
+y = 10.5
+```
+
+ Decimal numbers
+
+---
+
+### 📌 Complex (`complex`)
+
+```python
+z = 2 + 3j
+```
+
+ Used in advanced math
+
+---
+
+## 🔷 2. Sequence Types
+
+### 📌 String (`str`)
+
+```python
+name = "Suyash"
+```
+
+ Text data
+ Immutable (cannot change directly)
+
+---
+
+### 📌 List (`list`)
+
+```python
+numbers = [1, 2, 3]
+```
+
+ Ordered
+ Mutable (can change)
+
+---
+
+### 📌 Tuple (`tuple`)
+
+```python
+coords = (10, 20)
+```
+
+ Ordered
+ Immutable
+
+---
+
+## 🔷 3. Mapping Type
+
+### 📌 Dictionary (`dict`)
+
+```python
+user = {
+    "name": "Suyash",
+    "age": 20
+}
+```
+
+ Key-value pairs
+
+---
+
+## 🔷 4. Set Types
+
+### 📌 Set (`set`)
+
+```python
+s = {1, 2, 3}
+```
+
+ Unordered
+ No duplicates
+
+---
+
+## 🔷 5. Boolean (`bool`)
+
+```python
+is_active = True
+```
+
+ Only:
+
+   `True`
+   `False`
+
+---
+
+## 🔷 6. None Type
+
+```python
+x = None
+```
+
+ Represents no value / empty state
+
+---
+
+# 🟢 3. MUTABLE vs IMMUTABLE (VERY IMPORTANT)
+
+This concept is interview + debugging critical.
+
+---
+
+## 📌 Mutable (Can Change)
+
+ List
+ Dictionary
+ Set
+
+```python
+x = [1, 2]
+x.append(3)  # changes original list
+```
+
+---
+
+## 📌 Immutable (Cannot Change)
+
+ int
+ float
+ string
+ tuple
+
+```python
+x = "hello"
+x[0] = "H"  # ❌ error
+```
+
+Instead:
+
+```python
+x = "Hello"
+```
+
+---
+
+# 🟢 4. TYPE CASTING (Conversion Between Types)
+
+Type casting means changing one data type into another.
+
+---
+
+## 📌 Why It’s Needed
+
+Because Python does NOT automatically mix incompatible types.
+
+```python
+x = "10"
+y = 5
+
+print(x + y)  # ❌ error
+```
+
+---
+
+## 📌 Types of Casting
+
+### 🔷 1. Implicit Casting (Automatic)
+
+Python does it automatically when safe.
+
+```python
+x = 10     # int
+y = 2.5    # float
+
+result = x + y  # becomes float
+```
+
+👉 Result = `12.5`
+
+---
+
+### 🔷 2. Explicit Casting (Manual)
+
+You do it yourself.
+
+---
+
+## 📌 Common Type Conversions
+
+### 🔸 int()
+
+```python
+x = int("10")
+```
+
+---
+
+### 🔸 float()
+
+```python
+x = float("10.5")
+```
+
+---
+
+### 🔸 str()
+
+```python
+x = str(100)
+```
+
+---
+
+### 🔸 list()
+
+```python
+x = list("abc")  
+# ['a', 'b', 'c']
+```
+
+---
+
+### 🔸 tuple()
+
+```python
+x = tuple([1, 2, 3])
+```
+
+---
+
+### 🔸 set()
+
+```python
+x = set([1, 1, 2])
+# {1, 2}
+```
+
+---
+
+## 📌 Real Example (VERY IMPORTANT)
+
+```python
+age = input("Enter age: ")
+age = int(age)
+
+if age > 18:
+    print("Adult")
+```
+
+👉 `input()` always returns string, so conversion is needed.
+
+---
+
+# 🟢 5. TYPE CASTING ERRORS (Common Mistakes)
+
+---
+
+## ❌ Invalid Conversion
+
+```python
+int("abc")  # error
+```
+
+---
+
+## ❌ Float to Int Loss
+
+```python
+int(10.9)  # 10
+```
+
+👉 Decimal part is removed (not rounded)
+
+---
+
+## ❌ Mixing Types
+
+```python
+"10" + 5  # error
+```
+
+Correct:
+
+```python
+int("10") + 5
+```
+
+---
+
+# 🟢 6. TRUTHY vs FALSY (Related to Data Types)
+
+Python treats some values as True/False automatically.
+
+---
+
+## 📌 Falsy Values
+
+```python
+False
+0
+0.0
+''
+[]
+{}
+None
+```
+
+---
+
+## 📌 Truthy Values
+
+Everything else.
+
+---
+
+## 📌 Example
+
+```python
+if "":
+    print("Hello")  # won't run
+
+if "abc":
+    print("Hello")  # runs
+```
+
+---
+
+# 🟢 7. MEMORY & REFERENCE (ADVANCED BUT IMPORTANT)
+
+---
+
+## 📌 Variables Store References
+
+```python
+a = 10
+b = a
+```
+
+Both point to same value.
+
+---
+
+## 📌 Mutable Example
+
+```python
+a = [1, 2]
+b = a
+
+b.append(3)
+
+print(a)  # [1, 2, 3]
+```
+
+👉 Because both refer to same object.
+
+---
+
+## 📌 Immutable Example
+
+```python
+a = 10
+b = a
+
+b = 20
+
+print(a)  # still 10
+```
+
+---
+
+# 🟢 8. BEST PRACTICES (IMPORTANT FOR REAL PROJECTS)
+
+---
+
+## ✔ Always convert user input
+
+```python
+age = int(input())
+```
+
+---
+
+## ✔ Use correct data types
+
+ Numbers → int/float
+ Text → string
+ Collection → list/dict
+
+---
+
+## ✔ Avoid unnecessary conversions
+
+Bad:
+
+```python
+int(float("10"))
+```
+
+Good:
+
+```python
+int("10")
+```
+
+---
+
+## ✔ Be careful with mutable objects
+
+```python
+a = [1, 2]
+b = a.copy()
+```
+
+---
+
+# 🟢 9. QUICK COMPARISON TABLE
+
+| Type  | Example | Mutable | Use Case        |
+| ----- | ------- | ------- | --------------- |
+| int   | 10      | ❌       | counting        |
+| float | 10.5    | ❌       | decimals        |
+| str   | "abc"   | ❌       | text            |
+| list  | [1,2]   | ✅       | dynamic data    |
+| tuple | (1,2)   | ❌       | fixed data      |
+| dict  | {"a":1} | ✅       | structured data |
+| set   | {1,2}   | ✅       | unique items    |
+| bool  | True    | ❌       | conditions      |
+
+---
