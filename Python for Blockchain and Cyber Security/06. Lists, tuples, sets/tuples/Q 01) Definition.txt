@@ -1,0 +1,85 @@
+
+# 🟢 2. Tuples (Immutable & Faster)
+
+## 📌 Concept
+
+A tuple is an ordered, immutable collection.
+
+ Immutable → cannot change after creation
+ Faster than lists
+ Safer (data protection)
+
+---
+
+## 📌 Syntax
+
+```python
+my_tuple = (1, 2, 3)
+```
+
+Single element tuple:
+
+```python
+t = (5,)   # comma is required
+```
+
+---
+
+## 📌 Key Characteristics
+
+1. Ordered
+
+```python
+t = (10, 20, 30)
+print(t[0])  # 10
+```
+
+2. Immutable
+
+```python
+t = (1, 2, 3)
+# t[0] = 100 ❌ ERROR
+```
+
+3. Allows duplicates
+
+```python
+t = (1, 1, 2)
+```
+
+4. Faster than lists
+
+ Because they are fixed
+
+---
+
+## 📌 Operations
+
+### ➤ Access
+
+```python
+t[1]
+```
+
+### ➤ Slicing
+
+```python
+t[0:2]
+```
+
+### ➤ Packing & Unpacking
+
+```python
+t = (1, 2, 3)
+a, b, c = t
+```
+
+---
+
+## 📌 Use Cases
+
+ Fixed data (coordinates, config)
+ Returning multiple values from functions
+ Dictionary keys (since immutable)
+
+---

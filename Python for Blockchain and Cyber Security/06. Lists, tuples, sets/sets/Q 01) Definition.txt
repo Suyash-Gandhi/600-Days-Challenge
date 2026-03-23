@@ -1,0 +1,89 @@
+
+# 🔴 3. Sets (Unique & Unordered)
+
+## 📌 Concept
+
+A set is an unordered collection of unique elements.
+
+ No duplicates allowed
+ No indexing
+ Optimized for fast lookup
+
+---
+
+## 📌 Syntax
+
+```python
+my_set = {1, 2, 3}
+```
+
+Empty set:
+
+```python
+s = set()   # NOT {}
+```
+
+---
+
+## 📌 Key Characteristics
+
+1. Unordered
+
+```python
+s = {1, 2, 3}
+# No indexing allowed
+```
+
+2. No duplicates
+
+```python
+s = {1, 1, 2}
+print(s)  # {1, 2}
+```
+
+3. Mutable (but elements must be immutable)
+
+---
+
+## 📌 Common Operations
+
+### ➤ Add / Remove
+
+```python
+s.add(4)
+s.remove(2)
+```
+
+### ➤ Set Operations (VERY IMPORTANT)
+
+```python
+a = {1, 2, 3}
+b = {3, 4, 5}
+
+print(a | b)  # Union → {1,2,3,4,5}
+print(a & b)  # Intersection → {3}
+print(a - b)  # Difference → {1,2}
+```
+
+---
+
+## 📌 Use Cases
+
+ Removing duplicates
+ Fast membership check
+
+```python
+if 5 in s:
+```
+
+ Mathematical operations (union/intersection)
+
+---
+
+# 🧠 How to Choose (This is what matters)
+
+ Use List → when data changes
+ Use Tuple → when data is fixed
+ Use Set → when uniqueness is required
+
+---
