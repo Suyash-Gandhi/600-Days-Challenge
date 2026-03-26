@@ -1,0 +1,264 @@
+## 🔟 `*args` and `**kwargs` in Python
+
+When working with functions in Python, sometimes you don’t know in advance how many arguments will be passed. That’s where `**args` and `**kw**args` come in — they allow your function to handle a variable number of inputs in a clean and flexible way.
+
+---
+
+# 🟢 1. What is `*args`?
+
+### 👉 Definition
+
+`*args` allows a function to accept any number of positional arguments.
+
+ “*args” stands for arguments
+ The `` packs all extra positional arguments into a tuple
+
+---
+
+### 👉 Example
+
+```python
+def add_numbers(*args):
+    print(*args)
+
+add_numbers(1, 2, 3, 4)
+```
+
+👉 Output:
+
+```
+(1, 2, 3, 4)
+```
+
+✔ All values are stored in a tuple
+
+---
+
+### 👉 Real Use Case
+
+```python
+def sum_all(*args):
+    total = 0
+    for num in **args:
+        total += num
+    return total
+
+print(sum_all(1, 2, 3))        # 6
+print(sum_all(5, 10, 15, 20))  # 50
+```
+
+✔ You can pass any number of numbers
+
+---
+
+### 👉 Key Points
+
+ Accepts positional arguments
+ Stored as a tuple
+ Can be named anything (`numbers`, `values`), but `**args` is standard
+
+---
+
+# 🟢 2. What is `**kwargs`?
+
+### 👉 Definition
+
+`**kwargs` allows a function to accept any number of keyword arguments (key-value pairs).
+
+ “**kwargs” = keyword arguments
+ The `` packs them into a dictionary
+
+---
+
+### 👉 Example
+
+```python
+def print_details(**kwargs):
+    print(**kwargs)
+
+print_details(name="Suyash", age=21)
+```
+
+👉 Output:
+
+```
+{'name': 'Suyash', 'age': 21}
+```
+
+✔ Stored as a dictionary
+
+---
+
+### 👉 Real Use Case
+
+```python
+def user_info(**kwargs):
+    for key, value in **kwargs.items():
+        print(f"{key}: {value}")
+
+user_info(name="Suyash", age=21, city="Delhi")
+```
+
+✔ Flexible user data handling
+
+---
+
+### 👉 Key Points
+
+ Accepts keyword arguments
+ Stored as a dictionary
+ Can be renamed (`data`, `info`), but `**kwargs` is standard
+
+---
+
+# 🟢 3. Difference Between `*args` and `**kwargs`
+
+| Feature        | `*args`                  | `**kwargs`               |
+| -------------- | ------------------------ | ------------------------ |
+| Type           | Positional arguments     | Keyword arguments        |
+| Data structure | Tuple                    | Dictionary               |
+| Example input  | `(1, 2, 3)`              | `{name="Suyash"}`        |
+| Usage          | Unknown number of values | Unknown named parameters |
+
+---
+
+# 🟢 4. Using Both Together
+
+You can use both in the same function:
+
+```python
+def demo(a, *args, **kwargs):
+    print("a:", a)
+    print("args:", *args)
+    print("kwargs:", **kwargs)
+
+demo(1, 2, 3, name="Suyash", age=21)
+```
+
+👉 Output:
+
+```
+a: 1
+args: (2, 3)
+kwargs: {'name': 'Suyash', 'age': 21}
+```
+
+---
+
+### 👉 Order Rule (IMPORTANT ⚠️)
+
+```python
+def func(a, *args, **kwargs):
+    pass
+```
+
+✔ Correct order:
+
+1. Normal parameters
+2. `*args`
+3. `**kwargs`
+
+---
+
+# 🟢 5. Unpacking with `*` and `**`
+
+These symbols are also used to unpack values.
+
+---
+
+### 👉 Example with ``
+
+```python
+numbers = [1, 2, 3]
+print(numbers)
+```
+
+👉 Output:
+
+```
+1 2 3
+```
+
+---
+
+### 👉 Example with ``
+
+```python
+data = {"name": "Suyash", "age": 21}
+
+def show(name, age):
+    print(name, age)
+
+show(data)
+```
+
+✔ Dictionary unpacked into arguments
+
+---
+
+# 🟢 6. When to Use (Practical Understanding)
+
+Use `**args` when:
+
+ You don’t know how many positional inputs
+ Example: sum, logging, flexible input
+
+Use `**kwargs` when:
+
+ You want optional named parameters
+ Example: config settings, user data
+
+---
+
+# 🟢 7. Real-World Example (Very Important)
+
+```python
+def create_profile(name, *skills, **details):
+    print("Name:", name)
+    print("Skills:", skills)
+    print("Details:", details)
+
+create_profile(
+    "Suyash",
+    "Python", "React",
+    age=21,
+    city="Delhi"
+)
+```
+
+👉 Output:
+
+```
+Name: Suyash
+Skills: ('Python', 'React')
+Details: {'age': 21, 'city': 'Delhi'}
+```
+
+✔ This pattern is heavily used in:
+
+ Frameworks (like Django, Flask)
+ APIs
+ Config-driven systems
+
+---
+
+# 🟢 8. Common Mistakes
+
+### ❌ Mistake 1: Wrong order
+
+```python
+def func(**kwargs, *args):  # ❌ wrong
+    pass
+```
+
+---
+
+### ❌ Mistake 2: Forgetting unpacking
+
+```python
+nums = [1, 2, 3]
+sum_all(nums)   # ❌ passes list as one argument
+sum_all(nums)  # ✅ correct
+```
+
+---

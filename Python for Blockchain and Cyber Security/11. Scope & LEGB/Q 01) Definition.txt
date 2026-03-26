@@ -1,0 +1,242 @@
+
+
+# 🔹 1. What is Scope?
+
+Scope = the region of code where a variable is accessible
+
+In simple terms:
+
+> “Where can I use this variable?”
+
+---
+
+### Example
+
+```python
+x = 10  # global scope
+
+def my_function():
+    y = 5  # local scope
+    print(x)  # accessible
+    print(y)  # accessible
+
+my_function()
+
+print(x)  # accessible
+print(y)  # ❌ ERROR (y is local)
+```
+
+---
+
+### Key Idea:
+
+ Variables defined inside a function → local scope
+ Variables defined outside → global scope
+
+---
+
+# 🔹 2. Types of Scope in Python (LEGB Rule)
+
+Python follows a specific order to search for variables:
+
+## 👉 LEGB Rule
+
+```
+L → Local
+E → Enclosing
+G → Global
+B → Built-in
+```
+
+Python searches for a variable in this order.
+
+---
+
+# 🔹 3. Local Scope (L)
+
+ Variables inside a function
+ Exist only while the function runs
+
+---
+
+### Example
+
+```python
+def test():
+    a = 100  # local variable
+    print(a)
+
+test()
+
+# print(a) ❌ ERROR
+```
+
+---
+
+### Important:
+
+ Each function call creates its own local scope
+ Local variables are destroyed after execution
+
+---
+
+# 🔹 4. Enclosing Scope (E)
+
+This is where things get interesting.
+
+ Happens in nested functions
+ Inner function can access variables of outer function
+
+---
+
+### Example
+
+```python
+def outer():
+    x = 10  # enclosing scope
+
+    def inner():
+        print(x)  # accessing enclosing variable
+
+    inner()
+
+outer()
+```
+
+---
+
+### Modify enclosing variable using `nonlocal`
+
+```python
+def outer():
+    x = 10
+
+    def inner():
+        nonlocal x
+        x = 20
+
+    inner()
+    print(x)  # 20
+
+outer()
+```
+
+---
+
+### Key Insight:
+
+ Without `nonlocal`, Python treats `x` as a new local variable
+ `nonlocal` allows modifying enclosing variables
+
+---
+
+# 🔹 5. Global Scope (G)
+
+ Variables defined outside all functions
+ Accessible everywhere (with some rules)
+
+---
+
+### Example
+
+```python
+x = 50
+
+def show():
+    print(x)
+
+show()  # 50
+```
+
+---
+
+### Modifying global variables
+
+```python
+x = 10
+
+def change():
+    global x
+    x = 20
+
+change()
+print(x)  # 20
+```
+
+---
+
+### Important Rule:
+
+ You can read global variables inside functions
+ But to modify them → use `global` keyword
+
+---
+
+# 🔹 6. Built-in Scope (B)
+
+ Python’s pre-defined names
+ Available everywhere
+
+---
+
+### Examples
+
+```python
+print(len("hello"))  # len is built-in
+print(type(10))      # type is built-in
+```
+
+---
+
+### Built-in examples:
+
+ `len()`
+ `type()`
+ `print()`
+ `range()`
+
+---
+
+# 🔹 7. LEGB Rule in Action
+
+Let’s see how Python searches step by step.
+
+---
+
+### Example
+
+```python
+x = "global"
+
+def outer():
+    x = "enclosing"
+
+    def inner():
+        x = "local"
+        print(x)
+
+    inner()
+
+outer()
+```
+
+---
+
+### Output:
+
+```
+local
+```
+
+---
+
+### Why?
+
+Python searches in this order:
+
+1. Local → found `"local"` → stop
+2. It doesn’t go to enclosing/global
+
+---
+
+---
