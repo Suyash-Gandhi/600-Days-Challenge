@@ -1,264 +1,444 @@
 
 
-# 🔵 1. Lists (Most Flexible & Common)
+# 🔵 8. Control Flow in Python
 
-## 📌 Concept
+Control flow determines how and when code executes based on conditions, loops, and decisions.
 
-A list in Python is an ordered, mutable collection of elements.
+👉 Think of it like:
 
- Ordered → maintains insertion order
- Mutable → you can change it after creation
- Can store multiple data types
-
----
-
-## 📌 Syntax
-
-```python
-my_list = [1, 2, 3, "hello", True]
-```
+> “If this happens → do this
+> Else → do something else
+> Repeat this until condition is met”
 
 ---
 
-## 📌 Key Characteristics
+# 🟢 1. Conditional Statements (if, elif, else)
 
-1. Ordered
+These are used to make decisions in code.
 
-```python
-a = [10, 20, 30]
-print(a[0])  # 10
-```
-
-2. Mutable (very important)
+## 🔹 Basic Syntax
 
 ```python
-a = [1, 2, 3]
-a[0] = 100
-print(a)  # [100, 2, 3]
-```
-
-3. Allows duplicates
-
-```python
-a = [1, 1, 2, 2]
-```
-
-4. Dynamic size
-
- Can grow/shrink anytime
-
----
-
-## 📌 Common Operations
-
-### ➤ Add elements
-
-```python
-a = [1, 2]
-a.append(3)        # [1, 2, 3]
-a.insert(1, 100)   # [1, 100, 2, 3]
-```
-
-### ➤ Remove elements
-
-```python
-a.remove(2)    # removes value
-a.pop()        # removes last
-```
-
-### ➤ Slicing
-
-```python
-a = [1,2,3,4]
-print(a[1:3])  # [2,3]
-```
-
-### ➤ Looping
-
-```python
-for item in a:
-    print(item)
+if condition:
+    # runs if condition is True
+elif another_condition:
+    # runs if above is False and this is True
+else:
+    # runs if all conditions are False
 ```
 
 ---
 
-## 📌 Use Cases
-
- Storing dynamic data
- Arrays in algorithms
- UI lists (React state arrays)
- Data processing pipelines
-
----
-# 🟢 2. Tuples (Immutable & Faster)
-
-## 📌 Concept
-
-A tuple is an ordered, immutable collection.
-
- Immutable → cannot change after creation
- Faster than lists
- Safer (data protection)
-
----
-
-## 📌 Syntax
+## 🔹 Example
 
 ```python
-my_tuple = (1, 2, 3)
-```
+age = 18
 
-Single element tuple:
-
-```python
-t = (5,)   # comma is required
+if age >= 18:
+    print("You can vote")
+else:
+    print("You cannot vote")
 ```
 
 ---
 
-## 📌 Key Characteristics
-
-1. Ordered
+## 🔹 Multiple Conditions
 
 ```python
-t = (10, 20, 30)
-print(t[0])  # 10
-```
+marks = 75
 
-2. Immutable
-
-```python
-t = (1, 2, 3)
-# t[0] = 100 ❌ ERROR
-```
-
-3. Allows duplicates
-
-```python
-t = (1, 1, 2)
-```
-
-4. Faster than lists
-
- Because they are fixed
-
----
-
-## 📌 Operations
-
-### ➤ Access
-
-```python
-t[1]
-```
-
-### ➤ Slicing
-
-```python
-t[0:2]
-```
-
-### ➤ Packing & Unpacking
-
-```python
-t = (1, 2, 3)
-a, b, c = t
+if marks >= 90:
+    print("A grade")
+elif marks >= 70:
+    print("B grade")
+elif marks >= 50:
+    print("C grade")
+else:
+    print("Fail")
 ```
 
 ---
 
-## 📌 Use Cases
+## 🔹 Important Concepts
 
- Fixed data (coordinates, config)
- Returning multiple values from functions
- Dictionary keys (since immutable)
+### ✔ Indentation matters
 
----
-# 🔴 3. Sets (Unique & Unordered)
-
-## 📌 Concept
-
-A set is an unordered collection of unique elements.
-
- No duplicates allowed
- No indexing
- Optimized for fast lookup
-
----
-
-## 📌 Syntax
+Python uses indentation instead of `{}`
 
 ```python
-my_set = {1, 2, 3}
-```
-
-Empty set:
-
-```python
-s = set()   # NOT {}
+if True:
+    print("Correct")
 ```
 
 ---
 
-## 📌 Key Characteristics
-
-1. Unordered
+### ✔ Conditions use comparison operators
 
 ```python
-s = {1, 2, 3}
-# No indexing allowed
-```
-
-2. No duplicates
-
-```python
-s = {1, 1, 2}
-print(s)  # {1, 2}
-```
-
-3. Mutable (but elements must be immutable)
-
----
-
-## 📌 Common Operations
-
-### ➤ Add / Remove
-
-```python
-s.add(4)
-s.remove(2)
-```
-
-### ➤ Set Operations (VERY IMPORTANT)
-
-```python
-a = {1, 2, 3}
-b = {3, 4, 5}
-
-print(a | b)  # Union → {1,2,3,4,5}
-print(a & b)  # Intersection → {3}
-print(a - b)  # Difference → {1,2}
+==   # equal
+!=   # not equal
+>    # greater
+<    # smaller
+>=   # greater or equal
+<=   # smaller or equal
 ```
 
 ---
 
-## 📌 Use Cases
-
- Removing duplicates
- Fast membership check
+### ✔ Logical operators
 
 ```python
-if 5 in s:
+and
+or
+not
 ```
 
- Mathematical operations (union/intersection)
+Example:
+
+```python
+age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("Allowed")
+```
 
 ---
 
-# 🧠 How to Choose (This is what matters)
+## 🔹 Nested if
 
- Use List → when data changes
- Use Tuple → when data is fixed
- Use Set → when uniqueness is required
+```python
+age = 20
+
+if age >= 18:
+    if age >= 21:
+        print("Can drink in US")
+    else:
+        print("Adult but cannot drink in US")
+```
+
+---
+
+## 🔹 Short-hand (Ternary Operator)
+
+```python
+age = 18
+result = "Adult" if age >= 18 else "Minor"
+```
+
+---
+
+# 🟢 2. Loops (Repetition)
+
+Loops are used to repeat tasks automatically.
+
+---
+
+# 🔸 A. for loop
+
+Used when you know how many times to loop.
+
+## 🔹 Example
+
+```python
+for i in range(5):
+    print(i)
+```
+
+Output:
+
+```
+0 1 2 3 4
+```
+
+---
+
+## 🔹 Looping through list
+
+```python
+fruits = ["apple", "banana", "mango"]
+
+for fruit in fruits:
+    print(fruit)
+```
+
+---
+
+## 🔹 range() variations
+
+```python
+range(5)        # 0 to 4
+range(1, 5)     # 1 to 4
+range(1, 10, 2) # step = 2
+```
+
+---
+
+## 🔹 Loop with index
+
+```python
+fruits = ["a", "b", "c"]
+
+for i in range(len(fruits)):
+    print(i, fruits[i])
+```
+
+---
+
+---
+
+# 🔸 B. while loop
+
+Used when condition-based repetition is needed.
+
+## 🔹 Example
+
+```python
+i = 0
+
+while i < 5:
+    print(i)
+    i += 1
+```
+
+---
+
+## 🔹 Infinite loop (⚠️)
+
+```python
+while True:
+    print("Runs forever")
+```
+
+---
+
+## 🔹 Practical Example
+
+```python
+password = ""
+
+while password != "1234":
+    password = input("Enter password: ")
+```
+
+---
+
+# 🟢 3. Loop Control Statements
+
+These modify loop behavior.
+
+---
+
+## 🔹 break → stops loop immediately
+
+```python
+for i in range(10):
+    if i == 5:
+        break
+    print(i)
+```
+
+Output:
+
+```
+0 1 2 3 4
+```
+
+---
+
+## 🔹 continue → skips current iteration
+
+```python
+for i in range(5):
+    if i == 2:
+        continue
+    print(i)
+```
+
+Output:
+
+```
+0 1 3 4
+```
+
+---
+
+## 🔹 pass → placeholder (does nothing)
+
+```python
+for i in range(5):
+    pass
+```
+
+Used when you want to write code later.
+
+---
+
+# 🟢 4. else with loops (Important but underrated)
+
+Python allows `else` with loops.
+
+## 🔹 Example
+
+```python
+for i in range(5):
+    print(i)
+else:
+    print("Loop finished")
+```
+
+---
+
+## 🔹 With break
+
+```python
+for i in range(5):
+    if i == 3:
+        break
+else:
+    print("Will NOT run")
+```
+
+👉 `else` runs only if loop completes normally
+
+---
+
+# 🟢 5. Nested Loops
+
+Loops inside loops.
+
+## 🔹 Example
+
+```python
+for i in range(3):
+    for j in range(2):
+        print(i, j)
+```
+
+Output:
+
+```
+0 0
+0 1
+1 0
+1 1
+2 0
+2 1
+```
+
+---
+
+## 🔹 Real use cases
+
+ Matrix operations
+ Pattern printing
+ Comparing datasets
+
+---
+
+# 🟢 6. List Comprehension (Advanced but Important)
+
+A compact way to write loops.
+
+## 🔹 Example
+
+```python
+nums = [1, 2, 3, 4]
+
+squares = [xx for x in nums]
+```
+
+---
+
+## 🔹 With condition
+
+```python
+even = [x for x in nums if x % 2 == 0]
+```
+
+---
+
+👉 Equivalent to:
+
+```python
+even = []
+
+for x in nums:
+    if x % 2 == 0:
+        even.append(x)
+```
+
+---
+
+# 🟢 7. Practical Patterns (Very Important)
+
+---
+
+## 🔹 Counting
+
+```python
+count = 0
+
+for i in range(10):
+    count += 1
+```
+
+---
+
+## 🔹 Searching
+
+```python
+nums = [1, 2, 3, 4]
+
+for n in nums:
+    if n == 3:
+        print("Found")
+```
+
+---
+
+## 🔹 Flag pattern
+
+```python
+found = False
+
+for n in nums:
+    if n == 3:
+        found = True
+        break
+
+if found:
+    print("Found")
+```
+
+---
+
+# 🟢 8. Common Mistakes
+
+---
+
+### ❌ Infinite loops
+
+```python
+while i < 5:
+    print(i)   # forgot i += 1
+```
+
+---
+
+### ❌ Wrong indentation
+
+```python
+if True:
+print("Error")  # ❌
+```
+
+---
+
+### ❌ Using = instead of ==
+
+```python
+if x = 5:  # ❌
+```
 
 ---

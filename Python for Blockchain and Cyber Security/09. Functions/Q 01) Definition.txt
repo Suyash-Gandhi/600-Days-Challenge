@@ -1,0 +1,297 @@
+
+
+# 🔹 1. What is a Function?
+
+A function is a block of reusable code that performs a specific task.
+
+👉 Instead of writing the same code again and again, you define it once and call it whenever needed.
+
+### Basic Syntax
+
+```python
+def function_name(parameters):
+    # code block
+    return value
+```
+
+---
+
+# 🔹 2. Why Functions are Important
+
+ Avoid repetition (DRY principle)
+ Improve readability
+ Make debugging easier
+ Enable modular programming
+ Help in large-scale applications (like React, APIs, etc.)
+
+---
+
+# 🔹 3. Defining and Calling a Function
+
+```python
+def greet():
+    print("Hello")
+
+greet()   # calling the function
+```
+
+👉 Output:
+
+```
+Hello
+```
+
+---
+
+# 🔹 4. Arguments in Functions
+
+Arguments are values passed into functions.
+
+---
+
+## ✅ 4.1 Positional Arguments
+
+Values are assigned based on position.
+
+```python
+def add(a, b):
+    print(a + b)
+
+add(2, 3)
+```
+
+👉 Output:
+
+```
+5
+```
+
+---
+
+## ✅ 4.2 Keyword Arguments
+
+You explicitly specify parameter names.
+
+```python
+add(a=5, b=10)
+```
+
+👉 Order doesn’t matter here.
+
+---
+
+## ✅ 4.3 Default Arguments
+
+You can give default values.
+
+```python
+def greet(name="Guest"):
+    print("Hello", name)
+
+greet()
+greet("Suyash")
+```
+
+👉 Output:
+
+```
+Hello Guest
+Hello Suyash
+```
+
+---
+
+## ✅ 4.4 Variable-Length Arguments
+
+### ➤ args (multiple positional arguments)
+
+```python
+def total(numbers):
+    print(sum(numbers))
+
+total(1, 2, 3, 4)
+```
+
+👉 Output:
+
+```
+10
+```
+
+---
+
+### ➤ kwargs (multiple keyword arguments)
+
+```python
+def user_info(details):
+    print(details)
+
+user_info(name="Suyash", age=20)
+```
+
+👉 Output:
+
+```
+{'name': 'Suyash', 'age': 20}
+```
+
+---
+
+# 🔹 5. Return Values
+
+A function can send data back using `return`.
+
+---
+
+## ✅ 5.1 Basic Return
+
+```python
+def square(n):
+    return n  n
+
+result = square(4)
+print(result)
+```
+
+👉 Output:
+
+```
+16
+```
+
+---
+
+## ✅ 5.2 Multiple Return Values
+
+Python allows returning multiple values (as a tuple).
+
+```python
+def calc(a, b):
+    return a + b, a  b
+
+sum_val, mul_val = calc(2, 3)
+print(sum_val, mul_val)
+```
+
+👉 Output:
+
+```
+5 6
+```
+
+---
+
+## ✅ 5.3 Return vs Print (Important Difference)
+
+| return           | print              |
+| ---------------- | ------------------ |
+| Sends value back | Displays output    |
+| Can be reused    | Cannot be reused   |
+| Used in logic    | Used for debugging |
+
+```python
+def add(a, b):
+    return a + b
+
+x = add(2, 3)  # usable
+```
+
+---
+
+# 🔹 6. Function Scope (Local vs Global)
+
+## ✅ Local Scope
+
+```python
+def test():
+    x = 10  # local
+```
+
+## ✅ Global Scope
+
+```python
+x = 20  # global
+```
+
+👉 Local variables exist only inside function.
+
+---
+
+# 🔹 7. Pure vs Impure Functions
+
+## ✅ Pure Function
+
+ No side effects
+ Same input → same output
+
+```python
+def add(a, b):
+    return a + b
+```
+
+---
+
+## ❌ Impure Function
+
+ Depends on external data
+
+```python
+x = 10
+def add(a):
+    return a + x
+```
+
+---
+
+# 🔹 8. Lambda Functions (Short Functions)
+
+One-line anonymous functions.
+
+```python
+square = lambda x: x  x
+print(square(5))
+```
+
+---
+
+# 🔹 9. Functions Calling Functions
+
+```python
+def add(a, b):
+    return a + b
+
+def display():
+    print(add(2, 3))
+
+display()
+```
+
+---
+
+# 🔹 10. Best Practices
+
+ Use meaningful names (`calculate_total` instead of `ct`)
+ Keep functions small (single responsibility)
+ Avoid global variables
+ Always use return when needed
+ Use default arguments wisely
+
+---
+
+# 🔥 Real-Life Example
+
+```python
+def calculate_price(price, tax=0.18):
+    return price + (price  tax)
+
+final = calculate_price(1000)
+print(final)
+```
+
+👉 Output:
+
+```
+1180
+```
+
+---
