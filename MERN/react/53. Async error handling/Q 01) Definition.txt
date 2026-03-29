@@ -1,0 +1,299 @@
+## 53. Async Error Handling in React
+
+
+# 1. Why Async Error Handling is Needed
+
+Whenever you do something async:
+
+```js
+fetch("/api/data")
+axios.get("/api/data")
+```
+
+Things can go wrong:
+
+ Network failure
+ Server error (500)
+ Unauthorized (401)
+ Wrong data format
+ Timeout
+
+If you don’t handle errors → your UI may:
+
+ Break silently
+ Stay stuck in loading
+ Show incorrect data
+
+---
+
+# 2. Basic Pattern (try-catch with async/await)
+
+This is the most important pattern you’ll use.
+
+```js
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await fetch("/api/data");
+      const data = await res.json();
+      setData(data);
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong");
+    }
+  };
+
+  fetchData();
+}, []);
+```
+
+### Key idea:
+
+ `try` → success case
+ `catch` → error case
+
+---
+
+# 3. Managing Error State (VERY IMPORTANT)
+
+Always store errors in state:
+
+```js
+const [data, setData] = useState(null);
+const [error, setError] = useState(null);
+const [loading, setLoading] = useState(true);
+```
+
+Then update:
+
+```js
+try {
+  const res = await fetch("/api/data");
+  const data = await res.json();
+  setData(data);
+} catch (err) {
+  setError(err.message);
+} finally {
+  setLoading(false);
+}
+```
+
+---
+
+# 4. UI Handling (What User Sees)
+
+Your UI should handle 3 states properly:
+
+```js
+if (loading) return <p>Loading...</p>;
+if (error) return <p>Error: {error}</p>;
+
+return <div>{data}</div>;
+```
+
+### This is the golden rule:
+
+👉 Never assume success — always handle error + loading
+
+---
+
+# 5. Axios Error Handling (Better Control)
+
+Axios gives richer error info:
+
+```js
+try {
+  const res = await axios.get("/api/data");
+  setData(res.data);
+} catch (error) {
+  if (error.response) {
+    // Server responded (4xx, 5xx)
+    setError(error.response.data.message);
+  } else if (error.request) {
+    // No response
+    setError("No response from server");
+  } else {
+    // Something else
+    setError(error.message);
+  }
+}
+```
+
+---
+
+# 6. Handling HTTP Errors Properly (Important Gotcha)
+
+`fetch()` does NOT throw error for HTTP status codes.
+
+❌ This does NOT fail:
+
+```js
+await fetch("/api/404");
+```
+
+So you must manually check:
+
+```js
+const res = await fetch("/api/data");
+
+if (!res.ok) {
+  throw new Error("Failed to fetch data");
+}
+```
+
+---
+
+# 7. Reusable Pattern (Best Practice)
+
+Instead of repeating logic everywhere, create a helper:
+
+```js
+const fetchData = async (url) => {
+  try {
+    const res = await fetch(url);
+
+    if (!res.ok) throw new Error("Request failed");
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+};
+```
+
+Use it like:
+
+```js
+try {
+  const data = await fetchData("/api/data");
+  setData(data);
+} catch (error) {
+  setError(error.message);
+}
+```
+
+---
+
+# 8. Async Errors in Event Handlers
+
+Not just `useEffect` — also handle errors in buttons:
+
+```js
+const handleSubmit = async () => {
+  try {
+    await axios.post("/api/form", formData);
+  } catch (error) {
+    setError("Submission failed");
+  }
+};
+```
+
+---
+
+# 9. Global Error Handling (Advanced / Real Projects)
+
+In bigger apps:
+
+### Option 1: Axios Interceptors
+
+```js
+axios.interceptors.response.use(
+  res => res,
+  error => {
+    console.error("Global error:", error);
+    return Promise.reject(error);
+  }
+);
+```
+
+### Option 2: Error Boundary (for UI errors, not async)
+
+```js
+class ErrorBoundary extends React.Component {
+  componentDidCatch(error) {
+    console.log(error);
+  }
+}
+```
+
+⚠️ Important:
+
+ Error boundaries do NOT catch async errors
+ Only render-time errors
+
+---
+
+# 10. Common Mistakes (VERY IMPORTANT)
+
+### ❌ Mistake 1: No try-catch
+
+```js
+await fetch("/api/data"); // crash risk
+```
+
+### ❌ Mistake 2: Not handling loading
+
+→ UI freezes or flickers
+
+### ❌ Mistake 3: Ignoring `res.ok`
+
+→ fake success
+
+### ❌ Mistake 4: Swallowing errors
+
+```js
+catch (e) {}
+```
+
+### ❌ Mistake 5: Updating state after unmount
+
+→ memory leaks
+
+---
+
+# 11. Safe Pattern (Production-Level)
+
+```js
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch("/api/data");
+
+      if (!res.ok) throw new Error("Failed");
+
+      const data = await res.json();
+
+      if (isMounted) setData(data);
+    } catch (error) {
+      if (isMounted) setError(error.message);
+    } finally {
+      if (isMounted) setLoading(false);
+    }
+  };
+
+  fetchData();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+```
+
+---
+
+# 12. Best Practices Summary
+
+ Always use `try-catch`
+ Always track:
+
+   loading
+   error
+   data
+ Check `res.ok` in fetch
+ Show meaningful UI states
+ Use reusable helpers
+ Handle errors globally in large apps
+
+---
