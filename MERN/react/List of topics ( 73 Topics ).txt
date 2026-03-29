@@ -16,7 +16,7 @@
 
 # PHASE 2 — State & Component Interaction
 
-11. useState basics and state updates
+11. State in react
 12. Controlled vs uncontrolled components
 13. Handling form inputs
 14. Passing callbacks between components
@@ -148,31 +148,22 @@
 
 These are the topics that define whether React feels easy or confusing.
 
-If these are weak → everything breaks.
-
-Use your 40-question mastery prompt system here.
-
 ---
 
 # React Architecture
 
-1. What React is and why it differs from DOM manipulation
-2. Virtual DOM vs Real DOM
-3. One-way data flow
-
-These define how React works internally.
+9. Virtual DOM vs Real DOM
+10. One-way data flow
 
 ---
 
 # State & Data Flow
 
-11. useState basics and state updates
-12. Passing callbacks between components
-13. Immutable state updates
-14. Lifting state up
-15. Derived state pitfalls
-
-These define how data moves through React apps.
+11. State in react
+14. Passing callbacks between components
+15. Immutable state updates
+16. Lifting state up
+17. Derived state pitfalls
 
 ---
 
@@ -182,27 +173,21 @@ These define how data moves through React apps.
 31. Reconciliation and keys
 32. React.memo
 
-These explain React’s rendering algorithm.
-
 ---
 
 # Hooks Mental Model
 
 21. useState deep dive
-22. useRef mental model
-23. useContext usage
-
-Hooks are the core execution engine of modern React.
+22. useRef (DOM access & persistent values)
+23. useContext
 
 ---
 
-# Effects System (One of the Hardest React Topics)
+# Effects System
 
-19. useEffect dependencies
-20. useEffect cleanup
-21. useLayoutEffect
-
-Most real-world React bugs happen here.
+18. Component lifecycle vs hooks mental model
+19. useEffect (dependencies, cleanup, pitfalls)
+36. useLayoutEffect
 
 ---
 
@@ -210,20 +195,18 @@ Most real-world React bugs happen here.
 
 26. Prop drilling problem
 27. Context API usage
-28. Preventing unnecessary re-renders with context
+28. Avoiding unnecessary re-renders with context
 29. Global vs local state decisions
 
 ---
 
 # Async & Server State
 
-50. Fetching data with useEffect
-51. Loading / error states
-52. AbortController
-53. Race conditions
-54. Server vs client state
-
-This is heavily tested in interviews.
+51. Fetch / Axios with useEffect
+52. Loading / error / empty states
+54. AbortController
+55. Race conditions
+56. Server vs client state
 
 ---
 
@@ -231,37 +214,28 @@ This is heavily tested in interviews.
 
 33. useMemo
 34. useCallback
-35. Avoiding unnecessary re-renders
 
 ---
 
 # Architecture Thinking
 
-71. State colocation principle
-72. Smart vs dumb components
-
-This is where mid-level engineers start thinking differently.
+72. State colocation principle
+71. Smart vs dumb components
 
 ---
 
 # Advanced React Capabilities
 
-66. Error boundaries
-67. Portals
-68. StrictMode behavior
+67. Error boundaries
+73. Portals
+20. React StrictMode behavior
 
 ---
 
-✔ These topics define true React understanding.
-
-Total mastery topics ≈ 28
-
----
 
 # 🟡 LEVEL 2 — STRONG PROFICIENCY
 
-These are practical React skills.
-You should practice them but not over-drill theory.
+Practical + implementation-heavy topics
 
 ---
 
@@ -270,18 +244,18 @@ You should practice them but not over-drill theory.
 3. React components (function vs class)
 4. Props and component composition
 5. Rendering lists and keys
-6. Conditional rendering
-7. Fragments
+7. Conditional rendering
+8. Fragments
 
 ---
 
 # Events & Forms
 
-6. Event handling
-7. Controlled vs uncontrolled components
-8. Handling form inputs
-9. Controlled vs uncontrolled forms (deep)
-10. File uploads
+6. Event handling in React
+12. Controlled vs uncontrolled components
+13. Handling form inputs
+39. Controlled vs uncontrolled forms (deep)
+40. File uploads
 
 ---
 
@@ -295,34 +269,34 @@ You should practice them but not over-drill theory.
 # Advanced Hooks
 
 35. useReducer
-36. useImperativeHandle
-37. Advanced hook patterns
+37. useImperativeHandle
+38. Advanced hook patterns
 
 ---
 
 # Routing
 
-43. React Router basics
-44. Nested routes
-45. Dynamic routes
-46. useNavigate
-47. Protected routes
-48. Lazy loaded routes
-49. Client vs server routing
+44. React Router basics
+45. Nested routes
+46. Dynamic routes
+47. useNavigate
+48. Protected routes
+49. Lazy loaded routes
+50. Client-side vs server-side routing
 
 ---
 
 # Async Libraries
 
-56. React Query basics
-57. React Query caching
-58. React Query error handling
+57. React Query basics
+58. React Query caching
+59. React Query error handling
 
 ---
 
 # State Management
 
-59. Redux Toolkit / Zustand
+60. Redux Toolkit OR Zustand
 
 ---
 
@@ -340,38 +314,34 @@ You should practice them but not over-drill theory.
 
 ---
 
-These topics require hands-on coding practice, not heavy theoretical drilling.
-
----
-
 # 🟢 LEVEL 1 — AWARENESS
 
-Learn these once.
-Use them when needed.
+Learn once, use when needed
 
 ---
 
 # Security
 
-60. XSS in React
-61. Token storage
+61. XSS in React
+62. Token storage (localStorage vs cookies)
 
 ---
 
 # Concurrent React
 
-62. Suspense
-63. Concurrent rendering
-64. useTransition
-65. useDeferredValue
+63. Suspense for lazy loading
+64. Concurrent rendering
+65. useTransition
+66. useDeferredValue
 
 ---
 
 # Architecture Patterns
 
-67. Higher-Order Components
-68. Render props
-69. Compound components
+68. Higher-Order Components
+69. Render props
+70. Compound components
 
 ---
+
 
