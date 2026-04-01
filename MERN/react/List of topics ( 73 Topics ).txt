@@ -152,9 +152,6 @@ These are the topics that define whether React feels easy or confusing.
 
 # React Architecture
 
-9. Virtual DOM vs Real DOM
-10. One-way data flow
-
 ---
 
 # State & Data Flow
@@ -246,7 +243,8 @@ Practical + implementation-heavy topics
 5. Rendering lists and keys
 7. Conditional rendering
 8. Fragments
-
+9. Virtual DOM vs Real DOM
+10. One-way data flow
 ---
 
 # Events & Forms
