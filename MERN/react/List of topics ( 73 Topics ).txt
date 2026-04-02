@@ -143,203 +143,201 @@
 
 ---
 
+# 🔥 LEVEL 1 — FULL MASTERY 
 
-# 🔴 LEVEL 3 — FULL MASTERY (CORE REACT MENTAL MODELS)
 
-These are the topics that define whether React feels easy or confusing.
+### 🧠 Core Thinking & Rendering
 
----
-
-# React Architecture
-
----
-
-# State & Data Flow
-
-11. State in react
-14. Passing callbacks between components
-15. Immutable state updates
-16. Lifting state up
-17. Derived state pitfalls
+ 5. Rendering lists and keys
+ 9. Virtual DOM vs Real DOM
+ 10. One-way data flow
 
 ---
 
-# Rendering System
+### ⚙️ State & Interaction (CRITICAL)
 
-30. When React components re-render
-31. Reconciliation and keys
-32. React.memo
-
----
-
-# Hooks Mental Model
-
-21. useState deep dive
-22. useRef (DOM access & persistent values)
-23. useContext
+ 11. State in React
+ 12. Controlled vs uncontrolled components
+ 15. Immutable state updates
+ 16. Lifting state up
 
 ---
 
-# Effects System
+### ⚡ Hooks (MOST IMPORTANT ZONE)
 
-18. Component lifecycle vs hooks mental model
-19. useEffect (dependencies, cleanup, pitfalls)
-36. useLayoutEffect
-
----
-
-# Context & Global State Thinking
-
-26. Prop drilling problem
-27. Context API usage
-28. Avoiding unnecessary re-renders with context
-29. Global vs local state decisions
+ 19. useEffect (dependencies, cleanup, pitfalls)
+ 21. useState deep dive
+ 22. useRef
+ 23. useContext
+ 25. Custom hooks
 
 ---
 
-# Async & Server State
+### 🔄 Rendering Behavior & Performance
 
-51. Fetch / Axios with useEffect
-52. Loading / error / empty states
-54. AbortController
-55. Race conditions
-56. Server vs client state
-
----
-
-# Performance Mental Model
-
-33. useMemo
-34. useCallback
+ 30. When React components re-render
+ 31. Reconciliation and keys
+ 32. React.memo
+ 33. useMemo
+ 34. useCallback
 
 ---
 
-# Architecture Thinking
+### 🌐 Data Fetching (REAL-WORLD HEAVY)
 
-72. State colocation principle
-71. Smart vs dumb components
+ 51. Fetch / Axios with useEffect
+ 52. Loading / error / empty states
+ 53. Async error handling
+ 55. Race conditions
 
 ---
 
-# Advanced React Capabilities
+### 🧩 Forms & UX (VERY PRACTICAL)
 
-67. Error boundaries
-73. Portals
-20. React StrictMode behavior
+ 39. Controlled vs uncontrolled forms (deep)
+ 41. Debouncing inputs
+
+---
+
+### 🧠 State Architecture
+
+ 60. Redux Toolkit OR Zustand
+
+---
+
+### 🚀 Routing (HIGH ROI)
+
+ 44. React Router basics
+ 46. Dynamic routes
+ 47. useNavigate
+ 48. Protected routes
 
 ---
 
 
-# 🟡 LEVEL 2 — STRONG PROFICIENCY
+# ⚡ LEVEL 2 — PARTIAL MASTERY (10 questions each)
 
-Practical + implementation-heavy topics
 
----
 
-# Component Basics
+### 🧱 Foundations (useful but stabilizes quickly)
 
-3. React components (function vs class)
-4. Props and component composition
-5. Rendering lists and keys
-7. Conditional rendering
-8. Fragments
-9. Virtual DOM vs Real DOM
-10. One-way data flow
----
-
-# Events & Forms
-
-6. Event handling in React
-12. Controlled vs uncontrolled components
-13. Handling form inputs
-39. Controlled vs uncontrolled forms (deep)
-40. File uploads
+ 2. JSX syntax and rules
+ 4. Props and component composition
+ 6. Event handling in React
+ 7. Conditional rendering
 
 ---
 
-# Hooks Usage
+### 🔄 State Edge Cases
 
-24. Rules of Hooks
-25. Custom hooks
-
----
-
-# Advanced Hooks
-
-35. useReducer
-37. useImperativeHandle
-38. Advanced hook patterns
+ 13. Handling form inputs
+ 14. Passing callbacks between components
+ 17. Derived state pitfalls
 
 ---
 
-# Routing
+### 🧠 Hooks Extensions
 
-44. React Router basics
-45. Nested routes
-46. Dynamic routes
-47. useNavigate
-48. Protected routes
-49. Lazy loaded routes
-50. Client-side vs server-side routing
+ 24. Rules of Hooks
+ 35. useReducer
+ 36. useLayoutEffect
 
 ---
 
-# Async Libraries
+### 🌍 Data & Server State
 
-57. React Query basics
-58. React Query caching
-59. React Query error handling
-
----
-
-# State Management
-
-60. Redux Toolkit OR Zustand
+ 54. AbortController
+ 56. Server vs client state
+ 57. React Query basics
+ 58. React Query caching
 
 ---
 
-# Performance Techniques
+### 🧭 Routing Depth
 
-33. useMemo
-34. useCallback
-
----
-
-# Forms UX
-
-41. Debouncing inputs
-42. Throttling inputs
+ 45. Nested routes
+ 49. Lazy loaded routes
 
 ---
 
-# 🟢 LEVEL 1 — AWARENESS
+### ⚙️ Architecture Decisions
 
-Learn once, use when needed
+ 29. Global vs local state decisions
+
 
 ---
 
-# Security
+# 📘 LEVEL 3 — READ & RECOGNIZE (Low ROI)
 
-61. XSS in React
-62. Token storage (localStorage vs cookies)
+These are either:
 
----
+ Rare
+ Replaceable
+ Or conceptual overhead not needed early
 
-# Concurrent React
 
-63. Suspense for lazy loading
-64. Concurrent rendering
-65. useTransition
-66. useDeferredValue
+### 🧾 Basic / Low Impact
 
----
-
-# Architecture Patterns
-
-68. Higher-Order Components
-69. Render props
-70. Compound components
+ 1. What React is
+ 3. Function vs class components
+ 8. Fragments
 
 ---
 
+### 🧠 Theory-heavy / Internal Mechanics
 
+ 18. Lifecycle vs hooks mental model
+ 20. React StrictMode behavior
+
+---
+
+### ⚠️ Rare / Niche Hooks
+
+ 37. useImperativeHandle
+ 38. Advanced hook patterns
+
+---
+
+### 📦 Context & Structure (light usage)
+
+ 26. Prop drilling problem
+ 27. Context API usage
+ 28. Avoiding re-renders with context
+
+---
+
+### 🧪 Advanced UX (situational)
+
+ 40. File uploads
+ 42. Throttling inputs
+ 43. Explicit Trigger Model
+
+---
+
+### 🔐 Security (important but quick learn)
+
+ 61. XSS in React
+ 62. Token storage
+
+---
+
+### ⚛️ Concurrent React (low usage in most apps)
+
+ 63. Suspense
+ 64. Concurrent rendering
+ 65. useTransition
+ 66. useDeferredValue
+
+---
+
+### 🏗️ Patterns (nice-to-know, not must-have)
+
+ 67. Error boundaries
+ 68. Higher-Order Components
+ 69. Render props
+ 70. Compound components
+ 71. Smart vs dumb components
+ 72. State colocation
+ 73. Portals
+
+---
