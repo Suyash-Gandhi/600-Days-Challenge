@@ -1,0 +1,238 @@
+## 2. Node.js Architecture (Single-threaded, Event-driven)
+
+Node.js is built on a non-blocking, event-driven architecture that allows it to handle thousands of concurrent connections efficiently—even though it uses a single main thread.
+
+---
+
+# 🔹 1. Single-Threaded Model
+
+### 👉 What it means
+
+ Node.js uses one main thread (unlike traditional servers that create a new thread per request).
+ This thread is responsible for:
+
+   Executing JavaScript code
+   Managing events
+   Coordinating async operations
+
+---
+
+### 👉 Traditional vs Node.js
+
+| Feature            | Traditional (Multi-threaded) | Node.js (Single-threaded) |
+| ------------------ | ---------------------------- | ------------------------- |
+| Thread per request | Yes                          | No                        |
+| Memory usage       | High                         | Low                       |
+| Scalability        | Limited                      | High                      |
+| Blocking risk      | High                         | Low                       |
+
+---
+
+### 👉 Example (Conceptual)
+
+Traditional server:
+
+ 1000 users → 1000 threads → heavy memory usage
+
+Node.js:
+
+ 1000 users → 1 thread + event system → lightweight
+
+---
+
+### ⚠️ Important Insight
+
+Single-threaded does NOT mean weak
+It means:
+
+> Node.js avoids thread overhead and uses async operations instead.
+
+---
+
+# 🔹 2. Event-Driven Architecture
+
+### 👉 Core Idea
+
+Node.js works on:
+
+> “Do not wait → Register a callback → Move on”
+
+---
+
+### 👉 Key Components
+
+#### 1. Event Loop
+
+ Heart of Node.js
+ Continuously checks:
+
+   Call stack
+   Callback queue
+ Executes tasks when ready
+
+---
+
+#### 2. Event Queue (Callback Queue)
+
+ Stores completed async operations
+ Example:
+
+   File read finished → pushed to queue
+
+---
+
+#### 3. Call Stack
+
+ Executes synchronous code
+ One operation at a time
+
+---
+
+#### 4. Callback Functions
+
+ Functions executed after async tasks complete
+
+---
+
+### 👉 Flow of Execution
+
+1. Request comes in
+2. If task is fast (sync) → executed immediately
+3. If task is slow (I/O):
+
+    Sent to system (libuv / OS)
+    Node continues executing other tasks
+4. When done → callback goes to queue
+5. Event loop pushes it to call stack
+
+---
+
+### 👉 Example
+
+```js
+console.log("Start");
+
+setTimeout(() => {
+  console.log("Async Task");
+}, 0);
+
+console.log("End");
+```
+
+### Output:
+
+```
+Start
+End
+Async Task
+```
+
+✔ Because async tasks go through event loop, not directly executed
+
+---
+
+# 🔹 3. Non-Blocking I/O
+
+### 👉 What it means
+
+ Node.js does not wait for operations like:
+
+   File reading
+   Database queries
+   API calls
+
+---
+
+### 👉 Blocking vs Non-Blocking
+
+#### ❌ Blocking (Bad for Node)
+
+```js
+const data = fs.readFileSync("file.txt");
+console.log(data);
+```
+
+ Execution stops until file is read
+
+---
+
+#### ✅ Non-Blocking (Node way)
+
+```js
+fs.readFile("file.txt", (err, data) => {
+  console.log(data);
+});
+```
+
+ Execution continues immediately
+
+---
+
+# 🔹 4. How Node.js Handles Concurrency
+
+Even though it's single-threaded, Node achieves concurrency using:
+
+### 👉 libuv (Hidden Engine)
+
+ Handles:
+
+   Thread pool (for heavy tasks)
+   Async I/O
+ Offloads work from main thread
+
+---
+
+### 👉 Example Tasks handled outside main thread:
+
+ File system operations
+ DNS lookup
+ Some crypto operations
+
+---
+
+# 🔹 5. Advantages of This Architecture
+
+### ✅ High Performance
+
+ No thread switching overhead
+ Fast execution
+
+### ✅ Scalable
+
+ Handles thousands of requests efficiently
+
+### ✅ Real-time Applications
+
+Perfect for:
+
+ Chat apps
+ Live notifications
+ Streaming
+
+---
+
+# 🔹 6. Limitations
+
+### ❌ CPU-Intensive Tasks
+
+ Heavy computation blocks the main thread
+
+👉 Example:
+
+```js
+while(true) {} // blocks everything
+```
+
+---
+
+### ❌ Not Ideal For:
+
+ Video processing
+ Heavy calculations
+
+👉 Solution:
+
+ Worker Threads
+ Microservices
+
+---

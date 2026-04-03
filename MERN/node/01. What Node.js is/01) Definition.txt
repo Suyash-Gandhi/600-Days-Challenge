@@ -1,0 +1,143 @@
+### 1. What is Node.js and why is it different from browsers?
+
+#### 🔹 What is Node.js?
+
+Node.js is a runtime environment that allows you to execute JavaScript outside the browser, primarily on the server side.
+
+ Built on Google Chrome’s V8 engine
+ Designed for backend development
+ Enables JavaScript to handle:
+
+   File systems
+   Databases
+   Servers
+   Networking
+
+👉 In simple terms:
+
+> Node.js lets you use JavaScript to build full backend applications instead of just frontend UI.
+
+---
+
+#### 🔹 Why was Node.js created?
+
+Before Node.js:
+
+ JavaScript could only run inside browsers
+ Backend was handled by languages like:
+
+   Java
+   PHP
+   Python
+
+Node.js solved this by:
+
+ Bringing JavaScript to the server
+ Allowing full-stack development using a single language
+
+---
+
+#### 🔹 Key Difference: Node.js vs Browser JavaScript
+
+### 1. 🌍 Environment
+
+ Browser:
+
+   Runs inside a web browser (Chrome, Firefox)
+   Controlled by the browser
+
+ Node.js:
+
+   Runs on your computer/server
+   Independent of any browser
+
+---
+
+### 2. 🎯 Purpose
+
+ Browser JS:
+
+   Handles UI interactions
+   Manipulates DOM
+   Responds to user events
+
+ Node.js:
+
+   Handles backend logic
+   Works with databases
+   Builds APIs and servers
+
+---
+
+### 3. 🧠 Available APIs
+
+ Browser:
+
+   DOM APIs (`document`, `window`)
+   Web APIs (`fetch`, `localStorage`)
+
+ Node.js:
+
+   No DOM ❌
+   Provides system-level APIs:
+
+     File system (`fs`)
+     HTTP server (`http`)
+     OS-level access
+
+---
+
+### 4. ⚡ Execution Model
+
+ Browser:
+
+   Event-driven (for UI interactions)
+
+ Node.js:
+
+   Event-driven + non-blocking I/O
+   Uses event loop for high performance
+
+👉 This is why Node.js is great for:
+
+ Real-time apps (chat apps)
+ APIs
+ Streaming services
+
+---
+
+### 5. 🔐 Security & Access
+
+ Browser:
+
+   Restricted environment (sandboxed)
+   Cannot access system files directly
+
+ Node.js:
+
+   Full access to system resources
+   Can read/write files, run servers
+
+---
+
+### 6. 📦 Module System
+
+ Browser:
+
+   Uses ES Modules (`import/export`)
+
+ Node.js:
+
+   Uses:
+
+     CommonJS (`require`)
+     ES Modules (modern support)
+
+---
+
+#### 🔹 Simple Analogy
+
+ Browser JavaScript = Front desk (UI handling)
+ Node.js = Back office (data processing, server logic)
+
+---

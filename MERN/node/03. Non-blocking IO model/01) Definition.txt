@@ -1,0 +1,156 @@
+### 3. Non-Blocking I/O Model (Node.js)
+
+
+## 🔹 1. What is Blocking vs Non-Blocking I/O?
+
+### ✔ Blocking I/O
+
+ Execution stops until a task is completed.
+ The program cannot do anything else during that time.
+
+👉 Example:
+
+ Reading a file → program waits → then continues
+
+---
+
+### ✔ Non-Blocking I/O
+
+ Execution does not wait for a task to complete.
+ The task is delegated (to OS, thread pool, etc.), and the program continues execution.
+ When the task finishes → a callback / promise / event is triggered.
+
+---
+
+## 🔹 2. How Non-Blocking Works in Node.js
+
+Node.js uses:
+
+ Event loop
+ Callback queue
+ Thread pool (libuv)
+
+### Flow:
+
+1. Task comes (e.g., file read, API call)
+2. Node.js delegates it to system/kernel/thread pool
+3. Continues executing next lines
+4. When task completes → result goes to callback queue
+5. Event loop picks it → executes callback
+
+---
+
+## 🔹 3. Example Comparison
+
+### ❌ Blocking (Synchronous)
+
+```js
+const data = fs.readFileSync('file.txt');
+console.log(data);
+console.log("Done");
+```
+
+👉 Output waits until file is fully read.
+
+---
+
+### ✅ Non-Blocking (Asynchronous)
+
+```js
+fs.readFile('file.txt', (err, data) => {
+  console.log(data);
+});
+console.log("Done");
+```
+
+👉 Output:
+
+```
+Done
+(file content later)
+```
+
+---
+
+## 🔹 4. Why Non-Blocking is Powerful
+
+### ✔ Handles Multiple Requests Efficiently
+
+ No waiting → more throughput
+
+### ✔ Better Performance for I/O Tasks
+
+ Ideal for:
+
+   APIs
+   Databases
+   File systems
+   Network calls
+
+### ✔ Scalability
+
+ Can handle thousands of concurrent connections
+
+---
+
+## 🔹 5. Real-World Analogy
+
+Think of a restaurant waiter:
+
+ Blocking model → waiter takes one order, cooks it himself, delivers it → then next customer
+ Non-blocking model → waiter takes order, gives to kitchen, moves to next table
+
+👉 Node.js = efficient waiter
+
+---
+
+## 🔹 6. Important Concepts Related
+
+### 🔸 Callbacks
+
+Function executed after task completion
+
+### 🔸 Promises
+
+Better way to handle async results
+
+### 🔸 Async/Await
+
+Cleaner syntax over promises
+
+---
+
+## 🔹 7. Limitations of Non-Blocking I/O
+
+### ❌ Not good for CPU-heavy tasks
+
+ Heavy computation blocks event loop
+
+👉 Example:
+
+ Image processing
+ Complex calculations
+
+### ✔ Solution:
+
+ Use:
+
+   Worker threads
+   Microservices
+
+---
+
+## 🔹 8. Key Takeaways
+
+ Non-blocking = don’t wait, keep executing
+ Core reason behind Node.js speed
+ Works best for I/O-heavy applications
+ Powered by event loop + async system
+
+---
+
+## 🔥 Interview-Level Summary
+
+> Node.js uses a non-blocking I/O model where operations like file reading or network requests are executed asynchronously. Instead of waiting for these operations to complete, Node.js delegates them to the system and continues execution. Once completed, callbacks or promises handle the result via the event loop, enabling high concurrency and scalability.
+
+---

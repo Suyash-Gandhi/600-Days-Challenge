@@ -1,0 +1,317 @@
+
+
+# 🔷 1. What is the Event Loop?
+
+Node.js is:
+
+ Single-threaded
+ Non-blocking
+ Event-driven
+
+👉 So how does it handle multiple tasks?
+
+➡️ Through the Event Loop
+
+### 💡 Definition:
+
+The Event Loop is a mechanism that:
+
+ Continuously checks:
+
+   Call Stack
+   Callback Queues
+ Decides what to execute next
+
+---
+
+# 🔷 2. Core Components
+
+You must understand these 4 things together:
+
+---
+
+## 🧠 (1) Call Stack
+
+ Executes synchronous code
+ Works like a stack (LIFO)
+
+```js
+function a() { b(); }
+function b() { console.log("Hello"); }
+
+a();
+```
+
+### Flow:
+
+ `a()` → pushed
+ `b()` → pushed
+ `console.log` → executed
+ stack clears
+
+👉 Rule:
+If something is in the call stack → it runs immediately
+
+---
+
+## 📥 (2) Web APIs / Node APIs
+
+Async tasks are handled here:
+
+ `setTimeout`
+ `setInterval`
+ `fs.readFile`
+ `HTTP requests`
+
+👉 These are NOT executed in the call stack
+
+---
+
+## 📦 (3) Callback Queues
+
+When async tasks finish → their callbacks go here.
+
+### Types:
+
+### 🟢 Macrotask Queue:
+
+ `setTimeout`
+ `setInterval`
+ `setImmediate`
+ I/O callbacks
+
+### 🔴 Microtask Queue:
+
+ `Promise.then`
+ `queueMicrotask`
+ `process.nextTick` (Node-specific, even higher priority ⚠️)
+
+---
+
+## 🔁 (4) Event Loop
+
+Continuously does:
+
+```
+1. Check call stack
+2. If empty → process microtasks
+3. Then → process macrotasks
+4. Repeat
+```
+
+---
+
+# 🔷 3. Execution Priority (VERY IMPORTANT)
+
+### Priority order:
+
+```
+1. Call Stack (sync)
+2. process.nextTick (Node special queue)
+3. Promise microtasks
+4. Macrotasks (timers, I/O, etc.)
+```
+
+---
+
+# 🔷 4. Event Loop Phases (Node.js Deep Dive)
+
+Node.js has phases (this is what most people skip 👇)
+
+---
+
+## 🔁 Phases in Order:
+
+### 1. Timers Phase
+
+ Executes:
+
+   `setTimeout`
+   `setInterval`
+
+---
+
+### 2. Pending Callbacks
+
+ System-level callbacks
+ e.g. TCP errors
+
+---
+
+### 3. Idle / Prepare
+
+ Internal use (ignore for now)
+
+---
+
+### 4. Poll Phase ⭐ (MOST IMPORTANT)
+
+ Executes:
+
+   I/O callbacks (file system, network)
+ Can:
+
+   Block and wait for I/O
+   Or move forward
+
+---
+
+### 5. Check Phase
+
+ Executes:
+
+   `setImmediate`
+
+---
+
+### 6. Close Callbacks
+
+ e.g. `socket.on('close')`
+
+---
+
+# 🔷 5. Visual Flow (Mental Model)
+
+```
+[Call Stack]
+     ↓ empty
+[process.nextTick queue]
+     ↓
+[Promise microtask queue]
+     ↓
+-------------------------
+|   Event Loop Phases   |
+-------------------------
+Timers → Pending → Poll → Check → Close
+```
+
+---
+
+# 🔷 6. Example (Step-by-Step Execution)
+
+```js
+console.log("start");
+
+setTimeout(() => console.log("timeout"), 0);
+
+Promise.resolve().then(() => console.log("promise"));
+
+process.nextTick(() => console.log("nextTick"));
+
+console.log("end");
+```
+
+---
+
+## 🔍 Execution Order:
+
+### Step 1: Sync code
+
+```
+start
+end
+```
+
+---
+
+### Step 2: process.nextTick
+
+```
+nextTick
+```
+
+---
+
+### Step 3: Promise microtasks
+
+```
+promise
+```
+
+---
+
+### Step 4: Macrotask (Timers)
+
+```
+timeout
+```
+
+---
+
+## ✅ Final Output:
+
+```
+start
+end
+nextTick
+promise
+timeout
+```
+
+---
+
+# 🔷 7. setTimeout vs setImmediate (Advanced)
+
+```js
+setTimeout(() => console.log("timeout"), 0);
+setImmediate(() => console.log("immediate"));
+```
+
+### ❗ Result is NOT guaranteed
+
+👉 Why?
+
+ Depends on poll phase state
+ If inside I/O → `setImmediate` runs first
+
+---
+
+# 🔷 8. Common Mistakes (Very Important)
+
+---
+
+## ❌ Mistake 1: Thinking setTimeout runs immediately
+
+```js
+setTimeout(fn, 0);
+```
+
+➡️ It means:
+
+> "Run after current cycle, not instantly"
+
+---
+
+## ❌ Mistake 2: Ignoring microtasks
+
+```js
+setTimeout(() => console.log("timeout"), 0);
+Promise.resolve().then(() => console.log("promise"));
+```
+
+👉 Output:
+
+```
+promise
+timeout
+```
+
+---
+
+## ❌ Mistake 3: Overusing process.nextTick
+
+ Can block event loop
+ Starves I/O
+
+---
+
+# 🔷 9. Real-World Understanding
+
+Think of it like:
+
+ Call Stack → Chef cooking current dish
+ Microtasks → VIP orders (priority)
+ Macrotasks → normal orders
+ Event Loop → waiter managing queue
+
+---
