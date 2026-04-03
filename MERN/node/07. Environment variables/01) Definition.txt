@@ -1,0 +1,261 @@
+## 7. Environment Variables in Node.js (`process.env`)
+
+Environment variables are external configuration values that your Node.js application can read at runtime. They are stored outside your code and accessed using the global `process.env` object.
+
+---
+
+## 🔹 1. What is `process.env`?
+
+ `process` is a global object in Node.js
+ `process.env` is an object containing all environment variables
+
+👉 Example:
+
+```js
+console.log(process.env);
+```
+
+It returns something like:
+
+```js
+{
+  NODE_ENV: 'development',
+  PORT: '3000',
+  DB_URL: 'mongodb://localhost:27017'
+}
+```
+
+---
+
+## 🔹 2. Why Environment Variables Are Important
+
+### ✅ a) Security
+
+ You should never hardcode sensitive data
+
+   Passwords
+   API keys
+   Database URLs
+
+❌ Bad:
+
+```js
+const password = "mySecret123";
+```
+
+✅ Good:
+
+```js
+const password = process.env.DB_PASSWORD;
+```
+
+---
+
+### ✅ b) Flexibility Across Environments
+
+You can change behavior without changing code:
+
+| Environment | Example        |
+| ----------- | -------------- |
+| Development | Debug logs ON  |
+| Production  | Debug logs OFF |
+
+```js
+if (process.env.NODE_ENV === "production") {
+  console.log = () => {}; // disable logs
+}
+```
+
+---
+
+### ✅ c) Easy Configuration Management
+
+Instead of editing code:
+
+ Just change environment variables
+
+---
+
+## 🔹 3. How to Set Environment Variables
+
+### 🟢 a) Temporarily (Terminal)
+
+#### Windows (PowerShell):
+
+```bash
+$env:PORT=5000
+node app.js
+```
+
+#### Linux / Mac:
+
+```bash
+PORT=5000 node app.js
+```
+
+---
+
+### 🟢 b) Using `.env` File (Most Common)
+
+Create a `.env` file:
+
+```
+PORT=5000
+DB_URL=mongodb://localhost:27017/mydb
+SECRET_KEY=abc123
+```
+
+Install dotenv:
+
+```bash
+npm install dotenv
+```
+
+Use it:
+
+```js
+import dotenv from "dotenv";
+dotenv.config();
+
+console.log(process.env.PORT);
+```
+
+---
+
+## 🔹 4. Important Characteristics
+
+### ⚠️ All values are strings
+
+```js
+console.log(typeof process.env.PORT); // string
+```
+
+So convert when needed:
+
+```js
+const port = Number(process.env.PORT);
+```
+
+---
+
+### ⚠️ Variables may be undefined
+
+```js
+if (!process.env.DB_URL) {
+  throw new Error("DB_URL is missing");
+}
+```
+
+---
+
+## 🔹 5. Real-World Example (Express Server)
+
+```js
+import express from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app = express();
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+👉 This allows:
+
+ Local: `.env` → PORT=3000
+ Production: Hosting platform sets PORT automatically
+
+---
+
+## 🔹 6. Common Environment Variables
+
+| Variable   | Purpose                     |
+| ---------- | --------------------------- |
+| `PORT`     | Server port                 |
+| `NODE_ENV` | Environment (dev/prod/test) |
+| `DB_URL`   | Database connection         |
+| `API_KEY`  | External API access         |
+
+---
+
+## 🔹 7. Best Practices (Very Important)
+
+### ✅ 1. Never commit `.env` file
+
+Add to `.gitignore`:
+
+```
+.env
+```
+
+---
+
+### ✅ 2. Use defaults
+
+```js
+const port = process.env.PORT || 3000;
+```
+
+---
+
+### ✅ 3. Validate variables at startup
+
+```js
+if (!process.env.SECRET_KEY) {
+  throw new Error("Missing SECRET_KEY");
+}
+```
+
+---
+
+### ✅ 4. Use `.env.example`
+
+Provide structure:
+
+```
+PORT=
+DB_URL=
+SECRET_KEY=
+```
+
+---
+
+### ✅ 5. Separate environments
+
+ `.env.development`
+ `.env.production`
+
+---
+
+## 🔹 8. Common Mistakes
+
+❌ Forgetting `dotenv.config()`
+❌ Using variables before loading dotenv
+❌ Treating values as numbers/booleans without conversion
+❌ Exposing `.env` in GitHub
+
+---
+
+## 🔹 9. Advanced Concept (Interview Level)
+
+### 🔸 Process Environment is Global
+
+ Accessible anywhere in your app
+ Shared across modules
+
+---
+
+### 🔸 Immutable at Runtime (mostly)
+
+ Changing `process.env` affects current process only
+
+```js
+process.env.PORT = "8000";
+```
+
+---

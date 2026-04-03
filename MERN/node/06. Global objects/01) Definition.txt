@@ -1,0 +1,292 @@
+
+
+# 🔹 5. Global Objects in Node.js
+
+In Node.js, global objects are available everywhere in your application without importing anything.
+
+Think of them like built-in tools that Node gives you automatically.
+
+---
+
+# 🔸 1. What are Global Objects?
+
+ They are predefined variables/functions
+ Accessible in any file
+ No `require()` needed
+
+Example:
+
+```js
+console.log(__dirname);
+```
+
+---
+
+# 🔸 2. Important Global Objects
+
+We’ll cover the most important ones:
+
+### ✅ 1. `__dirname`
+
+👉 Gives the directory path of the current file
+
+```js
+console.log(__dirname);
+```
+
+### 📌 Example Output:
+
+```
+C:\Users\Suyash\projects\node-app
+```
+
+### 💡 Use Cases:
+
+ File system operations
+ Building absolute paths
+
+```js
+const path = require('path');
+const filePath = path.join(__dirname, 'data.txt');
+```
+
+---
+
+### ✅ 2. `__filename`
+
+👉 Gives the full file path (including filename)
+
+```js
+console.log(__filename);
+```
+
+### 📌 Example Output:
+
+```
+C:\Users\Suyash\projects\node-app\index.js
+```
+
+### 💡 Difference:
+
+| Property     | Meaning     |
+| ------------ | ----------- |
+| `__dirname`  | Folder path |
+| `__filename` | File path   |
+
+---
+
+### ✅ 3. `process`
+
+👉 Represents the current Node.js process
+
+This is one of the most powerful global objects.
+
+---
+
+## 🔹 Key Properties of `process`
+
+### 🔸 a) `process.argv`
+
+👉 Command-line arguments
+
+```js
+console.log(process.argv);
+```
+
+### Example:
+
+```bash
+node app.js hello world
+```
+
+Output:
+
+```js
+[
+  'node',
+  'app.js',
+  'hello',
+  'world'
+]
+```
+
+---
+
+### 🔸 b) `process.env`
+
+👉 Environment variables
+
+```js
+console.log(process.env.PORT);
+```
+
+💡 Used for:
+
+ API keys
+ Config values
+ Deployment settings
+
+---
+
+### 🔸 c) `process.exit()`
+
+👉 Ends the process
+
+```js
+process.exit(0); // success
+process.exit(1); // failure
+```
+
+---
+
+### 🔸 d) `process.cwd()`
+
+👉 Current working directory (where command was run)
+
+```js
+console.log(process.cwd());
+```
+
+---
+
+### ⚠️ Important Difference:
+
+| Method          | Meaning                |
+| --------------- | ---------------------- |
+| `__dirname`     | File location          |
+| `process.cwd()` | Where Node was started |
+
+---
+
+### ✅ 4. `global`
+
+👉 The global namespace object (like `window` in browsers)
+
+```js
+global.myVar = "Hello";
+console.log(myVar); // works
+```
+
+---
+
+### ⚠️ But Avoid This:
+
+ Pollutes global scope
+ Hard to debug
+ Not scalable
+
+---
+
+### ✅ 5. `Buffer`
+
+👉 Used to handle binary data
+
+```js
+const buf = Buffer.from("Hello");
+console.log(buf);
+```
+
+💡 Used in:
+
+ Streams
+ File handling
+ Networking
+
+---
+
+### ✅ 6. `setTimeout`, `setInterval`, `setImmediate`
+
+👉 Timer functions (also global)
+
+```js
+setTimeout(() => console.log("Hello"), 1000);
+```
+
+---
+
+### 🔥 `setImmediate` vs `setTimeout`
+
+```js
+setImmediate(() => console.log("Immediate"));
+setTimeout(() => console.log("Timeout"), 0);
+```
+
+💡 Execution order depends on event loop phase.
+
+---
+
+# 🔸 3. Behind the Scenes (VERY IMPORTANT)
+
+Node.js wraps every file inside a function:
+
+```js
+(function (exports, require, module, __filename, __dirname) {
+  // your code
+});
+```
+
+👉 That’s why:
+
+ `__dirname` and `__filename` exist
+ They are not truly global, but look like it
+
+---
+
+# 🔸 4. Key Differences (Interview Gold)
+
+### 🧠 `__dirname` vs `process.cwd()`
+
+| Feature  | `__dirname`   | `process.cwd()`    |
+| -------- | ------------- | ------------------ |
+| Based on | File location | Execution location |
+| Changes? | ❌ No          | ✅ Yes              |
+| Use case | File paths    | CLI context        |
+
+---
+
+### 🧠 `global` vs browser `window`
+
+| Node.js  | Browser  |
+| -------- | -------- |
+| `global` | `window` |
+| No DOM   | Has DOM  |
+| Backend  | Frontend |
+
+---
+
+# 🔸 5. Common Mistakes
+
+### ❌ Mistake 1: Confusing paths
+
+```js
+// WRONG in many cases
+fs.readFile('./file.txt');
+```
+
+### ✅ Correct:
+
+```js
+fs.readFile(path.join(__dirname, 'file.txt'));
+```
+
+---
+
+### ❌ Mistake 2: Overusing `global`
+
+ Makes code unpredictable
+
+---
+
+### ❌ Mistake 3: Hardcoding configs
+
+```js
+const PORT = 3000; // bad
+```
+
+### ✅ Use:
+
+```js
+const PORT = process.env.PORT || 3000;
+```
+
+---

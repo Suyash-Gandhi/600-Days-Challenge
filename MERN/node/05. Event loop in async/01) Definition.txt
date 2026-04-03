@@ -1,0 +1,227 @@
+
+# 🔥 1. How Event Loop Handles Them
+
+Node.js has multiple queues, not just one:
+
+1. Microtask Queue (highest priority)
+
+    `process.nextTick`
+    Promises (`.then`, `await`)
+
+2. Timers Queue
+
+    `setTimeout`
+    `setInterval`
+
+3. Check Queue
+
+    `setImmediate`
+
+👉 Execution priority (simplified):
+
+```
+Sync code
+↓
+process.nextTick (ALL of them)
+↓
+Promises (microtasks)
+↓
+Timers (setTimeout)
+↓
+setImmediate
+```
+
+---
+
+# ⚡ 2. `process.nextTick()` (Runs FIRST)
+
+### 🔹 Key Idea:
+
+ Executes immediately after current function
+ Before event loop continues
+ Even before Promises
+
+### Example:
+
+```js
+console.log("Start");
+
+process.nextTick(() => console.log("nextTick"));
+
+console.log("End");
+```
+
+### Output:
+
+```
+Start
+End
+nextTick
+```
+
+---
+
+### ⚠️ Important Behavior:
+
+```js
+process.nextTick(() => {
+  process.nextTick(() => console.log("inner"));
+});
+```
+
+👉 This can block the event loop if abused (infinite loop risk)
+
+---
+
+# ⚡ 3. `setTimeout()` (Timers Phase)
+
+### 🔹 Key Idea:
+
+ Runs after minimum delay
+ Goes to Timers Queue
+
+```js
+console.log("Start");
+
+setTimeout(() => console.log("timeout"), 0);
+
+console.log("End");
+```
+
+### Output:
+
+```
+Start
+End
+timeout
+```
+
+👉 Even `0ms` is NOT immediate
+It waits until timers phase
+
+---
+
+# ⚡ 4. `setImmediate()` (Check Phase)
+
+### 🔹 Key Idea:
+
+ Runs in Check phase
+ Executes after I/O events
+
+```js
+setImmediate(() => console.log("immediate"));
+```
+
+---
+
+# ⚔️ 5. `setTimeout vs setImmediate` (TRICKY PART)
+
+### Case 1: Outside I/O
+
+```js
+setTimeout(() => console.log("timeout"), 0);
+setImmediate(() => console.log("immediate"));
+```
+
+👉 Output is NOT guaranteed
+
+ Sometimes:
+
+  ```
+  timeout
+  immediate
+  ```
+ Sometimes:
+
+  ```
+  immediate
+  timeout
+  ```
+
+---
+
+### Case 2: Inside I/O (IMPORTANT 🔥)
+
+```js
+const fs = require("fs");
+
+fs.readFile(__filename, () => {
+  setTimeout(() => console.log("timeout"), 0);
+  setImmediate(() => console.log("immediate"));
+});
+```
+
+👉 Output is ALWAYS:
+
+```
+immediate
+timeout
+```
+
+✔ Because:
+
+ After I/O → event loop goes to check phase first
+
+---
+
+# ⚡ 6. Combined Example (MOST IMPORTANT)
+
+```js
+console.log("start");
+
+setTimeout(() => console.log("timeout"), 0);
+
+setImmediate(() => console.log("immediate"));
+
+process.nextTick(() => console.log("nextTick"));
+
+Promise.resolve().then(() => console.log("promise"));
+
+console.log("end");
+```
+
+---
+
+### ✅ Final Output:
+
+```
+start
+end
+nextTick
+promise
+timeout / immediate (depends)
+```
+
+---
+
+# 🧠 7. Execution Order Rule (Remember This)
+
+### 🔥 Golden Priority Order:
+
+1. Synchronous code
+2. process.nextTick()
+3. Promises (microtasks)
+4. Timers (`setTimeout`)
+5. setImmediate
+
+---
+
+# ⚠️ 8. Common Mistakes (Interview Traps)
+
+### ❌ Mistake 1: Thinking `setTimeout(0)` runs instantly
+
+👉 It waits for timers phase
+
+---
+
+### ❌ Mistake 2: Confusing `nextTick` with Promise
+
+👉 `nextTick` runs before Promise
+
+---
+
+### ❌ Mistake 3: Assuming `setImmediate` always faster than `setTimeout`
+
+👉 Depends on context (I/O vs non-I/O)
+
+---
