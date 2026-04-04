@@ -1,0 +1,297 @@
+
+# 12 Buffers & Streams (Fundamentals)
+
+---
+
+# 🧠 1. Why Buffers & Streams Exist (Core Idea)
+
+Node.js deals with raw binary data (files, videos, network requests).
+
+But JavaScript normally works with:
+
+ strings
+ objects
+
+👉 So Node introduced:
+
+ Buffer → to store raw binary data
+ Stream → to process data in chunks (instead of all at once)
+
+---
+
+# 📦 2. Buffers (Raw Data Storage)
+
+## 🔹 What is a Buffer?
+
+A Buffer is a temporary memory area used to store binary data.
+
+👉 Think:
+
+> Buffer = "raw data container (like bytes array)"
+
+---
+
+## 🔹 Why Buffer is needed?
+
+When you:
+
+ read a file
+ receive data from network
+ handle images/videos
+
+👉 Data comes as binary, not strings.
+
+---
+
+## 🔹 Example
+
+```js
+const buffer = Buffer.from("Hello");
+
+console.log(buffer); 
+// <Buffer 48 65 6c 6c 6f>
+
+console.log(buffer.toString());
+// Hello
+```
+
+---
+
+## 🔹 Key Concepts
+
+### 1. Fixed Size
+
+```js
+const buf = Buffer.alloc(10); // 10 bytes
+```
+
+### 2. Encoding
+
+```js
+Buffer.from("Hello", "utf-8");
+```
+
+### 3. Raw Access
+
+```js
+console.log(buffer[0]); // 72 (ASCII of 'H')
+```
+
+---
+
+## 🔥 Real-world Use
+
+ File uploads
+ Image processing
+ Encryption
+ Streaming APIs
+
+---
+
+# 🌊 3. Streams (Processing Data Efficiently)
+
+## 🔹 What is a Stream?
+
+A stream is a way to handle data piece by piece (chunks) instead of loading everything at once.
+
+👉 Think:
+
+> Stream = "data flow over time"
+
+---
+
+## 🔹 Why Streams?
+
+Without streams:
+
+ File loads fully → high memory usage ❌
+
+With streams:
+
+ Process chunk by chunk → efficient ✅
+
+---
+
+## 🔥 Example
+
+### ❌ Without stream (bad for large files)
+
+```js
+const fs = require("fs");
+
+const data = fs.readFileSync("bigfile.txt");
+console.log(data.toString());
+```
+
+---
+
+### ✅ With stream (efficient)
+
+```js
+const fs = require("fs");
+
+const stream = fs.createReadStream("bigfile.txt");
+
+stream.on("data", chunk => {
+  console.log(chunk.toString());
+});
+```
+
+---
+
+# 🔄 4. Types of Streams
+
+Node has 4 main stream types:
+
+---
+
+## 1. Readable Stream
+
+👉 Used to read data
+
+```js
+fs.createReadStream()
+```
+
+---
+
+## 2. Writable Stream
+
+👉 Used to write data
+
+```js
+fs.createWriteStream()
+```
+
+---
+
+## 3. Duplex Stream
+
+👉 Can read + write
+
+Example:
+
+ TCP sockets
+
+---
+
+## 4. Transform Stream
+
+👉 Modify data while streaming
+
+Example:
+
+ compression
+ encryption
+
+---
+
+# 🔗 5. Pipe (Most Important Concept)
+
+## 🔹 What is pipe?
+
+It connects streams together.
+
+👉 Think:
+
+> "Output of one → input of another"
+
+---
+
+## 🔥 Example
+
+```js
+const fs = require("fs");
+
+const readStream = fs.createReadStream("input.txt");
+const writeStream = fs.createWriteStream("output.txt");
+
+readStream.pipe(writeStream);
+```
+
+---
+
+## 🔥 Real-world Example
+
+```js
+const zlib = require("zlib");
+
+fs.createReadStream("file.txt")
+  .pipe(zlib.createGzip())
+  .pipe(fs.createWriteStream("file.txt.gz"));
+```
+
+👉 Read → compress → write
+
+---
+
+# ⚡ 6. Buffer vs Stream (Important Interview Comparison)
+
+| Feature       | Buffer                | Stream                  |
+| ------------- | --------------------- | ----------------------- |
+| Data handling | Whole data            | Chunk by chunk          |
+| Memory usage  | High                  | Low                     |
+| Speed         | Slower for large data | Faster                  |
+| Use case      | Small data            | Large files / real-time |
+
+---
+
+# 🧩 7. How They Work Together
+
+👉 Streams internally use Buffers.
+
+Flow:
+
+```
+Source → Buffer chunks → Stream → Destination
+```
+
+---
+
+# 🎯 8. When to Use What
+
+## Use Buffer when:
+
+ Small data
+ Need full data at once
+ Binary manipulation
+
+## Use Streams when:
+
+ Large files
+ Video/audio
+ HTTP responses
+ Real-time processing
+
+---
+
+# 🚨 9. Common Mistakes (Interview Traps)
+
+ ❌ Thinking streams store data → they don’t (they flow data)
+ ❌ Using readFile for large files → memory crash risk
+ ❌ Ignoring backpressure (advanced but important)
+ ❌ Not handling `error` events
+
+---
+
+# 🧠 10. Mental Model (Remember This)
+
+👉 Buffer:
+
+> "Storage"
+
+👉 Stream:
+
+> "Flow"
+
+👉 Pipe:
+
+> "Connection"
+
+---
+
+# 🔥 11. Real Interview Answer (Short Version)
+
+> Buffers are used to store raw binary data in memory, while streams are used to process data in chunks efficiently. Streams reduce memory usage and are ideal for handling large files or real-time data. Node.js streams internally use buffers and can be connected using pipe for efficient data flow.
+
+---

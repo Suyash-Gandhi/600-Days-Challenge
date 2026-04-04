@@ -1,0 +1,343 @@
+## 8. REPL Basics & Debugging in Node.js
+
+When you start learning Node deeply, the REPL becomes one of the most underrated but powerful tools. It helps you experiment, debug, and understand behavior instantly—especially useful for mastering async patterns, objects, and core modules.
+
+---
+
+# 🔹 1. What is REPL in Node.js?
+
+REPL = Read → Eval → Print → Loop
+
+It is an interactive shell where you can write and execute JavaScript line-by-line.
+
+### ✔️ How to start REPL
+
+```bash
+node
+```
+
+You’ll see:
+
+```bash
+>
+```
+
+Now you can type JS directly:
+
+```js
+> 2 + 3
+5
+```
+
+---
+
+# 🔹 2. Core Features of REPL
+
+## (a) Immediate Execution
+
+You don’t need a file.
+
+```js
+> const x = 10
+undefined
+> x  2
+20
+```
+
+👉 Great for testing logic quickly.
+
+---
+
+## (b) Persistent Session Memory
+
+Variables stay in memory:
+
+```js
+> let a = 5
+> a + 10
+15
+```
+
+---
+
+## (c) `_` (Last Result)
+
+```js
+> 10 + 5
+15
+> _  2
+30
+```
+
+👉 `_` stores the last evaluated result.
+
+---
+
+## (d) Multiline Code
+
+```js
+> function add(a, b) {
+... return a + b
+... }
+undefined
+```
+
+---
+
+## (e) Access Node Globals
+
+```js
+> process.version
+> __dirname
+> global
+```
+
+👉 Helps you explore runtime environment.
+
+---
+
+# 🔹 3. Useful REPL Commands
+
+Commands start with a dot (`.`):
+
+| Command         | Purpose                      |
+| --------------- | ---------------------------- |
+| `.help`         | Show all commands            |
+| `.exit`         | Exit REPL                    |
+| `.clear`        | Clear context                |
+| `.editor`       | Enter multi-line editor mode |
+| `.save file.js` | Save session                 |
+| `.load file.js` | Load file                    |
+
+---
+
+## Example:
+
+```bash
+> .help
+```
+
+---
+
+# 🔹 4. REPL Modes
+
+## (a) Default Mode (Strict execution)
+
+Each line executes independently.
+
+---
+
+## (b) Editor Mode (for larger code)
+
+```bash
+.editor
+```
+
+Now write full code:
+
+```js
+const sum = (a, b) => {
+  return a + b
+}
+sum(2, 3)
+```
+
+Press:
+
+```
+Ctrl + D
+```
+
+👉 Executes entire block at once.
+
+---
+
+# 🔹 5. Using REPL for Debugging
+
+This is where REPL becomes very powerful.
+
+---
+
+## (a) Testing Small Logic
+
+Instead of running full app:
+
+```js
+> JSON.parse('{"a":1}')
+```
+
+---
+
+## (b) Checking Async Behavior
+
+```js
+> setTimeout(() => console.log("Hi"), 1000)
+```
+
+👉 Helps visualize event loop behavior.
+
+---
+
+## (c) Inspecting Objects
+
+```js
+> const obj = { a: 1, b: { c: 2 } }
+> obj
+```
+
+---
+
+## (d) Using `console.dir`
+
+```js
+> console.dir(obj, { depth: null })
+```
+
+👉 Shows deeply nested objects.
+
+---
+
+## (e) Error Reproduction
+
+```js
+> undefinedVariable
+ReferenceError
+```
+
+👉 Quickly isolate bugs.
+
+---
+
+# 🔹 6. Debugging Node Applications (Beyond REPL)
+
+REPL is step 1. Real debugging involves tools:
+
+---
+
+## (a) `console.log()` Debugging
+
+```js
+console.log("Value:", x)
+```
+
+✔️ Simple
+❌ Not scalable
+
+---
+
+## (b) Built-in Debugger
+
+Run:
+
+```bash
+node inspect app.js
+```
+
+Or:
+
+```bash
+node --inspect app.js
+```
+
+---
+
+## (c) Using `debugger` Keyword
+
+```js
+const x = 10
+debugger
+const y = x  2
+```
+
+👉 Execution pauses here.
+
+---
+
+## (d) Chrome DevTools Debugging
+
+1. Run:
+
+```bash
+node --inspect-brk app.js
+```
+
+2. Open Chrome:
+
+```
+chrome://inspect
+```
+
+3. Click → "Inspect"
+
+👉 You get:
+
+ Breakpoints
+ Call stack
+ Scope variables
+
+---
+
+## (e) Using `node --watch` (Modern Debugging)
+
+```bash
+node --watch app.js
+```
+
+👉 Auto-restarts on file changes.
+
+---
+
+# 🔹 7. Advanced REPL Tricks (Very Important)
+
+## (a) Import Modules
+
+```js
+> const fs = require('fs')
+```
+
+---
+
+## (b) Use Promises
+
+```js
+> await Promise.resolve(10)
+10
+```
+
+👉 Modern Node supports top-level `await`.
+
+---
+
+## (c) Custom REPL
+
+You can create your own REPL:
+
+```js
+const repl = require("repl")
+repl.start("MyApp > ")
+```
+
+---
+
+# 🔹 8. REPL vs Running Files
+
+| Feature   | REPL            | File Execution |
+| --------- | --------------- | -------------- |
+| Speed     | Fast testing    | Slower         |
+| Use case  | Experimentation | Production     |
+| State     | Temporary       | Persistent     |
+| Debugging | Quick checks    | Full debugging |
+
+---
+
+# 🔹 9. Real-World Usage
+
+### Where REPL helps you most:
+
+ Testing API responses
+ Checking async behavior
+ Learning Node internals
+ Debugging small bugs
+ Exploring libraries
+
+---

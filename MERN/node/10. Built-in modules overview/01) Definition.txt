@@ -1,0 +1,281 @@
+## 10. Built-in Modules in Node.js (`fs`, `path`, `http`, etc.)
+
+Node.js comes with core (built-in) modules that are available without installing anything. These modules provide low-level functionality like file handling, networking, OS interaction, and more.
+
+---
+
+# 🔹 1. What are Built-in Modules?
+
+ Pre-installed modules that ship with Node.js
+ You import them using:
+
+```js
+const fs = require('fs');       // CommonJS
+import fs from 'fs';            // ES Modules
+```
+
+ No need for `npm install`
+
+---
+
+# 🔹 2. Why Built-in Modules Matter
+
+They are the foundation of backend development in Node.js:
+
+ File handling → `fs`
+ Routing/server → `http`
+ Path handling → `path`
+ OS interaction → `os`
+ Events → `events`
+
+👉 Express, NestJS, etc. are built on top of these modules
+
+---
+
+# 🔹 3. Most Important Built-in Modules
+
+---
+
+## 📁 1. `fs` (File System Module)
+
+Used to interact with files and directories.
+
+### Common Use Cases:
+
+ Read/write files
+ Create/delete files
+ Stream large files
+
+### Example:
+
+```js
+const fs = require('fs');
+
+// Read file (async)
+fs.readFile('data.txt', 'utf-8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+// Write file
+fs.writeFile('output.txt', 'Hello Node', (err) => {
+  if (err) throw err;
+});
+```
+
+### Sync Version (blocking ❌)
+
+```js
+const data = fs.readFileSync('data.txt', 'utf-8');
+```
+
+👉 Interview insight:
+
+ Always prefer async methods → avoids blocking event loop
+
+---
+
+## 📂 2. `path` Module
+
+Used to handle file paths safely across OS (Windows/Linux).
+
+### Example:
+
+```js
+const path = require('path');
+
+const filePath = path.join(__dirname, 'folder', 'file.txt');
+
+console.log(path.basename(filePath)); // file.txt
+console.log(path.extname(filePath));  // .txt
+```
+
+### Why important:
+
+ Prevents path errors across systems
+ Makes your app portable
+
+---
+
+## 🌐 3. `http` Module
+
+Used to create web servers (core of backend).
+
+### Example:
+
+```js
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.write('Hello World');
+  res.end();
+});
+
+server.listen(3000);
+```
+
+👉 This is what Express abstracts!
+
+---
+
+## 🧠 4. `events` Module
+
+Used to create and handle custom events.
+
+### Example:
+
+```js
+const EventEmitter = require('events');
+
+const emitter = new EventEmitter();
+
+emitter.on('greet', () => {
+  console.log('Hello!');
+});
+
+emitter.emit('greet');
+```
+
+👉 Node internally uses events heavily (streams, HTTP, etc.)
+
+---
+
+## 💻 5. `os` Module
+
+Provides system-related info.
+
+```js
+const os = require('os');
+
+console.log(os.platform());   // win32 / linux
+console.log(os.cpus());
+console.log(os.totalmem());
+```
+
+---
+
+## 🔄 6. `url` Module
+
+Used to parse URLs.
+
+```js
+const url = require('url');
+
+const myUrl = new URL('https://example.com/path?name=suyash');
+
+console.log(myUrl.hostname);
+console.log(myUrl.searchParams.get('name'));
+```
+
+---
+
+## 🔐 7. `crypto` Module
+
+Used for hashing, encryption, security.
+
+```js
+const crypto = require('crypto');
+
+const hash = crypto
+  .createHash('sha256')
+  .update('password')
+  .digest('hex');
+
+console.log(hash);
+```
+
+---
+
+## 📦 8. `stream` Module
+
+Handles large data efficiently.
+
+```js
+const fs = require('fs');
+
+const readStream = fs.createReadStream('bigfile.txt');
+
+readStream.on('data', chunk => {
+  console.log(chunk);
+});
+```
+
+👉 Important for:
+
+ File uploads
+ Video streaming
+
+---
+
+## ⏱️ 9. `timers` Module
+
+```js
+setTimeout(() => console.log('Hello'), 1000);
+setInterval(() => console.log('Repeat'), 1000);
+```
+
+---
+
+# 🔹 4. Built-in vs External Modules
+
+| Feature          | Built-in     | External (npm)      |
+| ---------------- | ------------ | ------------------- |
+| Install required | ❌ No         | ✅ Yes               |
+| Performance      | Fast         | Depends             |
+| Control          | Low-level    | High-level          |
+| Examples         | `fs`, `http` | `express`, `lodash` |
+
+---
+
+# 🔹 5. How They Work Together (Real Example)
+
+```js
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+http.createServer((req, res) => {
+  const filePath = path.join(__dirname, 'index.html');
+
+  fs.readFile(filePath, (err, data) => {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(data);
+  });
+}).listen(3000);
+```
+
+👉 Combines:
+
+ `http` → server
+ `fs` → file reading
+ `path` → safe file path
+
+---
+
+# 🔹 6. Interview-Level Insights 🔥
+
+### 1. Why Node prefers built-in modules?
+
+ Faster (no extra dependency)
+ Stable and optimized in C++ bindings
+
+### 2. Most important modules to master:
+
+ `fs` → file handling
+ `http` → backend basics
+ `path` → cross-platform
+ `events` → async flow
+ `stream` → performance
+
+---
+
+### 3. Key Trick Question:
+
+👉 “Is `fs.readFileSync` bad?”
+
+Answer:
+
+ Not always ❌
+ Only bad in production servers because it blocks event loop
+
+---

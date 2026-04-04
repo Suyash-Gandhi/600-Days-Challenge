@@ -1,0 +1,191 @@
+## 11. File System Operations in Node.js (Sync vs Async)
+
+File system operations in Node.js are handled using the `fs` module, which allows you to interact with files (read, write, delete, update, etc.).
+
+The key concept here is:
+
+> Node.js provides two ways to perform file operations:
+
+ Synchronous (Blocking)
+ Asynchronous (Non-blocking)
+
+---
+
+# 🔹 1. Synchronous File Operations (Blocking)
+
+### 📌 Definition
+
+Synchronous operations execute line by line, and block the execution of further code until the current operation is complete.
+
+### ⚙️ How it works
+
+ Node.js waits for the file operation to finish
+ Nothing else runs in the meantime
+
+### 🧠 Example Flow
+
+```
+read file → wait → then execute next line
+```
+
+### 💻 Example
+
+```javascript
+const fs = require("fs");
+
+const data = fs.readFileSync("file.txt", "utf-8");
+console.log(data);
+
+console.log("Next line");
+```
+
+### ⏱ Execution Order
+
+```
+(Read file completely)
+→ Print data
+→ Print "Next line"
+```
+
+---
+
+### ✅ Advantages
+
+ Simple and easy to understand
+ Useful for scripts or startup logic
+
+### ❌ Disadvantages
+
+ Blocks the event loop ❗
+ Bad for performance in real apps
+ Cannot handle multiple requests efficiently
+
+---
+
+# 🔹 2. Asynchronous File Operations (Non-blocking)
+
+### 📌 Definition
+
+Asynchronous operations do not block execution. Node.js starts the operation and moves on, executing the callback when done.
+
+### ⚙️ How it works
+
+ Task is sent to libuv (thread pool)
+ Main thread continues execution
+ Callback runs when task completes
+
+### 🧠 Example Flow
+
+```
+start reading → move on → callback executes later
+```
+
+### 💻 Example
+
+```javascript
+const fs = require("fs");
+
+fs.readFile("file.txt", "utf-8", (err, data) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log(data);
+});
+
+console.log("Next line");
+```
+
+### ⏱ Execution Order
+
+```
+Start reading file
+→ Print "Next line"
+→ Print file content (later)
+```
+
+---
+
+### ✅ Advantages
+
+ Non-blocking → better performance 🚀
+ Handles multiple requests efficiently
+ Ideal for servers and APIs
+
+### ❌ Disadvantages
+
+ Harder to understand (callbacks)
+ Can lead to callback hell (solved by Promises/async-await)
+
+---
+
+# 🔥 3. Key Differences (Sync vs Async)
+
+| Feature    | Synchronous    | Asynchronous       |
+| ---------- | -------------- | ------------------ |
+| Execution  | Blocking       | Non-blocking       |
+| Speed      | Slower overall | Faster overall     |
+| Event Loop | Blocked ❌      | Not blocked ✅      |
+| Use Case   | Scripts, setup | Real apps, servers |
+| Complexity | Easy           | Moderate           |
+
+---
+
+# 🔹 4. Behind the Scenes (Very Important)
+
+### 👉 Sync version
+
+ Runs on main thread
+ Blocks event loop
+
+### 👉 Async version
+
+ Offloaded to libuv thread pool
+ Uses:
+
+   Callbacks
+   Promises
+   async/await
+
+---
+
+# 🔹 5. Modern Async Style (Best Practice)
+
+Instead of callbacks, use Promises or async/await
+
+### 💻 Example (Promise-based)
+
+```javascript
+const fs = require("fs").promises;
+
+const readFile = async () => {
+  try {
+    const data = await fs.readFile("file.txt", "utf-8");
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+readFile();
+console.log("Next line");
+```
+
+---
+
+# 🔹 6. When to Use What (Practical Insight)
+
+### ✅ Use Sync when:
+
+ CLI tools
+ Small scripts
+ App initialization (config loading)
+
+### ✅ Use Async when:
+
+ Building APIs (Express apps)
+ Handling user requests
+ Working with large files
+ High-performance apps
+
+---

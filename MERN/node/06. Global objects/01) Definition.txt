@@ -1,6 +1,6 @@
 
 
-# 🔹 5. Global Objects in Node.js
+# 🔹 6. Global Objects in Node.js
 
 In Node.js, global objects are available everywhere in your application without importing anything.
 

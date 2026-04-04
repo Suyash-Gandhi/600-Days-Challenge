@@ -1,5 +1,5 @@
 
-# 🔥 1. How Event Loop Handles Them
+
 
 Node.js has multiple queues, not just one:
 
