@@ -1,0 +1,86 @@
+### 4. Distributed Ledger Concept
+
+
+## 1. What is a Distributed Ledger?
+
+A distributed ledger is:
+
+ A database that exists across multiple locations or participants
+ Each participant (node) has a copy of the entire ledger
+ All copies are synchronized and updated together
+
+👉 Unlike traditional systems, there is no central server controlling the data.
+
+---
+
+## 2. How It Works (Step-by-Step)
+
+### Step 1: Transaction occurs
+
+Example: A sends 1 ETH to B
+
+### Step 2: Broadcast to network
+
+ The transaction is sent to multiple nodes in the network
+
+### Step 3: Validation
+
+ Nodes verify:
+
+   Is A’s balance sufficient?
+   Is the transaction valid?
+
+### Step 4: Consensus
+
+ Network agrees on whether the transaction is valid
+ This is done using mechanisms like:
+
+   Proof of Work (PoW)
+   Proof of Stake (PoS)
+
+### Step 5: Record in ledger
+
+ Once approved, the transaction is:
+
+   Added to a block
+   Block is added to the chain
+ All nodes update their copy
+
+---
+
+## 3. Key Characteristics
+
+### 1. Decentralization
+
+ No central authority (like a bank)
+ Control is distributed across nodes
+
+### 2. Transparency
+
+ All participants can view transactions (in public blockchains)
+
+### 3. Immutability
+
+ Once data is recorded, it cannot be easily changed
+
+### 4. Synchronization
+
+ Every node maintains the same updated ledger
+
+### 5. Security
+
+ Uses cryptography + consensus mechanisms
+
+---
+
+## 4. Important Clarification
+
+ Blockchain is a type of distributed ledger
+ But not all distributed ledgers are blockchains
+
+👉 Other types exist:
+
+ Directed Acyclic Graphs (DAGs)
+ Hashgraph
+
+---

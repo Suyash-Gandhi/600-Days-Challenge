@@ -1,0 +1,183 @@
+### 6. Nodes in Blockchain (Full Node vs Light Node)
+
+
+
+## 1. What is a Node?
+
+A node is essentially a participant in the blockchain network that:
+
+ Stores blockchain data (fully or partially)
+ Verifies transactions and blocks
+ Communicates with other nodes (peer-to-peer network)
+ Helps maintain decentralization
+
+👉 Without nodes, blockchain cannot exist — they are the backbone of the network.
+
+---
+
+## 2. Types of Nodes
+
+The two most important types are:
+
+ Full Nodes
+ Light Nodes (SPV Nodes)
+
+---
+
+## 3. Full Node
+
+### Definition
+
+A full node is a node that stores the entire blockchain and independently verifies all transactions and blocks.
+
+---
+
+### How it Works
+
+ Downloads the complete blockchain history
+ Validates every:
+
+   Transaction
+   Block
+   Consensus rule
+ Rejects invalid transactions/blocks
+ Shares verified data with other nodes
+
+---
+
+### Key Features
+
+ Maximum security & trustlessness
+ Does not depend on anyone else
+ Maintains network integrity
+
+---
+
+### Advantages
+
+ ✔ Fully decentralized
+ ✔ Highly secure
+ ✔ Independent verification
+ ✔ Supports network health
+
+---
+
+### Disadvantages
+
+ ❌ Requires high storage (hundreds of GBs)
+ ❌ Needs strong processing power
+ ❌ Slower to sync initially
+
+---
+
+### Example
+
+ Bitcoin Core client (full node)
+ Ethereum Geth node
+
+---
+
+## 4. Light Node (SPV Node)
+
+### Definition
+
+A light node stores only a small portion of the blockchain and relies on full nodes for verification.
+
+(SPV = Simplified Payment Verification)
+
+---
+
+### How it Works
+
+ Downloads only:
+
+   Block headers (not full blocks)
+ Uses Merkle proofs to verify transactions
+ Queries full nodes when needed
+
+---
+
+### Key Features
+
+ Minimal storage usage
+ Faster synchronization
+ Suitable for mobile or low-power devices
+
+---
+
+### Advantages
+
+ ✔ Fast and lightweight
+ ✔ Low storage requirements
+ ✔ Ideal for wallets and mobile apps
+
+---
+
+### Disadvantages
+
+ ❌ Depends on full nodes
+ ❌ Less secure than full nodes
+ ❌ Partial trust required
+
+---
+
+### Example
+
+ Mobile crypto wallets (like Trust Wallet, MetaMask)
+
+---
+
+## 5. Full Node vs Light Node (Comparison)
+
+| Feature             | Full Node          | Light Node            |
+| ------------------- | ------------------ | --------------------- |
+| Data Stored         | Entire blockchain  | Only block headers    |
+| Verification        | Fully independent  | Depends on full nodes |
+| Security            | Very high          | Moderate              |
+| Storage Requirement | High               | Very low              |
+| Speed               | Slower setup       | Fast                  |
+| Use Case            | Validators, miners | Wallets, mobile apps  |
+
+---
+
+## 6. Simple Analogy
+
+ Full Node = Reading the entire book and verifying every page
+ Light Node = Reading only the table of contents and trusting summaries
+
+---
+
+## 7. Real-World Importance
+
+ Full nodes ensure network security and decentralization
+ Light nodes make blockchain accessible and usable for everyday users
+ Both are necessary:
+
+   Full nodes → backbone
+   Light nodes → usability & scalability
+
+---
+
+## 8. Best Practice (Developer Perspective)
+
+Since you want to become a blockchain developer, here’s what matters:
+
+ Always run a full node when:
+
+   Building blockchain apps (dApps)
+   Testing smart contracts
+   Running validators
+
+ Use light nodes / APIs when:
+
+   Building frontend apps (React + Web3)
+   Creating wallets or dashboards
+
+---
+
+## Final Insight
+
+> Full nodes provide trust, while light nodes provide convenience.
+> A strong blockchain ecosystem needs both to balance security + scalability.
+
+---
