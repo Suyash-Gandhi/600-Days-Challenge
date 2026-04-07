@@ -1,0 +1,164 @@
+## 10. Cryptographic Hashing (SHA-256, Keccak)
+
+
+
+# 1. What is Cryptographic Hashing?
+
+A cryptographic hash function takes an input (data of any size) and produces a fixed-size output called a hash.
+
+### Example:
+
+ Input: `"Hello"`
+ Output (hash): `185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969`
+
+---
+
+# 2. Key Properties of Cryptographic Hash Functions
+
+These properties make hashing suitable for blockchain:
+
+### (1) Deterministic
+
+ Same input → same hash every time
+ Ensures consistency across nodes
+
+### (2) Fast Computation
+
+ Hashing should be quick even for large data
+
+### (3) Pre-image Resistance
+
+ Given a hash → cannot find original input
+ Important for security
+
+### (4) Avalanche Effect
+
+ Small change in input → completely different hash
+
+### (5) Collision Resistance
+
+ Hard to find two different inputs with same hash
+
+### (6) Fixed Output Length
+
+ Output size is constant (e.g., 256 bits)
+
+---
+
+# 3. Role of Hashing in Blockchain
+
+### (A) Linking Blocks
+
+Each block contains:
+
+ Its own hash
+ Previous block’s hash
+
+👉 This creates a chain structure
+
+If one block changes → all future hashes break
+
+---
+
+### (B) Ensuring Immutability
+
+ Changing even 1 bit alters the hash
+ Attackers must recompute all blocks → practically impossible
+
+---
+
+### (C) Proof of Work (Mining)
+
+ Miners solve a puzzle:
+
+   Find a hash with specific conditions (e.g., leading zeros)
+ Requires computational effort → secures the network
+
+---
+
+### (D) Transaction Integrity
+
+ Transactions are hashed before being added
+ Prevents tampering
+
+---
+
+### (E) Merkle Trees
+
+ Transactions are hashed and combined into a Merkle root
+ Efficient verification of large datasets
+
+---
+
+# 4. SHA-256 (Secure Hash Algorithm 256)
+
+### Overview:
+
+ Developed by: NSA
+ Output size: 256 bits (32 bytes)
+ Widely used in blockchain
+
+### Used in:
+
+ Bitcoin
+ Block hashing
+ Mining (Proof of Work)
+
+### Characteristics:
+
+ Very secure and widely tested
+ Slower compared to Keccak in some contexts
+ Strong collision resistance
+
+### Example:
+
+```
+SHA-256("Hello") = 2cf24dba5fb0a...
+```
+
+---
+
+# 5. Keccak (SHA-3 Family)
+
+### Overview:
+
+ Basis for SHA-3 standard
+ Uses a different structure (sponge construction)
+
+### Used in:
+
+ Ethereum
+
+### Characteristics:
+
+ More flexible than SHA-256
+ Faster in certain implementations
+ Resistant to different attack types
+
+### Example:
+
+```
+Keccak-256("Hello") = 06abac125...
+```
+
+---
+
+# 6. SHA-256 vs Keccak (Comparison)
+
+| Feature     | SHA-256        | Keccak (SHA-3)           |
+| ----------- | -------------- | ------------------------ |
+| Structure   | Merkle–Damgård | Sponge construction      |
+| Used in     | Bitcoin        | Ethereum                 |
+| Speed       | Moderate       | Often faster             |
+| Security    | Very high      | Very high (newer design) |
+| Flexibility | Fixed          | More flexible            |
+
+---
+
+# 7. Common Interview / Exam Points
+
+ Hash ≠ Encryption (hashing is one-way)
+ SHA-256 is used in Bitcoin
+ Keccak-256 is used in Ethereum
+ Hashing ensures immutability + integrity
+ Avalanche effect is key for security
