@@ -1,0 +1,173 @@
+## 15. Merkle Trees (Blockchain)
+
+Merkle Trees are a core data structure in blockchain used to efficiently and securely verify large sets of data (like transactions in a block).
+
+---
+
+## 🔹 1. What is a Merkle Tree?
+
+A Merkle Tree (Hash Tree) is a binary tree where:
+
+ Leaf nodes = hashes of individual transactions
+ Intermediate nodes = hash of their child nodes
+ Root node (Merkle Root) = single hash representing all transactions
+
+👉 In simple words:
+Instead of storing all transaction data directly, blockchain stores a single hash (Merkle Root) that proves the integrity of all transactions.
+
+---
+
+## 🔹 2. Structure of a Merkle Tree
+
+Example with 4 transactions:
+
+```
+Transactions: T1, T2, T3, T4
+
+Step 1: Hash each transaction
+H1 = hash(T1)
+H2 = hash(T2)
+H3 = hash(T3)
+H4 = hash(T4)
+
+Step 2: Pair and hash again
+H12 = hash(H1 + H2)
+H34 = hash(H3 + H4)
+
+Step 3: Final root
+Merkle Root = hash(H12 + H34)
+```
+
+👉 Final result:
+
+```
+        Root
+       /    \
+    H12      H34
+   /  \     /  \
+ H1   H2  H3   H4
+```
+
+---
+
+## 🔹 3. Key Properties
+
+### 1. Efficient Verification (Merkle Proof)
+
+ You don’t need all transactions to verify one
+ Only a small path is required
+
+👉 Example: To verify T1:
+
+ Need H2, H34 → reconstruct root
+
+---
+
+### 2. Data Integrity
+
+ If even 1 transaction changes → entire root changes
+ Ensures immutability
+
+---
+
+### 3. Scalability
+
+ Handles thousands of transactions efficiently
+ Used in light clients (SPV nodes)
+
+---
+
+### 4. Tamper Detection
+
+ Any modification is instantly detectable
+
+---
+
+## 🔹 4. Merkle Proof (Very Important)
+
+Merkle Proof allows verifying a transaction without downloading full block data
+
+Example:
+
+To verify T1:
+
+ You need:
+
+   H1 (your transaction hash)
+   H2 (sibling)
+   H34 (upper sibling)
+
+Then:
+
+```
+H12 = hash(H1 + H2)
+Root = hash(H12 + H34)
+```
+
+If this matches the block’s Merkle Root → transaction is valid ✅
+
+---
+
+## 🔹 5. Why Blockchain Uses Merkle Trees
+
+### 1. Reduces Data Size
+
+ Instead of storing all transactions → store one root
+
+### 2. Faster Verification
+
+ Logarithmic complexity: O(log n)
+
+### 3. Enables Light Nodes
+
+ Light nodes don’t store full blockchain
+ They verify using Merkle proofs
+
+---
+
+## 🔹 6. Real Use in Blockchain
+
+### In Bitcoin:
+
+ Each block contains:
+
+   Block header
+   Merkle Root of transactions
+
+### In Ethereum:
+
+ Uses Merkle Patricia Trees (more advanced version)
+ Stores:
+
+   Accounts
+   Transactions
+   State
+
+---
+
+## 🔹 7. Advantages vs Disadvantages
+
+### ✅ Advantages
+
+ Efficient verification
+ Secure and tamper-proof
+ Scalable
+ Saves storage
+
+### ❌ Disadvantages
+
+ Slight computational overhead (hashing)
+ More complex than simple lists
+
+---
+
+## 🔹 8. Interview-Level Key Points (Very Important)
+
+ Merkle Tree = hash-based binary tree
+ Root = single representation of all transactions
+ Used for efficient verification
+ Merkle Proof = log(n) verification
+ Ensures immutability + integrity
+ Used in Bitcoin blocks & Ethereum state trees
+
+---

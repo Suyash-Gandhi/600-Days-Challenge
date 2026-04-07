@@ -1,0 +1,143 @@
+## 12. Digital Signatures (Blockchain + Cryptography)
+
+---
+
+# 1. What is a Digital Signature?
+
+A digital signature is a cryptographic mechanism used to:
+
+ Verify who sent the data (authentication)
+ Ensure the data was not modified (integrity)
+ Prevent the sender from denying it later (non-repudiation)
+
+👉 Think of it like:
+
+ A handwritten signature = identity
+ Digital signature = mathematically verified identity
+
+---
+
+# 2. How Digital Signatures Work (Step-by-Step)
+
+Digital signatures use asymmetric cryptography (public + private keys).
+
+### Process:
+
+### Step 1: Key Pair Generation
+
+ User generates:
+
+   Private Key (secret)
+   Public Key (shared openly)
+
+---
+
+### Step 2: Hash the Message
+
+ The data (e.g., transaction) is passed through a hash function
+ Example: SHA-256
+ Output = fixed-size hash
+
+---
+
+### Step 3: Sign the Hash
+
+ The hash is encrypted using the private key
+ This encrypted hash = digital signature
+
+---
+
+### Step 4: Verification
+
+Receiver:
+
+1. Decrypts signature using public key
+2. Hashes the original message again
+3. Compares both hashes
+
+✔ If same → valid signature
+❌ If different → tampered or fake
+
+---
+
+# 3. Simple Flow Representation
+
+```
+Message → Hash → Encrypt with Private Key → Signature
+
+Receiver:
+Signature → Decrypt with Public Key → Hash
+Compare with new hash → Verify
+```
+
+---
+
+# 4. Why Digital Signatures Are Important in Blockchain
+
+Digital signatures solve trust problems in decentralized systems.
+
+### Key Roles:
+
+### 1. Transaction Authentication
+
+ Only the wallet owner can sign transactions
+ Example: Bitcoin uses ECDSA
+
+---
+
+### 2. Prevent Unauthorized Access
+
+ No one can spend your crypto without your private key
+
+---
+
+### 3. Data Integrity
+
+ If transaction changes → signature becomes invalid
+
+---
+
+### 4. Trustless System
+
+ No bank needed
+ Cryptography replaces trust
+
+---
+
+
+# 5. Types of Digital Signature Algorithms
+
+### 1. RSA (Rivest–Shamir–Adleman)
+
+ Older, widely used
+ Slower, larger keys
+
+---
+
+### 2. ECDSA (Elliptic Curve Digital Signature Algorithm)
+
+ Used in:
+
+   Bitcoin
+   Ethereum (with variations)
+ Faster, smaller keys
+
+---
+
+### 3. EdDSA (Ed25519)
+
+ Modern, faster, more secure
+ Used in newer blockchain systems
+
+---
+
+# 7. Digital Signature vs Encryption
+
+| Feature  | Digital Signature  | Encryption           |
+| -------- | ------------------ | -------------------- |
+| Purpose  | Verify identity    | Hide data            |
+| Key Used | Private key (sign) | Public key (encrypt) |
+| Output   | Signature          | Ciphertext           |
+| Focus    | Authenticity       | Confidentiality      |
+
+---

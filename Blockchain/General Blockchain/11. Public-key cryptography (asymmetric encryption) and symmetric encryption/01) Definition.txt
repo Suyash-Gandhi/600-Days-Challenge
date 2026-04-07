@@ -1,0 +1,354 @@
+## 11. Public-Key Cryptography (Asymmetric Encryption)
+
+Public-key cryptography is one of the most critical foundations of blockchain and modern cybersecurity. It enables secure communication, identity verification, and digital ownership without needing a trusted intermediary.
+
+---
+
+# 1. What is Public-Key Cryptography?
+
+Public-key cryptography (also called asymmetric encryption) uses two different but mathematically related keys:
+
+ Public Key → shared with everyone
+ Private Key → kept secret by the owner
+
+👉 Instead of one shared key (like symmetric encryption), you now have a key pair.
+
+---
+
+# 2. Core Idea (Simple Intuition)
+
+Think of it like a locked mailbox system:
+
+ Anyone can drop a message into your mailbox (using your public key)
+ Only you can open it (using your private key)
+
+---
+
+# 3. Key Pair Structure
+
+### a. Public Key
+
+ Used for:
+
+   Encryption
+   Verifying signatures
+ Can be shared openly
+
+### b. Private Key
+
+ Used for:
+
+   Decryption
+   Creating digital signatures
+ Must NEVER be shared
+
+---
+
+# 4. Two Main Use Cases
+
+## (A) Encryption (Confidentiality)
+
+Goal: Send secret data
+
+### Process:
+
+1. Sender encrypts message using receiver’s public key
+2. Message is transmitted
+3. Receiver decrypts using their private key
+
+### Result:
+
+ Only intended receiver can read the message
+
+---
+
+## (B) Digital Signatures (Authentication)
+
+Goal: Prove identity + ensure integrity
+
+### Process:
+
+1. Sender signs data using their private key
+2. Anyone verifies using sender’s public key
+
+### Result:
+
+ Confirms:
+
+   Who sent it
+   Data wasn’t altered
+
+---
+
+# 5. Why It’s Called “Asymmetric”
+
+Because:
+
+ Encryption key ≠ Decryption key
+ Signing key ≠ Verification key
+
+👉 This is opposite of symmetric encryption (same key used both ways)
+
+---
+
+# 6. Role in Blockchain (VERY IMPORTANT)
+
+Public-key cryptography is the core of blockchain ownership and security.
+
+### In blockchain:
+
+ Your wallet address = derived from your public key
+ Your private key = your ownership
+
+### Example (Bitcoin/Ethereum):
+
+ You sign a transaction using your private key
+ Network verifies using your public key
+
+👉 This proves:
+
+ You own the funds
+ Transaction is authentic
+
+---
+
+
+# 7. Common Algorithms
+
+### (1) RSA (Rivest–Shamir–Adleman)
+
+ Based on large prime factorization
+ Used in HTTPS, email encryption
+
+### (2) ECC (Elliptic Curve Cryptography)
+
+ Used in blockchain (Bitcoin, Ethereum)
+ More efficient than RSA
+ Smaller key sizes, same security
+
+### (3) ECDSA
+
+ Digital signature algorithm used in Bitcoin
+
+---
+
+# 8. Advantages
+
+ No need to share secret keys
+ Enables trustless systems
+ Supports digital signatures
+ Scalable for global networks
+
+---
+
+# 9. Limitations
+
+ Slower than symmetric encryption
+ More computationally expensive
+ Requires careful key management
+
+---
+
+# 10. Symmetric vs Asymmetric (Comparison)
+
+| Feature        | Symmetric            | Asymmetric           |
+| -------------- | -------------------- | -------------------- |
+| Keys           | One key              | Two keys             |
+| Speed          | Fast                 | Slower               |
+| Security Model | Shared secret        | Public-private pair  |
+| Use case       | Bulk data encryption | Identity, signatures |
+
+---
+
+# 11. Important Concepts You Must Know
+
+### (1) Key Generation
+
+ Keys are generated mathematically as a pair
+
+### (2) One-Way Functions
+
+ Easy to compute, hard to reverse
+
+### (3) Trapdoor Function
+
+ Easy to reverse ONLY with private key
+
+---
+
+## Symmetric Cryptography (Secret-Key Encryption)
+
+
+# 1. What is Symmetric Cryptography?
+
+It uses one shared secret key between sender and receiver.
+
+ Encrypt → using the key
+ Decrypt → using the same key
+
+👉 Both parties must already trust each other and securely share the key.
+
+---
+
+# 2. Core Idea (Simple Intuition)
+
+Think of it like a locker with one key:
+
+ You lock the message using the key
+ The receiver uses the same key to unlock it
+
+⚠️ Problem: How do you safely give them the key?
+
+---
+
+# 3. How It Works (Step-by-Step)
+
+### Encryption:
+
+1. Plaintext (original data)
+2. Apply encryption algorithm + secret key
+3. Produce ciphertext (encrypted data)
+
+### Decryption:
+
+1. Ciphertext
+2. Apply same key
+3. Get original plaintext
+
+---
+
+# 4. Example
+
+ Message: `"HELLO"`
+ Key: `"SECRET"`
+
+👉 After encryption → looks like random data
+👉 Using the same key → original message restored
+
+---
+
+# 5. Types of Symmetric Encryption
+
+## (A) Block Ciphers
+
+ Encrypt data in fixed-size blocks
+ Example:
+
+   AES (most important)
+
+## (B) Stream Ciphers
+
+ Encrypt data one bit/byte at a time
+ Example:
+
+   ChaCha20
+
+---
+
+# 6. Common Algorithms (VERY IMPORTANT)
+
+### (1) AES (Advanced Encryption Standard)
+
+ Most widely used today
+ Used in:
+
+   Banking
+   Wi-Fi security
+   HTTPS
+
+### (2) DES (Old, insecure now)
+
+ Replaced by AES
+
+### (3) ChaCha20
+
+ Fast, used in modern systems
+
+---
+
+# 7. Advantages
+
+ ✅ Very fast (much faster than asymmetric)
+ ✅ Efficient for large data
+ ✅ Low computational cost
+
+👉 That’s why it's used for:
+
+ File encryption
+ Database security
+ Network communication
+
+---
+
+# 8. Limitations
+
+### (1) Key Distribution Problem
+
+ How do you securely share the key?
+
+### (2) Scalability Issue
+
+ For n users → need many keys
+
+### (3) Single Point of Failure
+
+ If key is leaked → everything compromised
+
+---
+
+# 9. Symmetric vs Asymmetric (Quick Contrast)
+
+| Feature  | Symmetric              | Asymmetric                   |
+| -------- | ---------------------- | ---------------------------- |
+| Keys     | One shared key         | Public + Private             |
+| Speed    | Fast                   | Slower                       |
+| Security | Depends on key secrecy | Strong identity verification |
+| Use case | Data encryption        | Key exchange, signatures     |
+
+---
+
+# 10. Where It’s Used in Real Systems
+
+Even though asymmetric cryptography is popular, symmetric cryptography does most of the actual work.
+
+### Example: HTTPS
+
+1. Asymmetric → used to securely exchange a key
+2. Symmetric → used to encrypt actual data
+
+👉 This hybrid approach = best of both worlds
+
+---
+
+# 11. Role in Blockchain
+
+Symmetric cryptography is not used for ownership (that’s asymmetric), but it is used in:
+
+ Encrypting wallet backups
+ Secure communication between nodes
+ Protecting stored data
+
+---
+
+# 12. Important Concepts You Must Know
+
+### (1) Key Size
+
+ Larger key = more secure
+ Example:
+
+   AES-128, AES-256
+
+### (2) Initialization Vector (IV)
+
+ Adds randomness to encryption
+ Prevents pattern detection
+
+### (3) Modes of Operation
+
+ ECB (insecure)
+ CBC
+ GCM (modern, secure)
+
+---
+
