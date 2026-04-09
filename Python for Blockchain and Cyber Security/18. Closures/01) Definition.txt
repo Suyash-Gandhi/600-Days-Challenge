@@ -1,0 +1,253 @@
+### 18. Closures in Python
+
+
+# 1. What is a Closure?
+
+A closure is:
+
+> A function that remembers variables from its outer (enclosing) scope, even after that outer function has finished executing.
+
+---
+
+### Simple Definition
+
+ Inner function
+ Uses variables from outer function
+ Outer function is already done
+ Still works → this is a closure
+
+---
+
+# 2. Basic Example
+
+```python
+def outer():
+    x = 10
+    
+    def inner():
+        return x  # using outer variable
+    
+    return inner
+
+closure_func = outer()
+print(closure_func())  # Output: 10
+```
+
+---
+
+### Step-by-step understanding
+
+1. `outer()` runs
+2. `x = 10` is created
+3. `inner()` is returned
+4. Normally `x` should be gone…
+5. BUT Python keeps it alive → closure formed
+
+---
+
+# 3. Key Characteristics
+
+A function is a closure if:
+
+ It is a nested function
+ It accesses variables from enclosing scope
+ It is returned or passed around
+ It retains access to those variables
+
+---
+
+# 4. Why Closures Exist
+
+Closures solve a very important problem:
+
+👉 Preserving state without using global variables or classes
+
+---
+
+# 5. Practical Example (State Retention)
+
+```python
+def counter():
+    count = 0
+    
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    
+    return increment
+
+c = counter()
+
+print(c())  # 1
+print(c())  # 2
+print(c())  # 3
+```
+
+---
+
+### Key Concept: `nonlocal`
+
+ Used when modifying outer function variables
+ Without it → Python treats it as a new local variable
+
+---
+
+# 6. Closure vs Normal Function
+
+| Feature                | Normal Function | Closure    |
+| ---------------------- | --------------- | ---------- |
+| Access outer variables | ❌               | ✅          |
+| Remembers state        | ❌               | ✅          |
+| Needs class for state  | Usually         | Not needed |
+
+---
+
+# 7. Real-World Use Cases
+
+### 1. Function Factories
+
+Create customized functions dynamically
+
+```python
+def multiplier(n):
+    def multiply(x):
+        return x  n
+    return multiply
+
+double = multiplier(2)
+triple = multiplier(3)
+
+print(double(5))  # 10
+print(triple(5))  # 15
+```
+
+---
+
+### 2. Data Hiding (Encapsulation)
+
+```python
+def secret():
+    hidden = "password"
+    
+    def get_secret():
+        return hidden
+    
+    return get_secret
+```
+
+ `hidden` is not directly accessible
+ Only via closure
+
+---
+
+### 3. Callbacks
+
+Closures are often used in:
+
+ Event handling
+ Async programming
+ GUI apps
+
+---
+
+# 8. Closure Internals
+
+You can actually inspect a closure:
+
+```python
+print(closure_func.__closure__)
+```
+
+Output:
+
+ Tuple of cell objects storing captured variables
+
+---
+
+### Example:
+
+```python
+print(closure_func.__closure__[0].cell_contents)
+```
+
+---
+
+# 9. Common Mistake (Late Binding Issue)
+
+```python
+funcs = []
+
+for i in range(3):
+    def f():
+        return i
+    funcs.append(f)
+
+print([f() for f in funcs])  # [2, 2, 2]
+```
+
+---
+
+### Why?
+
+ All functions reference same `i`
+ Final value = 2
+
+---
+
+### Fix:
+
+```python
+funcs = []
+
+for i in range(3):
+    def f(i=i):  # capture value
+        return i
+    funcs.append(f)
+
+print([f() for f in funcs])  # [0, 1, 2]
+```
+
+---
+
+# 10. Closures vs Classes
+
+### Closure approach:
+
+```python
+def counter():
+    count = 0
+    
+    def inc():
+        nonlocal count
+        count += 1
+        return count
+    
+    return inc
+```
+
+---
+
+### Class approach:
+
+```python
+class Counter:
+    def __init__(self):
+        self.count = 0
+    
+    def inc(self):
+        self.count += 1
+        return self.count
+```
+
+---
+
+### Comparison:
+
+| Closures         | Classes         |
+| ---------------- | --------------- |
+| Lightweight      | More structured |
+| Functional style | OOP style       |
+| Less boilerplate | More scalable   |
+
+---

@@ -1,0 +1,160 @@
+
+
+# 🔹 1. `map()` — Transform Data
+
+### ➤ Definition
+
+`map()` applies a function to every element in an iterable and returns a new iterable.
+
+### ➤ Syntax
+
+```python
+map(function, iterable)
+```
+
+### ➤ Key Idea
+
+👉 “Take each item → apply function → return transformed result”
+
+### ➤ Example
+
+```python
+numbers = [1, 2, 3, 4]
+
+squared = map(lambda x: x2, numbers)
+
+print(list(squared))  # [1, 4, 9, 16]
+```
+
+### ➤ Explanation
+
+ Each number is passed to the lambda function
+ Output is a new sequence with squared values
+
+### ➤ Equivalent (Better Pythonic way)
+
+```python
+[x2 for x in numbers]
+```
+
+---
+
+# 🔹 2. `filter()` — Select Data
+
+### ➤ Definition
+
+`filter()` selects elements from an iterable based on a condition (True/False).
+
+### ➤ Syntax
+
+```python
+filter(function, iterable)
+```
+
+### ➤ Key Idea
+
+👉 “Keep only items that satisfy the condition”
+
+### ➤ Example
+
+```python
+numbers = [1, 2, 3, 4, 5, 6]
+
+evens = filter(lambda x: x % 2 == 0, numbers)
+
+print(list(evens))  # [2, 4, 6]
+```
+
+### ➤ Explanation
+
+ Function returns `True` → element is kept
+ Function returns `False` → element is discarded
+
+### ➤ Equivalent (Pythonic way)
+
+```python
+[x for x in numbers if x % 2 == 0]
+```
+
+---
+
+# 🔹 3. `reduce()` — Aggregate Data
+
+### ➤ Definition
+
+`reduce()` reduces a list to a single value by applying a function cumulatively.
+
+### ➤ Syntax
+
+```python
+from functools import reduce
+reduce(function, iterable)
+```
+
+### ➤ Key Idea
+
+👉 “Take two values → combine → repeat → final result”
+
+### ➤ Example
+
+```python
+from functools import reduce
+
+numbers = [1, 2, 3, 4]
+
+sum_all = reduce(lambda x, y: x + y, numbers)
+
+print(sum_all)  # 10
+```
+
+### ➤ Step-by-step
+
+```
+((1 + 2) → 3)
+(3 + 3) → 6
+(6 + 4) → 10
+```
+
+---
+
+# 🔥 Combined Example (Real Understanding)
+
+```python
+from functools import reduce
+
+numbers = [1, 2, 3, 4, 5, 6]
+
+result = reduce(
+    lambda x, y: x + y,
+    filter(lambda x: x % 2 == 0,
+           map(lambda x: x2, numbers))
+)
+
+print(result)  # 56
+```
+
+### ➤ What happens here:
+
+1. `map` → square numbers → `[1, 4, 9, 16, 25, 36]`
+2. `filter` → keep evens → `[4, 16, 36]`
+3. `reduce` → sum → `56`
+
+---
+
+# 🔁 Comparison Table
+
+| Function   | Purpose                  | Output       |
+| ---------- | ------------------------ | ------------ |
+| `map()`    | Transform elements       | Iterable     |
+| `filter()` | Select elements          | Iterable     |
+| `reduce()` | Aggregate into one value | Single value |
+
+---
+
+# ⚠️ Important Notes (Very Important for Interviews)
+
+ `map()` and `filter()` return iterators, not lists → use `list()` if needed
+ `reduce()` is less commonly used in modern Python
+ List comprehensions are often more readable and preferred
+
+---

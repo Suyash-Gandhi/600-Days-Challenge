@@ -1,0 +1,155 @@
+
+
+# 🔹 1. What is an Iterable?
+
+An iterable is any object that can be looped over (iterated).
+
+### ✔ Definition:
+
+An object is iterable if it implements:
+
+ `__iter__()` → returns an iterator
+
+### ✔ Examples of Iterables:
+
+ List → `[1, 2, 3]`
+ Tuple → `(1, 2, 3)`
+ String → `"hello"`
+ Dictionary → `{"a": 1}`
+ Set → `{1, 2, 3}`
+
+### ✔ Example:
+
+```python
+numbers = [1, 2, 3]
+
+for num in numbers:
+    print(num)
+```
+
+👉 Here, `numbers` is an iterable
+
+---
+
+# 🔹 2. What is an Iterator?
+
+An iterator is an object that:
+
+ Keeps track of the current position
+ Produces values one at a time
+
+### ✔ Definition:
+
+An object is an iterator if it implements:
+
+ `__iter__()` → returns itself
+ `__next__()` → returns next value
+
+---
+
+### ✔ Example:
+
+```python
+numbers = [1, 2, 3]
+iterator = iter(numbers)   # convert iterable → iterator
+
+print(next(iterator))  # 1
+print(next(iterator))  # 2
+print(next(iterator))  # 3
+```
+
+👉 After this, calling `next()` again → ❌ `StopIteration`
+
+---
+
+# 🔥 3. Key Difference (Very Important)
+
+| Feature | Iterable           | Iterator                    |
+| ------- | ------------------ | --------------------------- |
+| Purpose | Collection of data | Produces data one by one    |
+| Method  | `__iter__()`       | `__iter__()` + `__next__()` |
+| Memory  | Stores all values  | Generates values lazily     |
+| Usage   | Used in loops      | Used internally by loops    |
+
+---
+
+# 🔹 4. How `for` Loop Works Internally
+
+This is where most people level up 👇
+
+```python
+numbers = [1, 2, 3]
+
+for num in numbers:
+    print(num)
+```
+
+### Internally Python does this:
+
+```python
+iterator = iter(numbers)
+
+while True:
+    try:
+        num = next(iterator)
+        print(num)
+    except StopIteration:
+        break
+```
+
+👉 So:
+
+ `for` loop uses iterator behind the scenes
+
+---
+
+# 🔹 5. Iterable ≠ Iterator (Important Concept)
+
+```python
+numbers = [1, 2, 3]
+
+print(hasattr(numbers, '__next__'))  # False → not iterator
+```
+
+```python
+it = iter(numbers)
+
+print(hasattr(it, '__next__'))  # True → iterator
+```
+
+👉 Conclusion:
+
+ Iterable → can create iterator
+ Iterator → actually gives values
+
+---
+
+# 🔹 6. Creating Your Own Iterator (Custom)
+
+```python
+class MyIterator:
+    def __init__(self, max):
+        self.max = max
+        self.current = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current < self.max:
+            self.current += 1
+            return self.current
+        else:
+            raise StopIteration
+```
+
+### Usage:
+
+```python
+obj = MyIterator(3)
+
+for num in obj:
+    print(num)
+```
+
+---

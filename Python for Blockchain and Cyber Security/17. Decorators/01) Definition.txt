@@ -1,0 +1,270 @@
+### 17. Decorators in Python
+
+
+# 1. What is a Decorator?
+
+👉 A decorator is a function that modifies or enhances another function without changing its actual code.
+
+In simple terms:
+
+> A decorator wraps a function and adds extra behavior before or after it runs.
+
+---
+
+# 2. Why do we need Decorators?
+
+Without decorators, you would repeat the same logic again and again.
+
+### Example problem:
+
+You want to:
+
+ log function calls
+ check authentication
+ measure execution time
+
+Without decorators → you manually add this to every function ❌
+With decorators → write once, reuse everywhere ✅
+
+---
+
+# 3. Functions are First-Class Citizens
+
+Before understanding decorators, you must know this:
+
+Python allows:
+
+ Assigning functions to variables
+ Passing functions as arguments
+ Returning functions from other functions
+
+### Example:
+
+```python
+def greet():
+    return "Hello"
+
+say_hello = greet
+print(say_hello())  # Hello
+```
+
+---
+
+# 4. Basic Structure of a Decorator
+
+A decorator has 3 layers:
+
+```python
+def decorator_function(original_function):
+
+    def wrapper_function():
+        print("Before execution")
+
+        original_function()
+
+        print("After execution")
+
+    return wrapper_function
+```
+
+---
+
+# 5. Using a Decorator (Manual Way)
+
+```python
+def say_hi():
+    print("Hi")
+
+decorated = decorator_function(say_hi)
+decorated()
+```
+
+---
+
+# 6. Using `@` Syntax (Real Usage)
+
+Python gives a cleaner syntax:
+
+```python
+@decorator_function
+def say_hi():
+    print("Hi")
+
+say_hi()
+```
+
+👉 This is equivalent to:
+
+```python
+say_hi = decorator_function(say_hi)
+```
+
+---
+
+# 7. Decorator with Arguments
+
+Real functions usually take arguments → your decorator must handle them.
+
+```python
+def decorator_function(original_function):
+
+    def wrapper(args, kwargs):
+        print("Before execution")
+
+        result = original_function(args, kwargs)
+
+        print("After execution")
+        return result
+
+    return wrapper
+```
+
+---
+
+# 8. Preserving Function Metadata (`functools.wraps`)
+
+Without this, the original function name/docstring is lost.
+
+```python
+from functools import wraps
+
+def decorator_function(original_function):
+
+    @wraps(original_function)
+    def wrapper(args, kwargs):
+        return original_function(args, kwargs)
+
+    return wrapper
+```
+
+---
+
+# 9. Real-World Examples
+
+## ✅ Example 1: Logging Decorator
+
+```python
+def logger(func):
+    def wrapper(args, kwargs):
+        print(f"Calling {func.__name__}")
+        return func(args, kwargs)
+    return wrapper
+```
+
+---
+
+## ✅ Example 2: Timing Decorator
+
+```python
+import time
+
+def timer(func):
+    def wrapper(args, kwargs):
+        start = time.time()
+
+        result = func(args, kwargs)
+
+        end = time.time()
+        print(f"Execution time: {end - start}")
+
+        return result
+    return wrapper
+```
+
+---
+
+## ✅ Example 3: Authentication Check (Backend use case)
+
+```python
+def require_auth(func):
+    def wrapper(user):
+        if not user.is_authenticated:
+            print("Access denied")
+            return
+        return func(user)
+    return wrapper
+```
+
+---
+
+# 10. Decorators with Parameters
+
+Sometimes you want to pass arguments to the decorator itself.
+
+```python
+def repeat(n):
+    def decorator(func):
+        def wrapper(args, kwargs):
+            for _ in range(n):
+                func(args, kwargs)
+        return wrapper
+    return decorator
+```
+
+Usage:
+
+```python
+@repeat(3)
+def say_hi():
+    print("Hi")
+```
+
+---
+
+# 11. Chaining Multiple Decorators
+
+```python
+@decorator1
+@decorator2
+def func():
+    pass
+```
+
+👉 Execution order:
+
+```
+func = decorator1(decorator2(func))
+```
+
+---
+
+# 12. Built-in Decorators
+
+Python already uses decorators internally.
+
+### Common ones:
+
+ `@staticmethod`
+ `@classmethod`
+ `@property`
+
+Example:
+
+```python
+class Person:
+
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+```
+
+---
+
+# 13. Key Interview Insights
+
+You should be able to explain:
+
+ Decorators = higher-order functions
+ They use closures
+ They help in separation of concerns
+ Common in:
+
+   Web frameworks (Flask/Django routes)
+   Logging
+   Caching
+   Authorization
+
+---

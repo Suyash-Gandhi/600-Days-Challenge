@@ -1,0 +1,185 @@
+### 20. `__name__ == "__main__"` in Python
+
+
+## 🔹 1. What is `__name__`?
+
+ `__name__` is a special built-in variable in Python.
+ It tells you how a Python file is being executed.
+
+### Two cases:
+
+1. When you run a file directly
+
+   ```bash
+   python file.py
+   ```
+
+   👉 `__name__ = "__main__"`
+
+2. When the file is imported as a module
+
+   ```python
+   import file
+   ```
+
+   👉 `__name__ = "file"` (module name)
+
+---
+
+## 🔹 2. What does `if __name__ == "__main__"` mean?
+
+It checks:
+
+👉 “Is this file being run directly?”
+
+ If YES → run the code inside the block
+ If NO (imported) → skip that code
+
+---
+
+## 🔹 3. Basic Example
+
+```python
+def greet():
+    print("Hello!")
+
+if __name__ == "__main__":
+    greet()
+```
+
+### Case 1: Run directly
+
+```bash
+python file.py
+```
+
+✔ Output:
+
+```
+Hello!
+```
+
+### Case 2: Import in another file
+
+```python
+import file
+```
+
+✔ Output:
+
+```
+(no output)
+```
+
+👉 Because the condition becomes false.
+
+---
+
+## 🔹 4. Why is this important?
+
+### ✅ 1. Prevents unwanted execution
+
+When importing a file, you usually don’t want everything to run automatically.
+
+---
+
+### ✅ 2. Separates:
+
+ Reusable code (functions, classes)
+ Execution logic (testing, main program)
+
+---
+
+### ✅ 3. Makes your file both:
+
+ A script (runnable)
+ A module (importable)
+
+---
+
+## 🔹 5. Real-World Structure (Very Important)
+
+```python
+def add(a, b):
+    return a + b
+
+def main():
+    result = add(2, 3)
+    print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Why this is best practice:
+
+ `main()` contains execution logic
+ Functions are reusable
+ Clean, scalable structure (used in real projects)
+
+---
+
+## 🔹 6. What happens internally?
+
+When Python runs a file:
+
+ It assigns `"__main__"` to `__name__`
+ Then executes the file top to bottom
+
+When imported:
+
+ It assigns module name instead
+ Executes definitions, but skips guarded block
+
+---
+
+## 🔹 7. Without using it (Common mistake)
+
+```python
+print("This runs always")
+```
+
+If imported:
+
+```python
+import file
+```
+
+❌ Output still runs → BAD design
+
+---
+
+## 🔹 8. With proper usage
+
+```python
+print("This runs always")
+
+if __name__ == "__main__":
+    print("Runs only when executed directly")
+```
+
+✔ Controlled behavior
+
+---
+
+## 🔹 9. When should YOU use it?
+
+Always use it when:
+
+ Writing scripts
+ Building modules
+ Writing test/demo code
+ Creating CLI tools
+ Structuring larger projects
+
+---
+
+## 🔹 10. Key Takeaway
+
+👉 `if __name__ == "__main__":` is a safety + structure tool
+
+ Prevents unintended execution
+ Keeps code modular
+ Makes your Python files reusable and professional
+
+---

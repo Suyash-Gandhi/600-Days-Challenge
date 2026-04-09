@@ -1,0 +1,225 @@
+### 16. Generators & `yield` in Python
+
+Generators are one of the most important concepts in Python for writing memory-efficient and lazy-executed code. Instead of computing everything at once, they produce values one at a time when needed.
+
+---
+
+# 🔹 1. What is a Generator?
+
+A generator is a special type of function that:
+
+ Returns values one at a time
+ Uses the `yield` keyword instead of `return`
+ Maintains its state between calls
+
+👉 Unlike normal functions:
+
+ `return` → ends function
+ `yield` → pauses function and resumes later
+
+---
+
+# 🔹 2. Basic Example
+
+```python
+def count_up_to(n):
+    i = 1
+    while i <= n:
+        yield i
+        i += 1
+```
+
+### Usage:
+
+```python
+gen = count_up_to(3)
+
+print(next(gen))  # 1
+print(next(gen))  # 2
+print(next(gen))  # 3
+```
+
+---
+
+# 🔹 3. How `yield` Works Internally
+
+ When `yield` is hit:
+
+   Function pauses
+   State is saved
+ When `next()` is called again:
+
+   Execution continues from where it stopped
+
+👉 Think of it like a bookmark in execution
+
+---
+
+# 🔹 4. Generator vs Normal Function
+
+### Normal Function:
+
+```python
+def square_numbers(n):
+    result = []
+    for i in range(n):
+        result.append(ii)
+    return result
+```
+
+### Generator:
+
+```python
+def square_numbers(n):
+    for i in range(n):
+        yield ii
+```
+
+---
+
+### Key Differences:
+
+| Feature   | Normal Function          | Generator                 |
+| --------- | ------------------------ | ------------------------- |
+| Memory    | High (stores all values) | Low (one value at a time) |
+| Execution | Runs completely          | Runs lazily               |
+| Return    | `return`                 | `yield`                   |
+
+---
+
+# 🔹 5. Iterating Over Generators
+
+```python
+for num in count_up_to(5):
+    print(num)
+```
+
+👉 Python automatically calls `next()` behind the scenes
+
+---
+
+# 🔹 6. Generator Expressions (Like List Comprehension)
+
+```python
+gen = (xx for x in range(5))
+```
+
+👉 Difference:
+
+```python
+[xx for x in range(5)]  # list (memory heavy)
+(xx for x in range(5))  # generator (memory efficient)
+```
+
+---
+
+# 🔹 7. Why Generators Matter (VERY IMPORTANT)
+
+### ✅ Memory Efficient
+
+ No large lists stored
+ Useful for large datasets / streams
+
+### ✅ Lazy Evaluation
+
+ Computes only when needed
+
+### ✅ Faster for Large Data
+
+ No upfront computation
+
+---
+
+# 🔹 8. Real-Life Use Cases
+
+### 1. Reading Large Files
+
+```python
+def read_file(file):
+    for line in file:
+        yield line
+```
+
+### 2. Infinite Sequences
+
+```python
+def infinite_numbers():
+    n = 1
+    while True:
+        yield n
+        n += 1
+```
+
+---
+
+# 🔹 9. `yield` vs `return`
+
+| Behavior        | `yield` | `return` |
+| --------------- | ------- | -------- |
+| Ends function   | ❌       | ✅        |
+| Pauses function | ✅       | ❌        |
+| Multiple values | ✅       | ❌        |
+
+---
+
+# 🔹 10. Important Concepts
+
+### 1. Generator Object
+
+```python
+gen = count_up_to(3)
+print(type(gen))  # <class 'generator'>
+```
+
+---
+
+### 2. StopIteration
+
+When generator is exhausted:
+
+```python
+next(gen)  # raises StopIteration
+```
+
+---
+
+### 3. `yield` in loops
+
+```python
+def even_numbers(n):
+    for i in range(n):
+        if i % 2 == 0:
+            yield i
+```
+
+---
+
+# 🔹 11. Advanced: `yield from`
+
+Used to delegate to another generator:
+
+```python
+def gen1():
+    yield from range(3)
+```
+
+---
+
+# 🔹 12. When to Use Generators (Interview Insight)
+
+Use generators when:
+
+ Working with large data
+ Streaming data (APIs, logs)
+ Pipelines (data processing steps)
+ Avoiding memory overhead
+
+---
+
+# 🔹 13. Common Mistakes
+
+❌ Forgetting `yield` → becomes normal function
+❌ Using `next()` after exhaustion
+❌ Expecting generator to restart automatically
+
+---

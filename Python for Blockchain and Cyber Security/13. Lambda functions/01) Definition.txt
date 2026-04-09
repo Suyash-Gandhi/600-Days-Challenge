@@ -1,0 +1,160 @@
+### 13. Lambda Functions (Anonymous Functions in Python)
+
+Lambda functions are small, anonymous (unnamed) functions defined using the `lambda` keyword. They are typically used for short, one-line operations where defining a full function using `def` is unnecessary.
+
+---
+
+## 1. Basic Syntax
+
+A lambda function follows this structure:
+
+```python
+lambda arguments: expression
+```
+
+ `lambda` → keyword to define the function
+ `arguments` → input parameters (like normal functions)
+ `expression` → a single expression whose result is returned automatically
+
+---
+
+## 2. Simple Examples
+
+### Example 1: Basic addition
+
+```python
+add = lambda a, b: a + b
+print(add(2, 3))   # Output: 5
+```
+
+Equivalent normal function:
+
+```python
+def add(a, b):
+    return a + b
+```
+
+---
+
+### Example 2: Square of a number
+
+```python
+square = lambda x: x  x
+print(square(4))   # Output: 16
+```
+
+---
+
+## 3. Key Characteristics
+
+ No name required (anonymous)
+ Single expression only (no multiple statements)
+ Implicit return (no `return` keyword)
+ Usually used inline, not stored
+
+---
+
+## 4. Common Use Cases
+
+### (A) With `map()`
+
+Used to apply a function to every element in a sequence.
+
+```python
+nums = [1, 2, 3, 4]
+
+squared = list(map(lambda x: x  x, nums))
+print(squared)   # [1, 4, 9, 16]
+```
+
+---
+
+### (B) With `filter()`
+
+Used to filter elements based on a condition.
+
+```python
+nums = [1, 2, 3, 4, 5, 6]
+
+even = list(filter(lambda x: x % 2 == 0, nums))
+print(even)   # [2, 4, 6]
+```
+
+---
+
+### (C) With `sorted()`
+
+Useful for custom sorting logic.
+
+```python
+students = [("A", 90), ("B", 70), ("C", 85)]
+
+sorted_students = sorted(students, key=lambda x: x[1])
+print(sorted_students)
+# [('B', 70), ('C', 85), ('A', 90)]
+```
+
+---
+
+## 5. When to Use Lambda
+
+Use lambda when:
+
+ Function is small and simple
+ Used once only
+ Improves readability (in short expressions)
+
+---
+
+## 6. When NOT to Use Lambda
+
+Avoid lambda when:
+
+ Logic is complex
+ Requires multiple statements
+ Needs reusability
+
+Instead, use `def`:
+
+```python
+def complex_logic(x):
+    if x > 0:
+        return x  2
+    else:
+        return x - 2
+```
+
+---
+
+## 7. Important Limitations
+
+ Only one expression allowed
+ Cannot include:
+
+   loops (`for`, `while`)
+   statements (`if-else` works only as expression)
+   assignments (`=`)
+ Harder to debug if overused
+
+---
+
+## 8. Lambda with Conditional Expression
+
+```python
+check = lambda x: "Even" if x % 2 == 0 else "Odd"
+print(check(5))   # Odd
+```
+
+---
+
+## 9. Real-World Insight (Important)
+
+In real projects (especially MERN/full-stack):
+
+ Lambdas are used mainly for:
+
+   Quick transformations
+   Sorting/filtering data
+ Overusing them reduces readability → clean code > clever code
+
+---
