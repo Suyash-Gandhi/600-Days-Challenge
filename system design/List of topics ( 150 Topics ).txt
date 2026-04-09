@@ -1,206 +1,277 @@
 
 
- Ultimate System Design Roadmap (150 Topics)
+# 🧠 SYSTEM DESIGN — FINAL MASTER LIST ( 140 topics + 25 case studies)
 
 ---
 
- 1. Fundamentals (Junior → Early Intermediate)
+# 🔹 PHASE 0 — Core Computing Fundamentals (Must Have)
 
-1. What is system design & why it matters
-2. Functional vs non-functional requirements
-3. Monolith vs microservices architecture
-4. Latency vs throughput
-5. Consistency vs availability (CAP theorem)
-6. Horizontal vs vertical scaling
-7. Stateless vs stateful services
-8. Load testing, stress testing, benchmarking
-9. Single point of failure (SPOF)
-10. High availability (HA) basics
-11. Threading vs multiprocessing basics
-12. Async I/O vs multithreading vs multiprocessing trade-offs (completed in previous)
-13. Basics of containerization (Docker)
+1. How programs execute (process vs thread)
+2. Memory model (stack vs heap)
+3. CPU scheduling & context switching
+4. Disk vs RAM (latency, throughput)
+5. Sequential vs random access
+6. File systems basics
+7. I/O models (blocking vs non-blocking)
+8. Concurrency fundamentals (race conditions, deadlocks)
+9. Locks vs lock-free systems
+10. Time complexity in real systems (Big-O intuition)
+11. Hashing fundamentals (hash maps, collisions)
+12. Trees & indexing intuition (B-Trees)
 
----
+🔥 High-impact:
 
- 2. Networking Basics
-
-14. HTTP/HTTPS fundamentals
-15. REST vs gRPC vs GraphQL
-16. WebSockets & long polling
-17. DNS resolution
-18. CDN basics & edge caching
-19. TCP vs UDP trade-offs
-20. API gateways
-21. Reverse proxies
-22. Forward proxies
-23. Nginx/HAProxy basics
-24. TLS termination at load balancer vs app server
-25. Multi-region networking & latency considerations
+ Disk vs RAM
+ Concurrency
+ Hashing
 
 ---
 
- 3. Storage & Databases
+# 🔹 PHASE 1 — Networking & Communication
 
-26. Relational databases (MySQL, PostgreSQL)
-27. NoSQL databases (MongoDB, Cassandra, DynamoDB)
-28. Column vs document vs key-value stores
-29. Database indexing (B-tree, hash, bitmap)
-30. Database sharding strategies
-31. Database replication (master-slave, leader-follower)
-32. Strong vs eventual consistency
-33. ACID vs BASE properties
-34. CAP theorem applications in DBs
-35. SQL vs NoSQL trade-offs
-36. OLTP vs OLAP systems
-37. Data lakes vs data warehouses (Snowflake, BigQuery)
-38. Materialized views & denormalization strategies
-39. Time-series databases (InfluxDB, TimescaleDB)
-40. Graph databases (Neo4j, Amazon Neptune)
+13. How the internet works (request lifecycle)
+14. DNS resolution
+15. TCP vs UDP
+16. HTTP/HTTPS fundamentals
+17. TLS handshake
+18. REST vs gRPC vs GraphQL
+19. WebSockets & long polling
+20. Reverse proxy vs forward proxy
+21. Load balancer basics
+22. CDN fundamentals
+23. Latency vs bandwidth vs throughput
+24. TLS termination (LB vs app)
 
----
+🔥 High-impact:
 
- 4. Caching & Performance
-
-41. What caching is & why it’s used
-42. Client-side caching (browser, CDN)
-43. Server-side caching (Redis, Memcached)
-44. Write-through, write-around, write-back caching
-45. Cache eviction policies (LRU, LFU, FIFO)
-46. Cache invalidation strategies
-47. CDN edge caching vs origin caching
-48. Hotspot problem in caching
-49. Bloom filters & use cases
-50. Rate limiting with caching
-51. Distributed cache consistency (Redis Cluster, Hazelcast)
-52. Write amplification & read amplification issues
-53. Performance profiling & tracing in microservices
+ HTTP lifecycle
+ TCP vs UDP
+ CDN
 
 ---
 
- 5. Message Queues & Streaming
+# 🔹 PHASE 2 — Backend & API Design
 
-54. Message queues basics (Kafka, RabbitMQ, SQS)
-55. Publish-subscribe pattern
-56. At-most-once, at-least-once, exactly-once delivery
-57. Dead-letter queues
-58. Event-driven architecture
-59. Kafka partitions & offsets
-60. Consumer groups & scaling consumers
-61. Stream processing basics (Flink, Spark, Kinesis)
-62. Event sourcing
-63. CQRS (Command Query Responsibility Segregation)
-64. Event replay & reprocessing
-65. Event storming (system modeling technique)
-66. Lambda architecture (batch + stream + serving layer)
+25. API design principles (REST best practices)
+26. Idempotency
+27. Pagination (offset vs cursor)
+28. Filtering & sorting
+29. API versioning
+30. Rate limiting (core concept)
+31. Authentication vs authorization
+32. Sessions vs JWT
+33. API error handling
+34. Input validation & contracts
 
----
+🔥 High-impact:
 
- 6. Scalability & Reliability
-
-67. Load balancing (round robin, least connections)
-68. Global load balancers (GeoDNS, Anycast)
-69. Rate limiting strategies
-70. Circuit breakers & retries
-71. Service discovery (Consul, Eureka)
-72. Heartbeat & health checks
-73. Leader election algorithms (Raft, Paxos)
-74. Failover strategies
-75. Consensus protocols in distributed systems
-76. Quorum-based writes/reads
-77. Auto-healing systems (self-recovery, auto-restart strategies)
-78. Autoscaling groups in cloud providers
-79. Serverless scaling (AWS Lambda, Cloud Functions)
-80. Multi-cloud vs hybrid cloud considerations
+ Idempotency
+ Pagination
+ Rate limiting
 
 ---
 
- 7. Distributed Systems Concepts
+# 🔹 PHASE 3 — Data Modeling & Databases
 
-81. Distributed transactions (2PC, 3PC)
-82. Distributed locks (Zookeeper, Redis Redlock)
-83. Idempotency in APIs
-84. Clock synchronization (NTP, Lamport timestamps)
-85. Vector clocks
-86. Gossip protocol
-87. Partition tolerance in practice
-88. Data replication strategies (sync vs async)
-89. CAP theorem real-world examples (DynamoDB, Cassandra)
-90. Consistent hashing
-91. Quorum vs leader-based replication trade-offs
-92. Handling network partitions in practice
-93. Design patterns for distributed systems (Saga, Choreography)
+35. Relational databases (schema design)
+36. Normalization vs denormalization
+37. Indexing (B-Tree, hash)
+38. Query optimization
+39. Transactions & ACID
+40. NoSQL databases (types)
+41. SQL vs NoSQL trade-offs
+42. Data modeling for scale
+43. Replication (leader-follower)
+44. Sharding strategies
+45. Consistency models (strong vs eventual)
+46. CAP theorem (practical)
+47. OLTP vs OLAP
+48. Data lakes vs warehouses
+49. Specialized DBs:
 
----
+ Time-series DB
+ Graph DB
 
- 8. Security & Authentication
+🔥 High-impact:
 
-94. HTTPS & TLS handshake
-95. OAuth 2.0 & OpenID Connect
-96. JWT authentication
-97. API keys & HMAC signatures
-98. Role-based access control (RBAC)
-99. Attribute-based access control (ABAC)
-100. Rate limiting for security (DoS protection)
-101. CSRF protection
-102. XSS prevention
-103. SQL injection prevention
-104. Secrets management (Vault, KMS)
-105. Zero trust architecture
-106. DDoS mitigation strategies (rate-limiting, WAFs, CDNs)
-107. GDPR/CCPA compliance considerations
+ Indexing
+ Sharding
+ Consistency
 
 ---
 
- 9. Monitoring & Observability
+# 🔹 PHASE 4 — Caching & Performance
 
-108. Logging best practices (structured logs)
-109. Metrics & time-series databases (Prometheus)
-110. Distributed tracing (Jaeger, Zipkin)
-111. Centralized log management (ELK stack)
-112. SLOs, SLIs, SLAs
-113. Alerting & incident response (PagerDuty)
-114. Error budgets in reliability engineering
-115. Canary releases
-116. Blue-green deployments
-117. Chaos engineering basics
-118. Synthetic monitoring vs real-user monitoring
-119. Observability-driven system design
+50. Why caching is needed
+51. Client vs server caching
+52. CDN edge vs origin caching
+53. Redis basics
+54. Cache strategies (write-through/back/around)
+55. Cache eviction (LRU, LFU)
+56. Cache invalidation
+57. Hotspot problem
+58. Read vs write amplification
+59. Bloom filters
+60. Rate limiting using cache
+61. Distributed cache consistency
+62. Performance profiling & tracing
+
+🔥 High-impact:
+
+ Cache invalidation
+ Redis
+ LRU
 
 ---
 
- 10. Advanced System Design (Senior Level)
+# 🔹 PHASE 5 — Async Systems & Messaging
 
-120. Designing a URL shortener (Bitly)
-121. Designing a rate limiter
-122. Designing a social media feed (Twitter/FB)
-123. Designing a chat/messaging app (WhatsApp)
-124. Designing a video streaming service (YouTube/Netflix)
-125. Designing an e-commerce system (Amazon-like)
-126. Designing a ride-hailing service (Uber, Lyft)
-127. Designing a distributed search engine (Google-lite)
-128. Designing a payment system (Stripe, PayPal)
-129. Designing large-scale microservices orchestration (Kubernetes-level)
-130. Designing a notification system (email, push, SMS)
-131. Designing a recommendation system (collaborative filtering, ML-lite)
-132. Designing an analytics pipeline (tracking events at scale)
-133. Designing multi-tenant SaaS systems
-134. Designing systems with regulatory constraints (HIPAA, PCI-DSS)
-135. Designing for eventual consistency vs strong consistency trade-offs
-136. Designing for high-throughput ingestion (IoT, logs, telemetry)
-137. Designing globally distributed systems (multi-region)
-138. Designing systems for low-latency read/write operations
-139. Designing systems for A/B testing & experimentation
-140. Designing feature flag systems for safe rollouts
-141. Designing modular & extensible microservices
-142. Designing caching layers for read-heavy vs write-heavy workloads
-143. Designing distributed task queues
-144. Designing stateful vs stateless service interactions
-145. Designing data pipelines with replay & idempotency
-146. Designing disaster recovery strategies & RPO/RTO considerations
-147. Designing telemetry & monitoring pipelines for large-scale services
-148. Designing observability-first microservices
-149. Designing secure authentication & authorization flows
-150. Designing cost-optimized systems in cloud environments
+63. Sync vs async communication
+64. Message queues fundamentals
+65. Pub/Sub pattern
+66. Kafka basics (partitions, offsets)
+67. Delivery guarantees
+68. Consumer groups
+69. Event-driven architecture
+70. Dead-letter queues
+71. Event sourcing
+72. CQRS
+73. Event replay
+74. Lambda architecture
+75. Event storming
+
+🔥 High-impact:
+
+ Kafka
+ Event-driven systems
+
+---
+
+# 🔹 PHASE 6 — Scalability & Reliability
+
+76. Horizontal vs vertical scaling
+77. Load balancing algorithms
+78. Global load balancing (GeoDNS, Anycast)
+79. Rate limiting strategies (advanced)
+80. Circuit breakers
+81. Retries & backoff
+82. Service discovery
+83. Health checks
+84. Failover strategies
+85. High availability design
+86. Autoscaling
+87. Serverless scaling
+88. Multi-cloud vs hybrid cloud
+89. Auto-healing systems
+
+🔥 High-impact:
+
+ Load balancing
+ Failover
+ Retries
+
+---
+
+# 🔹 PHASE 7 — Distributed Systems (Core Depth)
+
+90. Distributed transactions (2PC)
+91. Distributed locks
+92. Idempotency (deep)
+93. Consistent hashing
+94. Leader election (Raft basics)
+95. Consensus concepts
+96. Network partitions
+97. Replication strategies (sync vs async)
+98. Quorum systems
+99. Clock synchronization (Lamport)
+100. Vector clocks
+101. Gossip protocol
+102. Saga pattern
+
+🔥 High-impact:
+
+ Consistent hashing
+ Distributed locks
+ Consensus
+
+---
+
+# 🔹 PHASE 8 — Security Fundamentals
+
+103. HTTPS & TLS (practical)
+104. OAuth 2.0 & OpenID Connect
+105. JWT authentication
+106. API keys & HMAC
+107. RBAC vs ABAC
+108. Common attacks (XSS, CSRF, SQL injection)
+109. Secrets management
+110. Zero trust architecture
+111. DDoS mitigation & WAF
+112. Compliance (GDPR, etc.)
+
+🔥 High-impact:
+
+ Auth flows
+ API security
+
+---
+
+# 🔹 PHASE 9 — Observability & Production Systems
+
+113. Logging (structured logs)
+114. Metrics & monitoring (Prometheus)
+115. Distributed tracing
+116. Log aggregation (ELK)
+117. SLIs, SLOs, SLAs
+118. Alerting systems
+119. Error budgets
+120. Canary deployments
+121. Blue-green deployments
+122. Chaos engineering
+123. Synthetic vs real-user monitoring
+124. Incident response basics
+
+🔥 High-impact:
+
+ Monitoring
+ SLOs
+
+---
+
+
+## 🔹 PHASE 12: Real-World System Design (Interview Level)
+
+125. Designing a URL shortener (Bitly)
+126. Designing a rate limiter
+127. Designing a social media feed (Twitter/FB)
+128. Designing a chat/messaging app (WhatsApp)
+129. Designing a video streaming service (YouTube/Netflix)
+130. Designing an e-commerce system (Amazon-like)
+131. Designing a ride-hailing service (Uber, Lyft)
+132. Designing a distributed search engine (Google-lite)
+133. Designing a payment system (Stripe, PayPal)
+134. Designing large-scale microservices orchestration (Kubernetes-level)
+135. Designing a notification system (email, push, SMS)
+136. Designing a recommendation system (collaborative filtering, ML-lite)
+137. Designing an analytics pipeline (tracking events at scale)
+138. Designing multi-tenant SaaS systems
+139. Designing systems with regulatory constraints (HIPAA, PCI-DSS)
+140. Designing for eventual consistency vs strong consistency trade-offs
+141. Designing for high-throughput ingestion (IoT, logs, telemetry)
+142. Designing globally distributed systems (multi-region)
+143. Designing systems for low-latency read/write operations
+144. Designing systems for A/B testing & experimentation
+145. Designing feature flag systems for safe rollouts
+146. Designing modular & extensible microservices
+147. Designing caching layers for read-heavy vs write-heavy workloads
+148. Designing distributed task queues
+149. Designing stateful vs stateless service interactions
+150. Designing data pipelines with replay & idempotency
+151. Designing disaster recovery strategies & RPO/RTO considerations
+152. Designing telemetry & monitoring pipelines for large-scale services
+153. Designing observability-first microservices
+154. Designing secure authentication & authorization flows
+155. Designing cost-optimized systems in cloud environments
 
 ---
 

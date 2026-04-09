@@ -1,0 +1,125 @@
+### 16. Structure of a Block (Blockchain)
+
+
+## 🔷 1. Basic Idea
+
+Each block has two main parts:
+
+1. Block Header (Metadata) → Information about the block
+2. Block Body (Data) → Actual transactions
+
+---
+
+## 🔷 2. Block Structure Overview
+
+```
+Block
+│
+├── Block Header
+│   ├── Previous Block Hash
+│   ├── Merkle Root
+│   ├── Timestamp
+│   ├── Nonce
+│   └── Difficulty Target
+│
+└── Block Body
+    └── List of Transactions
+```
+
+---
+
+## 🔷 3. Block Header (Most Important Part)
+
+This is what makes blockchain secure and immutable.
+
+### 🔹 (a) Previous Block Hash
+
+ Hash of the previous block
+ Creates the chain link
+ If one block changes → all future blocks break
+
+👉 This is why blockchain is tamper-proof
+
+---
+
+### 🔹 (b) Merkle Root
+
+ A single hash representing all transactions
+ Built using a Merkle Tree
+
+👉 If even one transaction changes → Merkle root changes
+
+---
+
+### 🔹 (c) Timestamp
+
+ Time when the block was created
+ Helps maintain order of blocks
+
+---
+
+### 🔹 (d) Nonce
+
+ A number miners keep changing to solve the puzzle
+ Used in Proof of Work (PoW)
+
+👉 This is how mining works
+
+---
+
+### 🔹 (e) Difficulty Target
+
+ Defines how hard it is to mine the block
+ Example: hash must start with certain number of zeros
+
+---
+
+## 🔷 4. Block Body
+
+### 🔹 Transactions
+
+ List of all transactions included in the block
+ First transaction is usually:
+
+   Coinbase Transaction → reward for miner
+
+---
+
+## 🔷 5. How a Block is Created (Step-by-Step)
+
+1. Transactions are collected
+2. Transactions are hashed → Merkle Tree → Merkle Root
+3. Block header is formed
+4. Miner changes nonce to find valid hash
+5. Valid block is added to blockchain
+
+---
+
+## 🔷 6. Real Example (Simplified)
+
+```
+Block #105
+
+Header:
+- Previous Hash: 0000abc123...
+- Merkle Root: xyz789...
+- Timestamp: 2026-04-07
+- Nonce: 482193
+- Difficulty: High
+
+Body:
+- Tx1: A → B (10 BTC)
+- Tx2: C → D (5 BTC)
+- Tx3: E → F (2 BTC)
+```
+
+---
+
+## 🔷 7. Why Block Structure Matters
+
+ 🔒 Security → Hash + previous hash ensures integrity
+ 🔗 Linking → Forms chain of blocks
+ 📦 Efficiency → Merkle root compresses transaction data
+ ⛏️ Mining → Nonce + difficulty controls block creation
+
+---
