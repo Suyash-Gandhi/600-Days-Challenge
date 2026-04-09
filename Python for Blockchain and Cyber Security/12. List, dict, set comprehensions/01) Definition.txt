@@ -1,0 +1,154 @@
+
+
+# 1. List Comprehension
+
+### ➤ Definition
+
+A compact way to create a list using a loop and optional condition.
+
+### ➤ Syntax
+
+```python
+[expression for item in iterable if condition]
+```
+
+### ➤ Example 1: Basic
+
+```python
+nums = [1, 2, 3, 4]
+
+squares = [x2 for x in nums]
+# Output: [1, 4, 9, 16]
+```
+
+### ➤ Example 2: With condition
+
+```python
+even_squares = [x2 for x in nums if x % 2 == 0]
+# Output: [4, 16]
+```
+
+### ➤ Equivalent using loop
+
+```python
+squares = []
+for x in nums:
+    squares.append(x2)
+```
+
+### ➤ Key Points
+
+ Most commonly used comprehension
+ Cleaner than loops
+ Supports nested loops
+
+---
+
+# 2. Dictionary Comprehension
+
+### ➤ Definition
+
+Used to create dictionaries dynamically.
+
+### ➤ Syntax
+
+```python
+{key_expression: value_expression for item in iterable if condition}
+```
+
+### ➤ Example 1: Basic
+
+```python
+nums = [1, 2, 3, 4]
+
+square_dict = {x: x2 for x in nums}
+# Output: {1: 1, 2: 4, 3: 9, 4: 16}
+```
+
+### ➤ Example 2: With condition
+
+```python
+even_dict = {x: x2 for x in nums if x % 2 == 0}
+# Output: {2: 4, 4: 16}
+```
+
+### ➤ Example 3: Transform existing dict
+
+```python
+data = {"a": 1, "b": 2}
+
+new_data = {k: v10 for k, v in data.items()}
+# Output: {'a': 10, 'b': 20}
+```
+
+### ➤ Key Points
+
+ Keys must be unique
+ Very useful for transformations
+ Often used in APIs/data processing
+
+---
+
+# 3. Set Comprehension
+
+### ➤ Definition
+
+Creates a set using comprehension (removes duplicates automatically).
+
+### ➤ Syntax
+
+```python
+{expression for item in iterable if condition}
+```
+
+### ➤ Example 1: Basic
+
+```python
+nums = [1, 2, 2, 3, 4]
+
+unique_squares = {x2 for x in nums}
+# Output: {1, 4, 9, 16}
+```
+
+### ➤ Example 2: With condition
+
+```python
+even_set = {x for x in nums if x % 2 == 0}
+# Output: {2, 4}
+```
+
+### ➤ Key Points
+
+ Removes duplicates automatically
+ Order is not guaranteed
+ Useful for filtering unique values
+
+---
+
+# 4. Nested Comprehensions
+
+### ➤ Example
+
+```python
+matrix = [[1, 2], [3, 4], [5, 6]]
+
+flat = [num for row in matrix for num in row]
+# Output: [1, 2, 3, 4, 5, 6]
+```
+
+---
+
+# 5. When to Use vs Avoid
+
+### ✅ Use when:
+
+ Simple transformations
+ Filtering data
+ One-liners improve readability
+
+### ❌ Avoid when:
+
+ Logic becomes too complex
+ Multiple nested conditions reduce readability
+
+---
