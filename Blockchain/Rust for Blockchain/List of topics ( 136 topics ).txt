@@ -1,0 +1,267 @@
+
+
+# 🦀 Rust Mastery Roadmap ( 136 topics )
+
+---
+
+# PHASE 1 — Setup & Core Syntax
+
+1. Installing Rust (rustup, toolchain)
+2. Cargo basics (package manager & build tool)
+3. Cargo commands: run, build, check, doc
+4. Rust project structure
+
+---
+
+# PHASE 2 — Variables, Types & Functions
+
+5. Variables, constants, and mutability
+6. Shadowing and scope
+7. Data types: scalars, tuples, arrays, slices
+8. Type inference and casting (`as`)
+9. Functions, parameters, return values
+10. Expressions vs statements
+
+---
+
+# PHASE 3 — Control Flow & Pattern Matching
+
+11. if, else
+12. match
+13. Loops: loop, while, for
+14. Pattern matching basics
+
+---
+
+# PHASE 4 — Ownership & Memory (CORE RUST)
+
+15. Stack vs heap memory
+16. Ownership rules
+17. Copy vs Move semantics
+18. Borrowing (& references)
+19. Mutable vs immutable references
+20. Lifetimes (intro)
+
+---
+
+# PHASE 5 — Collections & Iterators
+
+21. Vectors (Vec<T>)
+22. Strings (String, &str)
+23. HashMaps (HashMap<K,V>)
+24. BTreeMap and BTreeSet
+25. Iterators (concept)
+26. Iterator adapters (map, filter, collect, fold)
+27. Advanced adapters (peekable, chain, zip, flatten)
+28. Double-ended iterators (rev)
+29. Efficient collection patterns & performance tips ✅
+
+---
+
+# PHASE 6 — Error Handling & Debugging
+
+30. Option<T>
+31. Result<T, E>
+32. unwrap, expect
+33. Error propagation (`?`)
+34. Custom error types
+35. anyhow vs thiserror
+36. Contextual errors (with_context)
+37. panic! and error behavior
+38. dbg! macro
+
+---
+
+# PHASE 7 — Modules, Crates & Code Organization
+
+39. Module system
+40. pub, use, visibility
+41. Crates and package structure
+42. Adding external crates
+43. Cargo workspaces
+
+---
+
+# PHASE 8 — Lifetimes Deep Dive
+
+44. Explicit lifetimes ('a)
+45. Lifetime annotations in functions
+46. Structs with lifetimes
+47. Lifetime elision rules
+48. 'static lifetime
+49. Borrow checker deep dive
+50. Complex lifetime scenarios
+
+---
+
+# PHASE 9 — Generics & Traits
+
+51. Generics (types & functions)
+52. Traits (interfaces)
+53. Trait bounds
+54. Deriving traits
+55. Associated types
+56. Trait objects (dyn Trait)
+57. Higher-ranked trait bounds
+58. Operator overloading
+
+---
+
+# PHASE 10 — Enums & Advanced Pattern Matching
+
+59. Enums with data
+60. match deep dive
+61. if let / while let
+
+---
+
+# PHASE 11 — Functional Rust
+
+62. Closures
+63. Higher-order functions
+64. Option/Result combinators
+65. Iterator chaining & composition
+66. Lazy evaluation
+67. Immutable patterns
+
+---
+
+# PHASE 12 — Smart Pointers & Memory Models
+
+68. Box<T>
+69. Rc<T>
+70. Arc<T>
+71. RefCell<T>
+72. Cow<T>
+
+---
+
+# PHASE 13 — Concurrency Fundamentals
+
+73. Threads
+74. Message passing (mpsc)
+75. Mutex & RwLock
+76. Atomics
+
+---
+
+# PHASE 14 — Async & Advanced Concurrency
+
+77. async/await
+78. Futures
+79. Async runtimes (tokio)
+80. Async channels & streams
+81. tokio sync primitives
+82. Futures combinators (join, select)
+83. Actor model
+
+---
+
+# PHASE 15 — Macros & Metaprogramming
+
+84. macro_rules!
+85. Procedural macros (intro)
+86. Attribute macros
+87. Function-like macros
+88. Custom derive macros
+89. Macro hygiene
+90. Code generation using procedural macros ✅
+
+---
+
+# PHASE 16 — File I/O & CLI
+
+91. File handling (fs, io)
+92. Command-line args
+93. CLI tools (clap)
+
+---
+
+# PHASE 17 — Testing & Reliability
+
+94. Unit testing
+95. Integration testing
+96. cargo test workflow
+97. Property-based testing
+98. Benchmarking (criterion)
+99. Fuzz testing
+
+---
+
+# PHASE 18 — Unsafe Rust & Low-Level Control
+
+100. Raw pointers
+101. unsafe blocks
+102. FFI (C interop)
+103. std::mem utilities
+104. Memory layout (repr)
+105. Avoiding allocations
+106. Memory safety bugs & prevention ✅
+
+---
+
+# PHASE 19 — Performance Engineering
+
+107. Zero-cost abstractions
+108. Profiling (cargo bench)
+109. Allocation strategies
+110. Collection performance patterns
+
+---
+
+# PHASE 20 — Ecosystem & Backend Development
+
+111. Serialization (serde)
+112. Secure serialization/deserialization ✅
+113. HTTP requests (reqwest)
+114. Databases (sqlx / diesel)
+115. Web frameworks (actix / axum)
+116. Binary protocols (bincode, prost)
+
+---
+
+# PHASE 21 — Networking & Distributed Systems
+
+117. std::net basics
+118. TCP/UDP programming
+119. Async networking
+120. gRPC (tonic)
+121. Distributed systems
+
+---
+
+# PHASE 22 — Architecture & Best Practices
+
+122. Modular design
+123. Dependency management
+124. Error handling patterns
+125. API design
+126. Safe vs unsafe tradeoffs
+127. Race conditions & deadlocks
+
+---
+
+# PHASE 23 — Embedded & WASM
+
+128. no_std
+129. Embedded Rust (embedded-hal)
+130. WebAssembly (wasm-bindgen)
+
+---
+
+# PHASE 24 — Tooling & Productivity
+
+131. Clippy
+132. Rustfmt
+133. Rust Analyzer
+134. CI/CD with Rust
+
+---
+
+# PHASE 25 — Open Source & Mastery
+
+135. Reading rustc source
+136. Contributing to ecosystem
+137. Writing idiomatic Rust
+
+---
