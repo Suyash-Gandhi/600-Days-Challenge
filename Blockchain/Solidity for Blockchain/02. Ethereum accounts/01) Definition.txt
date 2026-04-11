@@ -1,0 +1,146 @@
+## 2. Ethereum Accounts (EOA vs Contract Accounts)
+
+Ethereum has two types of accounts, and understanding them is fundamental before moving deeper into Solidity or smart contracts.
+
+---
+
+## 🔹 1. What is an Ethereum Account?
+
+An Ethereum account is an entity that can:
+
+ Hold ETH and tokens
+ Send and receive transactions
+ Interact with smart contracts
+
+Each account is identified by:
+
+ A unique address (20 bytes, e.g., `0xABC...`)
+ A balance
+ A state
+
+---
+
+## 🔹 2. Types of Ethereum Accounts
+
+Ethereum defines two types of accounts:
+
+### ✅ A. Externally Owned Accounts (EOA)
+
+Definition:
+Accounts controlled by private keys (i.e., humans/users).
+
+Key Features:
+
+ Created using wallets (e.g., MetaMask)
+ Controlled by a private key
+ Can:
+
+   Send transactions
+   Transfer ETH
+   Call smart contracts
+ Cannot execute code on their own
+
+Example Flow:
+
+ You click “Send ETH” → your wallet signs transaction → network processes it
+
+Important Point:
+👉 EOAs are the only accounts that can initiate transactions
+
+---
+
+### ✅ B. Contract Accounts
+
+Definition:
+Accounts controlled by smart contract code deployed on Ethereum.
+
+Key Features:
+
+ Created when a smart contract is deployed
+ No private key
+ Controlled by code logic
+ Can:
+
+   Execute functions
+   Store data (state variables)
+   Interact with other contracts
+
+Important Point:
+👉 Contract accounts cannot initiate transactions on their own
+They only respond when triggered by:
+
+ An EOA
+ Another contract
+
+---
+
+## 🔹 3. Key Differences (EOA vs Contract Account)
+
+| Feature                  | EOA                | Contract Account       |
+| ------------------------ | ------------------ | ---------------------- |
+| Controlled by            | Private key (user) | Smart contract code    |
+| Can initiate transaction | ✅ Yes              | ❌ No                   |
+| Has code                 | ❌ No               | ✅ Yes                  |
+| Gas payment              | Paid by user       | Paid via caller        |
+| Creation                 | Wallet/private key | Deployment of contract |
+
+---
+
+## 🔹 4. How They Interact (Real Flow)
+
+Let’s understand a real blockchain interaction flow:
+
+1. EOA (you) sends a transaction
+2. Transaction goes to:
+
+    Another EOA → simple ETH transfer
+    OR a contract → triggers code execution
+3. Contract executes logic → may:
+
+    Transfer ETH
+    Call other contracts
+    Update state
+
+👉 Example:
+
+ You interact with a DeFi app
+ Your EOA calls a contract
+ Contract processes your request (swap, stake, etc.)
+
+---
+
+## 🔹 5. Why This Matters (Very Important)
+
+Understanding accounts is crucial because:
+
+ 🔐 Security: Private key = full control (EOA risk)
+ ⚙️ Smart Contracts: All logic lives in contract accounts
+ ⛽ Gas: Only EOAs pay gas directly
+ 🔁 Transaction Flow: Everything starts from EOAs
+
+---
+
+## 🔹 6. Interview-Level Insights
+
+ “Why can’t contract accounts initiate transactions?”
+  → Because they don’t have private keys, so they cannot sign transactions.
+
+ “Can contracts call other contracts?”
+  → Yes, but only after being triggered by a transaction
+
+ “Who pays gas in contract execution?”
+  → The EOA that initiated the transaction
+
+---
+
+## 🔹 7. Simple Analogy
+
+Think of Ethereum like a system:
+
+ EOA = User with a remote control
+ Contract = Machine that runs when button is pressed
+
+👉 The machine (contract) cannot start itself —
+it needs a user (EOA) to trigger it.
+
+---

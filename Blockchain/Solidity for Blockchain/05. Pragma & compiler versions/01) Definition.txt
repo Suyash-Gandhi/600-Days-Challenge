@@ -1,0 +1,182 @@
+### 5. Pragma & Compiler Versions in Solidity
+
+
+## 🔹 1. What is `pragma` in Solidity?
+
+ `pragma` is a compiler directive.
+ It tells the Solidity compiler which version(s) of Solidity your code is compatible with.
+
+👉 Think of it like:
+
+> “Hey compiler, only compile this code if you match these version rules.”
+
+---
+
+## 🔹 2. Basic Syntax
+
+```solidity
+pragma solidity ^0.8.0;
+```
+
+### Meaning:
+
+ Your contract can be compiled with:
+
+   `0.8.0`
+   `0.8.1`, `0.8.2`, ... up to `< 0.9.0`
+
+---
+
+## 🔹 3. Different Version Specifiers
+
+### 1. Caret (`^`) — Most Common
+
+```solidity
+pragma solidity ^0.8.0;
+```
+
+ Allows backward-compatible updates
+ Safe within same major version
+
+✔ Recommended for most cases
+
+---
+
+### 2. Exact Version
+
+```solidity
+pragma solidity 0.8.19;
+```
+
+ Only works with one specific version
+ No flexibility
+
+✔ Used when you want full control / reproducibility
+
+---
+
+### 3. Range Version
+
+```solidity
+pragma solidity >=0.7.0 <0.9.0;
+```
+
+ Works with a range of versions
+
+✔ Useful in libraries
+
+---
+
+### 4. Multiple Conditions
+
+```solidity
+pragma solidity >=0.8.0 <0.8.20;
+```
+
+---
+
+## 🔹 4. Why Compiler Version Matters (VERY IMPORTANT)
+
+### 1. Security Changes
+
+Different versions introduce fixes.
+
+Example:
+
+ Before Solidity `0.8.0` → Integer overflow NOT checked
+ After `0.8.0` → Overflow automatically reverts
+
+👉 This alone changed how contracts are written.
+
+---
+
+### 2. Syntax Differences
+
+Example:
+
+Old (pre-0.8):
+
+```solidity
+uint public x = 1;
+```
+
+New versions add:
+
+ Better error handling
+ Custom errors
+ Safer math
+
+---
+
+### 3. Gas Optimization
+
+New compiler versions:
+
+ Generate more optimized bytecode
+ Reduce gas cost
+
+---
+
+### 4. Breaking Changes
+
+Sometimes newer versions:
+
+ Remove features
+ Change behavior
+
+👉 That’s why blindly upgrading is dangerous
+
+---
+
+## 🔹 5. Best Practices (Important for Interviews)
+
+### ✅ 1. Use Latest Stable Version
+
+```solidity
+pragma solidity ^0.8.20;
+```
+
+ Always prefer latest stable 0.8.x
+
+---
+
+### ✅ 2. Avoid Too Wide Ranges
+
+❌ Bad:
+
+```solidity
+pragma solidity >=0.4.0;
+```
+
+✔ Why:
+
+ Can compile with unsafe old versions
+
+---
+
+### ✅ 3. Lock Version in Production
+
+For deployed contracts:
+
+```solidity
+pragma solidity 0.8.20;
+```
+
+✔ Ensures:
+
+ Same behavior everywhere
+ No unexpected changes
+
+---
+
+### ✅ 4. Match Tooling Version
+
+ Your compiler version in:
+
+   Hardhat
+   Foundry
+   Remix
+
+Must match your pragma
+
+---

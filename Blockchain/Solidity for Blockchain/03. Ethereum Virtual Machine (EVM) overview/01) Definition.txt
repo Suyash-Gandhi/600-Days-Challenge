@@ -1,0 +1,161 @@
+## 3. Ethereum Virtual Machine (EVM) — Overview
+
+The Ethereum Virtual Machine (EVM) is the core execution engine of Ethereum. It is what actually runs your smart contracts. If Ethereum is the “world computer,” then the EVM is its CPU.
+
+---
+
+## 1. What is the EVM?
+
+ The EVM is a virtual machine that executes smart contract code.
+ It runs on every Ethereum node, ensuring all nodes reach the same result.
+ It is deterministic → same input = same output on every node.
+
+👉 In simple terms:
+When you deploy or interact with a smart contract, the EVM is what processes that logic.
+
+---
+
+## 2. Key Characteristics of EVM
+
+### a. Deterministic Execution
+
+ Every node executes the same transaction
+ Ensures consensus across the network
+
+### b. Sandbox Environment
+
+ Contracts run in isolation
+ Cannot access:
+
+   File system
+   External APIs
+   Network directly
+
+### c. Stack-Based Architecture
+
+ Uses a stack (LIFO) instead of registers
+ Max stack size: 1024 items
+ Each item = 256-bit word
+
+---
+
+## 3. How the EVM Works (Step-by-Step)
+
+### Step 1: Write Smart Contract
+
+ You write code in Solidity
+
+### Step 2: Compile to Bytecode
+
+ Solidity → EVM bytecode
+
+### Step 3: Deploy Contract
+
+ Bytecode is stored on blockchain
+
+### Step 4: Execute Transactions
+
+ When someone calls a function:
+
+   EVM reads bytecode
+   Executes instructions (opcodes)
+
+---
+
+## 4. EVM Components
+
+### a. Stack
+
+ Temporary storage
+ Used for calculations
+ Example: addition, multiplication
+
+---
+
+### b. Memory
+
+ Temporary, expandable storage
+ Cleared after execution
+ Cheap compared to storage
+
+---
+
+### c. Storage
+
+ Permanent data on blockchain
+ Very expensive (costs gas)
+ Stores:
+
+   State variables
+   Contract data
+
+---
+
+### d. Program Counter
+
+ Tracks which instruction is currently executing
+
+---
+
+### e. Gas System
+
+ Every operation costs gas
+ Prevents:
+
+   Infinite loops
+   Network abuse
+
+---
+
+## 5. Opcodes (EVM Instructions)
+
+The EVM does not understand Solidity directly. It executes low-level instructions called opcodes.
+
+Examples:
+
+ `ADD` → addition
+ `MUL` → multiplication
+ `SSTORE` → store data
+ `CALL` → call another contract
+
+👉 Think of opcodes as assembly language of Ethereum
+
+---
+
+## 6. Gas & Execution Model
+
+### Why Gas Exists:
+
+ Prevent infinite computation
+ Allocate network resources fairly
+
+### How it works:
+
+ Each opcode has a gas cost
+ User pays gas in ETH
+ If gas runs out → transaction fails
+
+---
+
+## 7. EVM Execution Context
+
+Each transaction has a context:
+
+ `msg.sender` → who called
+ `msg.value` → ETH sent
+ `msg.data` → input data
+ `block.timestamp`, `block.number`
+
+---
+
+## 8. EVM Compatibility
+
+ Other chains also use EVM:
+
+   Polygon
+   BNB Chain
+   Avalanche (C-Chain)
+
+👉 This is why Solidity skills are highly portable
+
+---
