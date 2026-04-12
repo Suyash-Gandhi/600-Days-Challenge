@@ -1,0 +1,197 @@
+
+# 6. Variables in Solidity (State, Local, Global)
+
+In Solidity, variables are classified based on where they are stored and how long they exist.
+
+---
+
+# 🔹 1. State Variables
+
+### ✅ Definition
+
+State variables are stored permanently on the blockchain inside the contract storage.
+
+### 📍 Key Points
+
+ Declared outside functions
+ Stored in contract storage
+ Persist between function calls
+ Cost gas to modify (important!)
+
+### 🧠 Example
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public count = 0;  // state variable
+
+    function increment() public {
+        count += 1;
+    }
+}
+```
+
+### 💡 Important Insights
+
+ `public` automatically creates a getter function
+ Every user sees the same value
+ Used for:
+
+   balances
+   ownership
+   contract configuration
+
+---
+
+# 🔹 2. Local Variables
+
+### ✅ Definition
+
+Local variables exist only inside functions and are temporary.
+
+### 📍 Key Points
+
+ Declared inside functions
+ Stored in memory or stack
+ Destroyed after function execution
+ No permanent gas cost (only execution cost)
+
+### 🧠 Example
+
+```solidity
+function add(uint a, uint b) public pure returns (uint) {
+    uint result = a + b;  // local variable
+    return result;
+}
+```
+
+### 💡 Important Insights
+
+ Faster and cheaper than state variables
+ Used for:
+
+   calculations
+   temporary values
+   logic handling
+
+---
+
+# 🔹 3. Global Variables
+
+### ✅ Definition
+
+Global variables are built-in variables provided by Solidity that give info about blockchain, transaction, and environment.
+
+---
+
+## 📦 Common Global Variables (VERY IMPORTANT)
+
+### 🔸 1. Block-related
+
+```solidity
+block.timestamp   // current block time
+block.number      // current block number
+block.chainid     // chain ID
+```
+
+---
+
+### 🔸 2. Transaction-related
+
+```solidity
+msg.sender   // address of caller
+msg.value    // ETH sent (in wei)
+msg.data     // calldata
+```
+
+---
+
+### 🔸 3. Gas-related
+
+```solidity
+gasleft()   // remaining gas
+```
+
+---
+
+### 🔸 4. Address-related
+
+```solidity
+tx.origin   // original transaction sender (⚠️ avoid using)
+```
+
+---
+
+### 🧠 Example
+
+```solidity
+function getInfo() public view returns (address, uint) {
+    return (msg.sender, block.timestamp);
+}
+```
+
+---
+
+# ⚖️ Comparison (Important for Interviews)
+
+| Feature  | State Variable     | Local Variable | Global Variable |
+| -------- | ------------------ | -------------- | --------------- |
+| Storage  | Blockchain storage | Memory/stack   | Built-in        |
+| Lifetime | Permanent          | Temporary      | Temporary       |
+| Gas Cost | High (write)       | Low            | Low             |
+| Scope    | Entire contract    | Function only  | Anywhere        |
+| Example  | `uint count`       | `uint temp`    | `msg.sender`    |
+
+---
+
+# ⚠️ Common Mistakes (VERY IMPORTANT)
+
+### ❌ 1. Using state when local is enough
+
+```solidity
+uint temp; // ❌ waste of gas
+```
+
+✔️ Instead:
+
+```solidity
+function foo() public {
+    uint temp = 10; // ✅
+}
+```
+
+---
+
+### ❌ 2. Using `tx.origin` for authentication
+
+```solidity
+require(tx.origin == owner); // ❌ unsafe
+```
+
+✔️ Use:
+
+```solidity
+require(msg.sender == owner); // ✅
+```
+
+---
+
+# 🧠 Real-World Understanding
+
+ State variables = database
+ Local variables = function variables
+ Global variables = blockchain context (who, when, how)
+
+---
+
+# 🚀 Best Practices
+
+ Minimize state variable writes (gas optimization)
+ Use `view` and `pure` functions when possible
+ Prefer `msg.sender` over `tx.origin`
+ Keep logic in local variables when possible
+
+---
+
+

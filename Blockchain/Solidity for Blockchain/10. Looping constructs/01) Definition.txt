@@ -1,0 +1,192 @@
+### 10. Looping Constructs in Solidity
+
+
+# 🔹 1. Types of Loops in Solidity
+
+Solidity provides three main looping constructs:
+
+### 1. `for` loop
+
+ Used when the number of iterations is known.
+
+#### ✅ Syntax:
+
+```solidity
+for (initialization; condition; increment/decrement) {
+    // code
+}
+```
+
+#### ✅ Example:
+
+```solidity
+function sumNumbers() public pure returns (uint) {
+    uint sum = 0;
+
+    for (uint i = 1; i <= 5; i++) {
+        sum += i;
+    }
+
+    return sum; // 15
+}
+```
+
+#### 📌 Explanation:
+
+ `i = 1` → initialization
+ `i <= 5` → condition
+ `i++` → increment
+
+---
+
+### 2. `while` loop
+
+ Runs as long as the condition is true
+ Useful when number of iterations is unknown
+
+#### ✅ Syntax:
+
+```solidity
+while (condition) {
+    // code
+}
+```
+
+#### ✅ Example:
+
+```solidity
+function countDown(uint n) public pure returns (uint) {
+    uint count = 0;
+
+    while (n > 0) {
+        count++;
+        n--;
+    }
+
+    return count;
+}
+```
+
+#### 📌 Use case:
+
+ Dynamic conditions
+ Input-dependent loops
+
+---
+
+### 3. `do...while` loop
+
+ Executes at least once, then checks condition
+
+#### ✅ Syntax:
+
+```solidity
+do {
+    // code
+} while (condition);
+```
+
+#### ✅ Example:
+
+```solidity
+function runOnce(uint n) public pure returns (uint) {
+    uint count = 0;
+
+    do {
+        count++;
+        n--;
+    } while (n > 0);
+
+    return count;
+}
+```
+
+#### 📌 Key point:
+
+ Runs even if condition is false initially
+
+---
+
+# 🔹 2. Loop Control Statements
+
+### 1. `break`
+
+ Terminates the loop immediately
+
+```solidity
+for (uint i = 0; i < 10; i++) {
+    if (i == 5) {
+        break;
+    }
+}
+```
+
+---
+
+### 2. `continue`
+
+ Skips current iteration and continues next
+
+```solidity
+for (uint i = 0; i < 5; i++) {
+    if (i == 2) {
+        continue;
+    }
+}
+```
+
+---
+
+# 🔹 3. Gas Cost & Practical Limitations ⚠️
+
+This is very important for interviews and real-world smart contracts:
+
+### ❌ Problem:
+
+ Loops consume gas per iteration
+ Large loops → transaction fails (out of gas)
+
+### 🔥 Example Risk:
+
+```solidity
+for (uint i = 0; i < users.length; i++) {
+    // dangerous if array is large
+}
+```
+
+---
+
+# 🔹 4. Best Practices (Very Important)
+
+### ✅ 1. Avoid unbounded loops
+
+ Never loop over large dynamic arrays on-chain
+
+### ✅ 2. Use small loops only
+
+ Safe when:
+
+   Fixed size
+   Small iteration count
+
+### ✅ 3. Prefer mappings over arrays
+
+ Instead of looping through array:
+
+```solidity
+mapping(address => uint) balances;
+```
+
+---
+
+### ✅ 4. Use off-chain processing
+
+ Heavy computations → do outside blockchain
+
+---
+
+### ✅ 5. Pagination pattern
+
+ Process data in chunks instead of all at once
+
+---

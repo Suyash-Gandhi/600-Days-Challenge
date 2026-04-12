@@ -1,0 +1,171 @@
+
+
+# 🔷 8. Operators in Solidity
+
+Operators are used to perform operations on variables and values. Solidity supports multiple categories of operators similar to JavaScript, but with some blockchain-specific considerations (like gas cost and overflow behavior).
+
+---
+
+# 🟢 1. Arithmetic Operators
+
+Used for mathematical calculations.
+
+### 📌 List:
+
+ `+` → Addition
+ `-` → Subtraction
+ `` → Multiplication
+ `/` → Division
+ `%` → Modulus (remainder)
+ `++` → Increment
+ `--` → Decrement
+
+### ✅ Example:
+
+```solidity
+uint a = 10;
+uint b = 3;
+
+uint sum = a + b;       // 13
+uint diff = a - b;      // 7
+uint mul = a  b;       // 30
+uint div = a / b;       // 3 (integer division)
+uint mod = a % b;       // 1
+```
+
+### ⚠️ Important Notes:
+
+ Solidity does integer division only → decimals are truncated.
+ Overflow/underflow is automatically checked (Solidity ≥0.8).
+
+---
+
+# 🟢 2. Comparison Operators
+
+Used to compare two values. Always return a boolean (`true/false`).
+
+### 📌 List:
+
+ `==` → Equal
+ `!=` → Not equal
+ `>` → Greater than
+ `<` → Less than
+ `>=` → Greater than or equal
+ `<=` → Less than or equal
+
+### ✅ Example:
+
+```solidity
+uint a = 5;
+uint b = 10;
+
+bool result1 = (a == b);   // false
+bool result2 = (a < b);    // true
+bool result3 = (a >= 5);   // true
+```
+
+---
+
+# 🟢 3. Logical Operators
+
+Used to combine multiple conditions.
+
+### 📌 List:
+
+ `&&` → AND
+ `||` → OR
+ `!` → NOT
+
+### ✅ Example:
+
+```solidity
+uint age = 20;
+
+bool isAdult = (age >= 18 && age <= 60); // true
+bool isTeen = !(age >= 18);              // false
+```
+
+### 💡 Use Case:
+
+ Validating inputs
+ Access control conditions
+ Smart contract rules
+
+---
+
+# 🟢 4. Bitwise Operators
+
+Operate directly on binary representations of numbers.
+
+### 📌 List:
+
+ `&` → AND
+ `|` → OR
+ `^` → XOR
+ `~` → NOT
+ `<<` → Left shift
+ `>>` → Right shift
+
+---
+
+### ✅ Example:
+
+```solidity
+uint a = 5;  // 0101
+uint b = 3;  // 0011
+
+uint andOp = a & b;   // 0001 → 1
+uint orOp = a | b;    // 0111 → 7
+uint xorOp = a ^ b;   // 0110 → 6
+uint leftShift = a << 1;  // 1010 → 10
+uint rightShift = a >> 1; // 0010 → 2
+```
+
+---
+
+### 💡 When are Bitwise Operators Used?
+
+ Gas-efficient computations
+ Cryptography
+ Flags and permissions (very important in smart contracts)
+
+---
+
+# 🟣 Bonus: Assignment Operators
+
+Shortcut versions of arithmetic operations.
+
+### 📌 List:
+
+ `+=`, `-=`, `=`, `/=`, `%=`
+
+### ✅ Example:
+
+```solidity
+uint x = 10;
+
+x += 5;  // x = 15
+x = 2;  // x = 30
+```
+
+---
+
+# 🟣 Bonus: Ternary Operator
+
+Short form of `if-else`.
+
+### ✅ Syntax:
+
+```solidity
+condition ? value_if_true : value_if_false;
+```
+
+### Example:
+
+```solidity
+uint age = 20;
+
+string memory result = (age >= 18) ? "Adult" : "Minor";
+```
+
+---

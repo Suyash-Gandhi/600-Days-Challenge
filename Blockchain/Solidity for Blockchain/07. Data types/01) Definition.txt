@@ -1,0 +1,211 @@
+
+
+# 7. Data Types in Solidity
+
+Solidity is a statically typed language, meaning:
+
+ Every variable must have a defined type
+ Types determine storage size, operations, and gas cost
+
+---
+
+# 1. Value Types (Stored by Value)
+
+These are copied when assigned or passed.
+
+---
+
+## 1.1 Unsigned Integers (`uint`)
+
+### 🔹 Definition
+
+ Store non-negative integers (0 and above)
+ Most commonly used numeric type
+
+### 🔹 Variants
+
+ `uint8` → 0 to 255
+ `uint16`, `uint32`, ..., `uint256`
+ `uint` = alias for `uint256`
+
+### 🔹 Example
+
+```solidity
+uint age = 25;
+uint256 balance = 1000;
+```
+
+### 🔹 Key Points
+
+ No negative values
+ Overflow/underflow is checked automatically (Solidity ≥0.8)
+
+---
+
+## 1.2 Signed Integers (`int`)
+
+### 🔹 Definition
+
+ Store both positive and negative numbers
+
+### 🔹 Variants
+
+ `int8` → -128 to 127
+ `int256` (default)
+
+### 🔹 Example
+
+```solidity
+int temperature = -10;
+```
+
+---
+
+## ⚖️ `uint vs int`
+
+| Feature         | uint            | int            |
+| --------------- | --------------- | -------------- |
+| Negative values | ❌               | ✅              |
+| Gas efficiency  | Slightly better | Slightly worse |
+| Common use      | ✅ Most used     | Rare           |
+
+👉 Use `uint` unless negatives are needed.
+
+---
+
+## 1.3 Boolean (`bool`)
+
+### 🔹 Definition
+
+ Stores `true` or `false`
+
+### 🔹 Example
+
+```solidity
+bool isActive = true;
+```
+
+### 🔹 Use Cases
+
+ Conditions
+ Access control
+ Flags
+
+---
+
+## 1.4 Address
+
+### 🔹 Definition
+
+ Stores an Ethereum address (20 bytes)
+
+### 🔹 Example
+
+```solidity
+address owner;
+```
+
+### 🔹 Special Features
+
+```solidity
+owner.balance     // check ETH balance
+owner.transfer()  // send ETH (deprecated usage style)
+```
+
+### 🔹 Types
+
+ `address`
+ `address payable` (can receive ETH)
+
+---
+
+## 1.5 String
+
+### 🔹 Definition
+
+ Dynamic array of characters (UTF-8)
+
+### 🔹 Example
+
+```solidity
+string name = "Suyash";
+```
+
+### 🔹 Key Points
+
+ Expensive (dynamic storage)
+ Use carefully in smart contracts
+
+---
+
+## 1.6 Bytes
+
+### 🔹 Definition
+
+ Raw binary data
+
+### 🔹 Types
+
+ Fixed: `bytes1` → `bytes32`
+ Dynamic: `bytes`
+
+### 🔹 Example
+
+```solidity
+bytes32 hash;
+bytes data;
+```
+
+### 🔹 When to Use
+
+ Efficient storage
+ Cryptographic data (hashes)
+
+---
+
+# 2. Reference Types (Stored by Reference)
+
+(Quick intro — detailed later)
+
+ Arrays
+ Structs
+ Mappings
+
+👉 These use memory/storage/calldata, unlike value types.
+
+---
+
+# 3. Default Values
+
+| Type    | Default  |
+| ------- | -------- |
+| uint    | 0        |
+| int     | 0        |
+| bool    | false    |
+| address | 0x000... |
+| string  | ""       |
+| bytes   | empty    |
+
+---
+
+# 4. Gas Optimization Insight (Important)
+
+ `uint256` is most efficient (fits EVM word size)
+ Smaller types (`uint8`) don’t always save gas unless packed
+ `string` and `bytes` are expensive
+
+---
+
+# 5. Best Practices
+
+### ✅ Use `uint256` by default
+
+### ✅ Use `bytes32` instead of string when possible
+
+### ✅ Avoid unnecessary dynamic types
+
+### ✅ Use `address payable` when sending ETH
+
+### ✅ Keep storage minimal (gas cost ↓)
+
+---
