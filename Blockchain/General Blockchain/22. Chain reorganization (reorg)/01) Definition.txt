@@ -1,0 +1,135 @@
+### 22. Chain Reorganization (Reorg)
+
+Chain reorganization (commonly called reorg) is a temporary change in the blockchain’s history when a node replaces its current chain with a longer or more valid chain.
+
+---
+
+## 1. What is Chain Reorganization?
+
+A chain reorg happens when:
+
+ Two miners produce blocks at nearly the same time
+ The network briefly splits into two competing chains (forks)
+ Later, one chain becomes longer → the network switches to it
+
+👉 The shorter chain is discarded (or “orphaned”), and its transactions may return to the mempool
+
+---
+
+## 2. Simple Example (Step-by-Step)
+
+Imagine this situation:
+
+```
+Block A → Block B → Block C
+                  ↘ Block C'
+```
+
+### Step-by-step:
+
+1. Two miners create:
+
+    Block C
+    Block C′ (at the same time)
+
+2. Now the network is split:
+
+    Some nodes follow C
+    Others follow C′
+
+3. A new block is mined on one branch:
+
+```
+Block A → B → C → D   (longer chain)
+Block A → B → C′      (shorter chain)
+```
+
+4. Network rule:
+   👉 Longest chain wins
+
+5. Result:
+
+ Chain with C′ is abandoned
+ Its transactions go back to mempool (if not included elsewhere)
+
+---
+
+## 3. Why Reorg Happens
+
+ Network latency (nodes receive blocks at different times)
+ Simultaneous mining
+ Natural behavior in decentralized systems
+ Occasional mining race conditions
+
+---
+
+## 4. Types of Reorgs
+
+### (a) Short Reorg (Common)
+
+ 1–2 blocks replaced
+ Happens regularly in networks like Bitcoin
+ Usually harmless
+
+### (b) Deep Reorg (Rare & Dangerous)
+
+ Many blocks replaced
+ Can indicate:
+
+   51% attack
+   Network instability
+
+---
+
+## 5. Impact of Chain Reorganization
+
+### 1. Transaction Reversal
+
+ Transactions in orphaned blocks may disappear temporarily
+ This is why confirmations matter
+
+### 2. Double Spending Risk
+
+ Attackers may exploit reorgs to reverse payments
+
+### 3. Mempool Changes
+
+ Removed transactions go back to mempool
+
+---
+
+## 6. Confirmations (Very Important Concept)
+
+👉 A confirmation = number of blocks added after your transaction
+
+Example:
+
+ Your transaction is in block C
+ After 5 more blocks → 5 confirmations
+
+### Why it matters:
+
+ More confirmations = lower chance of reorg affecting it
+
+#### Common standards:
+
+ Bitcoin: 6 confirmations
+ Ethereum: ~12–15 confirmations
+
+---
+
+## 7. Relation to Forks
+
+Reorg is closely related to forks:
+
+| Concept | Meaning                             |
+| ------- | ----------------------------------- |
+| Fork    | Temporary split in chain            |
+| Reorg   | Resolution of fork (one chain wins) |
+
+👉 So:
+
+ Fork happens first
+ Reorg is the correction process
+
+---

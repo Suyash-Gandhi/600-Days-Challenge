@@ -1,0 +1,115 @@
+### 18. Mempool Concept (Memory Pool in Blockchain)
+
+The mempool (memory pool) is a temporary storage area where pending transactions wait before being added to a block in the blockchain.
+
+---
+
+## 🔹 1. What is a Mempool?
+
+ Every blockchain node maintains its own mempool.
+ It stores unconfirmed transactions that have been:
+
+   Created by users
+   Broadcast to the network
+   Not yet included in a block
+
+👉 Think of it like a waiting room for transactions.
+
+---
+
+## 🔹 2. Why Mempool Exists
+
+Transactions are not instantly added to the blockchain because:
+
+ Blocks have limited size
+ Miners/validators choose which transactions to include
+ Network traffic can be high
+
+So, the mempool acts as a buffer between:
+
+ Transaction creation
+ Transaction confirmation
+
+---
+
+## 🔹 3. Transaction Flow with Mempool
+
+Here’s how it fits into the lifecycle:
+
+1. User creates a transaction
+2. Transaction is broadcast to the network
+3. It enters the mempool of nodes
+4. Miners/validators pick transactions from mempool
+5. Selected transactions are added to a block
+6. Block gets confirmed → transaction leaves mempool
+
+---
+
+## 🔹 4. How Transactions Are Selected
+
+Miners don’t pick randomly. They prioritize based on:
+
+### 📌 Transaction Fees (Most Important)
+
+ Higher fee → higher priority
+ Example: In Bitcoin, users compete by offering fees
+
+### 📌 Transaction Size
+
+ Smaller transactions may be preferred (more fit in a block)
+
+### 📌 Network Policies
+
+ Some nodes may reject low-fee or invalid transactions
+
+---
+
+## 🔹 5. Mempool Is NOT Global
+
+Important concept:
+
+ There is no single universal mempool
+ Each node has its own mempool
+ Due to network delays:
+
+   Different nodes may have slightly different pending transactions
+
+👉 This is why:
+
+ You may see different pending transactions on explorers
+
+---
+
+## 🔹 6. Mempool Size & Congestion
+
+When network usage is high:
+
+ Mempool becomes crowded
+ Transaction fees increase
+ Low-fee transactions may:
+
+   Stay pending for long
+   Get dropped
+
+Example:
+
+ During NFT minting on Ethereum → huge congestion
+
+---
+
+## 🔹 7. Mempool Attacks / Issues
+
+### ⚠️ Spam Attacks
+
+ Attackers flood mempool with fake/low-value transactions
+
+### ⚠️ Front-running (Especially in DeFi)
+
+ Bots monitor mempool and:
+
+   Copy profitable transactions
+   Submit with higher fees to execute first
+
+👉 Common in decentralized exchanges (DEXs)
+
+---

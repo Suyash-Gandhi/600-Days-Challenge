@@ -1,0 +1,162 @@
+### 21. Forks in Blockchain (Soft Fork vs Hard Fork)
+
+Forks are changes or upgrades to the blockchain protocol rules. When nodes (computers) in the network don’t all agree on these rules, the blockchain can split into different versions—this is called a fork.
+
+---
+
+# 1. What is a Fork?
+
+A fork happens when:
+
+ The blockchain protocol is updated, OR
+ Nodes follow different rules
+
+👉 Result: The chain may temporarily or permanently split.
+
+### Types of Forks:
+
+ Soft Fork (Backward-compatible)
+ Hard Fork (Not backward-compatible)
+
+---
+
+# 2. Soft Fork
+
+### Definition
+
+A soft fork is a protocol upgrade that is backward-compatible.
+
+👉 Old nodes can still accept new blocks (they don’t break).
+
+---
+
+### How it works
+
+ New rules are stricter
+ Old nodes still recognize new blocks as valid
+ No permanent chain split (if majority adopts)
+
+---
+
+### Example Explanation
+
+Suppose earlier:
+
+ Block size allowed = 2 MB
+
+After soft fork:
+
+ New rule = max 1 MB
+
+Old nodes:
+
+ Still accept blocks ≤ 2 MB
+ So they accept new 1 MB blocks → no conflict
+
+---
+
+### Real Example
+
+ Bitcoin SegWit upgrade (2017)
+
+---
+
+### Key Features
+
+ Backward compatible
+ Requires majority support
+ Safer and less disruptive
+ No new coin created
+
+---
+
+# 3. Hard Fork
+
+### Definition
+
+A hard fork is a protocol upgrade that is NOT backward-compatible.
+
+👉 Old nodes cannot accept new rules → chain splits permanently.
+
+---
+
+### How it works
+
+ Rules are changed in a way old nodes reject
+ Network splits into two separate blockchains
+
+---
+
+### Example Explanation
+
+Earlier:
+
+ Block size = 1 MB
+
+After hard fork:
+
+ New rule = 8 MB
+
+Old nodes:
+
+ Reject 8 MB blocks
+ Result → two chains
+
+---
+
+### Real Examples
+
+ Bitcoin Cash (from Bitcoin, 2017)
+ Ethereum Classic (after DAO hack)
+
+---
+
+### Key Features
+
+ Not backward compatible
+ Creates two blockchains
+ May create new cryptocurrency
+ More disruptive
+
+---
+
+# 4. Soft Fork vs Hard Fork (Comparison)
+
+| Feature       | Soft Fork           | Hard Fork      |
+| ------------- | ------------------- | -------------- |
+| Compatibility | Backward-compatible | Not compatible |
+| Chain Split   | Usually no          | Yes            |
+| Old Nodes     | Still work          | Become invalid |
+| Risk Level    | Low                 | High           |
+| New Coin      | No                  | Often yes      |
+| Example       | Bitcoin SegWit      | Bitcoin Cash   |
+
+---
+
+# 5. Why Forks Are Important
+
+Forks help blockchain evolve:
+
+### a. Upgrade Features
+
+ Improve scalability (e.g., block size changes)
+ Add new functionalities
+
+### b. Fix Bugs or Security Issues
+
+ Example: Ethereum hard fork after hack
+
+### c. Community Disagreement
+
+ Different visions → chain splits
+
+---
+
+# 6. Simple Analogy
+
+Think of blockchain like a rulebook for a game:
+
+ Soft fork → Rule updated but old players can still play
+ Hard fork → Rule changed so much that old players must leave or form a new game
+
+---

@@ -1,0 +1,191 @@
+### 19. Gas Fees and Transaction Cost Model 
+
+
+
+# 🔹 1. What is Gas?
+
+Gas = unit of computational work
+
+ Every operation on blockchain (transfer, contract execution, NFT minting) requires computation
+ Gas measures how much work that operation needs
+
+👉 Think of gas like:
+
+ Fuel for a car → no fuel = car doesn’t move
+ Gas for blockchain → no gas = transaction doesn’t execute
+
+---
+
+# 🔹 2. Why Gas Fees Exist
+
+Gas fees serve 3 important purposes:
+
+### 1. Prevent Spam
+
+ Without cost → attackers could flood the network with fake transactions
+
+### 2. Reward Validators / Miners
+
+ People who process transactions earn fees
+
+### 3. Allocate Network Resources
+
+ Higher fees → priority processing
+ Lower fees → slower confirmation
+
+---
+
+# 🔹 3. Gas vs Transaction Fee (Important Difference)
+
+ Gas → amount of computational work
+ Fee → actual money paid
+
+### Formula:
+
+```
+Transaction Fee = Gas Used × Gas Price
+```
+
+---
+
+# 🔹 4. Key Components of Gas Model
+
+### (a) Gas Limit
+
+ Maximum gas you are willing to spend
+ Protects you from infinite execution
+
+👉 Example:
+
+ Simple transfer → ~21,000 gas
+ Smart contract → can be much higher
+
+---
+
+### (b) Gas Used
+
+ Actual gas consumed by transaction
+ Always ≤ Gas Limit
+
+---
+
+### (c) Gas Price
+
+ Price per unit of gas
+ Usually measured in:
+
+   Gwei (1 Gwei = 10⁻⁹ ETH)
+
+---
+
+### (d) Total Fee
+
+```
+Fee = Gas Used × Gas Price
+```
+
+---
+
+# 🔹 5. Ethereum Fee Model (EIP-1559)
+
+Modern Ethereum uses a dynamic fee system:
+
+### 1. Base Fee
+
+ Fixed by network demand
+ Burned (removed from circulation)
+
+### 2. Priority Fee (Tip)
+
+ Extra paid to validators for faster processing
+
+### Final Fee:
+
+```
+Total Fee = (Base Fee + Tip) × Gas Used
+```
+
+👉 Important:
+
+ Base fee changes every block
+ Makes fees more predictable
+
+---
+
+# 🔹 6. Example (Real Understanding)
+
+Suppose:
+
+ Gas Used = 21,000
+ Base Fee = 30 Gwei
+ Tip = 5 Gwei
+
+```
+Total Fee = 21,000 × (30 + 5)
+           = 21,000 × 35 Gwei
+           = 735,000 Gwei = 0.000735 ETH
+```
+
+---
+
+# 🔹 7. Types of Transactions & Their Gas Cost
+
+| Transaction Type      | Gas Cost (Approx) |
+| --------------------- | ----------------- |
+| ETH transfer          | 21,000            |
+| ERC-20 token transfer | 40,000–65,000     |
+| NFT mint              | 100,000+          |
+| Smart contract deploy | 500,000+          |
+
+👉 More logic = more gas
+
+---
+
+# 🔹 8. What Affects Gas Fees
+
+### 1. Network Congestion
+
+ More users → higher fees
+
+### 2. Transaction Complexity
+
+ Simple transfer < Smart contract
+
+### 3. Block Space Demand
+
+ Limited space per block → bidding war
+
+---
+
+# 🔹 9. Gas Refund Concept
+
+ If you set a high gas limit:
+
+   Unused gas is refunded
+ But:
+
+   Used gas is never refunded
+
+---
+
+# 🔹 10. Gas in Other Blockchains
+
+Not all blockchains use the same model:
+
+### Ethereum
+
+ Gas-based (most popular)
+
+### Bitcoin
+
+ Fee based on transaction size (bytes)
+
+### Solana
+
+ Very low fees (not gas-heavy)
+
+### Polygon / BSC
+
+ Same gas model but cheaper
+
+---
