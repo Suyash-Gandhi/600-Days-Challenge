@@ -1,0 +1,133 @@
+### 11. `break` & `continue` in Solidity
+
+
+
+## 🔹 1. `break` Statement
+
+### ➤ Definition
+
+`break` is used to exit the loop immediately, regardless of the condition.
+
+### ➤ How it works
+
+ When `break` is encountered → loop stops completely
+ Execution continues after the loop
+
+---
+
+### ➤ Example
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract BreakExample {
+    function testBreak() public pure returns (uint) {
+        uint sum = 0;
+
+        for (uint i = 0; i < 10; i++) {
+            if (i == 5) {
+                break; // loop stops here
+            }
+            sum += i;
+        }
+
+        return sum;
+    }
+}
+```
+
+### ➤ Step-by-step
+
+ Loop runs: `0,1,2,3,4`
+ At `i = 5` → `break` triggers
+ Loop exits
+ Final sum = `0+1+2+3+4 = 10`
+
+---
+
+### ➤ Use Cases
+
+ Stop loop when condition met
+ Prevent unnecessary computation (gas saving)
+ Early exit in search logic
+
+---
+
+## 🔹 2. `continue` Statement
+
+### ➤ Definition
+
+`continue` is used to skip the current iteration and move to the next one.
+
+### ➤ How it works
+
+ When `continue` is encountered → remaining code in loop is skipped
+ Loop continues with next iteration
+
+---
+
+### ➤ Example
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract ContinueExample {
+    function testContinue() public pure returns (uint) {
+        uint sum = 0;
+
+        for (uint i = 0; i < 5; i++) {
+            if (i == 2) {
+                continue; // skip this iteration
+            }
+            sum += i;
+        }
+
+        return sum;
+    }
+}
+```
+
+### ➤ Step-by-step
+
+ Loop runs: `0,1,2,3,4`
+ At `i = 2` → skipped
+ Sum = `0+1+3+4 = 8`
+
+---
+
+## 🔥 Key Difference (Important for Interviews)
+
+| Feature        | `break`           | `continue`               |
+| -------------- | ----------------- | ------------------------ |
+| Effect         | Stops entire loop | Skips current iteration  |
+| Loop execution | Ends immediately  | Continues next iteration |
+| Use case       | Exit early        | Skip specific cases      |
+
+---
+
+## ⚠️ Solidity-Specific Notes (Very Important)
+
+ Gas matters → use `break` to reduce gas cost
+ Avoid long loops → may hit block gas limit
+ Never loop over large arrays in production contracts
+ Prefer mapping or indexed logic instead of heavy loops
+
+---
+
+## 🧠 Best Practices
+
+ ✔ Use `break` when you found what you need
+ ✔ Use `continue` to ignore unwanted values
+ ✔ Always keep loops small and predictable
+ ❌ Avoid unbounded loops → can fail transactions
+
+---
+
+## 💡 Real-World Example
+
+Imagine:
+
+ Searching for a user in an array → use `break` when found
+ Skipping banned users → use `continue`
+
+---

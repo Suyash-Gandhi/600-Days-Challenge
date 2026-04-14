@@ -1,0 +1,282 @@
+## 12. Arrays in Solidity
+
+
+# 🔹 1. What is an Array?
+
+An array is a collection of elements of the same data type, stored sequentially.
+
+### Example:
+
+```solidity
+uint[] numbers;
+```
+
+This means:
+
+ A dynamic array of unsigned integers
+ Size can change over time
+
+---
+
+# 🔹 2. Types of Arrays in Solidity
+
+Solidity mainly has two types of arrays:
+
+---
+
+## ✅ (A) Fixed-size Arrays
+
+ Size is defined at declaration
+ Cannot grow or shrink
+
+```solidity
+uint[5] public numbers;
+```
+
+👉 Meaning:
+
+ Can store exactly 5 elements
+ Index range: `0 → 4`
+
+---
+
+## ✅ (B) Dynamic Arrays
+
+ Size is NOT fixed
+ Can grow or shrink
+
+```solidity
+uint[] public numbers;
+```
+
+👉 Used when:
+
+ You don’t know how many elements you’ll need
+
+---
+
+# 🔹 3. Declaring and Initializing Arrays
+
+### ✔️ Fixed Array Initialization
+
+```solidity
+uint[3] public nums = [1, 2, 3];
+```
+
+---
+
+### ✔️ Dynamic Array Initialization
+
+```solidity
+uint[] public nums;
+
+function addNumber(uint _num) public {
+    nums.push(_num);
+}
+```
+
+---
+
+# 🔹 4. Common Array Operations
+
+---
+
+## ✅ (1) Add Elements → `push()`
+
+```solidity
+nums.push(10);
+```
+
+👉 Adds element at the end
+
+---
+
+## ✅ (2) Remove Last Element → `pop()`
+
+```solidity
+nums.pop();
+```
+
+👉 Removes last element only
+❌ Cannot remove from middle directly
+
+---
+
+## ✅ (3) Access Elements
+
+```solidity
+uint value = nums[0];
+```
+
+👉 Arrays are zero-indexed
+
+---
+
+## ✅ (4) Update Elements
+
+```solidity
+nums[1] = 50;
+```
+
+---
+
+## ✅ (5) Get Length
+
+```solidity
+uint len = nums.length;
+```
+
+---
+
+# 🔹 5. Memory vs Storage Arrays (VERY IMPORTANT)
+
+This is interview-level + real-world critical.
+
+---
+
+## ✅ Storage Arrays
+
+ Stored on blockchain
+ Persistent (saved permanently)
+ Expensive (gas cost)
+
+```solidity
+uint[] public nums;
+```
+
+---
+
+## ✅ Memory Arrays
+
+ Temporary
+ Used inside functions
+ Cheaper
+
+```solidity
+function getArray() public pure returns(uint[] memory) {
+    uint;
+    temp[0] = 1;
+    temp[1] = 2;
+    temp[2] = 3;
+    return temp;
+}
+```
+
+---
+
+# 🔹 6. Deleting Elements
+
+---
+
+## ❗ Using `delete`
+
+```solidity
+delete nums[1];
+```
+
+👉 Result:
+
+ Value becomes 0
+ Index still exists
+
+Example:
+
+```
+[10, 20, 30] → delete index 1 → [10, 0, 30]
+```
+
+---
+
+## ❗ Important Insight
+
+Solidity arrays do NOT automatically shift elements like JavaScript.
+
+👉 You must manually handle shifting if needed.
+
+---
+
+# 🔹 7. Looping Through Arrays
+
+```solidity
+function getAll() public view returns(uint[] memory) {
+    return nums;
+}
+```
+
+Or manually:
+
+```solidity
+for(uint i = 0; i < nums.length; i++) {
+    // logic
+}
+```
+
+---
+
+# 🔹 8. Bytes Arrays (Special Case)
+
+```solidity
+bytes public data;
+```
+
+👉 Used for:
+
+ Efficient storage
+ Cheaper than string in some cases
+
+---
+
+# 🔹 9. Multidimensional Arrays
+
+```solidity
+uint[][] public matrix;
+```
+
+👉 Example:
+
+ 2D grid like:
+
+```
+[ [1,2], [3,4] ]
+```
+
+---
+
+# 🔹 10. Key Differences (Interview Focus)
+
+| Feature        | Fixed Array      | Dynamic Array   |
+| -------------- | ---------------- | --------------- |
+| Size           | Fixed            | Flexible        |
+| Gas Efficiency | Slightly cheaper | Slightly higher |
+| Use Case       | Known size       | Unknown size    |
+
+---
+
+# 🔹 11. Real-World Use Cases
+
+ List of users (addresses)
+ Voting systems
+ Transaction history
+ NFT token tracking
+ Order books
+
+---
+
+# 🔹 12. Common Mistakes (VERY IMPORTANT)
+
+ ❌ Trying to remove middle element directly
+ ❌ Forgetting `memory` keyword in functions
+ ❌ Out-of-bounds access (will revert)
+ ❌ Gas-heavy loops on large arrays
+
+---
+
+# 🔹 13. Best Practices
+
+ Use dynamic arrays for flexibility
+ Avoid large loops → gas expensive
+ Prefer mappings for large datasets
+ Use `memory` for temporary data
+ Be careful with deletions
+
+---

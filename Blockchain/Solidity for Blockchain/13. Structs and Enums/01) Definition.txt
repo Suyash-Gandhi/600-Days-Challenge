@@ -1,0 +1,262 @@
+## 13. Structs and Enums in Solidity
+
+Structs and Enums are user-defined data types in Solidity that help you organize and manage complex data in a clean, scalable way. They are heavily used in real-world smart contracts (especially in DeFi, NFTs, DAOs).
+
+---
+
+# 🟢 1. Structs in Solidity
+
+### ✅ Definition
+
+A struct is a custom data structure that groups multiple variables (possibly of different types) into one single unit.
+
+👉 Think of it like an object in JavaScript.
+
+---
+
+### 📌 Syntax
+
+```solidity
+struct Person {
+    string name;
+    uint age;
+    address wallet;
+}
+```
+
+---
+
+### 🧠 Example (Basic Usage)
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract StructExample {
+
+    struct Person {
+        string name;
+        uint age;
+    }
+
+    Person public person;
+
+    function setPerson(string memory _name, uint _age) public {
+        person = Person(_name, _age);
+    }
+}
+```
+
+---
+
+### 🔍 How It Works
+
+ `Person` → custom type
+ `person` → variable of that type
+ `Person(_name, _age)` → struct initialization
+
+---
+
+### 🟡 Different Ways to Initialize Structs
+
+#### 1. Constructor-style
+
+```solidity
+person = Person("Suyash", 21);
+```
+
+#### 2. Key-value style
+
+```solidity
+person = Person({
+    name: "Suyash",
+    age: 21
+});
+```
+
+#### 3. Step-by-step
+
+```solidity
+person.name = "Suyash";
+person.age = 21;
+```
+
+---
+
+### 🟣 Structs with Arrays
+
+```solidity
+Person[] public people;
+
+function addPerson(string memory _name, uint _age) public {
+    people.push(Person(_name, _age));
+}
+```
+
+---
+
+### 🔵 Structs with Mapping (VERY IMPORTANT)
+
+👉 This is real-world pattern
+
+```solidity
+mapping(address => Person) public persons;
+
+function setMyData(string memory _name, uint _age) public {
+    persons[msg.sender] = Person(_name, _age);
+}
+```
+
+---
+
+### ⚠️ Memory vs Storage with Structs
+
+```solidity
+function updatePerson() public {
+    Person storage p = person; // reference (gas efficient)
+    p.age = 30;
+}
+```
+
+ `storage` → modifies original data
+ `memory` → creates a copy
+
+---
+
+### 🧠 Real-World Use Cases
+
+ User profiles
+ NFT metadata
+ Order books
+ Voting systems
+
+---
+
+# 🟢 2. Enums in Solidity
+
+### ✅ Definition
+
+An enum is a way to define a set of predefined constant values.
+
+👉 Think of it like states or options.
+
+---
+
+### 📌 Syntax
+
+```solidity
+enum Status { Pending, Shipped, Delivered, Cancelled }
+```
+
+---
+
+### 🧠 Example
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract EnumExample {
+
+    enum Status { Pending, Shipped, Delivered }
+
+    Status public orderStatus;
+
+    function setShipped() public {
+        orderStatus = Status.Shipped;
+    }
+}
+```
+
+---
+
+### 🔍 How It Works
+
+ Enum values are internally stored as:
+
+  ```
+  Pending = 0
+  Shipped = 1
+  Delivered = 2
+  ```
+
+---
+
+### 🟡 Using Enums in Functions
+
+```solidity
+function setStatus(Status _status) public {
+    orderStatus = _status;
+}
+```
+
+---
+
+### 🟣 Using Enums with Structs (VERY IMPORTANT)
+
+👉 Common in production contracts
+
+```solidity
+contract OrderSystem {
+
+    enum Status { Pending, Shipped, Delivered }
+
+    struct Order {
+        uint id;
+        Status status;
+    }
+
+    Order public order;
+
+    function createOrder(uint _id) public {
+        order = Order(_id, Status.Pending);
+    }
+
+    function shipOrder() public {
+        order.status = Status.Shipped;
+    }
+}
+```
+
+---
+
+# 🔴 Key Differences: Struct vs Enum
+
+| Feature     | Struct               | Enum                   |
+| ----------- | -------------------- | ---------------------- |
+| Purpose     | Group data           | Define states          |
+| Data Types  | Multiple mixed types | Only predefined values |
+| Flexibility | High                 | Limited                |
+| Example     | User, Product        | Status, State          |
+
+---
+
+# ⚡ Best Practices (Important for Interviews + Real Projects)
+
+### ✅ Structs
+
+ Use for complex data
+ Combine with mapping for scalability
+ Prefer `storage` for updates
+
+### ✅ Enums
+
+ Use for state management
+ Avoid too many values (keep it simple)
+ Combine with structs for clarity
+
+---
+
+# 🚀 How This Appears in Real Projects
+
+### 🔹 Example: NFT Marketplace
+
+```solidity
+struct NFT {
+    uint tokenId;
+    address owner;
+    uint price;
+}
+
+enum ListingStatus { Active, Sold, Cancelled }
+```
+
+---
