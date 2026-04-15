@@ -2,244 +2,212 @@
 
 # 🧠 SYSTEM DESIGN — FINAL MASTER LIST ( 140 topics + 25 case studies)
 
----
 
-# 🔹 PHASE 0 — Core Computing Fundamentals (Must Have)
 
-1. How programs execute (process vs thread)
-2. Memory model (stack vs heap)
-3. CPU scheduling & context switching
-4. Disk vs RAM (latency, throughput)
-5. Sequential vs random access
-6. File systems basics
-7. I/O models (blocking vs non-blocking)
-8. Concurrency fundamentals (race conditions, deadlocks)
-9. Locks vs lock-free systems
-10. Time complexity in real systems (Big-O intuition)
-11. Hashing fundamentals (hash maps, collisions)
-12. Trees & indexing intuition (B-Trees)
+## 🔹 PHASE 1: Core Foundations (Start Here)
 
-🔥 High-impact:
+👉 Goal: Build intuition before touching distributed systems
 
- Disk vs RAM
- Concurrency
- Hashing
+1. What is system design & why it matters
+2. Functional vs non-functional requirements
+3. Latency vs throughput
+4. Scalability basics (horizontal vs vertical)
+5. Stateless vs stateful services
+6. Consistency vs availability (CAP theorem basics)
+7. High availability & fault tolerance basics
+8. Single point of failure (SPOF)
+9. Load testing, stress testing, benchmarking
 
 ---
 
-# 🔹 PHASE 1 — Networking & Communication
+## 🔹 PHASE 2: Backend & Runtime Fundamentals
 
-13. How the internet works (request lifecycle)
-14. DNS resolution
-15. TCP vs UDP
-16. HTTP/HTTPS fundamentals
-17. TLS handshake
-18. REST vs gRPC vs GraphQL
-19. WebSockets & long polling
-20. Reverse proxy vs forward proxy
-21. Load balancer basics
-22. CDN fundamentals
-23. Latency vs bandwidth vs throughput
-24. TLS termination (LB vs app)
+👉 Goal: Understand how backend systems actually execute
 
-🔥 High-impact:
-
- HTTP lifecycle
- TCP vs UDP
- CDN
+10. Threading vs multiprocessing
+11. Async I/O vs multithreading vs multiprocessing
+12. Containerization basics (Docker)
 
 ---
 
-# 🔹 PHASE 2 — Backend & API Design
+## 🔹 PHASE 3: Networking & Communication
 
-25. API design principles (REST best practices)
-26. Idempotency
-27. Pagination (offset vs cursor)
-28. Filtering & sorting
-29. API versioning
-30. Rate limiting (core concept)
-31. Authentication vs authorization
-32. Sessions vs JWT
-33. API error handling
-34. Input validation & contracts
+👉 Goal: How services talk to each other
 
-🔥 High-impact:
-
- Idempotency
- Pagination
- Rate limiting
+13. HTTP/HTTPS fundamentals
+14. TCP vs UDP trade-offs
+15. DNS resolution
+16. REST vs gRPC vs GraphQL
+17. WebSockets & long polling
+18. Reverse proxies & forward proxies
+19. Nginx/HAProxy basics
+20. API gateways
+21. TLS & HTTPS handshake (merged duplicate topics)
+22. TLS termination (LB vs app server)
+23. CDN basics & caching
+24. Multi-region networking & latency
 
 ---
 
-# 🔹 PHASE 3 — Data Modeling & Databases
+## 🔹 PHASE 4: Databases & Storage Systems
 
-35. Relational databases (schema design)
-36. Normalization vs denormalization
-37. Indexing (B-Tree, hash)
-38. Query optimization
-39. Transactions & ACID
-40. NoSQL databases (types)
-41. SQL vs NoSQL trade-offs
-42. Data modeling for scale
-43. Replication (leader-follower)
-44. Sharding strategies
-45. Consistency models (strong vs eventual)
-46. CAP theorem (practical)
-47. OLTP vs OLAP
-48. Data lakes vs warehouses
-49. Specialized DBs:
+👉 Goal: Data is the core of every system
+
+25. Relational databases (SQL basics)
+26. NoSQL databases (types & use cases)
+27. SQL vs NoSQL trade-offs
+28. ACID vs BASE
+29. Strong vs eventual consistency
+30. Database indexing
+31. Database replication
+32. Database sharding
+33. CAP theorem in databases (merged duplicate)
+34. OLTP vs OLAP
+35. Data lakes vs warehouses
+36. Denormalization & materialized views
+37. Specialized DBs:
 
  Time-series DB
  Graph DB
 
-🔥 High-impact:
+---
 
- Indexing
- Sharding
- Consistency
+## 🔹 PHASE 5: Caching & Performance Optimization
+
+👉 Goal: Make systems fast
+
+38. Caching fundamentals
+39. Client-side vs server-side caching
+40. Cache strategies (write-through, write-back, write-around)
+41. Cache eviction (LRU, LFU, FIFO)
+42. Cache invalidation
+43. CDN edge vs origin caching
+44. Hotspot problem
+45. Bloom filters
+46. Rate limiting basics (moved from multiple sections)
+47. Distributed cache consistency
+48. Read/write amplification
+49. Performance profiling & tracing
 
 ---
 
-# 🔹 PHASE 4 — Caching & Performance
+## 🔹 PHASE 6: Messaging, Queues & Event Systems
 
-50. Why caching is needed
-51. Client vs server caching
-52. CDN edge vs origin caching
-53. Redis basics
-54. Cache strategies (write-through/back/around)
-55. Cache eviction (LRU, LFU)
-56. Cache invalidation
-57. Hotspot problem
-58. Read vs write amplification
-59. Bloom filters
-60. Rate limiting using cache
-61. Distributed cache consistency
-62. Performance profiling & tracing
+👉 Goal: Decouple systems and scale async workloads
 
-🔥 High-impact:
-
- Cache invalidation
- Redis
- LRU
+50. Message queues basics
+51. Publish-subscribe pattern
+52. Delivery guarantees (at-most / at-least / exactly once)
+53. Dead-letter queues
+54. Event-driven architecture
+55. Kafka basics (partitions, offsets)
+56. Consumer groups & scaling
+57. Stream processing basics
+58. Event sourcing
+59. CQRS
+60. Event replay & reprocessing
+61. Lambda architecture
+62. Event storming
 
 ---
 
-# 🔹 PHASE 5 — Async Systems & Messaging
+## 🔹 PHASE 7: Scalability & Reliability Engineering
 
-63. Sync vs async communication
-64. Message queues fundamentals
-65. Pub/Sub pattern
-66. Kafka basics (partitions, offsets)
-67. Delivery guarantees
-68. Consumer groups
-69. Event-driven architecture
-70. Dead-letter queues
-71. Event sourcing
-72. CQRS
-73. Event replay
-74. Lambda architecture
-75. Event storming
+👉 Goal: Build systems that don’t break at scale
 
-🔥 High-impact:
-
- Kafka
- Event-driven systems
+63. Load balancing (algorithms)
+64. Global load balancing (GeoDNS, Anycast)
+65. Rate limiting strategies (kept one unified topic)
+66. Circuit breakers & retries
+67. Service discovery
+68. Health checks & heartbeat
+69. Failover strategies
+70. Leader election (Raft, Paxos)
+71. Consensus basics
+72. Quorum-based systems
+73. Autoscaling
+74. Serverless scaling
+75. Multi-cloud vs hybrid cloud
+76. Auto-healing systems
 
 ---
 
-# 🔹 PHASE 6 — Scalability & Reliability
+## 🔹 PHASE 8: Distributed Systems Deep Dive
 
-76. Horizontal vs vertical scaling
-77. Load balancing algorithms
-78. Global load balancing (GeoDNS, Anycast)
-79. Rate limiting strategies (advanced)
-80. Circuit breakers
-81. Retries & backoff
-82. Service discovery
-83. Health checks
-84. Failover strategies
-85. High availability design
-86. Autoscaling
-87. Serverless scaling
-88. Multi-cloud vs hybrid cloud
-89. Auto-healing systems
+👉 Goal: True system design mastery
 
-🔥 High-impact:
-
- Load balancing
- Failover
- Retries
+77. Distributed transactions (2PC, 3PC)
+78. Distributed locks
+79. Idempotency
+80. Clock synchronization (NTP, Lamport)
+81. Vector clocks
+82. Gossip protocol
+83. Network partitions handling
+84. Data replication (sync vs async)
+85. Consistent hashing
+86. Quorum vs leader-based replication
+87. Saga pattern & distributed workflows
 
 ---
 
-# 🔹 PHASE 7 — Distributed Systems (Core Depth)
+## 🔹 PHASE 9: Security & System Protection
 
-90. Distributed transactions (2PC)
-91. Distributed locks
-92. Idempotency (deep)
-93. Consistent hashing
-94. Leader election (Raft basics)
-95. Consensus concepts
-96. Network partitions
-97. Replication strategies (sync vs async)
-98. Quorum systems
-99. Clock synchronization (Lamport)
-100. Vector clocks
-101. Gossip protocol
-102. Saga pattern
+👉 Goal: Build production-safe systems
 
-🔥 High-impact:
-
- Consistent hashing
- Distributed locks
- Consensus
+88. Authentication vs authorization
+89. OAuth 2.0 & OpenID Connect
+90. JWT
+91. API keys & HMAC
+92. RBAC vs ABAC
+93. Encryption basics (HTTPS, TLS)
+94. CSRF, XSS, SQL injection prevention
+95. Secrets management
+96. Zero trust architecture
+97. DDoS protection & WAF
+98. Compliance (GDPR, etc.)
 
 ---
 
-# 🔹 PHASE 8 — Security Fundamentals
+## 🔹 PHASE 10: Monitoring & Observability
 
-103. HTTPS & TLS (practical)
-104. OAuth 2.0 & OpenID Connect
-105. JWT authentication
-106. API keys & HMAC
-107. RBAC vs ABAC
-108. Common attacks (XSS, CSRF, SQL injection)
-109. Secrets management
-110. Zero trust architecture
-111. DDoS mitigation & WAF
-112. Compliance (GDPR, etc.)
+👉 Goal: Know when your system breaks (and why)
 
-🔥 High-impact:
-
- Auth flows
- API security
-
----
-
-# 🔹 PHASE 9 — Observability & Production Systems
-
-113. Logging (structured logs)
-114. Metrics & monitoring (Prometheus)
-115. Distributed tracing
-116. Log aggregation (ELK)
-117. SLIs, SLOs, SLAs
-118. Alerting systems
-119. Error budgets
-120. Canary deployments
-121. Blue-green deployments
-122. Chaos engineering
-123. Synthetic vs real-user monitoring
-124. Incident response basics
-
-🔥 High-impact:
-
- Monitoring
- SLOs
+99. Logging (structured logs)
+100. Metrics & monitoring (Prometheus)
+101. Distributed tracing
+102. Log aggregation (ELK)
+103. SLIs, SLOs, SLAs
+104. Alerting systems
+105. Error budgets
+106. Canary deployments
+107. Blue-green deployments
+108. Chaos engineering
+109. Synthetic vs real-user monitoring
+110. Observability-driven design
 
 ---
 
+## 🔹 PHASE 11: Advanced Design Patterns (Bridging to Real Systems)
+
+111. Designing for consistency trade-offs
+112. Designing for high-throughput ingestion
+113. Designing low-latency systems
+114. Designing global systems (multi-region)
+115. Feature flags & experimentation
+116. Modular microservices design
+117. Caching strategies for workloads
+118. Distributed task queues
+119. Stateful vs stateless interactions
+120. Data pipelines with idempotency
+121. Disaster recovery (RPO/RTO)
+122. Observability-first systems
+123. Secure system design
+124. Cost optimization in cloud
+
+---
 
 ## 🔹 PHASE 12: Real-World System Design (Interview Level)
+
 
 125. Designing a URL shortener (Bitly)
 126. Designing a rate limiter

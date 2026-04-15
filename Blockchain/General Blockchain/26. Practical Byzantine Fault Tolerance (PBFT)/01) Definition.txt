@@ -1,0 +1,160 @@
+## 26. Practical Byzantine Fault Tolerance (PBFT)
+
+Practical Byzantine Fault Tolerance (PBFT) is a consensus algorithm designed to help distributed systems (like blockchains) reach agreement even when some nodes are faulty or malicious.
+
+---
+
+# 1. Background: Byzantine Fault Problem
+
+PBFT is based on the Byzantine Generals Problem, where:
+
+ Multiple generals must agree on a plan (attack/retreat)
+ Some generals may be traitors (send false messages)
+ The system must still reach a correct decision
+
+👉 In blockchain terms:
+
+ Generals = nodes
+ Messages = transactions/blocks
+ Traitors = malicious nodes
+
+---
+
+# 2. What PBFT Solves
+
+PBFT ensures:
+
+ Consistency → All honest nodes agree on the same state
+ Fault tolerance → Works even if some nodes are malicious
+ Finality → Once a block is confirmed, it cannot be reversed
+
+---
+
+# 3. Fault Tolerance Rule
+
+PBFT can tolerate:
+
+[
+f \leq \frac{n - 1}{3}
+]
+
+Where:
+
+ ( n ) = total nodes
+ ( f ) = faulty/malicious nodes
+
+👉 Meaning:
+
+ At least 2/3 of nodes must be honest
+
+Example:
+
+ 4 nodes → can tolerate 1 faulty
+ 10 nodes → can tolerate 3 faulty
+
+---
+
+# 4. How PBFT Works (Step-by-Step)
+
+PBFT operates in rounds, with one node acting as a leader (primary).
+
+### Step 1: Request
+
+ A client sends a request (transaction) to the leader
+
+### Step 2: Pre-Prepare
+
+ Leader proposes a block and sends it to all nodes
+
+### Step 3: Prepare
+
+ Nodes verify the block
+ If valid → they broadcast a “prepare” message
+
+### Step 4: Commit
+
+ Nodes collect enough prepare messages
+ Then send a “commit” message
+
+### Step 5: Execution
+
+ Once enough commits are received → block is finalized
+
+👉 Important condition:
+
+ A node needs 2f + 1 matching messages to proceed
+
+---
+
+# 5. PBFT Communication Phases
+
+| Phase       | Purpose               |
+| ----------- | --------------------- |
+| Pre-prepare | Leader proposes block |
+| Prepare     | Nodes verify & agree  |
+| Commit      | Final confirmation    |
+| Reply       | Send result to client |
+
+---
+
+# 6. Key Characteristics
+
+### ✔ Fast Finality
+
+ No forks like PoW
+ Once committed → final forever
+
+### ✔ Energy Efficient
+
+ No mining required
+
+### ✔ High Security
+
+ Works even with malicious nodes
+
+---
+
+# 7. Advantages of PBFT
+
+ Immediate transaction finality
+ Low energy consumption
+ High throughput (fast transactions)
+ Strong consistency
+
+---
+
+# 8. Limitations of PBFT
+
+### ❌ Poor Scalability
+
+ Requires heavy communication:
+
+   Each node talks to every other node
+ Message complexity ≈ O(n²)
+
+### ❌ Not Suitable for Public Blockchains
+
+ Works best in small, permissioned networks
+
+---
+
+# 9. Where PBFT is Used
+
+PBFT is mainly used in permissioned blockchains:
+
+ Hyperledger Fabric
+ Tendermint
+ Cosmos
+
+---
+
+# 10. PBFT vs PoW vs PoS
+
+| Feature      | PBFT           | PoW           | PoS           |
+| ------------ | -------------- | ------------- | ------------- |
+| Energy usage | Low            | High          | Low           |
+| Finality     | Instant        | Probabilistic | Faster        |
+| Scalability  | Low            | Medium        | High          |
+| Use case     | Private chains | Public chains | Public chains |
+
+---
