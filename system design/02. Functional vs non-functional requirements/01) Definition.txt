@@ -1,185 +1,145 @@
+## 2. Functional vs Non-Functional Requirements
 
-## 1. What are Functional Requirements (FR)?
 
-Functional requirements describe what the system should do.
-They define features, behaviors, and actions the system must perform.
+# 🔹 1. Functional Requirements (FR)
 
-Think of them as:
+### 👉 Definition
 
-> “If a user does X, the system should do Y.”
+Functional requirements describe what the system should do — the actual features and behaviors.
 
-### Simple definition
+They define:
 
-Functional requirements = system capabilities
-
-### Examples (very concrete)
-
- User can register using email and password
- User can log in
- User can search products
- User can place an order
- Admin can block a user
- System sends a password reset email
-
-### Example (real project – e-commerce)
-
- User can add items to cart
- User can remove items from cart
- User can checkout using UPI / card
- System generates an order ID after payment
-
-If you remove a functional requirement → a feature disappears.
+ Inputs → Processing → Outputs
+ Business logic
+ User interactions
 
 ---
 
-## 2. What are Non-Functional Requirements (NFR)?
+### 👉 Examples (Real Systems)
 
-Non-functional requirements describe how well the system should work.
-They define quality attributes, constraints, and system behavior under load.
+#### 📌 Instagram
 
-Think of them as:
+ User can upload photos/videos
+ User can like and comment
+ User can follow/unfollow users
 
-> “How fast, how secure, how reliable, how scalable?”
+#### 📌 Amazon
 
-### Simple definition
+ User can search products
+ User can add items to cart
+ User can place orders
 
-Non-functional requirements = system qualities
+---
 
-### Common categories of NFRs
+### 👉 Key Characteristics
+
+ Feature-specific
+ Clearly defined actions
+ Usually derived from business requirements
+ Easy to test (works / doesn’t work)
+
+---
+
+### 👉 Example (Structured)
+
+For a Chat Application:
+
+ User can send messages
+ User can receive messages in real-time
+ User can create groups
+
+---
+
+# 🔹 2. Non-Functional Requirements (NFR)
+
+### 👉 Definition
+
+Non-functional requirements describe how well the system performs those functions.
+
+They define:
 
  Performance
  Scalability
- Availability
- Security
  Reliability
- Maintainability
+ Security
  Usability
- Consistency
 
 ---
 
-## 3. Examples of Non-Functional Requirements
+### 👉 Examples (Real Systems)
 
-### Performance
+#### 📌 Instagram
 
- API response time should be < 200 ms
- Page should load within 2 seconds
+ Feed should load in < 2 seconds
+ System should support millions of users
+ High availability (minimal downtime)
 
-### Scalability
+#### 📌 Amazon
 
- System should handle 1 million users
- Should support 10x traffic during sales
-
-### Availability
-
- System uptime should be 99.9%
- No single point of failure
-
-### Security
-
- Passwords must be hashed
- APIs must require authentication
- Data must be encrypted at rest and in transit
-
-### Reliability
-
- No data loss during server crash
- Messages should not be duplicated
-
-### Maintainability
-
- Code should be modular
- Easy to add new features
-
-If you remove a non-functional requirement →
-the feature still exists, but works poorly or fails under real conditions.
+ Checkout must be secure
+ Website should handle Black Friday traffic spikes
+ Low latency for product search
 
 ---
 
-## 4. Side-by-Side Comparison
+### 👉 Key Characteristics
 
-| Aspect         | Functional       | Non-Functional                  |
-| -------------- | ---------------- | ------------------------------- |
-| Focus          | What system does | How system behaves              |
-| Defines        | Features         | Quality & constraints           |
-| User visible   | Yes              | Mostly indirect                 |
-| Example        | “User can login” | “Login should take < 300 ms”    |
-| Failure impact | Feature missing  | System slow, insecure, unstable |
+ Quality attributes
+ System-wide impact
+ Harder to measure precisely
+ Crucial for large-scale systems
 
 ---
 
-## 5. Example: Login Feature (FR + NFR together)
+### 👉 Example (Structured)
 
-### Functional Requirements
+For a Chat Application:
 
- User can log in using email & password
- User sees error on wrong credentials
-
-### Non-Functional Requirements
-
- Login response time < 200 ms
- Password stored using bcrypt
- Login API should handle 10k concurrent users
- Account locked after 5 failed attempts
-
-👉 Real systems always need BOTH
+ Messages should be delivered in < 100 ms
+ System should support 1 million concurrent users
+ Messages should not be lost (reliability)
 
 ---
 
-## 6. How They Are Used in System Design
+# 🔹 3. Core Differences (VERY IMPORTANT)
 
-### Functional Requirements help you decide:
-
- APIs needed
- Database tables
- User flows
- Business logic
-
-### Non-Functional Requirements help you decide:
-
- Architecture (monolith vs microservices)
- Caching (Redis)
- Load balancers
- Database type
- Replication & backups
-
-Example:
-
- FR: “User can upload images”
- NFR: “Image upload should support 10MB files and serve images globally with low latency”
-  → leads to object storage + CDN
+| Aspect  | Functional Requirements  | Non-Functional Requirements      |
+| ------- | ------------------------ | -------------------------------- |
+| Focus   | What system does         | How system performs              |
+| Nature  | Features                 | Quality attributes               |
+| Scope   | Specific functionalities | Entire system behavior           |
+| Testing | Yes/No (works or not)    | Measured (latency, uptime, etc.) |
+| Example | “Send message”           | “Message delivery < 100ms”       |
 
 ---
 
-## 7. Beginner Mistake (Very Common)
+# 🔹 4. How Interviewers Expect You to Use This
 
-❌ Writing only functional requirements
-✅ Writing functional AND non-functional together
+In system design interviews:
 
-Bad:
+### Step 1: Clarify Functional Requirements
 
-> “User can watch videos”
+You should ask:
 
-Good:
+ What features are needed?
+ What are users allowed to do?
 
-> “User can watch videos at 1080p with buffering < 1 second for 95% users”
+👉 Example:
+
+> “Users should be able to upload posts, follow users, and view feeds.”
 
 ---
 
-## 8. Rule of Thumb (Very Important)
+### Step 2: Define Non-Functional Requirements
 
- FR = product correctness
- NFR = production readiness
+You should explicitly state:
 
-A system with only FRs:
+ Scale (users, requests/sec)
+ Latency expectations
+ Availability requirements
 
- Works in demo
- Fails in real world
+👉 Example:
 
-A system with FR + NFR:
-
- Scales
- Survives traffic
- Feels “professional”
+> “We should support 10M users with feed load time under 200ms and 99.99% availability.”
 
 ---

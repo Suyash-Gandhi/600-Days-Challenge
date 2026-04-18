@@ -1,0 +1,146 @@
+## 1. What is System Design & Why It Matters
+
+### 🔹 1. What is System Design?
+
+System Design is the process of defining the architecture, components, modules, interfaces, and data flow of a software system to meet specific requirements.
+
+In simple terms:
+
+> It is about how you build a system that works at scale, is reliable, and performs well.
+
+---
+
+### 🔹 2. Key Elements of System Design
+
+A system is not just code — it is a combination of multiple parts:
+
+ Architecture
+
+   High-level structure (e.g., monolith vs microservices)
+
+ Components / Services
+
+   Backend services, APIs, databases, caches, queues
+
+ Data Flow
+
+   How data moves between components
+
+ Storage
+
+   Databases (SQL/NoSQL), file storage
+
+ Communication
+
+   HTTP, WebSockets, message queues
+
+ Infrastructure
+
+   Servers, cloud, load balancers
+
+---
+
+### 🔹 3. Example to Build Intuition
+
+Take a simple app: URL Shortener (like bit.ly)
+
+At small scale:
+
+ One server
+ One database
+
+At large scale:
+
+ Load balancers
+ Multiple backend servers
+ Distributed database
+ Caching (Redis)
+ Rate limiting
+ Analytics system
+
+👉 System design is about evolving this system as scale increases.
+
+---
+
+### 🔹 4. Why System Design Matters
+
+#### ✅ 1. Handles Scale (Millions of Users)
+
+ Without design → system crashes under load
+ With design → system scales horizontally
+
+Example:
+
+ Instagram handles billions of requests/day
+ Requires distributed systems, caching, CDNs
+
+---
+
+#### ✅ 2. Ensures Reliability & Availability
+
+ Systems must not fail frequently
+
+Concepts involved:
+
+ Replication
+ Failover
+ Redundancy
+
+Example:
+
+ Banking systems must be highly available
+
+---
+
+#### ✅ 3. Improves Performance
+
+ Reduces latency and improves response time
+
+Techniques:
+
+ Caching
+ Load balancing
+ Efficient DB queries
+
+---
+
+#### ✅ 4. Supports Maintainability
+
+ Easy to update, debug, and extend
+
+Bad design:
+
+ Tight coupling → hard to change
+
+Good design:
+
+ Loose coupling + modularity
+
+---
+
+#### ✅ 5. Enables Fault Tolerance
+
+ System continues working even when parts fail
+
+Example:
+
+ If one server goes down → others take over
+
+---
+
+#### ✅ 6. Optimizes Cost
+
+ Efficient use of infrastructure
+
+Example:
+
+ Using caching reduces DB load → lowers cost
+
+---
+
+#### ✅ 7. Required for Real-World Engineering
+
+ Writing code is only ~30% of the job
+ Designing systems is what senior engineers do
+
+---

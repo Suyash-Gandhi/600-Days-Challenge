@@ -1,30 +1,53 @@
-const proto = {
-    
-    login(input) {
-        if (this.password !== input) {
-            console.log("invalid");
+ /*
+ function count(num) {
+    let freq={}
 
-        }
-        else {
-            console.log(`${this.name} logged in`);
-        }
+const str=num.toString()
 
-
+for (let element of str) {
+    if (freq[element]) {
+        freq[element]++
+    } else {
+        freq[element]=1
     }
+    
+     
+}
+console.log(freq)
 }
 
-const createUser = (name, password) => {
-    const user = Object.create(proto)
-    user.name = name
-    user.password = password
-    return user
+count(123456789123456)
+
+
+
+const arr= [1,2,3,4,5,6,7,8,9,10]
+
+function findprime(arr){
+    const prime=arr.filter(num=>num>1 && num%2!==0)
+    console.log(prime)
 }
 
-user1 = createUser("suyash", "1234")
-user1.login("1234")
-user1.login("123")
+findprime(arr)
 
 
 
-console.log("hello");
+function fibonacci(num){
+
+    let a=0
+    let b=1
+
+    for (let i = 2; i <= num ;i++) {
+        let c=a+b
+        a=b
+        b=c
+        
+    }
+    return b
+
+
+}
+
+console.log(fibonacci(7))
+*/
+
 

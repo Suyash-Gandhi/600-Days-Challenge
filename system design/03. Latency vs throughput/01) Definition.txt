@@ -1,0 +1,164 @@
+## 3. Latency vs Throughput (Core System Design Concept)
+
+
+# 🔹 1. What is Latency?
+
+Latency = Time taken to complete a single request
+
+ It measures how fast one operation is completed
+ Usually measured in:
+
+   milliseconds (ms)
+   seconds (s)
+
+### 👉 Example:
+
+ You send a request to a server
+ It responds in 100 ms
+ That 100 ms = latency
+
+### 📌 Real-world analogy:
+
+ Ordering food at a restaurant
+  → Time from placing order to receiving food = latency
+
+---
+
+# 🔹 2. What is Throughput?
+
+Throughput = Number of requests processed per unit time
+
+ Measures how much work a system can handle
+ Usually measured in:
+
+   requests/second (RPS)
+   transactions/second (TPS)
+
+### 👉 Example:
+
+ A server handles 1000 requests per second
+ That is its throughput
+
+### 📌 Real-world analogy:
+
+ Restaurant serving 100 customers per hour
+  → That is throughput
+
+---
+
+# 🔹 3. Key Difference (Core Idea)
+
+| Aspect  | Latency          | Throughput        |
+| ------- | ---------------- | ----------------- |
+| Meaning | Time per request | Requests per time |
+| Focus   | Speed            | Capacity          |
+| Unit    | ms / seconds     | RPS / TPS         |
+| Goal    | Minimize         | Maximize          |
+
+👉 Simple line to remember:
+
+ Latency = How fast?
+ Throughput = How many?
+
+---
+
+# 🔹 4. Relationship Between Latency & Throughput
+
+This is where most people get confused.
+
+### ❗ Important:
+
+ Improving one can hurt the other
+ Systems must balance both
+
+---
+
+### Case 1: Low Latency, Low Throughput
+
+ Fast response, but handles fewer users
+ Example:
+
+   Single-threaded system
+   Immediate processing
+
+---
+
+### Case 2: High Throughput, High Latency
+
+ Handles many requests, but each takes longer
+ Example:
+
+   Batch processing systems
+   Queues
+
+---
+
+### 📌 Example:
+
+ Processing requests one-by-one:
+
+   Latency = low
+   Throughput = low
+
+ Processing in batches:
+
+   Latency = high (wait time)
+   Throughput = high
+
+---
+
+# 🔹 5. Trade-offs in System Design
+
+### 1. Batching
+
+ Combine multiple requests
+ ✅ Improves throughput
+ ❌ Increases latency
+
+---
+
+### 2. Parallelism (Multithreading)
+
+ Handle requests concurrently
+ ✅ Improves throughput
+ ⚠️ May increase latency due to contention
+
+---
+
+### 3. Caching
+
+ Store frequently accessed data
+ ✅ Reduces latency
+ ⚠️ Slight overhead, but overall helps both
+
+---
+
+### 4. Load Balancing
+
+ Distribute requests across servers
+ ✅ Improves throughput
+ ✅ Helps reduce latency
+
+---
+
+# 🔹 6. When to Prioritize What?
+
+### ✅ Prioritize Low Latency (User-facing systems)
+
+ Chat apps (WhatsApp)
+ Search engines (Google)
+ Gaming systems
+
+👉 Users care about instant response
+
+---
+
+### ✅ Prioritize High Throughput (Data-heavy systems)
+
+ Batch processing (Hadoop, Spark)
+ Analytics pipelines
+ Log processing systems
+
+👉 Systems care about processing large volumes
+
+---
