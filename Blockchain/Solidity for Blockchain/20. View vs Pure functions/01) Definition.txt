@@ -1,0 +1,170 @@
+### 20. View vs Pure Functions in Solidity
+
+
+# 🔹 1. What are Function Modifiers (view & pure)?
+
+In Solidity, `view` and `pure` are function modifiers that define how a function interacts with blockchain data (state variables).
+
+| Modifier | Can read state? | Can modify state? | Gas cost (external call) |
+| -------- | --------------- | ----------------- | ------------------------ |
+| view     | ✅ Yes           | ❌ No              | ❌ Free (off-chain)       |
+| pure     | ❌ No            | ❌ No              | ❌ Free (off-chain)       |
+
+---
+
+# 🔹 2. `view` Functions
+
+### ✅ Definition:
+
+A `view` function can read state variables but cannot modify them.
+
+### 📌 Key Points:
+
+ Reads blockchain data
+ Cannot:
+
+   Change state variables
+   Emit events
+   Create contracts
+ Used for getting data
+
+---
+
+### 💡 Example:
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract Example {
+    uint public num = 10;
+
+    function getNum() public view returns (uint) {
+        return num;
+    }
+}
+```
+
+### 🔍 Explanation:
+
+ `num` is a state variable
+ `getNum()` reads it → allowed in `view`
+ No modification → safe
+
+---
+
+# 🔹 3. `pure` Functions
+
+### ✅ Definition:
+
+A `pure` function cannot read OR modify state variables.
+
+### 📌 Key Points:
+
+ Works only with:
+
+   Local variables
+   Function inputs
+ Completely independent of blockchain state
+
+---
+
+### 💡 Example:
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract Example {
+    function add(uint a, uint b) public pure returns (uint) {
+        return a + b;
+    }
+}
+```
+
+### 🔍 Explanation:
+
+ No state variables used
+ Only calculation → perfect use of `pure`
+
+---
+
+# 🔹 4. Key Differences (Very Important)
+
+| Feature               | view | pure |
+| --------------------- | ---- | ---- |
+| Reads state variables | ✅    | ❌    |
+| Modifies state        | ❌    | ❌    |
+| Uses local variables  | ✅    | ✅    |
+| Uses inputs           | ✅    | ✅    |
+| Blockchain dependency | Yes  | No   |
+
+---
+
+# 🔹 5. Gas Concept (Important for Interviews)
+
+### 🧠 Key Idea:
+
+ Calling `view` or `pure` functions from outside the blockchain (off-chain):
+  → NO gas
+
+ Calling them inside another function (on-chain):
+  → Gas is used
+
+---
+
+### 💡 Example:
+
+```solidity
+function callInternal() public {
+    uint x = add(2, 3); // pure function → gas used here
+}
+```
+
+---
+
+# 🔹 6. Common Mistakes
+
+### ❌ Mistake 1: Using state variable in `pure`
+
+```solidity
+uint num = 5;
+
+function wrong() public pure returns (uint) {
+    return num; // ❌ ERROR
+}
+```
+
+---
+
+### ❌ Mistake 2: Modifying state in `view`
+
+```solidity
+uint num;
+
+function wrong() public view {
+    num = 10; // ❌ ERROR
+}
+```
+
+---
+
+# 🔹 7. When to Use What?
+
+### ✅ Use `view` when:
+
+ You need to read blockchain data
+ Example:
+
+   Getting balance
+   Returning stored values
+
+---
+
+### ✅ Use `pure` when:
+
+ You are doing calculations only
+ Example:
+
+   Math functions
+   Utility logic
+
+---

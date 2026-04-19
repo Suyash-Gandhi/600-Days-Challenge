@@ -1,0 +1,205 @@
+## 17. Function Return Values in Solidity
+
+Function return values are how a function sends data back to the caller. This is essential for retrieving results from smart contracts (e.g., balances, calculations, state info).
+
+---
+
+# 🔹 1. Basic Syntax
+
+A function specifies return values using the `returns` keyword.
+
+### Example:
+
+```solidity
+function getNumber() public pure returns (uint) {
+    return 10;
+}
+```
+
+### Explanation:
+
+ `returns (uint)` → function will return a `uint`
+ `return 10;` → actual value returned
+
+---
+
+# 🔹 2. Returning Multiple Values
+
+Solidity allows returning multiple values.
+
+### Example:
+
+```solidity
+function getValues() public pure returns (uint, bool) {
+    return (100, true);
+}
+```
+
+### How it works:
+
+ Values are returned as a tuple
+ Useful for returning structured data without using structs
+
+---
+
+# 🔹 3. Named Return Variables
+
+You can name return variables directly in the function signature.
+
+### Example:
+
+```solidity
+function getData() public pure returns (uint x, bool success) {
+    x = 50;
+    success = true;
+}
+```
+
+### Key Insight:
+
+ No need to explicitly use `return`
+ Solidity automatically returns assigned values
+
+---
+
+# 🔹 4. Returning from State Variables
+
+Functions often return stored blockchain data.
+
+### Example:
+
+```solidity
+uint public value = 42;
+
+function getValue() public view returns (uint) {
+    return value;
+}
+```
+
+### Important:
+
+ Uses `view` because it reads state
+ Does NOT modify blockchain
+
+---
+
+# 🔹 5. Destructuring Return Values
+
+When calling a function, you can capture multiple returns.
+
+### Example:
+
+```solidity
+function getValues() public pure returns (uint, bool) {
+    return (10, true);
+}
+
+function useValues() public pure {
+    (uint num, bool flag) = getValues();
+}
+```
+
+---
+
+# 🔹 6. Ignoring Return Values
+
+You can ignore some returned values using commas.
+
+### Example:
+
+```solidity
+(uint num, ) = getValues();
+```
+
+---
+
+# 🔹 7. Return vs Revert
+
+Important distinction:
+
+| Concept              | Purpose          |
+| -------------------- | ---------------- |
+| `return`             | Sends value back |
+| `revert` / `require` | Stops execution  |
+
+### Example:
+
+```solidity
+function divide(uint a, uint b) public pure returns (uint) {
+    require(b != 0, "Cannot divide by zero");
+    return a / b;
+}
+```
+
+---
+
+# 🔹 8. Return Data Locations (Advanced)
+
+When returning complex types:
+
+| Type    | Location |
+| ------- | -------- |
+| Arrays  | `memory` |
+| Strings | `memory` |
+| Structs | `memory` |
+
+### Example:
+
+```solidity
+function getArray() public pure returns (uint[] memory) {
+    uint;
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 3;
+    return arr;
+}
+```
+
+---
+
+# 🔹 9. Real-World Use Cases
+
+### ✔ Getting user balance
+
+```solidity
+function getBalance(address user) public view returns (uint) {
+    return balances[user];
+}
+```
+
+### ✔ Returning calculation results
+
+```solidity
+function calculate(uint a, uint b) public pure returns (uint sum, uint product) {
+    sum = a + b;
+    product = a  b;
+}
+```
+
+---
+
+# 🔹 10. Best Practices
+
+ Always specify return types clearly
+ Use named returns for readability
+ Use `view` / `pure` properly
+ Avoid returning large arrays (gas heavy when used internally)
+ Prefer structs for complex data instead of many return values
+
+---
+
+# 🔹 11. Common Mistakes
+
+❌ Forgetting `returns` keyword
+
+```solidity
+function test() public { return 10; } // ERROR
+```
+
+✅ Correct:
+
+```solidity
+function test() public pure returns (uint) { return 10; }
+```
+
+---

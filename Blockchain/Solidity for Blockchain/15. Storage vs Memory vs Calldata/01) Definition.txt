@@ -1,0 +1,264 @@
+## 15. Storage vs Memory vs Calldata in Solidity
+
+
+# 🔷 1. What are Data Locations?
+
+In Solidity, complex data types like:
+
+ arrays
+ structs
+ mappings
+
+must specify where they are stored:
+
+👉 Storage
+👉 Memory
+👉 Calldata
+
+Each behaves differently in terms of:
+
+ persistence
+ cost
+ mutability
+
+---
+
+# 🔷 2. Storage
+
+### 📌 Definition
+
+ Permanent storage on the blockchain
+ Stored inside contract state
+ Very expensive (gas-heavy)
+
+---
+
+### 📌 Key Characteristics
+
+ Persistent between function calls
+ Modifiable (read + write)
+ Stored on-chain
+ Used for state variables
+
+---
+
+### 📌 Example
+
+```solidity
+contract Example {
+    uint[] public arr;
+
+    function add(uint _x) public {
+        arr.push(_x); // stored permanently
+    }
+}
+```
+
+---
+
+### 📌 Important Behavior (Reference Type)
+
+```solidity
+uint[] storage ref = arr;
+ref[0] = 100;
+```
+
+👉 This modifies the original array
+Because storage works as a reference, not a copy.
+
+---
+
+### 📌 When to Use
+
+ When you want data persistence
+ When modifying contract state
+
+---
+
+# 🔷 3. Memory
+
+### 📌 Definition
+
+ Temporary data location
+ Exists only during function execution
+
+---
+
+### 📌 Key Characteristics
+
+ Not stored on blockchain
+ Cheap compared to storage
+ Can be modified
+ Gets destroyed after function execution
+
+---
+
+### 📌 Example
+
+```solidity
+function getArray() public pure returns (uint[] memory) {
+    uint;
+    temp[0] = 1;
+    temp[1] = 2;
+    temp[2] = 3;
+    return temp;
+}
+```
+
+---
+
+### 📌 Important Behavior (Copy Type)
+
+```solidity
+uint[] memory temp = arr;
+temp[0] = 999;
+```
+
+👉 This does NOT change original storage array
+
+---
+
+### 📌 When to Use
+
+ Temporary calculations
+ Returning data
+ Working with copies
+
+---
+
+# 🔷 4. Calldata
+
+### 📌 Definition
+
+ Special read-only data location for function inputs
+
+---
+
+### 📌 Key Characteristics
+
+ Immutable (cannot modify)
+ Cheapest data location
+ Stored temporarily
+ Used mainly in external functions
+
+---
+
+### 📌 Example
+
+```solidity
+function read(uint[] calldata data) external pure returns (uint) {
+    return data[0];
+}
+```
+
+---
+
+### 📌 Important Behavior
+
+```solidity
+function test(uint[] calldata data) external {
+    // data[0] = 10; ❌ NOT allowed
+}
+```
+
+👉 Calldata is read-only
+
+---
+
+### 📌 When to Use
+
+ For function parameters
+ When you don’t need to modify input
+ To save gas (very important optimization)
+
+---
+
+# 🔥 5. Storage vs Memory vs Calldata (Core Differences)
+
+| Feature     | Storage         | Memory         | Calldata              |
+| ----------- | --------------- | -------------- | --------------------- |
+| Persistence | Permanent       | Temporary      | Temporary             |
+| Gas Cost    | High            | Medium         | Low                   |
+| Mutability  | Yes             | Yes            | ❌ No                  |
+| Location    | Blockchain      | RAM-like       | Input buffer          |
+| Default Use | State variables | Internal logic | External inputs       |
+| Copy/Ref    | Reference       | Copy           | Reference (read-only) |
+
+---
+
+# 🔷 6. Critical Interview Concepts (Very Important)
+
+### ✅ 1. Storage vs Memory Assignment
+
+```solidity
+uint[] storage a = arr;  // reference
+uint[] memory b = arr;   // copy
+```
+
+👉 This is one of the most asked interview questions
+
+---
+
+### ✅ 2. Why Calldata is Cheaper
+
+ No copying of data
+ Direct read access
+ Immutable → saves gas
+
+---
+
+### ✅ 3. Default Data Locations
+
+ State variables → storage
+ Function parameters → memory (internal), calldata (external)
+
+---
+
+### ✅ 4. Gas Optimization Tip
+
+👉 Always prefer:
+
+```solidity
+function foo(uint[] calldata data) external
+```
+
+Instead of:
+
+```solidity
+function foo(uint[] memory data) external
+```
+
+---
+
+# 🔷 7. Common Mistakes
+
+### ❌ Forgetting data location
+
+```solidity
+function foo(uint[] arr) public {} // ❌ error
+```
+
+✔ Fix:
+
+```solidity
+function foo(uint[] memory arr) public {}
+```
+
+---
+
+### ❌ Modifying calldata
+
+```solidity
+data[0] = 1; // ❌ not allowed
+```
+
+---
+
+### ❌ Assuming memory modifies storage
+
+```solidity
+uint[] memory temp = arr;
+temp[0] = 10; // ❌ does NOT affect arr
+```
+
+---

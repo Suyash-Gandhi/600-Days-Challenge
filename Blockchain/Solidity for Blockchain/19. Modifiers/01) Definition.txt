@@ -1,0 +1,250 @@
+### 19. Modifiers in Solidity
+
+
+# 🔹 1. What are Modifiers?
+
+A modifier is a special function-like construct used to:
+
+ Control access
+ Add conditions before/after execution
+ Avoid repeating logic in multiple functions
+
+👉 Think of modifiers as:
+
+> “Rules that must be satisfied before a function runs”
+
+---
+
+# 🔹 2. Why Use Modifiers?
+
+Without modifiers, you would repeat checks in every function:
+
+```solidity
+function withdraw() public {
+    require(msg.sender == owner, "Not owner");
+    // logic
+}
+```
+
+With modifiers:
+
+```solidity
+modifier onlyOwner() {
+    require(msg.sender == owner, "Not owner");
+    _;
+}
+
+function withdraw() public onlyOwner {
+    // logic
+}
+```
+
+✅ Cleaner
+✅ Reusable
+✅ Less error-prone
+
+---
+
+# 🔹 3. Basic Syntax
+
+```solidity
+modifier modifierName() {
+    // condition or logic
+    _;
+}
+```
+
+### 🔸 Meaning of `_`
+
+ `_` represents where the actual function code runs
+
+---
+
+# 🔹 4. Example: Access Control Modifier
+
+```solidity
+contract MyContract {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    function changeOwner(address newOwner) public onlyOwner {
+        owner = newOwner;
+    }
+}
+```
+
+👉 Only the owner can call `changeOwner`
+
+---
+
+# 🔹 5. Modifiers with Parameters
+
+Modifiers can also take inputs:
+
+```solidity
+modifier greaterThan(uint x) {
+    require(msg.value > x, "Value too low");
+    _;
+}
+```
+
+Usage:
+
+```solidity
+function deposit() public payable greaterThan(1 ether) {
+    // logic
+}
+```
+
+---
+
+# 🔹 6. Multiple Modifiers
+
+You can apply more than one modifier:
+
+```solidity
+function withdraw() public onlyOwner nonReentrant {
+    // logic
+}
+```
+
+👉 Execution order:
+
+1. `onlyOwner`
+2. `nonReentrant`
+3. Function body
+
+---
+
+# 🔹 7. Modifier Execution Flow
+
+```solidity
+modifier example() {
+    // Before function
+    _;
+    // After function
+}
+```
+
+Example:
+
+```solidity
+modifier log() {
+    // before
+    _;
+    // after
+}
+```
+
+👉 This allows:
+
+ Pre-checks
+ Post-logic (logging, cleanup)
+
+---
+
+# 🔹 8. Real-World Use Cases
+
+### 🔸 1. Access Control
+
+```solidity
+modifier onlyOwner
+```
+
+### 🔸 2. Payment Validation
+
+```solidity
+require(msg.value > 0);
+```
+
+### 🔸 3. State Validation
+
+```solidity
+require(status == Active);
+```
+
+### 🔸 4. Reentrancy Protection
+
+```solidity
+modifier nonReentrant
+```
+
+---
+
+# 🔹 9. Built-in Example (Important)
+
+From OpenZeppelin:
+
+```solidity
+modifier nonReentrant() {
+    require(!_entered, "Reentrant call");
+    _entered = true;
+    _;
+    _entered = false;
+}
+```
+
+👉 Prevents reentrancy attacks (VERY IMPORTANT for interviews)
+
+---
+
+# 🔹 10. Best Practices
+
+### ✅ Keep modifiers simple
+
+ Don’t add heavy logic
+
+### ✅ Use for reusable checks
+
+ Ownership
+ Validation
+ Security
+
+### ❌ Avoid overusing modifiers
+
+ Too many modifiers = hard to debug
+
+### ❌ Don’t change state unexpectedly
+
+ Keep behavior predictable
+
+---
+
+# 🔹 11. Modifiers vs Functions
+
+| Feature              | Modifier | Function |
+| -------------------- | -------- | -------- |
+| Reusable logic       | ✅        | ✅        |
+| Inject into function | ✅        | ❌        |
+| Can return values    | ❌        | ✅        |
+| Used for validation  | ✅        | ❌        |
+
+---
+
+# 🔹 12. Common Interview Questions
+
+### ❓ What does `_` mean?
+
+👉 It marks where function execution happens
+
+### ❓ Can modifiers have logic after `_`?
+
+👉 Yes (post-execution logic)
+
+### ❓ Can modifiers take parameters?
+
+👉 Yes
+
+### ❓ Execution order of multiple modifiers?
+
+👉 Left → Right
+
+---

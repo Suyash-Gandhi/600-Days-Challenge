@@ -1,0 +1,254 @@
+### 14. Mappings and Nested Mappings in Solidity
+
+
+# 🟢 1. What is a Mapping?
+
+A mapping stores data in key → value pairs.
+
+### 👉 Syntax:
+
+```solidity
+mapping(keyType => valueType) visibility variableName;
+```
+
+### 👉 Example:
+
+```solidity
+mapping(address => uint) public balances;
+```
+
+### 👉 Meaning:
+
+ Each Ethereum address maps to a uint balance
+ Example:
+
+  ```
+  0xABC → 100
+  0xDEF → 250
+  ```
+
+---
+
+# 🟢 2. Key Characteristics of Mappings
+
+### ✔ Key Points:
+
+ No length (you cannot iterate over mappings ❗)
+ Keys are not stored, only values are stored internally
+ Default value is returned if key doesn’t exist:
+
+   `uint → 0`
+   `bool → false`
+   `address → 0x0`
+
+---
+
+# 🟢 3. Basic Mapping Example
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract SimpleMapping {
+    mapping(address => uint) public balances;
+
+    function setBalance(uint _amount) public {
+        balances[msg.sender] = _amount;
+    }
+
+    function getBalance(address _user) public view returns (uint) {
+        return balances[_user];
+    }
+}
+```
+
+### 👉 How it works:
+
+ Each user stores their own balance
+ `msg.sender` acts as the key
+
+---
+
+# 🟢 4. Updating and Deleting Values
+
+### ✔ Update:
+
+```solidity
+balances[msg.sender] = 500;
+```
+
+### ✔ Delete:
+
+```solidity
+delete balances[msg.sender];
+```
+
+👉 This resets value to default (`0` for uint)
+
+---
+
+# 🟢 5. Real-World Use Cases
+
+Mappings are used everywhere in smart contracts:
+
+ Token balances (ERC20)
+ Ownership tracking (NFTs)
+ Voting systems
+ Allowances (approval systems)
+
+---
+
+# 🟢 6. Nested Mappings
+
+A nested mapping means a mapping inside another mapping.
+
+---
+
+## 👉 Syntax:
+
+```solidity
+mapping(keyType1 => mapping(keyType2 => valueType)) public variableName;
+```
+
+---
+
+## 👉 Example:
+
+```solidity
+mapping(address => mapping(address => uint)) public allowances;
+```
+
+---
+
+## 👉 Meaning:
+
+```
+owner → spender → amount
+```
+
+Example:
+
+```
+Alice → Bob → 100
+```
+
+---
+
+# 🟢 7. Nested Mapping Example (Important)
+
+```solidity
+pragma solidity ^0.8.0;
+
+contract NestedMapping {
+    mapping(address => mapping(address => uint)) public allowance;
+
+    function setAllowance(address _spender, uint _amount) public {
+        allowance[msg.sender][_spender] = _amount;
+    }
+
+    function getAllowance(address _owner, address _spender) public view returns (uint) {
+        return allowance[_owner][_spender];
+    }
+}
+```
+
+---
+
+# 🟢 8. Real Use Case: ERC20 Allowance System
+
+This is exactly how token approvals work:
+
+```solidity
+allowance[owner][spender] = amount;
+```
+
+ Owner allows spender to use tokens
+ Used in:
+
+   `transferFrom()`
+   DeFi protocols
+   DEXs
+
+---
+
+# 🟢 9. Common Mistakes (VERY IMPORTANT)
+
+### ❌ 1. Trying to iterate mappings
+
+```solidity
+// ❌ Not possible
+for (...) { }
+```
+
+👉 Solution: Use arrays + mapping together
+
+---
+
+### ❌ 2. Forgetting default values
+
+```solidity
+balances[user] // returns 0 if not set
+```
+
+---
+
+### ❌ 3. Using wrong key types
+
+ Keys must be:
+
+   `address`
+   `uint`
+   `bytes32`
+   etc.
+ ❌ Not allowed:
+
+   mapping as key
+   dynamic arrays as key
+
+---
+
+# 🟢 10. Mapping vs Array (Important Comparison)
+
+| Feature        | Mapping          | Array        |
+| -------------- | ---------------- | ------------ |
+| Access         | O(1)             | O(n)         |
+| Iteration      | ❌ Not possible   | ✔ Possible   |
+| Default values | ✔ Yes            | ❌ No         |
+| Use case       | Lookup / storage | Ordered data |
+
+---
+
+# 🟢 11. Advanced Pattern (Mapping + Struct)
+
+```solidity
+struct User {
+    string name;
+    uint age;
+}
+
+mapping(address => User) public users;
+```
+
+👉 Each address stores a full object
+
+---
+
+# 🟢 12. Interview-Level Insight (Important)
+
+### 🔥 Why mappings are gas efficient:
+
+ No loops
+ Direct storage access
+ No need to store keys explicitly
+
+---
+
+### 🔥 Why nested mappings are powerful:
+
+ Enable multi-level permissions
+ Used in:
+
+   DeFi (lending, staking)
+   NFT approvals
+   DAO voting systems
+
+---

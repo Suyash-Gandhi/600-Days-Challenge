@@ -1,0 +1,252 @@
+# 🔹 1. What are Functions in Solidity?
+
+Functions are blocks of reusable code inside a contract that perform specific tasks.
+
+ They can read state
+ Modify blockchain data
+ Return values
+ Interact with other contracts
+
+---
+
+# 🔹 2. Basic Function Syntax
+
+```solidity
+function functionName(parameters) visibility returns (returnType) {
+    // logic
+}
+```
+
+### Example:
+
+```solidity
+function add(uint a, uint b) public pure returns (uint) {
+    return a + b;
+}
+```
+
+---
+
+# 🔹 3. Types of Functions (Based on Behavior)
+
+### ✅ 1. State-changing functions
+
+Modify blockchain state
+
+```solidity
+uint public count;
+
+function increment() public {
+    count++;
+}
+```
+
+---
+
+### ✅ 2. View functions
+
+Only read state, no modification
+
+```solidity
+function getCount() public view returns (uint) {
+    return count;
+}
+```
+
+---
+
+### ✅ 3. Pure functions
+
+Do not read or modify state
+
+```solidity
+function multiply(uint a, uint b) public pure returns (uint) {
+    return a  b;
+}
+```
+
+---
+
+# 🔹 4. Function Visibility (VERY IMPORTANT)
+
+Visibility defines who can call the function.
+
+---
+
+## 🔸 1. Public
+
+ Can be called:
+
+   Inside contract
+   Outside contract
+   From other contracts
+
+```solidity
+function foo() public {}
+```
+
+👉 Most commonly used
+
+---
+
+## 🔸 2. Private
+
+ Can be called:
+
+   Only inside the same contract
+
+```solidity
+function foo() private {}
+```
+
+👉 Not accessible by derived contracts
+
+---
+
+## 🔸 3. Internal
+
+ Can be called:
+
+   Inside contract
+   Derived (child) contracts
+
+```solidity
+function foo() internal {}
+```
+
+👉 Used in inheritance
+
+---
+
+## 🔸 4. External
+
+ Can be called:
+
+   Only from outside the contract
+   Other contracts
+   Transactions
+
+```solidity
+function foo() external {}
+```
+
+👉 Cannot be called internally directly (must use `this.foo()`)
+
+---
+
+# 🔹 5. Visibility Comparison Table
+
+| Visibility | Inside Contract | Child Contract | Outside Contract |
+| ---------- | --------------- | -------------- | ---------------- |
+| public     | ✅               | ✅              | ✅                |
+| private    | ✅               | ❌              | ❌                |
+| internal   | ✅               | ✅              | ❌                |
+| external   | ❌ (direct)      | ❌              | ✅                |
+
+---
+
+# 🔹 6. Function Modifiers (State Keywords)
+
+These define how a function interacts with blockchain data:
+
+### 🔸 view
+
+ Reads state only
+
+### 🔸 pure
+
+ No state interaction
+
+### 🔸 payable
+
+ Allows receiving ETH
+
+```solidity
+function deposit() public payable {}
+```
+
+---
+
+# 🔹 7. Function with Multiple Returns
+
+```solidity
+function getValues() public pure returns (uint, bool) {
+    return (10, true);
+}
+```
+
+---
+
+# 🔹 8. Named Return Variables
+
+Cleaner syntax:
+
+```solidity
+function getData() public pure returns (uint x, uint y) {
+    x = 1;
+    y = 2;
+}
+```
+
+---
+
+# 🔹 9. Function Parameters: Memory vs Calldata
+
+```solidity
+function setName(string memory _name) public {}
+```
+
+ `memory` → temporary, modifiable
+ `calldata` → read-only, cheaper (used in external functions)
+
+```solidity
+function setName(string calldata _name) external {}
+```
+
+---
+
+# 🔹 10. Internal vs External Call Difference (IMPORTANT)
+
+```solidity
+function foo() public {}
+
+function callFoo() public {
+    foo();        // internal call (cheap)
+    this.foo();   // external call (expensive)
+}
+```
+
+👉 External calls cost more gas
+
+---
+
+# 🔹 11. Best Practices
+
+ Use external for functions called from outside → saves gas
+ Use internal/private for helper functions
+ Use view/pure wherever possible → reduces gas cost
+ Avoid unnecessary external calls (`this.function()`)
+
+---
+
+# 🔹 12. Real-World Example Contract
+
+```solidity
+contract Bank {
+    uint private balance;
+
+    function deposit() public payable {
+        balance += msg.value;
+    }
+
+    function getBalance() public view returns (uint) {
+        return balance;
+    }
+
+    function _resetBalance() internal {
+        balance = 0;
+    }
+}
+```
+
+---
