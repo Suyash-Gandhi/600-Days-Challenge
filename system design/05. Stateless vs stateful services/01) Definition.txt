@@ -1,0 +1,169 @@
+### 5. Stateless vs Stateful Services
+
+
+# 🔹 1. What are Stateless Services?
+
+A stateless service does not store any client-specific data between requests.
+
+ Each request is independent
+ The server does not remember anything about previous interactions
+ All required data must be sent with every request
+
+### 📌 Example
+
+ HTTP APIs (REST APIs)
+ A simple web server handling requests
+
+👉 Example flow:
+
+ Request 1 → server processes → responds → forgets
+ Request 2 → treated as a completely new request
+
+---
+
+### ✅ Characteristics
+
+ No session stored on server
+ Easy to scale horizontally
+ Any server can handle any request
+
+---
+
+### ✅ Real-world Example
+
+Login request:
+
+ Client sends: email + password
+ Server validates and returns a token (e.g., JWT)
+ Future requests include token → server doesn't store session
+
+---
+
+# 🔹 2. What are Stateful Services?
+
+A stateful service stores information about the client between requests.
+
+ Server remembers previous interactions
+ Requests are dependent on past state
+
+---
+
+### 📌 Example
+
+ Traditional session-based login
+ Database connections
+ Gaming servers
+ Chat applications (in some designs)
+
+👉 Example flow:
+
+ User logs in → server creates session
+ Session stored on server
+ Future requests rely on that session
+
+---
+
+### ✅ Characteristics
+
+ Server maintains session/state
+ Requests are interdependent
+ Harder to scale
+
+---
+
+# 🔹 3. Key Differences (Stateless vs Stateful)
+
+| Feature            | Stateless                 | Stateful                   |
+| ------------------ | ------------------------- | -------------------------- |
+| Data Storage       | No client data stored     | Stores client/session data |
+| Request Dependency | Independent               | Dependent                  |
+| Scalability        | Easy (horizontal scaling) | Difficult                  |
+| Fault Tolerance    | High                      | Lower                      |
+| Complexity         | Simple                    | Complex                    |
+| Example            | REST APIs                 | Sessions, DB connections   |
+
+---
+
+# 🔹 4. Why Stateless is Preferred in System Design
+
+In large-scale systems (like Google, Netflix):
+
+### 🚀 Benefits
+
+ Horizontal scaling
+
+   Add/remove servers easily
+ Load balancing becomes simple
+
+   Any server can handle any request
+ Fault tolerance
+
+   If one server dies → no data lost
+ Better performance under load
+
+👉 This is why modern architectures prefer:
+
+ REST APIs
+ Microservices
+ Token-based authentication (JWT)
+
+---
+
+# 🔹 5. Problems with Stateful Systems
+
+### ❌ Challenges
+
+ Sticky sessions required (same user → same server)
+ Hard to scale horizontally
+ Server failure → state loss
+ Complex synchronization between servers
+
+---
+
+# 🔹 6. Hybrid Approach (Real-world Systems)
+
+Most real systems are not purely stateless or stateful.
+
+👉 They use a combination:
+
+### 🔹 Pattern
+
+ Keep application servers stateless
+ Store state in external systems
+
+### 📌 Example Architecture
+
+ App servers → stateless
+ State stored in:
+
+   Database (MySQL, MongoDB)
+   Cache (Redis)
+   Session store
+
+---
+
+### ✅ Benefits
+
+ Scalability of stateless systems
+ Persistence of stateful systems
+
+---
+
+# 🔹 7. When to Use What?
+
+### ✅ Use Stateless When:
+
+ Building APIs
+ Microservices
+ High scalability required
+ Cloud-native applications
+
+---
+
+### ✅ Use Stateful When:
+
+ Real-time systems (gaming, WebSockets)
+ Transactions needing continuity
+ Systems where context is critical
+
+---

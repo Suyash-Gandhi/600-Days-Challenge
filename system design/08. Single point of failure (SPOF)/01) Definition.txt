@@ -1,0 +1,149 @@
+## 8. Single Point of Failure (SPOF)
+
+### 1. What is a SPOF?
+
+A Single Point of Failure (SPOF) is any component in a system that, if it fails, causes the entire system or a critical part of it to stop working.
+
+ It is a weak link in system design.
+ SPOFs directly reduce reliability, availability, and fault tolerance.
+
+👉 Simple idea:
+If one thing breaks and everything crashes → that thing is a SPOF.
+
+---
+
+### 2. Real-World Examples
+
+#### (a) Backend Server Example
+
+ You have only one server handling all requests.
+ If that server crashes → your entire application goes down.
+
+➡️ SPOF = the single server
+
+---
+
+#### (b) Database Example
+
+ Your system uses one database instance.
+ If it fails → app cannot read/write data.
+
+➡️ SPOF = database
+
+---
+
+#### (c) Network Example
+
+ All traffic goes through one router/load balancer.
+ If it fails → users cannot access the system.
+
+➡️ SPOF = network component
+
+---
+
+### 3. SPOF in System Design (Important Insight)
+
+SPOFs can exist at multiple layers:
+
+#### (1) Application Layer
+
+ Single API server
+ Single authentication service
+
+#### (2) Data Layer
+
+ Single database instance
+ No replication
+
+#### (3) Infrastructure Layer
+
+ Single load balancer
+ Single region deployment
+ Single cloud provider dependency
+
+👉 Interview insight:
+Even if your app is distributed, one hidden SPOF can break everything.
+
+---
+
+### 4. Why SPOF is Dangerous
+
+ Causes complete system outage
+ Leads to downtime and revenue loss
+ Reduces user trust
+ Breaks high availability guarantees
+
+👉 Example:
+If payment service has SPOF → users cannot complete transactions → business loss.
+
+---
+
+### 5. How to Identify SPOFs
+
+Ask these questions:
+
+ “If this component fails, does the system still work?”
+ “Do I have a backup or redundancy?”
+ “Is traffic routed through a single path?”
+
+If answer = NO → likely a SPOF
+
+---
+
+### 6. How to Eliminate SPOFs (Core Strategies)
+
+#### (1) Redundancy (Most Important)
+
+ Add multiple instances of critical components
+
+Example:
+
+ Multiple servers instead of one
+ Multiple DB replicas
+
+---
+
+#### (2) Load Balancing
+
+ Distribute traffic across multiple servers
+
+➡️ Prevents dependency on a single machine
+
+---
+
+#### (3) Replication (for Databases)
+
+ Primary + replicas (read replicas / standby)
+
+➡️ If primary fails → failover to replica
+
+---
+
+#### (4) Failover Mechanism
+
+ Automatically switch to backup system
+
+Types:
+
+ Active–Passive
+ Active–Active
+
+---
+
+#### (5) Multi-Region Deployment
+
+ Deploy system across different geographic regions
+
+➡️ Protects against:
+
+ Data center failure
+ Natural disasters
+
+---
+
+#### (6) Health Checks & Monitoring
+
+ Detect failures quickly
+ Automatically remove unhealthy nodes
+
+---

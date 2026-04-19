@@ -1,0 +1,148 @@
+### 6. Consistency vs Availability (CAP Theorem Basics)
+
+---
+
+## 🔹 1. What is CAP Theorem?
+
+The CAP Theorem (proposed by Eric Brewer) states that:
+
+> In a distributed system, you can guarantee only 2 out of 3 properties at the same time:
+
+ Consistency (C)
+ Availability (A)
+ Partition Tolerance (P)
+
+---
+
+## 🔹 2. The Three Properties Explained
+
+### 1. Consistency (C)
+
+ Every read receives the latest write or an error.
+ All nodes see the same data at the same time.
+
+👉 Example:
+
+ You update your profile name → immediately visible everywhere.
+
+---
+
+### 2. Availability (A)
+
+ Every request gets a response (success/failure).
+ System is always responsive, even if data is outdated.
+
+👉 Example:
+
+ You open Instagram → feed loads instantly, even if slightly stale.
+
+---
+
+### 3. Partition Tolerance (P)
+
+ System continues working despite network failures between nodes.
+ Nodes may be unable to communicate, but system still runs.
+
+👉 This is non-negotiable in distributed systems (network failures WILL happen).
+
+---
+
+## 🔹 3. Core Idea (The Trade-off)
+
+In real-world distributed systems:
+
+👉 You must choose between Consistency and Availability when a partition occurs
+
+| Choice                                      | Meaning                |
+| ------------------------------------------- | ---------------------- |
+| CP (Consistency + Partition tolerance)  | Sacrifice availability |
+| AP (Availability + Partition tolerance) | Sacrifice consistency  |
+
+⚠️ CA (Consistency + Availability) is only possible if there is no partition, which is unrealistic in distributed systems.
+
+---
+
+## 🔹 4. Visual Intuition
+
+Think of two servers:
+
+ Network breaks between them (partition)
+ Now:
+
+   Do you reject requests to keep data correct? → Consistency (CP)
+   Or serve requests anyway with possible stale data? → Availability (AP)
+
+---
+
+## 🔹 5. CP vs AP Systems (Real Examples)
+
+### 🔸 CP Systems (Consistency prioritized)
+
+ Examples:
+
+   HBase
+   MongoDB (with strong consistency settings)
+
+Behavior:
+
+ May deny requests during failures
+ Ensures correct data always
+
+👉 Use when:
+
+ Banking systems
+ Inventory systems
+
+---
+
+### 🔸 AP Systems (Availability prioritized)
+
+ Examples:
+
+   Cassandra
+   DynamoDB
+
+Behavior:
+
+ Always responds
+ Data may be temporarily inconsistent
+
+👉 Use when:
+
+ Social media feeds
+ Messaging systems
+
+---
+
+## 🔹 6. Key Concept: Eventual Consistency
+
+In AP systems:
+
+ Data is not instantly consistent
+ But becomes consistent eventually
+
+👉 Example:
+
+ You send a message → friend sees it after a slight delay
+
+---
+
+## 🔹 7. Important Interview Insight
+
+### ❗ CAP is about trade-offs during failures, NOT normal operation
+
+ When system is healthy → you can have both C and A
+ Trade-off only matters during network partition
+
+---
+
+## 🔹 8. Common Misunderstandings
+
+ ❌ “Pick any 2 out of 3 anytime”
+  ✔️ Actually: Partition tolerance is mandatory, so real choice is:
+  → Consistency vs Availability
+
+ ❌ “Strong consistency always better”
+  ✔️ Depends on use case (latency vs correctness)
+
+---

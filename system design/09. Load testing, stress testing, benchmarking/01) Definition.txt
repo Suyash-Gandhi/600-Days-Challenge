@@ -1,0 +1,152 @@
+
+# 🔹 1. Load Testing
+
+### 👉 Definition
+
+Load testing checks how a system behaves under expected/normal traffic conditions.
+
+### 👉 Goal
+
+ Verify system can handle anticipated user load
+ Measure:
+
+   Response time
+   Throughput
+   Resource usage (CPU, memory)
+
+### 👉 Example
+
+Imagine you're building a chat application:
+
+ Expected users: 10,000 concurrent users
+ Load test = simulate 10,000 users sending messages
+
+### 👉 What you learn
+
+ Does the system stay stable?
+ Are APIs responding within acceptable latency?
+ Any bottlenecks under normal usage?
+
+### 👉 Real-world tools
+
+ JMeter
+ Locust
+ k6
+
+---
+
+# 🔹 2. Stress Testing
+
+### 👉 Definition
+
+Stress testing pushes the system beyond its limits until it breaks.
+
+### 👉 Goal
+
+ Find the breaking point
+ Observe:
+
+   When system crashes
+   How it fails (graceful vs catastrophic)
+   Recovery behavior
+
+### 👉 Example
+
+Same chat app:
+
+ Instead of 10,000 users → simulate 100,000+ users
+ Keep increasing load until:
+
+   Server crashes
+   Requests start failing
+
+### 👉 What you learn
+
+ Maximum capacity
+ Failure behavior
+ Weak components (DB, cache, network)
+
+### 👉 Key concept
+
+👉 Good systems fail gracefully, not suddenly.
+
+Example:
+
+ Show "Server busy" instead of crashing completely
+
+---
+
+# 🔹 3. Benchmarking
+
+### 👉 Definition
+
+Benchmarking measures and compares performance metrics of a system.
+
+### 👉 Goal
+
+ Establish a performance baseline
+ Compare:
+
+   Different systems
+   Different architectures
+   Before vs after optimization
+
+### 👉 Example
+
+You test:
+
+ Version A → 500 req/sec
+ Version B → 1200 req/sec
+
+👉 Benchmark tells you which is better
+
+### 👉 What you measure
+
+ Throughput (requests/sec)
+ Latency (ms)
+ Error rate
+ Resource efficiency
+
+---
+
+# 🔥 Key Differences (Very Important)
+
+| Aspect     | Load Testing           | Stress Testing   | Benchmarking                  |
+| ---------- | ---------------------- | ---------------- | ----------------------------- |
+| Purpose    | Validate expected load | Break the system | Measure & compare performance |
+| Load Level | Normal                 | Extreme          | Any                           |
+| Focus      | Stability              | Failure          | Metrics                       |
+| Output     | System behavior        | Breaking point   | Performance numbers           |
+| Example    | 10k users              | 100k+ users      | Compare two APIs              |
+
+---
+
+# 🔥 How They Work Together (System Design Perspective)
+
+Think of it like a progression:
+
+1. Benchmarking
+
+    Establish baseline performance
+
+2. Load Testing
+
+    Ensure system meets real-world expectations
+
+3. Stress Testing
+
+    Understand limits + failure handling
+
+---
+
+# 🔥 Real Interview Insight
+
+When asked in interviews:
+
+👉 Always mention:
+
+ Load testing ensures scalability readiness
+ Stress testing ensures fault tolerance
+ Benchmarking helps in architecture decisions
+
+---

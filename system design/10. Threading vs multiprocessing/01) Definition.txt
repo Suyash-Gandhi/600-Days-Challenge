@@ -1,0 +1,167 @@
+
+# 🔹 Threading vs Multiprocessing
+
+## 1. What is Threading?
+
+Threading = Multiple threads inside a single process
+
+ Threads share:
+
+   Same memory (heap)
+   Same resources (file handles, variables)
+
+### 👉 Simple idea:
+
+> “Multiple workers inside the same workspace”
+
+### Example:
+
+ A web server handling multiple requests using threads
+ UI app where one thread handles UI, another handles background tasks
+
+---
+
+## 2. What is Multiprocessing?
+
+Multiprocessing = Multiple independent processes
+
+ Each process:
+
+   Has its own memory
+   Runs independently
+   Communicates via IPC (Inter-Process Communication)
+
+### 👉 Simple idea:
+
+> “Multiple separate offices working together”
+
+### Example:
+
+ Running multiple backend services
+ Parallel data processing (like map-reduce)
+
+---
+
+# 🔥 Key Differences (Important)
+
+| Feature       | Threading                                          | Multiprocessing                 |
+| ------------- | -------------------------------------------------- | ------------------------------- |
+| Memory        | Shared                                             | Separate                        |
+| Communication | Fast (shared memory)                               | Slower (IPC)                    |
+| Isolation     | Low                                                | High                            |
+| Crash impact  | One thread crash → can affect whole process        | One process crash → others safe |
+| Overhead      | Low                                                | Higher                          |
+| CPU usage     | Limited (in some languages like Python due to GIL) | True parallelism                |
+
+---
+
+# 🔹 Core Concept: CPU vs I/O Bound
+
+## 1. Threading → Best for I/O-bound tasks
+
+ Waiting on:
+
+   Network calls
+   File I/O
+   Database queries
+
+👉 Why?
+
+ Threads can switch while waiting
+
+### Example:
+
+ Chat app handling multiple users
+ API calls to external services
+
+---
+
+## 2. Multiprocessing → Best for CPU-bound tasks
+
+ Heavy computations:
+
+   Image processing
+   ML training
+   Data crunching
+
+👉 Why?
+
+ Uses multiple CPU cores fully
+
+---
+
+# 🔹 Real-World Analogy
+
+### 🧵 Threading
+
+ 1 kitchen, multiple chefs sharing tools
+ Fast coordination, but chaos possible
+
+### ⚙️ Multiprocessing
+
+ Multiple kitchens
+ Slower coordination, but more stable and scalable
+
+---
+
+# 🔹 System Design Perspective
+
+## When to use Threading
+
+ Low memory usage needed
+ High I/O operations
+ Fast communication required
+
+### Example:
+
+ Web server (handling requests)
+ Real-time systems
+
+---
+
+## When to use Multiprocessing
+
+ CPU-intensive workloads
+ Need isolation (fault tolerance)
+ Parallel computation required
+
+### Example:
+
+ Video encoding system
+ Data pipeline (ETL jobs)
+
+---
+
+# 🔹 Important Interview Points
+
+### 1. GIL (Python-specific)
+
+ Python has Global Interpreter Lock
+ Only one thread executes Python bytecode at a time
+
+👉 Result:
+
+ Threading ≠ true parallelism in Python
+ Multiprocessing is preferred for CPU tasks
+
+---
+
+### 2. Race Conditions (Threading issue)
+
+ Multiple threads accessing shared data → inconsistency
+
+👉 Solution:
+
+ Locks, semaphores, mutex
+
+---
+
+### 3. Inter-Process Communication (IPC)
+
+ Needed in multiprocessing:
+
+   Pipes
+   Queues
+   Shared memory
+
+---

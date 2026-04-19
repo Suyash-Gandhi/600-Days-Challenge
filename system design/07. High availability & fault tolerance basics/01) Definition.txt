@@ -1,0 +1,198 @@
+## 7. High Availability & Fault Tolerance (Basics)
+
+
+# 🔹 1. What is High Availability (HA)?
+
+### ➤ Definition
+
+High Availability means:
+
+> The system remains operational and accessible almost all the time, even during failures.
+
+### ➤ Key Idea
+
+Minimize downtime.
+
+### ➤ Measured as:
+
+ Uptime percentage (e.g., 99.9%, 99.99%, 99.999%)
+
+| Availability | Downtime per year |
+| ------------ | ----------------- |
+| 99%          | ~3.65 days        |
+| 99.9%        | ~8.76 hours       |
+| 99.99%       | ~52 minutes       |
+| 99.999%      | ~5 minutes        |
+
+### ➤ Example
+
+ Amazon website rarely goes down
+ Google search is almost always available
+
+---
+
+# 🔹 2. What is Fault Tolerance?
+
+### ➤ Definition
+
+Fault Tolerance means:
+
+> The system continues to function correctly even when some components fail.
+
+### ➤ Key Idea
+
+System doesn't just stay up — it still works correctly.
+
+---
+
+# 🔹 3. High Availability vs Fault Tolerance
+
+| Aspect           | High Availability   | Fault Tolerance                 |
+| ---------------- | ------------------- | ------------------------------- |
+| Goal             | Stay online         | Work correctly despite failures |
+| Focus            | Downtime reduction  | Error-free operation            |
+| Failure Handling | May degrade         | No visible impact               |
+| Example          | Retry after failure | Immediate seamless failover     |
+
+### ➤ Simple Analogy
+
+ High Availability = Website reload works after failure
+ Fault Tolerance = You don’t even notice failure happened
+
+---
+
+# 🔹 4. Types of Failures in Systems
+
+Understanding failure types is crucial:
+
+### ➤ Hardware Failures
+
+ Server crash
+ Disk failure
+
+### ➤ Network Failures
+
+ Packet loss
+ High latency
+ Network partition
+
+### ➤ Software Failures
+
+ Bugs
+ Memory leaks
+ Crashes
+
+### ➤ Human Errors
+
+ Wrong deployment
+ Misconfiguration
+
+---
+
+# 🔹 5. Techniques to Achieve High Availability
+
+### 1. Redundancy (Most Important)
+
+> Duplicate critical components
+
+ Multiple servers
+ Backup databases
+
+Example:
+
+```
+Instead of 1 server → Use 3 servers
+```
+
+---
+
+### 2. Load Balancing
+
+> Distribute traffic across servers
+
+ Prevents overload
+ Improves uptime
+
+Example:
+
+ Requests distributed across 10 servers
+
+---
+
+### 3. Failover Mechanism
+
+> Switch to backup system automatically
+
+Types:
+
+ Active-Passive (primary + standby)
+ Active-Active (both serve traffic)
+
+---
+
+### 4. Health Checks
+
+> Continuously monitor system
+
+ Detect failures quickly
+ Replace unhealthy nodes
+
+---
+
+### 5. Auto Scaling
+
+> Add/remove servers based on load
+
+ Prevents crashes due to traffic spikes
+
+---
+
+# 🔹 6. Techniques to Achieve Fault Tolerance
+
+### 1. Replication
+
+> Keep multiple copies of data
+
+ If one fails → use another
+
+Types:
+
+ Synchronous (strong consistency)
+ Asynchronous (better performance)
+
+---
+
+### 2. Data Backup & Recovery
+
+> Restore system after failure
+
+ Periodic backups
+ Disaster recovery plans
+
+---
+
+### 3. Graceful Degradation
+
+> Reduce functionality instead of crashing
+
+Example:
+
+ Show cached data instead of live data
+
+---
+
+### 4. Retry Mechanisms
+
+> Retry failed operations
+
+ With exponential backoff
+
+---
+
+### 5. Circuit Breaker Pattern
+
+> Stop calling failing service temporarily
+
+ Prevents cascading failures
+
+---
