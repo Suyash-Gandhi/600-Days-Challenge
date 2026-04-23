@@ -1,0 +1,204 @@
+
+# 🔹 12. Containerization Basics (Docker)
+
+## 1. What is Containerization?
+
+Containerization is a technique of packaging an application along with all its dependencies (libraries, runtime, configs) into a single unit called a container.
+
+👉 This ensures:
+
+ The app runs the same everywhere
+ No “works on my machine” issues
+ Easy deployment and scaling
+
+---
+
+## 2. Why Containerization is Needed
+
+### Problem without containers:
+
+ Different environments (dev, test, prod) → inconsistent behavior
+ Dependency conflicts (Node v14 vs v18, Python versions, etc.)
+ Difficult setup on new machines
+
+### Solution with containers:
+
+ Same environment everywhere
+ Lightweight and fast
+ Easy to replicate and deploy
+
+---
+
+## 3. Containers vs Virtual Machines (Important Interview Point)
+
+| Feature      | Containers    | Virtual Machines |
+| ------------ | ------------- | ---------------- |
+| OS           | Share host OS | Full OS per VM   |
+| Startup time | Seconds       | Minutes          |
+| Size         | MBs           | GBs              |
+| Performance  | Near-native   | Slower           |
+| Isolation    | Process-level | Hardware-level   |
+
+👉 Key takeaway:
+
+ Containers = lightweight
+ VMs = heavy but more isolated
+
+---
+
+## 4. What is Docker?
+
+Docker is the most popular tool for containerization.
+
+It provides:
+
+ Tools to create containers
+ Tools to run and manage containers
+ A platform to share images (Docker Hub)
+
+---
+
+## 5. Core Docker Concepts
+
+### (a) Docker Image
+
+ A read-only blueprint for containers
+ Contains:
+
+   Code
+   Dependencies
+   Runtime
+
+👉 Example:
+
+ Node app image
+ Python app image
+
+---
+
+### (b) Docker Container
+
+ A running instance of an image
+
+👉 Think:
+
+ Image = class
+ Container = object
+
+---
+
+### (c) Dockerfile
+
+ A script to build Docker images
+
+Example steps:
+
+ Define base image (Node, Python)
+ Install dependencies
+ Copy code
+ Run app
+
+---
+
+### (d) Docker Hub
+
+ Public repository for images
+ Like GitHub for containers
+
+---
+
+### (e) Volumes
+
+ Used for persistent storage
+ Data survives even if container stops
+
+---
+
+### (f) Networking
+
+ Containers communicate via networks
+ Important for microservices
+
+---
+
+## 6. How Docker Works (Flow)
+
+1. Write a Dockerfile
+2. Build image
+3. Run container from image
+
+👉 Flow:
+
+```
+Dockerfile → Image → Container
+```
+
+---
+
+## 7. Example (Simple Understanding)
+
+Without Docker:
+
+ Install Node
+ Install dependencies
+ Run app
+
+With Docker:
+
+ Just run container → everything already inside
+
+---
+
+## 8. Advantages of Docker
+
+### 1. Portability
+
+ Runs on any system (local, cloud, server)
+
+### 2. Consistency
+
+ Same environment everywhere
+
+### 3. Fast Deployment
+
+ Containers start quickly
+
+### 4. Scalability
+
+ Easy to spin up multiple containers
+
+### 5. Resource Efficiency
+
+ Uses fewer resources than VMs
+
+---
+
+## 9. Limitations of Containers
+
+ Less isolation than VMs
+ Security concerns if misconfigured
+ Not ideal for all workloads (e.g., heavy OS-level tasks)
+
+---
+
+## 10. Role of Docker in System Design
+
+Docker is critical in modern architectures:
+
+### (a) Microservices
+
+ Each service runs in its own container
+
+### (b) CI/CD Pipelines
+
+ Build → Test → Deploy using containers
+
+### (c) Cloud Deployment
+
+ Works with Kubernetes, AWS, etc.
+
+### (d) Scalability
+
+ Horizontal scaling (add more containers)
+
+---

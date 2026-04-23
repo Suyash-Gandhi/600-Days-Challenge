@@ -1,0 +1,220 @@
+### 15. DNS Resolution (Domain Name System)
+
+
+# 1. Why DNS is Needed
+
+ Humans remember names → `google.com`
+ Computers communicate via IP → `142.250.x.x`
+ DNS acts like a phonebook of the internet
+
+👉 Without DNS, you would need to remember IP addresses for every website.
+
+---
+
+# 2. High-Level Flow of DNS Resolution
+
+When you type a URL in your browser:
+
+### Step-by-step process
+
+1. Browser Cache Check
+
+    Browser checks if it already knows the IP
+    If yes → return immediately
+
+2. OS Cache Check
+
+    Operating system cache is checked
+
+3. DNS Resolver (ISP)
+
+    Request goes to a recursive resolver (usually your ISP)
+
+4. Root DNS Server
+
+    Resolver asks: “Where is `.com`?”
+
+5. TLD Server (.com)
+
+    Responds: “Ask the authoritative server for `google.com`”
+
+6. Authoritative DNS Server
+
+    Returns actual IP address
+
+7. Response Returned
+
+    Resolver → OS → Browser → Website loads
+
+---
+
+# 3. Visual Flow (Important for Interviews)
+
+```
+User → Browser Cache → OS Cache → Resolver
+     → Root Server → TLD Server → Authoritative Server
+     → IP Address → Back to Browser
+```
+
+---
+
+# 4. Types of DNS Servers
+
+### 1. Recursive Resolver
+
+ Entry point of DNS query
+ Usually provided by ISP or public DNS (Google DNS)
+
+### 2. Root Server
+
+ Top-level DNS
+ Knows where TLD servers are
+
+### 3. TLD Server
+
+ Handles extensions like:
+
+   `.com`
+   `.org`
+   `.in`
+
+### 4. Authoritative Server
+
+ Final source of truth
+ Stores actual domain → IP mapping
+
+---
+
+# 5. DNS Record Types
+
+| Record Type | Purpose                 |
+| ----------- | ----------------------- |
+| A       | Domain → IPv4           |
+| AAAA    | Domain → IPv6           |
+| CNAME   | Alias to another domain |
+| MX      | Mail servers            |
+| NS      | Name servers            |
+| TXT     | Verification / metadata |
+
+---
+
+# 6. Recursive vs Iterative Query
+
+### Recursive Query
+
+ Resolver does all work
+ Client gets final IP
+
+👉 Used in real-world browsers
+
+---
+
+### Iterative Query
+
+ Each server gives next server info
+ Client keeps asking
+
+👉 Used internally between DNS servers
+
+---
+
+# 7. Caching in DNS (Very Important)
+
+DNS heavily relies on caching to improve performance.
+
+### Levels of caching:
+
+ Browser cache
+ OS cache
+ Resolver cache
+
+### TTL (Time To Live)
+
+ Defines how long a DNS record is cached
+
+👉 Example:
+
+ TTL = 300 seconds → cached for 5 minutes
+
+---
+
+# 8. DNS in System Design (Critical Concepts)
+
+### 1. Reduces Latency
+
+ Cached results → faster access
+
+### 2. Improves Scalability
+
+ Distributed system
+ No single bottleneck
+
+### 3. Load Balancing
+
+ One domain → multiple IPs
+
+👉 Example:
+
+ `google.com` → different IPs for different users
+
+---
+
+### 4. Fault Tolerance
+
+ Multiple DNS servers globally
+ If one fails → others respond
+
+---
+
+# 9. DNS Load Balancing Techniques
+
+ Round Robin DNS
+
+   Returns different IPs each time
+
+ Geo-based Routing
+
+   Closest server based on location
+
+ Latency-based Routing
+
+   Chooses fastest server
+
+---
+
+# 10. Common Interview Questions
+
+### ❓ What happens when you type google.com?
+
+→ Explain full DNS resolution flow
+
+### ❓ What if DNS cache expires?
+
+→ New lookup is triggered
+
+### ❓ How does DNS improve performance?
+
+→ Caching + distributed design
+
+### ❓ Can DNS be a bottleneck?
+
+→ Yes, if resolver is slow or overloaded
+
+---
+
+# 11. Real-World Example
+
+When you visit:
+
+```
+https://netflix.com
+```
+
+ DNS resolves domain → nearest Netflix server
+ Helps in:
+
+   Faster streaming
+   Reduced latency
+   Load distribution
+
+---

@@ -1,0 +1,133 @@
+## TCP vs UDP (Transport Layer Protocols)
+
+
+# 🔹 1. What is TCP?
+
+TCP (Transmission Control Protocol) is a connection-oriented, reliable protocol.
+
+### 👉 Key Characteristics:
+
+ Connection-oriented → establishes a connection before sending data (3-way handshake)
+ Reliable delivery → guarantees data reaches correctly
+ Ordered delivery → packets arrive in sequence
+ Error checking & recovery
+ Flow control + congestion control
+
+### 👉 How TCP Works:
+
+1. Connection setup (SYN → SYN-ACK → ACK)
+2. Data transfer with acknowledgments
+3. Retransmission if packets are lost
+4. Connection termination
+
+### 👉 Example Uses:
+
+ Web browsing (HTTP/HTTPS)
+ File transfer (FTP)
+ Emails (SMTP)
+
+---
+
+# 🔹 2. What is UDP?
+
+UDP (User Datagram Protocol) is a connectionless, lightweight protocol.
+
+### 👉 Key Characteristics:
+
+ No connection setup
+ No guarantee of delivery
+ No ordering
+ No retransmission
+ Very fast and low latency
+
+### 👉 How UDP Works:
+
+ Data is sent as independent packets (datagrams)
+ No acknowledgment or tracking
+ Receiver processes whatever arrives
+
+### 👉 Example Uses:
+
+ Live streaming
+ Online gaming
+ Video calls (Zoom, Google Meet)
+ DNS queries
+
+---
+
+# 🔹 3. TCP vs UDP (Direct Comparison)
+
+| Feature        | TCP 🧱 (Reliable)   | UDP ⚡ (Fast)   |
+| -------------- | ------------------- | -------------- |
+| Connection     | Connection-oriented | Connectionless |
+| Reliability    | Guaranteed delivery | No guarantee   |
+| Order          | Maintains order     | No order       |
+| Speed          | Slower              | Faster         |
+| Error Handling | Yes                 | No             |
+| Retransmission | Yes                 | No             |
+| Overhead       | High                | Low            |
+| Use Case       | Accuracy needed     | Speed needed   |
+
+---
+
+# 🔹 4. Real-World Analogy
+
+ TCP = Phone Call 📞
+
+   You establish connection
+   Confirm everything is heard correctly
+   Repeat if needed
+
+ UDP = Sending Letters 📮
+
+   You send without confirmation
+   Some may get lost
+   Faster but unreliable
+
+---
+
+# 🔹 5. When to Use What?
+
+### 👉 Use TCP when:
+
+ Data must be accurate
+ Order matters
+ Example: payments, login systems, APIs
+
+### 👉 Use UDP when:
+
+ Speed is critical
+ Some data loss is acceptable
+ Example: gaming, video streaming
+
+---
+
+# 🔹 6. System Design Perspective (Important 🚀)
+
+In system design interviews:
+
+### TCP is used for:
+
+ Backend communication
+ Database connections
+ APIs
+
+### UDP is used for:
+
+ Real-time systems
+ Low-latency applications
+ Voice/video transmission
+
+👉 Modern systems sometimes combine both:
+
+ Example: QUIC protocol (used in HTTP/3) uses UDP but adds reliability like TCP
+
+---
+
+# 🔹 7. Key Insight (Interview Gold ⭐)
+
+> TCP prioritizes reliability, UDP prioritizes speed.
+
+---
+
+If you want, next I can explain how TCP 3-way handshake actually works step-by-step with diagrams or how QUIC replaces TCP in modern systems — both are very important for interviews.

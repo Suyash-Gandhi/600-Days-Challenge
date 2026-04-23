@@ -1,0 +1,231 @@
+## 13. HTTP / HTTPS Fundamentals
+
+# 1. What is HTTP?
+
+HTTP (HyperText Transfer Protocol) is a protocol used for communication between:
+
+ Client → Browser / Mobile App / Frontend
+ Server → Backend (Node.js, Express, etc.)
+
+👉 It follows a request–response model
+
+### Flow:
+
+1. Client sends a request
+2. Server processes it
+3. Server sends back a response
+
+---
+
+## Example (MERN context)
+
+When your React app fetches data:
+
+```js
+fetch("/api/products")
+```
+
+👉 This creates an HTTP request:
+
+ Method: GET
+ URL: `/api/products`
+
+Server responds with:
+
+```json
+{
+  "products": []
+}
+```
+
+---
+
+# 2. Structure of HTTP
+
+## 2.1 HTTP Request
+
+An HTTP request has:
+
+### 1. Request Line
+
+```
+GET /api/users HTTP/1.1
+```
+
+### 2. Headers
+
+```
+Host: example.com
+Authorization: Bearer token
+Content-Type: application/json
+```
+
+### 3. Body (optional)
+
+Used in POST/PUT requests
+
+```json
+{
+  "name": "Suyash"
+}
+```
+
+---
+
+## 2.2 HTTP Response
+
+### 1. Status Line
+
+```
+HTTP/1.1 200 OK
+```
+
+### 2. Headers
+
+```
+Content-Type: application/json
+```
+
+### 3. Body
+
+```json
+{
+  "message": "Success"
+}
+```
+
+---
+
+# 3. HTTP Methods (Very Important)
+
+These define what action you want to perform
+
+| Method | Purpose                | Example         |
+| ------ | ---------------------- | --------------- |
+| GET    | Fetch data             | Get products    |
+| POST   | Create data            | Add user        |
+| PUT    | Update entire resource | Update profile  |
+| PATCH  | Partial update         | Change password |
+| DELETE | Remove resource        | Delete user     |
+
+---
+
+## Real Example (REST API)
+
+```
+GET    /users        → get all users
+POST   /users        → create user
+GET    /users/1      → get user
+PUT    /users/1      → update user
+DELETE /users/1      → delete user
+```
+
+---
+
+# 4. HTTP Status Codes
+
+These tell you what happened
+
+## 4.1 Success
+
+ `200 OK`
+ `201 Created`
+
+## 4.2 Client Errors
+
+ `400 Bad Request`
+ `401 Unauthorized`
+ `404 Not Found`
+
+## 4.3 Server Errors
+
+ `500 Internal Server Error`
+
+👉 In interviews: Always mention categories (2xx, 4xx, 5xx)
+
+---
+
+# 5. Stateless Nature of HTTP
+
+HTTP is stateless, meaning:
+
+👉 Each request is independent
+👉 Server does NOT remember previous requests
+
+### Problem:
+
+ How do we maintain login?
+
+### Solution:
+
+ Cookies
+ Sessions
+ JWT tokens
+
+---
+
+# 6. What is HTTPS?
+
+HTTPS = HTTP + Security
+
+👉 It uses SSL/TLS encryption
+
+---
+
+## Why HTTPS?
+
+HTTP sends data in plain text ❌
+HTTPS encrypts data ✅
+
+---
+
+## Example
+
+### HTTP:
+
+```
+password=123456
+```
+
+👉 Anyone can intercept it
+
+### HTTPS:
+
+```
+encrypted_data (unreadable)
+```
+
+---
+
+# 7. How HTTPS Works (Important for interviews)
+
+## Step-by-step:
+
+1. Client connects to server
+2. Server sends SSL certificate
+3. Client verifies certificate
+4. Encryption keys are exchanged
+5. Secure communication starts
+
+👉 This is called TLS Handshake
+
+---
+
+# 8. SSL/TLS Certificates
+
+ Issued by trusted authorities (CA)
+ Proves server identity
+ Enables encryption
+
+---
+
+# 9. HTTP vs HTTPS (Key Comparison)
+
+| Feature  | HTTP            | HTTPS                              |
+| -------- | --------------- | ---------------------------------- |
+| Security | ❌ No encryption | ✅ Encrypted                        |
+| Port     | 80              | 443                                |
+| Speed    | Slightly faster | Slightly slower (negligible today) |
+| SEO      | ❌               | ✅ Preferred by Google              |
+
+---
