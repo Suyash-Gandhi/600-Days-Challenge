@@ -1,0 +1,224 @@
+
+# 🔹 1. What are REST, gRPC, and GraphQL?
+
+They are three different ways for services (client ↔ server or service ↔ service) to communicate.
+
+ REST → Resource-based communication over HTTP
+ gRPC → High-performance RPC (Remote Procedure Calls)
+ GraphQL → Query-based flexible API
+
+---
+
+# 🔹 2. REST (Representational State Transfer)
+
+## ✅ Concept
+
+ Uses HTTP methods to operate on resources (URLs)
+
+```
+GET /users/1
+POST /users
+PUT /users/1
+DELETE /users/1
+```
+
+---
+
+## ✅ Key Characteristics
+
+ Stateless (each request independent)
+ Uses JSON (mostly)
+ Simple & widely adopted
+ Resource-based design
+
+---
+
+## ✅ Advantages
+
+ Easy to understand & implement
+ Works everywhere (browser-friendly)
+ Caching supported via HTTP
+ Great for public APIs
+
+---
+
+## ❌ Disadvantages
+
+ Over-fetching
+  → You may get unnecessary data
+
+ Under-fetching
+  → Need multiple API calls
+
+ Slower compared to binary protocols
+
+---
+
+## 📌 Example Problem
+
+```
+GET /user/1 → returns full user
+GET /user/1/posts → separate call
+```
+
+👉 Multiple calls → higher latency
+
+---
+
+# 🔹 3. GraphQL
+
+## ✅ Concept
+
+ Client specifies exact data it needs
+
+```
+query {
+  user(id: 1) {
+    name
+    posts {
+      title
+    }
+  }
+}
+```
+
+---
+
+## ✅ Key Characteristics
+
+ Single endpoint (`/graphql`)
+ Query-based
+ Strong typing (schema)
+ Client-driven data fetching
+
+---
+
+## ✅ Advantages
+
+ No over-fetching
+ No under-fetching
+ Single request → multiple resources
+ Great for frontend flexibility
+
+---
+
+## ❌ Disadvantages
+
+ Complex to implement
+ Harder caching
+ Heavy queries can impact server performance
+ Not ideal for simple APIs
+
+---
+
+## 📌 Example Benefit
+
+Instead of:
+
+```
+GET /user
+GET /posts
+```
+
+👉 One GraphQL query gets everything
+
+---
+
+# 🔹 4. gRPC (Google Remote Procedure Call)
+
+## ✅ Concept
+
+ Call functions on remote server like local functions
+
+```
+getUser(userId)
+```
+
+---
+
+## ✅ Key Characteristics
+
+ Uses Protocol Buffers (Protobuf) (binary format)
+ Runs on HTTP/2
+ Supports streaming
+ Strongly typed
+
+---
+
+## ✅ Advantages
+
+ Extremely fast (binary + HTTP/2)
+ Low latency
+ Supports streaming (real-time apps)
+ Great for microservices
+
+---
+
+## ❌ Disadvantages
+
+ Not browser-friendly (needs proxy)
+ Harder debugging (binary data)
+ Learning curve (Protobuf)
+
+---
+
+## 📌 Example Use Case
+
+```
+Service A → getUser(1) → Service B
+```
+
+👉 Very fast internal communication
+
+---
+
+# 🔹 5. Key Differences (Interview Table)
+
+| Feature         | REST           | GraphQL     | gRPC              |
+| --------------- | -------------- | ----------- | ----------------- |
+| Style           | Resource-based | Query-based | Function-based    |
+| Data format     | JSON           | JSON        | Binary (Protobuf) |
+| Speed           | Medium         | Medium      | Very Fast         |
+| Flexibility     | Low            | High        | Medium            |
+| Over-fetching   | Yes            | No          | No                |
+| Browser support | Excellent      | Excellent   | Poor              |
+| Streaming       | No             | Limited     | Yes               |
+| Learning curve  | Easy           | Medium      | Hard              |
+
+---
+
+# 🔹 6. When to Use What (MOST IMPORTANT)
+
+## ✅ Use REST when:
+
+ Simple CRUD APIs
+ Public APIs
+ Quick development needed
+
+👉 Example: Blog API, CRUD apps
+
+---
+
+## ✅ Use GraphQL when:
+
+ Frontend needs flexibility
+ Complex data relationships
+ Multiple resources needed in one request
+
+👉 Example: Social media apps, dashboards
+
+---
+
+## ✅ Use gRPC when:
+
+ Microservices communication
+ High performance required
+ Real-time systems
+
+👉 Example:
+
+ Payment systems
+ Chat systems
+ Internal service calls
+
+---

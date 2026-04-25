@@ -1,0 +1,178 @@
+## 25. Global Variables in Solidity (`msg`, `block`, `tx`)
+
+Global variables in Solidity are built-in variables provided by the Ethereum Virtual Machine (EVM). They give your contract access to transaction data, block data, and execution context — without needing to define anything manually.
+
+These are heavily used in real-world smart contracts, especially for authentication, timing, and payments.
+
+---
+
+# 🔹 1. `msg` — Message Context
+
+`msg` contains information about the current function call.
+
+### 🔑 Important Properties:
+
+ `msg.sender` → Address of the caller (who triggered the function)
+ `msg.value` → Amount of Ether sent (in wei)
+ `msg.data` → Raw calldata (function + arguments)
+ `msg.sig` → Function selector (first 4 bytes of calldata)
+
+---
+
+### 💡 Example
+
+```solidity
+function deposit() public payable {
+    require(msg.value > 0, "Send ETH");
+}
+```
+
+### 🧠 Explanation
+
+ `msg.value` ensures ETH is sent
+ Without `payable`, this would fail
+
+---
+
+### ⚠️ Important Insight
+
+ `msg.sender` changes in contract-to-contract calls
+ If Contract A calls Contract B:
+
+   In B → `msg.sender = A` (not original user)
+
+👉 This is critical for security and authorization
+
+---
+
+# 🔹 2. `tx` — Transaction Context
+
+`tx` contains information about the entire transaction, not just the current call.
+
+### 🔑 Important Property:
+
+ `tx.origin` → Original external account that started the transaction
+
+---
+
+### 💡 Example
+
+```solidity
+function checkOrigin() public view returns (address) {
+    return tx.origin;
+}
+```
+
+---
+
+### ⚠️ Major Security Warning
+
+Never use `tx.origin` for authentication
+
+---
+
+### 🚨 Why?
+
+Because of phishing-style attacks:
+
+ User calls malicious contract
+ That contract calls your contract
+ `tx.origin` is still the user → bypasses security
+
+---
+
+### ❌ Bad Practice
+
+```solidity
+require(tx.origin == owner);
+```
+
+### ✅ Correct Practice
+
+```solidity
+require(msg.sender == owner);
+```
+
+---
+
+### 🧠 Key Difference
+
+| Variable     | Meaning                |
+| ------------ | ---------------------- |
+| `msg.sender` | Immediate caller       |
+| `tx.origin`  | Original external user |
+
+---
+
+# 🔹 3. `block` — Block Information
+
+`block` provides details about the current block.
+
+---
+
+### 🔑 Important Properties:
+
+ `block.timestamp` → Current block time (in seconds)
+ `block.number` → Current block number
+ `block.prevrandao` → Randomness (replaces difficulty)
+ `block.gaslimit` → Gas limit of block
+ `block.coinbase` → Miner/validator address
+
+---
+
+### 💡 Example
+
+```solidity
+function isExpired(uint deadline) public view returns (bool) {
+    return block.timestamp > deadline;
+}
+```
+
+---
+
+### ⚠️ Important Notes
+
+ `block.timestamp` is not perfectly accurate
+
+   Miners can manipulate it slightly (~±15 seconds)
+ Never use it for critical randomness
+
+---
+
+# 🔥 Practical Use Cases
+
+### ✅ Authentication
+
+```solidity
+require(msg.sender == owner);
+```
+
+### ✅ Payments
+
+```solidity
+require(msg.value >= price);
+```
+
+### ✅ Time-based logic
+
+```solidity
+require(block.timestamp < deadline);
+```
+
+### ✅ Logging sender
+
+```solidity
+address user = msg.sender;
+```
+
+---
+
+# ⚖️ Comparison Summary
+
+| Feature       | `msg`                | `tx`               | `block`           |
+| ------------- | -------------------- | ------------------ | ----------------- |
+| Scope         | Current call         | Entire transaction | Blockchain state  |
+| Key Use       | Caller & ETH         | Origin tracking    | Time & block data |
+| Safe for auth | ✅ Yes (`msg.sender`) | ❌ No (`tx.origin`) | ❌ Not for auth    |
+
+---

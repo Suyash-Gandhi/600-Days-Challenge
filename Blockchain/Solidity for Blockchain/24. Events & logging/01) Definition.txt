@@ -1,0 +1,190 @@
+### 24. Events & Logging in Solidity
+
+Events are one of the most important (and often underestimated) features in Solidity. They are primarily used for logging data on the blockchain, which external applications (like frontends or scripts) can listen to.
+
+Think of events as a communication bridge between your smart contract and the outside world (UI, backend, analytics, etc.).
+
+---
+
+## 🔹 1. What are Events?
+
+ Events are special logs stored on the blockchain
+ They are not accessible inside the contract logic
+ They are mainly used by:
+
+   Frontend apps (React, Web3 apps)
+   Indexers (like The Graph)
+   Off-chain services
+
+👉 Simple analogy:
+
+> A function changes the state, and an event announces what just happened
+
+---
+
+## 🔹 2. Why Do We Use Events?
+
+### Key Reasons:
+
+1. Gas Efficient Logging
+
+    Storing data in events is cheaper than storing in contract storage
+
+2. Frontend Communication
+
+    Your UI listens to events to update automatically
+
+3. Transaction History Tracking
+
+    Helps track actions like transfers, updates, etc.
+
+4. Debugging & Monitoring
+
+    Useful for understanding contract behavior
+
+---
+
+## 🔹 3. Syntax of Events
+
+```solidity
+event EventName(type indexed param1, type param2, ...);
+```
+
+### Example:
+
+```solidity
+event Transfer(address indexed from, address indexed to, uint amount);
+```
+
+---
+
+## 🔹 4. Emitting Events
+
+To log an event, use the `emit` keyword:
+
+```solidity
+emit Transfer(msg.sender, _to, _amount);
+```
+
+---
+
+## 🔹 5. Indexed Parameters (Very Important)
+
+ You can mark up to 3 parameters as `indexed`
+ Indexed parameters are stored in topics
+ They allow efficient filtering/searching
+
+### Example:
+
+```solidity
+event Deposit(address indexed user, uint amount);
+```
+
+👉 Now frontend can easily filter:
+
+ All deposits by a specific user
+
+---
+
+## 🔹 6. Complete Example
+
+```solidity
+contract Bank {
+
+    mapping(address => uint) public balances;
+
+    event Deposited(address indexed user, uint amount);
+    event Withdrawn(address indexed user, uint amount);
+
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+        emit Deposited(msg.sender, msg.value);
+    }
+
+    function withdraw(uint amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+
+        emit Withdrawn(msg.sender, amount);
+    }
+}
+```
+
+---
+
+## 🔹 7. Events vs Storage (Important Comparison)
+
+| Feature          | Events  | Storage   |
+| ---------------- | ------- | --------- |
+| Gas Cost         | Low     | High      |
+| On-chain access  | ❌ No    | ✅ Yes     |
+| Off-chain access | ✅ Yes   | ❌ Limited |
+| Use case         | Logging | State     |
+
+👉 Key takeaway:
+
+ Use events for history/logging
+ Use storage for actual data/state
+
+---
+
+## 🔹 8. How Frontend Uses Events
+
+In real-world apps:
+
+ React app listens using libraries like:
+
+   ethers.js
+   web3.js
+
+Example flow:
+
+1. User performs action (deposit)
+2. Smart contract emits event
+3. Frontend listens → updates UI instantly
+
+---
+
+## 🔹 9. Best Practices
+
+### ✅ Do:
+
+ Use events for every important state change
+ Index frequently queried fields (like `address`)
+ Keep event data meaningful but minimal
+
+### ❌ Avoid:
+
+ Overloading events with too much data
+ Using events instead of storage for critical logic
+ Emitting unnecessary events (wastes gas)
+
+---
+
+## 🔹 10. Real-World Example
+
+The famous ERC-20 token standard uses events:
+
+```solidity
+event Transfer(address indexed from, address indexed to, uint256 value);
+event Approval(address indexed owner, address indexed spender, uint256 value);
+```
+
+👉 These events power:
+
+ Wallet transaction history
+ Token trackers
+ Block explorers like Etherscan
+
+---
+
+## 🔹 Final Understanding
+
+Events are not just logs — they are the backbone of interaction between blockchain and real-world applications.
+
+ Functions → change state
+ Events → tell the world what changed
+
+---

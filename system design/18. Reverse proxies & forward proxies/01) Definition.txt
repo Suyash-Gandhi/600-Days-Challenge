@@ -1,0 +1,201 @@
+## Reverse Proxies vs Forward Proxies (System Design Essential)
+
+
+
+# 1. What is a Proxy (Basic Idea)
+
+A proxy is an intermediary server between a client and another server.
+
+Instead of communicating directly:
+
+```
+Client → Server
+```
+
+It becomes:
+
+```
+Client → Proxy → Server
+```
+
+Now depending on who the proxy represents, we get:
+
+ Forward Proxy → represents CLIENT
+ Reverse Proxy → represents SERVER
+
+---
+
+# 2. Forward Proxy (Client-side Proxy)
+
+### 🔹 Definition
+
+A forward proxy sits in front of clients and forwards their requests to the internet.
+
+### 🔹 Flow
+
+```
+Client → Forward Proxy → Internet Server
+```
+
+### 🔹 Key Idea
+
+> Server doesn’t know the real client — it only sees the proxy.
+
+---
+
+### 🔹 Real-world Examples
+
+ Corporate office internet filters
+ VPNs
+ School/college restricted browsing
+ Anonymous browsing
+
+---
+
+### 🔹 Use Cases
+
+#### 1. Anonymity
+
+ Hide client IP from websites
+
+#### 2. Access Control
+
+ Block certain websites (e.g., YouTube in office)
+
+#### 3. Caching
+
+ Frequently accessed content is cached → faster access
+
+#### 4. Bypassing Restrictions
+
+ Access geo-blocked content (via VPN)
+
+---
+
+### 🔹 Example Scenario
+
+You try to open a website in a company network:
+
+```
+You → Company Proxy → Website
+```
+
+ Proxy checks policy
+ Allows/blocks request
+
+---
+
+### 🔹 Tools / Technologies
+
+ Squid Proxy
+ VPN services
+
+---
+
+# 3. Reverse Proxy (Server-side Proxy)
+
+### 🔹 Definition
+
+A reverse proxy sits in front of servers and handles incoming client requests.
+
+### 🔹 Flow
+
+```
+Client → Reverse Proxy → Backend Servers
+```
+
+### 🔹 Key Idea
+
+> Client doesn’t know the actual backend server — only the proxy.
+
+---
+
+### 🔹 Why Reverse Proxy is CRITICAL in System Design
+
+This is where most real-world systems use proxies.
+
+---
+
+### 🔹 Use Cases
+
+#### 1. Load Balancing
+
+Distributes traffic across multiple servers:
+
+```
+Client → Reverse Proxy → Server A / B / C
+```
+
+#### 2. Caching
+
+ Cache responses (e.g., static files)
+ Reduce backend load
+
+#### 3. SSL Termination
+
+ Handles HTTPS encryption/decryption
+ Backend servers can use HTTP → faster
+
+#### 4. Security
+
+ Hides internal architecture
+ Prevents direct access to backend servers
+
+#### 5. Rate Limiting
+
+ Prevent DDoS attacks
+
+#### 6. API Gateway
+
+ Routes requests to microservices
+
+---
+
+### 🔹 Example Scenario (Real System)
+
+When you open a website:
+
+```
+Browser → Nginx (Reverse Proxy) → App Servers
+```
+
+---
+
+### 🔹 Tools / Technologies
+
+ Nginx
+ HAProxy
+ Apache
+ Cloudflare (edge reverse proxy)
+ AWS ELB / ALB
+
+---
+
+# 4. Key Differences (VERY IMPORTANT FOR INTERVIEWS)
+
+| Feature           | Forward Proxy      | Reverse Proxy            |
+| ----------------- | ------------------ | ------------------------ |
+| Represents        | Client             | Server                   |
+| Position          | Client-side        | Server-side              |
+| Purpose           | Privacy, control   | Scalability, performance |
+| Client visibility | Hidden from server | Visible                  |
+| Server visibility | Visible            | Hidden                   |
+| Use case          | VPN, filtering     | Load balancing, caching  |
+
+---
+
+# 5. Simple Analogy (Easy to Remember)
+
+### 🧠 Forward Proxy = “Agent for Users”
+
+You → Agent → Internet
+(Agent hides YOU)
+
+---
+
+### 🧠 Reverse Proxy = “Receptionist for Servers”
+
+Client → Receptionist → Backend
+(Receptionist hides SERVERS)
+
+---

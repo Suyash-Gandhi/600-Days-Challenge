@@ -123,7 +123,7 @@
 
 ---
 
-## 🧪 PHASE 15 — Tooling & Testing (MOVE EARLIER)
+## 🧪 PHASE 15 — Tooling & Testing 
 
 49. Hardhat / Foundry setup
 50. Writing unit tests

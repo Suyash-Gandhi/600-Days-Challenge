@@ -1,0 +1,225 @@
+### 23. Low-Level Calls in Solidity
+
+Low-level calls are advanced ways to interact with other smart contracts when you don’t use a predefined interface or ABI directly. They give more control but less safety, so they are considered dangerous if used incorrectly.
+
+---
+
+# 🔹 1. What are Low-Level Calls?
+
+Low-level calls are functions provided by Solidity to directly interact with other contracts using raw data (bytes) instead of function names.
+
+### 👉 Main low-level functions:
+
+ `call`
+ `delegatecall`
+ `staticcall`
+
+---
+
+# 🔹 2. Why Do We Need Them?
+
+Normally, we interact like this:
+
+```solidity
+otherContract.transfer(msg.sender, 100);
+```
+
+But low-level calls are used when:
+
+ You don’t have ABI/interface
+ You want dynamic function execution
+ You’re writing proxy contracts / upgradeable contracts
+ You need fine control over gas & execution
+
+---
+
+# 🔹 3. `call` (Most Common)
+
+### 📌 Syntax:
+
+```solidity
+(bool success, bytes memory data) = address.call("encoded_data");
+```
+
+### Example:
+
+```solidity
+(bool success, ) = addr.call(
+    abi.encodeWithSignature("setValue(uint256)", 100)
+);
+require(success, "Call failed");
+```
+
+### 🔍 Explanation:
+
+ `abi.encodeWithSignature()` → converts function into bytes
+ `call` → executes it
+ returns:
+
+   `success` → true/false
+   `data` → returned data
+
+---
+
+### ⚠️ Important Points:
+
+ Does not throw error automatically
+ Must use `require(success)`
+ Can call any function, even if it doesn’t exist
+
+---
+
+# 🔹 4. `delegatecall`
+
+### 📌 Key Idea:
+
+Executes another contract’s code, but uses your contract’s storage
+
+---
+
+### Example:
+
+```solidity
+(bool success, ) = addr.delegatecall(
+    abi.encodeWithSignature("updateValue(uint256)", 50)
+);
+```
+
+---
+
+### 🔍 Behavior:
+
+ Code from `addr`
+ Storage of current contract
+ `msg.sender` remains same
+
+---
+
+### 📌 Used In:
+
+ Proxy contracts
+ Upgradeable smart contracts
+
+---
+
+### ⚠️ Risk:
+
+If storage layout mismatches → data corruption
+
+---
+
+# 🔹 5. `staticcall`
+
+### 📌 Key Idea:
+
+ Same as `call`
+ But read-only
+
+---
+
+### Example:
+
+```solidity
+(bool success, bytes memory data) = addr.staticcall(
+    abi.encodeWithSignature("getValue()")
+);
+```
+
+---
+
+### 🔍 Behavior:
+
+ Cannot modify state
+ Safe for view/pure functions
+
+---
+
+# 🔹 6. Comparison
+
+| Feature      | call    | delegatecall   | staticcall      |
+| ------------ | ------- | -------------- | --------------- |
+| Modify state | ✅ Yes   | ✅ Yes          | ❌ No            |
+| Uses storage | Target  | Caller         | Target          |
+| Use case     | General | Proxy patterns | Read-only calls |
+| Risk level   | Medium  | 🔥 High        | Low             |
+
+---
+
+# 🔹 7. Major Risks (VERY IMPORTANT)
+
+### 🚨 1. Reentrancy Attack
+
+Low-level calls can trigger fallback functions → attacker can re-enter
+
+👉 Example scenario:
+
+```solidity
+msg.sender.call{value: amount}("");
+```
+
+---
+
+### 🚨 2. Silent Failure
+
+```solidity
+addr.call(...);
+```
+
+ If you don’t check `success` → bug
+
+---
+
+### 🚨 3. Wrong Function Signature
+
+ No compile-time checking
+ Typos = runtime failure
+
+---
+
+### 🚨 4. Storage Corruption (delegatecall)
+
+ Wrong storage layout = disaster
+
+---
+
+# 🔹 8. Best Practices
+
+### ✅ Always check success
+
+```solidity
+require(success, "Low-level call failed");
+```
+
+### ✅ Prefer interfaces over call
+
+```solidity
+MyContract(addr).setValue(100);
+```
+
+### ✅ Use `staticcall` for reads
+
+### ✅ Use `delegatecall` only when necessary
+
+### ✅ Follow Checks-Effects-Interactions pattern
+
+---
+
+# 🔹 9. When Should YOU Use It?
+
+Use low-level calls ONLY when:
+
+ Building upgradeable contracts (proxy pattern)
+ Working with unknown contracts dynamically
+ Handling fallback-based logic
+
+👉 Avoid in normal projects.
+
+---
+
+# 🔹 10. Simple Mental Model
+
+ `call` → “Run their function”
+ `delegatecall` → “Run their code, but on my data”
+ `staticcall` → “Ask them something (read-only)”
+
+---

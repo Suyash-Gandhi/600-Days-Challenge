@@ -1,0 +1,139 @@
+Error handling in Solidity is critical for writing secure smart contracts. Since blockchain transactions are irreversible, Solidity provides specific mechanisms to validate conditions and safely stop execution when something goes wrong.
+
+The three main tools are:
+
+ `require`
+ `revert`
+ `assert`
+
+Let’s break them down clearly with concept + usage + differences + best practices 👇
+
+---
+
+# 🔴 1. `require` — Input & Condition Validation
+
+### 📌 Purpose
+
+Used to validate user inputs, function arguments, or external conditions.
+
+### 🧠 How it works
+
+ If condition is true → execution continues
+ If false → transaction is reverted + gas refunded (remaining gas)
+
+### ✅ Common Use Cases
+
+ Checking sender permissions
+ Validating inputs
+ Ensuring contract state is correct
+
+### 💡 Example
+
+```solidity
+function withdraw(uint amount) public {
+    require(amount > 0, "Amount must be greater than 0");
+    require(balance[msg.sender] >= amount, "Insufficient balance");
+
+    balance[msg.sender] -= amount;
+}
+```
+
+### 🚀 Key Insight
+
+👉 `require` is your first line of defense
+
+---
+
+# 🔴 2. `revert` — Manual Error Trigger
+
+### 📌 Purpose
+
+Used to explicitly revert execution, often in complex logic.
+
+### 🧠 How it works
+
+ Stops execution
+ Reverts state changes
+ Returns custom error message
+ Refunds remaining gas
+
+### ✅ When to use
+
+ Inside if-else logic
+ Complex validations
+ Cleaner control flow
+
+### 💡 Example
+
+```solidity
+function withdraw(uint amount) public {
+    if (amount == 0) {
+        revert("Amount cannot be zero");
+    }
+
+    if (balance[msg.sender] < amount) {
+        revert("Insufficient balance");
+    }
+
+    balance[msg.sender] -= amount;
+}
+```
+
+### 🚀 Key Insight
+
+👉 `revert` gives you more control than require
+
+---
+
+# 🔴 3. `assert` — Internal Error Checking
+
+### 📌 Purpose
+
+Used to check internal invariants (things that should NEVER fail)
+
+### 🧠 How it works
+
+ If condition fails:
+
+   Consumes all remaining gas
+   Indicates serious bug in contract
+
+### ⚠️ Important
+
+👉 `assert` should NOT be used for user input validation
+
+### 💡 Example
+
+```solidity
+function testAssert() public view {
+    assert(address(this).balance >= 0);
+}
+```
+
+### 🚀 Key Insight
+
+👉 Use `assert` for developer-level sanity checks
+
+---
+
+# ⚖️ Comparison Table
+
+| Feature       | `require` ✅       | `revert` 🔄         | `assert` ❌          |
+| ------------- | ----------------- | ------------------- | ------------------- |
+| Use case      | Input validation  | Custom logic errors | Internal errors     |
+| Gas refund    | Yes               | Yes                 | No (consumes all)   |
+| Error message | Yes               | Yes                 | No (usually)        |
+| Usage style   | Inline            | Explicit            | Debugging           |
+| When it fails | Expected failures | Expected failures   | Unexpected failures |
+
+---
+
+# 🧠 Real Understanding (Very Important)
+
+Think of it like this:
+
+ `require` → “User did something wrong”
+ `revert` → “Stop here, custom logic says no”
+ `assert` → “Something is fundamentally broken”
+
+---

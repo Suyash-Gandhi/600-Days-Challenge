@@ -1,0 +1,174 @@
+### 22. Exception Handling in Python
+
+Exception handling is a mechanism used to handle runtime errors gracefully without crashing the program. Instead of stopping execution, Python allows you to catch errors and respond to them.
+
+---
+
+# 🔹 1. What is an Exception?
+
+An exception is an error that occurs during program execution.
+
+### Example:
+
+```python
+x = 10 / 0
+```
+
+This raises:
+
+```
+ZeroDivisionError: division by zero
+```
+
+---
+
+# 🔹 2. Why Exception Handling is Important
+
+ Prevents program crashes
+ Improves user experience
+ Helps debugging
+ Allows recovery from errors
+
+---
+
+# 🔹 3. Basic Syntax
+
+```python
+try:
+    # code that may cause error
+except:
+    # code to handle error
+```
+
+### Example:
+
+```python
+try:
+    x = int("abc")
+except:
+    print("Conversion failed")
+```
+
+---
+
+# 🔹 4. Handling Specific Exceptions
+
+It’s better to catch specific exceptions instead of using a generic `except`.
+
+```python
+try:
+    x = int("abc")
+except ValueError:
+    print("Invalid number")
+```
+
+### Multiple Exceptions:
+
+```python
+try:
+    x = 10 / int("0")
+except ValueError:
+    print("Conversion error")
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+```
+
+---
+
+# 🔹 5. Using `else` Block
+
+The `else` block runs only if no exception occurs.
+
+```python
+try:
+    x = int("10")
+except ValueError:
+    print("Error")
+else:
+    print("Success:", x)
+```
+
+---
+
+# 🔹 6. Using `finally` Block
+
+The `finally` block always executes, whether an exception occurs or not.
+
+```python
+try:
+    file = open("data.txt")
+except FileNotFoundError:
+    print("File not found")
+finally:
+    print("Execution completed")
+```
+
+👉 Common use: closing files, releasing resources
+
+---
+
+# 🔹 7. Raising Exceptions (`raise`)
+
+You can manually throw exceptions using `raise`.
+
+```python
+age = -5
+
+if age < 0:
+    raise ValueError("Age cannot be negative")
+```
+
+---
+
+# 🔹 8. Custom Exceptions
+
+You can create your own exception classes.
+
+```python
+class InvalidAgeError(Exception):
+    pass
+
+age = -1
+
+if age < 0:
+    raise InvalidAgeError("Invalid age provided")
+```
+
+---
+
+# 🔹 9. Exception Hierarchy (Important Concept)
+
+All exceptions inherit from:
+
+```
+BaseException
+   └── Exception
+        ├── ValueError
+        ├── TypeError
+        ├── ZeroDivisionError
+        └── ...
+```
+
+👉 Meaning:
+
+ Catching `Exception` catches most errors
+ Avoid catching `BaseException` (too broad)
+
+---
+
+# 🔹 10. Best Practices (Very Important)
+
+### ✅ Do:
+
+ Catch specific exceptions
+ Use `finally` for cleanup
+ Keep `try` block small
+ Log errors properly
+
+### ❌ Don’t:
+
+ Use bare `except` (bad practice)
+ Ignore exceptions silently
+ Catch everything unnecessarily
+
+---

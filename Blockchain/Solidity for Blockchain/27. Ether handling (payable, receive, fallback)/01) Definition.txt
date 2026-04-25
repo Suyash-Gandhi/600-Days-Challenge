@@ -1,0 +1,239 @@
+## 27. Ether Handling in Solidity (`payable`, `receive`, `fallback`)
+
+
+# 🔹 1. What is `payable`?
+
+### 👉 Definition
+
+A function (or address) marked as `payable` can receive Ether.
+
+### 👉 Why it exists
+
+By default, Solidity rejects ETH transfers to prevent accidental loss of funds.
+
+---
+
+### ✅ Example
+
+```solidity
+function deposit() public payable {
+    // msg.value contains the amount of ETH sent
+}
+```
+
+### 🧠 Key Points
+
+ `msg.value` → amount of ETH sent (in wei)
+ Without `payable`, sending ETH will revert
+ You can also mark constructors as payable
+
+---
+
+### 💡 Payable Address
+
+```solidity
+address payable user = payable(msg.sender);
+user.transfer(1 ether);
+```
+
+---
+
+# 🔹 2. Receiving Ether — Two Special Functions
+
+Solidity provides two special functions for handling incoming ETH:
+
+| Function     | When it is called                           |
+| ------------ | ------------------------------------------- |
+| `receive()`  | When ETH is sent with no data           |
+| `fallback()` | When function doesn't exist OR data is sent |
+
+---
+
+# 🔹 3. `receive()` Function
+
+### 👉 Definition
+
+A special function that runs when contract receives ETH without any calldata
+
+---
+
+### ✅ Syntax
+
+```solidity
+receive() external payable {
+    // triggered when ETH is sent directly
+}
+```
+
+---
+
+### 🧠 Behavior
+
+ Must be `external payable`
+ No arguments, no return
+ Automatically triggered
+
+---
+
+### 📌 Example
+
+```solidity
+receive() external payable {
+    // log deposit or update balance
+}
+```
+
+---
+
+# 🔹 4. `fallback()` Function
+
+### 👉 Definition
+
+Executed when:
+
+ A non-existent function is called
+ OR ETH is sent with data
+
+---
+
+### ✅ Syntax
+
+```solidity
+fallback() external payable {
+    // handles unknown calls
+}
+```
+
+---
+
+### 🧠 Behavior
+
+ Can be payable or non-payable
+ Acts as a catch-all function
+
+---
+
+# 🔹 5. Difference: `receive()` vs `fallback()`
+
+| Feature  | `receive()`          | `fallback()`                      |
+| -------- | -------------------- | --------------------------------- |
+| Trigger  | ETH without data     | ETH with data OR unknown function |
+| Priority | First                | Second                            |
+| Purpose  | Simple ETH receiving | Handling unexpected calls         |
+
+---
+
+### 🔥 Execution Flow
+
+When ETH is sent:
+
+1. If `receive()` exists → it runs
+2. Else → `fallback()` runs
+3. If neither is payable → ❌ transaction fails
+
+---
+
+# 🔹 6. Sending Ether
+
+There are 3 main ways:
+
+---
+
+### ✅ 1. `transfer()` (safe, limited gas)
+
+```solidity
+payable(msg.sender).transfer(1 ether);
+```
+
+ Fixed 2300 gas
+ Automatically reverts on failure
+
+---
+
+### ✅ 2. `send()` (not recommended)
+
+```solidity
+bool success = payable(msg.sender).send(1 ether);
+```
+
+ Returns `true/false`
+ Does NOT revert automatically
+
+---
+
+### ✅ 3. `call()` (modern + flexible)
+
+```solidity
+(bool success, ) = payable(msg.sender).call{value: 1 ether}("");
+require(success, "Transfer failed");
+```
+
+---
+
+### 🧠 Best Practice
+
+👉 Use `call()` instead of `transfer()`
+(After gas cost changes like EIP-1884)
+
+---
+
+# 🔹 7. Complete Example (Putting Everything Together)
+
+```solidity
+contract EtherHandler {
+
+    event Received(address sender, uint amount);
+
+    // Receive ETH without data
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
+    // Fallback for unknown calls
+    fallback() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
+    // Deposit manually
+    function deposit() public payable {}
+
+    // Send ETH using call
+    function sendEther(address payable _to) public {
+        (bool success, ) = _to.call{value: 1 ether}("");
+        require(success, "Failed");
+    }
+}
+```
+
+---
+
+# 🔹 8. Common Mistakes (VERY IMPORTANT)
+
+### ❌ 1. Forgetting `payable`
+
+ Contract cannot receive ETH → transaction fails
+
+---
+
+### ❌ 2. Using `transfer()` blindly
+
+ Can break due to gas changes
+
+---
+
+### ❌ 3. Not checking `call()` return value
+
+```solidity
+(bool success, ) = addr.call{value: amount}("");
+// ❌ ignoring success
+```
+
+---
+
+### ❌ 4. Reentrancy Risk
+
+If you send ETH before updating state → attack possible
+
+👉 Example attack: Reentrancy Attack
+
+---

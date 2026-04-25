@@ -1,0 +1,231 @@
+
+# 🔹 1. What is an API Gateway?
+
+An API Gateway is a server that:
+
+ Receives all client requests
+ Routes them to appropriate backend services
+ Handles cross-cutting concerns like authentication, logging, rate limiting, etc.
+
+👉 Instead of clients calling 10 microservices directly, they call one gateway
+
+---
+
+# 🔹 2. Why API Gateway is Needed
+
+### Without API Gateway (Problem)
+
+ Client calls multiple services:
+
+   Auth service
+   User service
+   Order service
+ Leads to:
+
+   Multiple network calls
+   Complex frontend logic
+   Security issues
+
+### With API Gateway (Solution)
+
+ Client → API Gateway → Services
+
+✔ Simplifies client
+✔ Centralizes control
+✔ Improves security
+
+---
+
+# 🔹 3. High-Level Architecture
+
+```
+Client (Web/Mobile)
+        ↓
+   API Gateway
+   /    |     \
+Auth  User   Order
+Svc   Svc    Svc
+```
+
+---
+
+# 🔹 4. Core Responsibilities of API Gateway
+
+## 1. Request Routing
+
+ Decides which service should handle request
+ Example:
+
+   `/users` → User Service
+   `/orders` → Order Service
+
+---
+
+## 2. Authentication & Authorization
+
+ Validates JWT tokens
+ Ensures user has permission
+
+👉 Prevents every service from implementing auth separately
+
+---
+
+## 3. Rate Limiting
+
+ Controls number of requests per user/IP
+
+Example:
+
+ Max 100 requests/min
+
+👉 Protects system from abuse & DDoS
+
+---
+
+## 4. Load Balancing
+
+ Distributes traffic across multiple instances
+
+---
+
+## 5. Request/Response Transformation
+
+ Modify request format
+ Convert protocols (REST ↔ gRPC)
+
+---
+
+## 6. Caching
+
+ Cache frequent responses
+ Reduces backend load
+
+---
+
+## 7. Logging & Monitoring
+
+ Tracks:
+
+   Requests
+   Errors
+   Latency
+
+---
+
+## 8. Aggregation (Backend for Frontend)
+
+ Combines multiple service responses into one
+
+Example:
+
+```
+GET /dashboard
+
+Gateway calls:
+→ User Service
+→ Order Service
+→ Notification Service
+
+Returns combined response
+```
+
+---
+
+# 🔹 5. Types of API Gateways
+
+## 1. Centralized Gateway
+
+ One gateway for all services
+ Simple but can become bottleneck
+
+---
+
+## 2. Backend-for-Frontend (BFF)
+
+ Separate gateway per client type
+
+Example:
+
+ Mobile Gateway
+ Web Gateway
+
+👉 Optimized responses for each platform
+
+---
+
+# 🔹 6. Advantages
+
+✔ Simplifies frontend
+✔ Centralized security
+✔ Reduces duplication
+✔ Better observability
+✔ Easier scaling (with proper setup)
+
+---
+
+# 🔹 7. Disadvantages
+
+❌ Single Point of Failure (if not replicated)
+❌ Added latency (extra hop)
+❌ Complexity in management
+
+👉 Solution:
+
+ Use multiple gateway instances
+ Add load balancer in front
+
+---
+
+# 🔹 8. API Gateway vs Load Balancer
+
+| Feature           | API Gateway       | Load Balancer |
+| ----------------- | ----------------- | ------------- |
+| Routing           | Yes (intelligent) | Basic         |
+| Auth              | Yes               | No            |
+| Rate Limiting     | Yes               | No            |
+| Transformation    | Yes               | No            |
+| Load Distribution | Yes               | Yes           |
+
+👉 Gateway = smart layer
+👉 Load balancer = traffic distributor
+
+---
+
+# 🔹 9. Real-World Tools
+
+ Nginx
+ Kong
+ AWS API Gateway
+ Apigee
+ HAProxy (with configs)
+
+---
+
+# 🔹 10. When to Use API Gateway
+
+Use when:
+
+ You have microservices architecture
+ Need centralized authentication
+ Want to simplify frontend logic
+ Require rate limiting & monitoring
+
+Avoid when:
+
+ Small monolithic app
+ Very low traffic system
+
+---
+
+# 🔹 11. Interview Insight (Important)
+
+If asked in system design:
+
+👉 Always mention:
+
+ “API Gateway acts as a single entry point”
+ “Handles cross-cutting concerns”
+ “Improves scalability & security”
+ “Can become SPOF → solved via replication”
+
+---

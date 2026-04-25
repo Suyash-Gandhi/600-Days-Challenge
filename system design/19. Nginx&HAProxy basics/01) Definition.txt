@@ -1,0 +1,289 @@
+
+
+# 19. Nginx / HAProxy Basics
+
+## 1. What problem do they solve?
+
+In real systems, you never send traffic directly to backend servers.
+
+Instead, you place a proxy/load balancer in front to:
+
+ Distribute traffic across servers
+ Improve performance
+ Increase reliability
+ Add security layer
+
+👉 This is where Nginx and HAProxy come in.
+
+---
+
+# 2. What is a Proxy?
+
+### Forward Proxy (client-side)
+
+ Sits between client → internet
+ Example: corporate firewall
+
+### Reverse Proxy (server-side) ✅ (important)
+
+ Sits between client → backend servers
+ Client doesn’t know actual server
+
+👉 Both Nginx and HAProxy are reverse proxies
+
+---
+
+# 3. Nginx Basics
+
+## What is Nginx?
+
+ A web server + reverse proxy + load balancer
+ Very popular for:
+
+   Serving static files
+   Handling HTTP traffic
+
+---
+
+## Key Features of Nginx
+
+### 1. Reverse Proxy
+
+ Routes requests to backend servers
+
+Example:
+
+```
+Client → Nginx → Node server
+```
+
+---
+
+### 2. Load Balancing
+
+Supports multiple strategies:
+
+ Round Robin (default)
+ Least connections
+ IP hash
+
+---
+
+### 3. Static File Serving
+
+ Extremely fast for:
+
+   Images
+   CSS
+   JS
+
+👉 Often used in front of React apps
+
+---
+
+### 4. SSL Termination
+
+ Handles HTTPS instead of backend
+ Reduces load on servers
+
+---
+
+### 5. Caching
+
+ Can cache responses → improves speed
+
+---
+
+## When to Use Nginx?
+
+Use Nginx when:
+
+ You need a web server + proxy
+ You serve static content
+ You handle HTTP/HTTPS traffic
+
+---
+
+# 4. HAProxy Basics
+
+## What is HAProxy?
+
+ A high-performance load balancer
+ Focuses ONLY on:
+
+   Load balancing
+   High availability
+
+👉 It is not a full web server like Nginx
+
+---
+
+## Key Features of HAProxy
+
+### 1. Advanced Load Balancing
+
+ Round Robin
+ Least connections
+ Weighted balancing
+ Sticky sessions
+
+---
+
+### 2. Health Checks
+
+ Automatically removes dead servers
+
+---
+
+### 3. High Performance
+
+ Handles millions of requests/sec
+ Used in large-scale systems
+
+---
+
+### 4. Layer 4 & Layer 7 Support
+
+ Layer 4 (TCP) → faster
+ Layer 7 (HTTP) → smarter routing
+
+---
+
+## When to Use HAProxy?
+
+Use HAProxy when:
+
+ You need very high traffic handling
+ You need fine control over load balancing
+ System requires high availability (HA)
+
+---
+
+# 5. Nginx vs HAProxy (Important Interview Comparison)
+
+| Feature        | Nginx              | HAProxy                     |
+| -------------- | ------------------ | --------------------------- |
+| Type           | Web server + proxy | Load balancer               |
+| Static files   | ✅ Excellent        | ❌ Not supported             |
+| Load balancing | ✅ Good             | ✅ Advanced                  |
+| Performance    | High               | Extremely high              |
+| Use case       | Web apps, APIs     | Large-scale traffic systems |
+| Configuration  | Easier             | More complex                |
+
+---
+
+# 6. Real-World Architecture
+
+### Typical Setup:
+
+```
+Client
+   ↓
+Load Balancer (HAProxy / Nginx)
+   ↓
+Multiple Backend Servers
+   ↓
+Database
+```
+
+---
+
+### Example (MERN app)
+
+```
+User → Nginx → Node.js servers → MongoDB
+```
+
+OR (high-scale)
+
+```
+User → HAProxy → Nginx → App servers
+```
+
+👉 Why both?
+
+ HAProxy → traffic distribution
+ Nginx → static + HTTP handling
+
+---
+
+# 7. Key Concepts You MUST Know
+
+## 1. Load Balancing Algorithms
+
+ Round Robin
+ Least Connections
+ Weighted
+
+---
+
+## 2. Health Checks
+
+ Detect failed servers
+ Remove them automatically
+
+---
+
+## 3. SSL Termination
+
+ Offload HTTPS from backend
+
+---
+
+## 4. Sticky Sessions
+
+ Same user → same server
+ Important for stateful apps
+
+---
+
+## 5. Rate Limiting
+
+ Prevent abuse (DDoS protection)
+
+---
+
+# 8. Common Interview Questions
+
+### Q1. Why not directly hit backend servers?
+
+ No scalability
+ No fault tolerance
+ No traffic control
+
+---
+
+### Q2. Nginx vs HAProxy — which to choose?
+
+👉 Answer:
+
+ Use Nginx → general web + proxy
+ Use HAProxy → heavy traffic + HA
+
+---
+
+### Q3. Can they be used together?
+
+👉 YES (very common)
+
+ HAProxy → load balancing
+ Nginx → request handling
+
+---
+
+# 9. Simple Mental Model
+
+ Nginx = Swiss army knife (web + proxy)
+ HAProxy = traffic specialist (pure load balancer)
+
+---
+
+# 10. Practical Insight (Important)
+
+For your projects / internships:
+
+ Small MERN app → just Nginx
+ Scaling system → add HAProxy
+ Production system → use both
+
+---
