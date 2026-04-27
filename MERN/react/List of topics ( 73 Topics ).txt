@@ -143,37 +143,61 @@
 
 ---
 
-# 🔥 LEVEL 1 — FULL MASTERY 
 
+# 🧠 HIGH-FREQUENCY INTERVIEW TOPICS (34 TOPICS - 40 QUESTIONS )
 
-### 🧠 Core Thinking & Rendering
+👉 If you master ONLY these, you cover ~80% of interviews
 
+---
+
+## 🔴 CORE FUNDAMENTALS (ALMOST GUARANTEED QUESTIONS)
+
+ 2. JSX syntax and rules
+ 3. React components (function vs class)
+ 4. Props and component composition
  5. Rendering lists and keys
  9. Virtual DOM vs Real DOM
  10. One-way data flow
 
+📌 Why:
+
+ JSX, props, and components are asked in every beginner + mid interview ([InterviewBit][2])
+ Virtual DOM is one of the most asked questions overall ([NareshIT][4])
+
 ---
 
-### ⚙️ State & Interaction (CRITICAL)
+## 🔴 STATE & DATA FLOW (VERY HIGH FREQUENCY)
 
  11. State in React
  12. Controlled vs uncontrolled components
+ 14. Passing callbacks between components
  15. Immutable state updates
  16. Lifting state up
 
+📌 Why:
+
+ “State vs props” + “data flow” = classic interview combo ([Medium][5])
+ Lifting state = common real-world scenario
+
 ---
 
-### ⚡ Hooks (MOST IMPORTANT ZONE)
+## 🔴 HOOKS (MOST IMPORTANT MODERN AREA)
 
  19. useEffect (dependencies, cleanup, pitfalls)
  21. useState deep dive
  22. useRef
  23. useContext
+ 24. Rules of Hooks
  25. Custom hooks
+
+📌 Why:
+
+ Hooks dominate interviews now
+ Missing dependencies in `useEffect` = very common trap question ([InterviewBit][2])
 
 ---
 
-### 🔄 Rendering Behavior & Performance
+## 🔴 RENDERING & PERFORMANCE (HIGH SIGNAL FOR MID/SENIOR)
 
  30. When React components re-render
  31. Reconciliation and keys
@@ -181,163 +205,106 @@
  33. useMemo
  34. useCallback
 
+📌 Why:
+
+ Interviewers test “why is this re-rendering?”
+ Performance questions = strong differentiator ([Medium][3])
+
 ---
 
-### 🌐 Data Fetching (REAL-WORLD HEAVY)
+## 🔴 DATA FLOW + ARCHITECTURE
+
+ 26. Prop drilling problem
+ 27. Context API usage
+ 29. Global vs local state decisions
+
+📌 Why:
+
+ “How do you manage state in large apps?” → very common
+ Context vs Redux discussion appears frequently ([Akal Info][6])
+
+---
+
+## 🔴 DATA FETCHING & REAL-WORLD PROBLEMS
 
  51. Fetch / Axios with useEffect
  52. Loading / error / empty states
  53. Async error handling
  55. Race conditions
 
----
+📌 Why:
 
-### 🧩 Forms & UX (VERY PRACTICAL)
-
- 39. Controlled vs uncontrolled forms (deep)
- 41. Debouncing inputs
+ Interviews are shifting toward real-world debugging
+ Race conditions + loading states = strong signal questions
 
 ---
 
-### 🧠 State Architecture
-
- 60. Redux Toolkit OR Zustand
-
----
-
-### 🚀 Routing (HIGH ROI)
+## 🔴 ROUTING (COMMON BUT NOT DEEP)
 
  44. React Router basics
  46. Dynamic routes
- 47. useNavigate
  48. Protected routes
 
----
+📌 Why:
 
-
-# ⚡ LEVEL 2 — PARTIAL MASTERY (10 questions each)
-
-
-
-### 🧱 Foundations (useful but stabilizes quickly)
-
- 2. JSX syntax and rules
- 4. Props and component composition
- 6. Event handling in React
- 7. Conditional rendering
+ Frequently asked in practical/frontend rounds
 
 ---
 
-### 🔄 State Edge Cases
+## 🔴 ADVANCED BUT FREQUENT
 
- 13. Handling form inputs
- 14. Passing callbacks between components
- 17. Derived state pitfalls
-
----
-
-### 🧠 Hooks Extensions
-
- 24. Rules of Hooks
  35. useReducer
- 36. useLayoutEffect
+ 67. Error boundaries
+
+📌 Why:
+
+ Shows depth beyond beginner level
+ Error boundaries appear in many lists ([InterviewBit][2])
 
 ---
 
-### 🌍 Data & Server State
+# 🟡 MEDIUM-FREQUENCY (ASKED SOMETIMES)
 
- 54. AbortController
- 56. Server vs client state
- 57. React Query basics
- 58. React Query caching
-
----
-
-### 🧭 Routing Depth
-
- 45. Nested routes
- 49. Lazy loaded routes
-
----
-
-### ⚙️ Architecture Decisions
-
- 29. Global vs local state decisions
-
-
----
-
-# 📘 LEVEL 3 — READ & RECOGNIZE (Low ROI)
-
-These are either:
-
- Rare
- Replaceable
- Or conceptual overhead not needed early
-
-
-### 🧾 Basic / Low Impact
+These show up, but not always:
 
  1. What React is
- 3. Function vs class components
+ 6. Event handling
+ 7. Conditional rendering
+ 17. Derived state pitfalls
+ 18. Lifecycle vs hooks
+ 20. StrictMode
+ 28. Avoiding re-renders with context
+ 54. AbortController
+ 56. Server vs client state
+ 60. Redux Toolkit
+
+👉 These are “nice to know” but not core differentiators
+
+---
+
+# 🟢 LOW-FREQUENCY (RARELY ASKED DIRECTLY)
+
  8. Fragments
+ 40. File uploads
+ 41. Debouncing
+ 42. Throttling
+ 43. Explicit Trigger Model
+ 49. Lazy loaded routes
+ 57–59 React Query (sometimes asked in good companies only)
 
 ---
 
-### 🧠 Theory-heavy / Internal Mechanics
+# ⚫ VERY RARE / EDGE INTERVIEW TOPICS
 
- 18. Lifecycle vs hooks mental model
- 20. React StrictMode behavior
-
----
-
-### ⚠️ Rare / Niche Hooks
-
+ 36. useLayoutEffect
  37. useImperativeHandle
  38. Advanced hook patterns
-
----
-
-### 📦 Context & Structure (light usage)
-
- 26. Prop drilling problem
- 27. Context API usage
- 28. Avoiding re-renders with context
-
----
-
-### 🧪 Advanced UX (situational)
-
- 40. File uploads
- 42. Throttling inputs
- 43. Explicit Trigger Model
-
----
-
-### 🔐 Security (important but quick learn)
-
- 61. XSS in React
- 62. Token storage
-
----
-
-### ⚛️ Concurrent React (low usage in most apps)
-
- 63. Suspense
- 64. Concurrent rendering
- 65. useTransition
- 66. useDeferredValue
-
----
-
-### 🏗️ Patterns (nice-to-know, not must-have)
-
- 67. Error boundaries
- 68. Higher-Order Components
- 69. Render props
- 70. Compound components
- 71. Smart vs dumb components
- 72. State colocation
+ 68–70 (HOC, render props, compound components)
  73. Portals
+
+👉 These are:
+
+ either outdated patterns
+ or niche use-cases
 
 ---
