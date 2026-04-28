@@ -150,7 +150,7 @@
 
 ---
 
-## 🔴 CORE FUNDAMENTALS (ALMOST GUARANTEED QUESTIONS)
+##  🔴 CORE FUNDAMENTALS (ALMOST GUARANTEED QUESTIONS)
 
  2. JSX syntax and rules
  3. React components (function vs class)
@@ -166,7 +166,7 @@
 
 ---
 
-## 🔴 STATE & DATA FLOW (VERY HIGH FREQUENCY)
+##  STATE & DATA FLOW (VERY HIGH FREQUENCY)
 
  11. State in React
  12. Controlled vs uncontrolled components
@@ -181,7 +181,7 @@
 
 ---
 
-## 🔴 HOOKS (MOST IMPORTANT MODERN AREA)
+##  HOOKS (MOST IMPORTANT MODERN AREA)
 
  19. useEffect (dependencies, cleanup, pitfalls)
  21. useState deep dive
@@ -197,7 +197,7 @@
 
 ---
 
-## 🔴 RENDERING & PERFORMANCE (HIGH SIGNAL FOR MID/SENIOR)
+##  RENDERING & PERFORMANCE (HIGH SIGNAL FOR MID/SENIOR)
 
  30. When React components re-render
  31. Reconciliation and keys
@@ -212,7 +212,7 @@
 
 ---
 
-## 🔴 DATA FLOW + ARCHITECTURE
+##  DATA FLOW + ARCHITECTURE
 
  26. Prop drilling problem
  27. Context API usage
@@ -225,7 +225,7 @@
 
 ---
 
-## 🔴 DATA FETCHING & REAL-WORLD PROBLEMS
+##  DATA FETCHING & REAL-WORLD PROBLEMS
 
  51. Fetch / Axios with useEffect
  52. Loading / error / empty states
@@ -239,7 +239,7 @@
 
 ---
 
-## 🔴 ROUTING (COMMON BUT NOT DEEP)
+##  ROUTING (COMMON BUT NOT DEEP)
 
  44. React Router basics
  46. Dynamic routes
@@ -251,7 +251,7 @@
 
 ---
 
-## 🔴 ADVANCED BUT FREQUENT
+##  ADVANCED BUT FREQUENT
 
  35. useReducer
  67. Error boundaries

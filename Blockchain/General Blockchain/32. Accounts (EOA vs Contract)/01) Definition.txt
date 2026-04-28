@@ -1,0 +1,130 @@
+### 32. Accounts in Blockchain (EOA vs Contract)
+
+In Ethereum, everything revolves around accounts. Unlike traditional systems (where users and programs are separate), Ethereum treats both users and smart contracts as accounts with balances and identities.
+
+There are two types of accounts:
+
+---
+
+## 1. Externally Owned Accounts (EOA)
+
+An EOA (Externally Owned Account) is controlled by a private key and represents a real user (or wallet).
+
+### Key Characteristics
+
+ Controlled by a private key
+ Can initiate transactions
+ Has:
+
+   Address
+   Balance (ETH)
+   Nonce (transaction counter)
+ No code execution capability
+
+### Example
+
+ When you use a wallet like MetaMask or Trust Wallet → you are using an EOA.
+
+### How it works
+
+1. You sign a transaction with your private key
+2. The network verifies the signature
+3. The transaction is executed
+
+👉 EOAs are basically users in the blockchain world
+
+---
+
+## 2. Contract Accounts
+
+A Contract Account is controlled by code (smart contract) instead of a private key.
+
+### Key Characteristics
+
+ Controlled by smart contract code
+ Cannot initiate transactions on its own
+ Executes only when triggered by:
+
+   An EOA
+   Another contract
+ Has:
+
+   Address
+   Balance
+   Code
+   Storage
+
+### Example
+
+ A DeFi lending protocol
+ NFT contract
+ DAO voting system
+
+All of these are deployed as smart contracts on Ethereum.
+
+### How it works
+
+1. An EOA sends a transaction to the contract
+2. The contract code executes in the Ethereum Virtual Machine
+3. State changes occur (transfer, storage update, etc.)
+
+👉 Contract accounts are programs living on the blockchain
+
+---
+
+## 3. EOA vs Contract Account (Comparison)
+
+| Feature                   | EOA         | Contract Account       |
+| ------------------------- | ----------- | ---------------------- |
+| Controlled by             | Private key | Smart contract code    |
+| Can initiate transactions | ✅ Yes       | ❌ No                   |
+| Has code                  | ❌ No        | ✅ Yes                  |
+| Requires gas              | Yes         | Yes (when executed)    |
+| Example                   | Wallet user | DeFi app, NFT contract |
+
+---
+
+## 4. Interaction Flow (Important Concept)
+
+Understanding interaction is key:
+
+ EOA → EOA
+
+   Simple ETH transfer
+
+ EOA → Contract
+
+   Triggers smart contract execution
+
+ Contract → Contract
+
+   Internal function calls
+
+ Contract → EOA
+
+   Sends ETH or tokens
+
+👉 But remember:
+
+> Only EOAs can start transactions
+
+---
+
+
+## 6. Real-World Analogy
+
+ EOA = User (you with a bank account)
+ Contract = Automated machine (ATM or software system)
+
+You (EOA) must initiate action, the system (contract) only responds based on rules.
+
+---
+
+## 7. Important Interview Insights
+
+ EOAs use cryptographic signatures
+ Contracts rely on deterministic execution
+ Contracts cannot act without external trigger → ensures predictability and security
+ Gas fees apply to both, but execution cost is higher for contracts
+
+---

@@ -64,7 +64,7 @@ Got it — I’ll reorder everything into the optimal learning sequence (not jus
 
 ---
 
-# 🟢 PHASE 6 — Solidity (Start Coding)
+# 🟢 PHASE 6 — Solidity (Start Coding) - not needed as in seprate folder
 
 35. Solidity syntax and structure
 36. Data types and variables

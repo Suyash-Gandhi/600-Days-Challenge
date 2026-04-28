@@ -1,0 +1,142 @@
+### 33. Transactions vs Contract Execution (Ethereum)
+
+
+
+# 1. What is a Transaction?
+
+A transaction is a message sent from one account to another on the blockchain.
+
+### Key idea:
+
+> A transaction is the trigger — it initiates something.
+
+### Types of transactions:
+
+1. EOA → EOA (simple transfer)
+
+    Sending ETH from one wallet to another
+    No logic executed
+
+2. EOA → Contract
+
+    Calls a function in a smart contract
+    This is where contract execution begins
+
+---
+
+### Example:
+
+ You send 1 ETH to a friend → simple transaction
+ You call a function like `buyToken()` → transaction + execution
+
+---
+
+# 2. What is Contract Execution?
+
+Contract execution is what happens after a transaction interacts with a smart contract.
+
+### Key idea:
+
+> Contract execution is the processing of logic inside the contract
+
+When a transaction hits a contract:
+
+ Code runs inside the Ethereum Virtual Machine
+ State changes happen
+ Gas is consumed
+
+---
+
+### Example:
+
+If you call:
+
+```
+swapTokens()
+```
+
+Then execution will:
+
+ Check balances
+ Calculate exchange rate
+ Update storage
+ Emit events
+
+---
+
+# 3. Core Difference (Very Important)
+
+| Aspect          | Transaction            | Contract Execution            |
+| --------------- | ---------------------- | ----------------------------- |
+| Nature          | External action        | Internal computation          |
+| Who initiates   | User (EOA)             | Triggered by transaction      |
+| Purpose         | Send message / trigger | Run contract logic            |
+| Always happens? | Yes                    | Only if contract is involved  |
+| Gas usage       | Pays for execution     | Consumes gas during execution |
+
+---
+
+# 4. Flow: How They Work Together
+
+### Step-by-step flow:
+
+1. User signs transaction (wallet)
+2. Transaction goes to mempool
+3. Validator includes it in a block
+4. If recipient is:
+
+    EOA → done
+    Contract → execution starts
+
+---
+
+### Flow Visualization:
+
+```
+User → Transaction → Blockchain → Contract → Execution → State Update
+```
+
+---
+
+# 5. Types of Contract Execution
+
+### 1. Read-only execution (no transaction)
+
+ Example: `balanceOf()`
+ Called locally (no gas)
+ Doesn’t change state
+
+---
+
+### 2. State-changing execution (requires transaction)
+
+ Example: `transfer()`, `mint()`
+ Costs gas
+ Updates blockchain
+
+---
+
+# 6. Important Concepts Behind Execution
+
+### a. Gas & Fees
+
+ Execution consumes gas
+ More complex logic = more gas
+
+---
+
+### b. Determinism
+
+ Every node must get the same result
+ No randomness (without special handling)
+
+---
+
+### c. Atomicity
+
+ Either:
+
+   Everything succeeds
+   OR everything fails (reverts)
+
+---
