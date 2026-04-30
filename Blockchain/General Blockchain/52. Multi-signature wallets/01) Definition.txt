@@ -1,0 +1,143 @@
+### 52. Multi-Signature Wallets (Multisig)
+
+Multi-signature wallets are a security mechanism in blockchain systems where multiple private keys are required to authorize a transaction, instead of relying on a single key.
+
+---
+
+## 🔹 1. Basic Concept
+
+In a normal wallet:
+
+ 1 key → controls funds
+
+In a multisig wallet:
+
+ M-of-N keys → required to approve a transaction
+
+Example:
+
+ 2-of-3 multisig
+
+   3 owners exist
+   Any 2 must sign to execute a transaction
+
+This removes single points of failure.
+
+---
+
+## 🔹 2. How Multisig Works (Step-by-Step)
+
+1. A multisig wallet is deployed as a smart contract
+2. Owners (addresses) are defined
+3. A threshold (e.g., 2/3) is set
+4. When a transaction is proposed:
+
+    One owner creates it
+    Others approve/sign it
+5. Once enough approvals are collected:
+
+    The transaction is executed on-chain
+
+---
+
+## 🔹 3. Real-World Example
+
+Popular multisig implementation:
+
+ Gnosis Safe
+
+Used by:
+
+ DAOs
+ Crypto startups
+ Treasury management systems
+
+---
+
+## 🔹 4. Types of Multisig Schemes
+
+### a) 2-of-2 (Strict Control)
+
+ Both parties must agree
+ Used in partnerships
+
+### b) 2-of-3 (Flexible Security)
+
+ One backup key exists
+ Common in production systems
+
+### c) M-of-N (General Case)
+
+ Example: 4-of-7 (used in DAOs)
+
+---
+
+## 🔹 5. Advantages of Multisig Wallets
+
+### 1. Enhanced Security
+
+ No single key compromise = no total loss
+
+### 2. Shared Control
+
+ Ideal for teams and organizations
+
+### 3. Reduced Insider Risk
+
+ One malicious actor cannot act alone
+
+### 4. Backup & Recovery
+
+ Losing one key doesn’t mean losing funds
+
+---
+
+## 🔹 6. Disadvantages / Limitations
+
+### 1. Slower Transactions
+
+ Requires multiple approvals
+
+### 2. Coordination Overhead
+
+ Owners must communicate and sign
+
+### 3. Higher Gas Costs
+
+ Multiple signatures → more computation
+
+### 4. Complexity
+
+ Harder to manage than single wallets
+
+---
+
+## 🔹 7. Multisig vs Single-Key Wallet
+
+| Feature  | Single Wallet           | Multisig Wallet  |
+| -------- | ----------------------- | ---------------- |
+| Control  | One person              | Multiple parties |
+| Security | Lower                   | Much higher      |
+| Risk     | Single point of failure | Distributed risk |
+| Speed    | Fast                    | Slower           |
+| Use Case | Individuals             | Teams / DAOs     |
+
+---
+
+## 🔹 8. Multisig in Smart Contract Architecture
+
+Multisig wallets are often used for:
+
+ Treasury management
+ Protocol governance
+ Upgrade approvals (proxy contracts)
+ Access control for admin functions
+
+👉 Example:
+
+ A smart contract upgrade may require:
+
+   3 developers to approve
+   Before execution
+
+---

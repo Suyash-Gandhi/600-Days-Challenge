@@ -1,0 +1,189 @@
+### ERC-20 (Fungible Tokens)
+
+ERC-20 is the most widely used token standard on the Ethereum network. It defines a set of rules (interface) that all fungible tokens must follow so they can interact seamlessly with wallets, exchanges, and smart contracts.
+
+---
+
+## 1. What is a Fungible Token?
+
+A fungible token means:
+
+ Each unit is identical and interchangeable
+ No unique identity per token
+
+👉 Example:
+
+ 1 USDT = 1 USDT (just like ₹100 = ₹100)
+ Unlike NFTs, where each token is unique
+
+---
+
+## 2. Why ERC-20 Exists
+
+Before ERC-20, every token had its own logic → chaos.
+
+ERC-20 standard solved this by:
+
+ Creating uniform rules
+ Allowing interoperability
+ Making tokens plug-and-play with:
+
+   Wallets (MetaMask)
+   DEXs (Uniswap)
+   Smart contracts
+
+---
+
+## 3. Core Functions of ERC-20
+
+Every ERC-20 contract must implement these:
+
+### (a) totalSupply()
+
+ Returns total tokens in existence
+
+### (b) balanceOf(address owner)
+
+ Shows how many tokens a user has
+
+### (c) transfer(address to, amount)
+
+ Sends tokens from sender to another address
+
+### (d) approve(address spender, amount)
+
+ Allows another contract/user to spend tokens on your behalf
+
+### (e) allowance(owner, spender)
+
+ Shows how much spending is allowed
+
+### (f) transferFrom(from, to, amount)
+
+ Used by approved spender to transfer tokens
+
+---
+
+## 4. Optional (but common) Functions
+
+ name() → Token name (e.g., "Tether USD")
+ symbol() → Ticker (e.g., USDT)
+ decimals() → Precision (usually 18)
+
+---
+
+## 5. Important Events
+
+ERC-20 also defines events (for tracking activity):
+
+ Transfer → Triggered on token movement
+ Approval → Triggered when allowance is set
+
+These are crucial for:
+
+ Block explorers
+ Wallet UI updates
+
+---
+
+## 6. How ERC-20 Works (Flow)
+
+### Simple Transfer
+
+1. User calls `transfer()`
+2. Contract checks balance
+3. Deducts from sender
+4. Adds to receiver
+5. Emits Transfer event
+
+### Delegated Transfer (DeFi use case)
+
+1. User calls `approve()`
+2. DeFi app calls `transferFrom()`
+3. Tokens move without user signing each time
+
+👉 Used in:
+
+ DEX trading
+ Lending protocols
+
+---
+
+## 7. Real-World Examples
+
+Popular ERC-20 tokens:
+
+ USDT (stablecoin)
+ UNI (governance)
+ LINK (oracle token)
+
+---
+
+## 8. Advantages of ERC-20
+
+### Standardization
+
+ One interface → easy integration
+
+### Liquidity
+
+ Tradable on most exchanges
+
+### Developer Friendly
+
+ Easy to create tokens
+
+### DeFi Backbone
+
+ Used in lending, staking, DEXs
+
+---
+
+## 9. Limitations of ERC-20
+
+### Approval Vulnerability
+
+ Users may give unlimited allowance → risk of exploits
+
+### No Native Handling for Tokens
+
+ Sending tokens to wrong contracts can result in loss
+
+### Gas Costs
+
+ Transfers cost gas (unlike some newer chains)
+
+---
+
+## 10. ERC-20 vs Other Standards
+
+| Feature         | ERC-20                   | ERC-721      |
+| --------------- | ------------------------ | ------------ |
+| Type            | Fungible                 | Non-fungible |
+| Interchangeable | Yes                      | No           |
+| Use Case        | Currency, utility tokens | NFTs         |
+| Value per unit  | Same                     | Unique       |
+
+---
+
+## 11. Simple Mental Model
+
+Think of ERC-20 like:
+
+> “A universal API for digital money on Ethereum”
+
+Just like:
+
+ HTTP standard → for web
+ ERC-20 → for tokens
+
+---
+
+## 12. Best Practices (Important for Interviews)
+
+ Avoid unlimited `approve()` → use safe allowance patterns
+ Use OpenZeppelin ERC-20 implementation
+ Handle reentrancy and edge cases
+ Emit events properly
+
+---
