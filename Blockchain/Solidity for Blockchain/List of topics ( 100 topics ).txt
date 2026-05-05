@@ -248,8 +248,8 @@
 
  1 → Not needed (skip or optional awareness)
  2 → Light read
- 3 → Understand theory
- 4 → Practice (10–20 questions)
+ 3 → Understand theory (5-10 theory questions)
+ 4 → Practice (10–20 practical questions)
  5 → Master (30+ problems + build mini use-cases)
 
 ---
