@@ -241,3 +241,320 @@
 100. Tokenomics + ERC-721A
 
 ---
+
+
+
+# 🧠 Legend (Important)
+
+ 1 → Not needed (skip or optional awareness)
+ 2 → Light read
+ 3 → Understand theory
+ 4 → Practice (10–20 questions)
+ 5 → Master (30+ problems + build mini use-cases)
+
+---
+
+# 🟢 PHASE 1 — Fundamentals
+
+| Topic                                 | Level |
+| ------------------------------------- | ----- |
+| Introduction to Blockchain & Ethereum | 3     |
+| EOA vs Contract Accounts              | 4     |
+| EVM overview                          | 4     |
+| Solidity file structure & lifecycle   | 3     |
+| Pragma & compiler versions            | 2     |
+
+👉 Focus: How transactions actually execute
+
+---
+
+# 🧩 PHASE 2 — Core Language
+
+| Topic                  | Level |
+| ---------------------- | ----- |
+| Variables              | 5     |
+| Data types             | 5     |
+| Operators              | 4     |
+| Conditional statements | 5     |
+| Loops                  | 5     |
+| Break & continue       | 3     |
+
+👉 These are your daily tools — treat like muscle memory
+
+---
+
+# 📦 PHASE 3 — Data Structures (CRITICAL ZONE)
+
+| Topic                         | Level                    |
+| ----------------------------- | ------------------------ |
+| Arrays                        | 5                        |
+| Structs & Enums               | 5                        |
+| Mappings                      | 5                        |
+| Storage vs Memory vs Calldata | ⭐ 5 (MOST IMPORTANT) |
+
+👉 If you mess this up → bugs + gas waste + vulnerabilities
+
+---
+
+# ⚙️ PHASE 4 — Functions
+
+| Topic                           | Level |
+| ------------------------------- | ----- |
+| Functions (syntax + visibility) | 5     |
+| Return values                   | 4     |
+| Constructors                    | 4     |
+| Modifiers                       | 5     |
+| View vs Pure                    | 4     |
+
+---
+
+# 🔗 PHASE 5 — Contract Interaction (VERY IMPORTANT)
+
+| Topic                            | Level                       |
+| -------------------------------- | --------------------------- |
+| ABI                              | 4                           |
+| Contract-to-contract interaction | 5                           |
+| Low-level calls                  | ⭐ 5 (SECURITY CRITICAL) |
+
+👉 Weak here = you will fail interviews
+
+---
+
+# 📡 PHASE 6 — Events & Errors
+
+| Topic            | Level |
+| ---------------- | ----- |
+| Events & logging | 4     |
+| Global variables | 5     |
+| Error handling   | 5     |
+
+---
+
+# 💰 PHASE 7 — Ether & Gas
+
+| Topic          | Level |
+| -------------- | ----- |
+| Ether handling | ⭐ 5   |
+| Gas basics     | ⭐ 5   |
+
+👉 This is where real-world devs separate from beginners
+
+---
+
+# 🛠️ PHASE 8 — First Real Contracts
+
+| Topic                      | Level                   |
+| -------------------------- | ----------------------- |
+| OpenZeppelin contracts     | 4                       |
+| ERC20 + Crowdfunding build | ⭐ 5 (PROJECT LEVEL) |
+
+👉 Build multiple variations here
+
+---
+
+# 🪙 PHASE 9 — Token Standards
+
+| Topic           | Level |
+| --------------- | ----- |
+| ERC20 deep dive | 5     |
+| ERC721          | 4     |
+| ERC1155         | 3     |
+
+---
+
+# 🧱 PHASE 10 — OOP
+
+| Topic                           | Level |
+| ------------------------------- | ----- |
+| Inheritance                     | 5     |
+| Abstract contracts & interfaces | 5     |
+| Override & virtual              | 4     |
+| Libraries                       | 5     |
+
+---
+
+# 🔐 PHASE 11 — Security Basics
+
+| Topic                  | Level |
+| ---------------------- | ----- |
+| Custom errors          | 4     |
+| SafeMath (concept)     | 3     |
+| Access control         | ⭐ 5   |
+| OpenZeppelin practices | 5     |
+
+---
+
+# 🔗 PHASE 12 — Advanced Behavior
+
+| Topic                         | Level |
+| ----------------------------- | ----- |
+| Fallback & receive (advanced) | 5     |
+
+---
+
+# 🏗️ PHASE 13 — Patterns
+
+| Topic             | Level |
+| ----------------- | ----- |
+| Multisig wallet   | 5     |
+| Staking contracts | 5     |
+| Escrow contracts  | 5     |
+| DAO & voting      | 5     |
+
+👉 These are portfolio-level builds
+
+---
+
+# 🔮 PHASE 14 — Oracles
+
+| Topic             | Level |
+| ----------------- | ----- |
+| Chainlink oracles | 4     |
+| Chainlink VRF     | 4     |
+
+---
+
+# 🧪 PHASE 15 — Tooling
+
+| Topic                  | Level |
+| ---------------------- | ----- |
+| Hardhat / Foundry      | 5     |
+| Unit testing           | ⭐ 5   |
+| Debugging & deployment | 5     |
+
+👉 Start this EARLY (not after)
+
+---
+
+# 🛡️ PHASE 16 — Core Security
+
+| Topic                       | Level |
+| --------------------------- | ----- |
+| Vulnerabilities overview    | 4     |
+| Reentrancy                  | ⭐ 5   |
+| Checks-Effects-Interactions | ⭐ 5   |
+| Integer overflow nuances    | 4     |
+| DoS                         | 4     |
+
+---
+
+# ⚔️ PHASE 17 — Advanced Attacks
+
+| Topic                        | Level |
+| ---------------------------- | ----- |
+| Front-running / MEV          | 4     |
+| Flash loans                  | 4     |
+| Sandwich attacks             | 3     |
+| tx.origin attack             | 5     |
+| Delegatecall vulnerabilities | ⭐ 5   |
+| Access control exploits      | ⭐ 5   |
+| Randomness attacks           | 4     |
+| Timestamp dependence         | 4     |
+| Gas griefing                 | 3     |
+
+---
+
+# ⚙️ PHASE 18 — Optimization
+
+| Topic                          | Level |
+| ------------------------------ | ----- |
+| Secure external calls          | 5     |
+| Gas optimization               | 4     |
+| Memory vs storage optimization | 5     |
+| Event indexing                 | 3     |
+
+---
+
+# ⚡ PHASE 19 — Low-Level
+
+| Topic          | Level |
+| -------------- | ----- |
+| Assembly / Yul | 2     |
+| CREATE2        | 4     |
+
+---
+
+# 🧬 PHASE 20 — Upgradeability
+
+| Topic                      | Level |
+| -------------------------- | ----- |
+| Proxy pattern              | 5     |
+| Storage layout             | ⭐ 5   |
+| UUPS & Transparent proxies | 5     |
+| Diamond Standard           | 3     |
+| Modular architecture       | 5     |
+
+---
+
+# 🏪 PHASE 21 — Real Systems
+
+| Topic           | Level |
+| --------------- | ----- |
+| NFT marketplace | 5     |
+| DeFi primitives | ⭐ 5   |
+
+---
+
+# 🔍 PHASE 22 — Auditing
+
+| Topic                | Level |
+| -------------------- | ----- |
+| Auditing methodology | 4     |
+| Static analysis      | 4     |
+| Fuzz testing         | 4     |
+| Formal verification  | 2     |
+| Threat modeling      | 5     |
+| Bug bounty workflow  | 3     |
+
+---
+
+# 🔐 PHASE 23 — Advanced Security Systems
+
+| Topic                   | Level |
+| ----------------------- | ----- |
+| Secure upgrade patterns | 5     |
+| Gnosis Safe             | 4     |
+
+---
+
+# 🌐 PHASE 24 — Scaling
+
+| Topic               | Level |
+| ------------------- | ----- |
+| Layer 2             | 4     |
+| Rollups             | 4     |
+| Cross-chain bridges | 4     |
+
+---
+
+# 🔬 PHASE 25 — Cryptography
+
+| Topic                 | Level |
+| --------------------- | ----- |
+| zk-SNARKs / zk-STARKs | 2     |
+
+---
+
+# 💸 PHASE 26 — Advanced DeFi
+
+| Topic               | Level |
+| ------------------- | ----- |
+| Yield farming       | 4     |
+| Oracle manipulation | ⭐ 5   |
+| Liquidations        | 5     |
+| Stablecoin design   | 5     |
+| DAO governance      | 4     |
+
+---
+
+# ⚡ PHASE 27 — Protocol Thinking
+
+| Topic                  | Level |
+| ---------------------- | ----- |
+| MEV-aware design       | 4     |
+| Gas golfing            | 3     |
+| Account abstraction    | 4     |
+| Multi-chain deployment | 4     |
+| Tokenomics             | 3     |
+
+---

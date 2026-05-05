@@ -1,0 +1,54 @@
+Q1. If blockchain is immutable, how do bugs in smart contracts get handled in Ethereum?
+
+A1. Since blockchain is immutable, smart contract 
+bugs cannot be patched directly. The common approaches
+are redeploying a new contract or using upgradeable 
+proxy patterns. In proxy patterns, the proxy contract
+stores the state and delegates calls to an implementation
+contract that contains logic. When a bug is found, a 
+new implementation contract is deployed and the proxy is 
+updated to point to it, allowing upgrades without losing state.
+
+
+
+
+
+
+Q2. Why is decentralization important, and what trade-offs does it introduce compared to centralized systems?
+
+A2. Decentralization solves the problem of trusting a third party. In a decentralized system, data is stored across multiple nodes and verified by the network, which makes the system transparent and trustless. It also provides censorship resistance, meaning no single authority can block or control transactions, and improves security by eliminating a single point of failure.
+
+However, decentralization introduces several trade-offs. It results in reduced processing speed because transactions must be validated by multiple nodes. It also has economic costs (gas fees) since users need to pay for computation and network security. There are scalability limitations, as decentralized networks handle fewer transactions per second compared to centralized systems. Additionally, it increases user experience complexity, making applications harder to use and understand.
+
+
+
+
+Q3. Suppose you build a payment app on Ethereum. Why can’t it be completely free to use?
+
+A3. It can’t be free because gas fees are required to pay validators, cover computational costs, and prevent spam, ensuring the network remains secure and functional.
+
+
+
+Q4. How is a smart contract different from a normal backend server (like Node.js)?
+
+A4. A smart contract is a program stored and executed on the blockchain, whereas a traditional backend like Node.js runs on centralized servers. Smart contracts are deterministic, meaning the same input always produces the same output across all nodes, and they are immutable once deployed. They also operate in a trustless environment, where no central authority controls execution.
+
+In contrast, backend servers are centralized, can be modified at any time, and rely on trust in the server owner. Additionally, smart contracts have persistent storage on the blockchain and require gas fees for execution, while backend servers manage their own databases and do not have per-operation execution costs in the same way.
+
+
+
+
+
+Q5. If Ethereum is a “world computer”, what limitations prevent it from replacing traditional systems completely?
+
+A5. Although Ethereum is often called a “world computer,” it cannot replace traditional systems due to several limitations. First, it is not optimized for fast read and write operations, especially since write operations require gas fees and must be validated through network consensus, which introduces latency.
+
+Additionally, Ethereum has scalability limitations, handling far fewer transactions per second compared to centralized systems. The cost of execution (gas fees) makes it expensive for frequent or large-scale operations. Storage on-chain is also limited and costly, making it inefficient for large data.
+
+Furthermore, smart contracts are immutable, so bugs cannot be easily fixed, and errors are irreversible. Finally, the user experience is more complex, and Ethereum is not suitable for applications requiring real-time performance or heavy computation.
+
+
+
+
+
+
