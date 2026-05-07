@@ -159,10 +159,6 @@
  9. Virtual DOM vs Real DOM
  10. One-way data flow
 
-📌 Why:
-
- JSX, props, and components are asked in every beginner + mid interview ([InterviewBit][2])
- Virtual DOM is one of the most asked questions overall ([NareshIT][4])
 
 ---
 
@@ -173,11 +169,6 @@
  14. Passing callbacks between components
  15. Immutable state updates
  16. Lifting state up
-
-📌 Why:
-
- “State vs props” + “data flow” = classic interview combo ([Medium][5])
- Lifting state = common real-world scenario
 
 ---
 
@@ -190,11 +181,6 @@
  24. Rules of Hooks
  25. Custom hooks
 
-📌 Why:
-
- Hooks dominate interviews now
- Missing dependencies in `useEffect` = very common trap question ([InterviewBit][2])
-
 ---
 
 ##  RENDERING & PERFORMANCE (HIGH SIGNAL FOR MID/SENIOR)
@@ -205,11 +191,6 @@
  33. useMemo
  34. useCallback
 
-📌 Why:
-
- Interviewers test “why is this re-rendering?”
- Performance questions = strong differentiator ([Medium][3])
-
 ---
 
 ##  DATA FLOW + ARCHITECTURE
@@ -218,10 +199,6 @@
  27. Context API usage
  29. Global vs local state decisions
 
-📌 Why:
-
- “How do you manage state in large apps?” → very common
- Context vs Redux discussion appears frequently ([Akal Info][6])
 
 ---
 
@@ -232,10 +209,6 @@
  53. Async error handling
  55. Race conditions
 
-📌 Why:
-
- Interviews are shifting toward real-world debugging
- Race conditions + loading states = strong signal questions
 
 ---
 
@@ -245,9 +218,6 @@
  46. Dynamic routes
  48. Protected routes
 
-📌 Why:
-
- Frequently asked in practical/frontend rounds
 
 ---
 
@@ -256,10 +226,6 @@
  35. useReducer
  67. Error boundaries
 
-📌 Why:
-
- Shows depth beyond beginner level
- Error boundaries appear in many lists ([InterviewBit][2])
 
 ---
 
@@ -278,7 +244,6 @@ These show up, but not always:
  56. Server vs client state
  60. Redux Toolkit
 
-👉 These are “nice to know” but not core differentiators
 
 ---
 
