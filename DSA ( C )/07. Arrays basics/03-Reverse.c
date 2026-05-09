@@ -2,7 +2,7 @@
 int main(){
     int arr[5] = {1,0,9,4,8};
       int size = sizeof(arr)/sizeof(arr[0]);
-    int reverse[size];
+    int reverse[5];
     int j=0;
   
     for (int i = size-1; i >=0; i--)
