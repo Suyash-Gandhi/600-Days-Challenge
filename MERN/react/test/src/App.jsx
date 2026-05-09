@@ -1,23 +1,45 @@
-import { useRef } from "react"
+import  { useEffect, useState } from "react";
 
-const ScrollExample = () => {
-  const sectionRef = useRef(null)
+export default function App() {
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
-  const scrollToSection = () => {
-    sectionRef.current.scrollIntoView({ behavior: "smooth" })
-  }
+  useEffect(() => {
+  
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
+
+  
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    if (debouncedQuery.trim() === "") return;
+
+    console.log("Searching for:", debouncedQuery);
+  }, [debouncedQuery]);
 
   return (
-    <>
-      <button onClick={scrollToSection}>Go to section</button>
+    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
+      <h1>Debounce Search</h1>
 
-      <div style={{ height: "1000px" }}></div>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{
+          padding: "10px",
+          width: "300px",
+          fontSize: "16px",
+        }}
+      />
 
-      <div ref={sectionRef}>
-        Target Section
-      </div>
-    </>
-  )
+      <h3>Typing: {query}</h3>
+      <h3>Debounced: {debouncedQuery}</h3>
+    </div>
+  );
 }
-
-export default ScrollExample

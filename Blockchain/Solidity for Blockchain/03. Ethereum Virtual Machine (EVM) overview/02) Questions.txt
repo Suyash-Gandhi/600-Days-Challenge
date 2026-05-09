@@ -1,0 +1,145 @@
+Q1. What is the Ethereum Virtual Machine (EVM), and why is it important?
+
+Explain:
+
+What the EVM does
+Why Ethereum needs it
+Why every node runs it
+
+A1. The Ethereum Virtual Machine (EVM) is the system that executes smart contracts on Ethereum.
+
+You can think of it as the runtime environment or engine of Ethereum.
+
+A smart contract written in Solidity cannot run directly on the blockchain.
+First, it is converted into bytecode, and then the EVM executes that bytecode.
+
+---
+ Simple Definition
+
+> The EVM is a decentralized virtual computer that runs smart contracts on Ethereum.
+
+---
+ What Does the EVM Do?
+
+The EVM is responsible for:
+
+ Executing smart contract code
+ Processing transactions
+ Updating blockchain state
+ Calculating gas usage
+ Ensuring all nodes get the same result
+
+---
+ Why Ethereum Needs the EVM
+
+Ethereum is not just for storing transactions like Bitcoin.
+
+Ethereum was designed to support:
+
+ Smart contracts
+ Decentralized applications (dApps)
+ Programmable blockchain logic
+
+To make this possible, Ethereum needed:
+
+ A common execution environment
+ A secure way to run code
+ A system every node can understand
+
+That system is the EVM.
+
+---
+ Main Reasons Ethereum Needs the EVM
+ 1. To Run Smart Contracts
+
+Smart contracts contain logic:
+
+ Sending tokens
+ Minting NFTs
+ Voting systems
+ DeFi protocols
+
+The EVM executes this logic.
+
+---
+ 2. To Ensure Consistency
+
+Every Ethereum node must produce the exact same result.
+
+Example:
+
+ If Alice sends 1 ETH,
+ every node must agree:
+
+   balance reduced
+   balance increased
+   gas deducted
+
+The EVM guarantees deterministic execution.
+
+---
+ 3. To Keep the Network Secure
+
+The EVM runs contracts in an isolated environment called a sandbox.
+
+Smart contracts cannot:
+
+ Access your computer
+ Read files
+ Use internet directly
+
+This prevents malicious behavior.
+
+---
+ 4. To Control Resource Usage
+
+The EVM uses the gas system.
+
+Every operation costs gas:
+
+ Storage = expensive
+ Computation = costs gas
+ Loops = consume gas
+
+This prevents:
+
+ Infinite loops
+ Spam
+ Network abuse
+
+---
+ Why Every Node Runs the EVM
+
+Ethereum is decentralized.
+
+There is no central server saying:
+
+> “Trust me, the result is correct.”
+
+Instead:
+
+Every node independently:
+
+1. Receives the transaction
+2. Runs the smart contract in the EVM
+3. Verifies the output
+4. Confirms the state change
+
+---
+ Why This Is Important
+
+If only one computer executed contracts:
+
+ Users would need to trust that computer
+ Blockchain would become centralized
+
+By having every node run the EVM:
+
+ No trust is required
+ Everyone verifies independently
+ Network stays decentralized
+
+---
+
+
+Q2. 
