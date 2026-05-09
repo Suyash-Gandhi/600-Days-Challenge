@@ -141,5 +141,375 @@ By having every node run the EVM:
 
 ---
 
+   
 
-Q2. 
+
+
+
+Q2. Explain the lifecycle of a smart contract from Solidity code to execution inside the EVM.
+
+A2. Write Solidity Code
+        ↓
+Compile with Solidity Compiler
+        ↓
+Generate Bytecode + ABI
+        ↓
+Send Deployment Transaction
+        ↓
+EVM Executes Constructor
+        ↓
+Contract Stored on Blockchain
+        ↓
+Users Call Functions
+        ↓
+EVM Executes Bytecode
+        ↓
+State Changes Updated
+        ↓
+Transaction Added to Block
+
+1.Developer writes Solidity code
+2.Compiler converts it into bytecode + ABI
+3.Bytecode is deployed to Ethereum
+4.EVM stores and executes bytecode
+5.Users send transactions to interact
+6.Every node runs same execution
+7.Blockchain state updates permanently
+
+
+
+
+
+Q3. What is the difference between:
+Stack
+Memory
+Storage
+
+Inside the EVM?
+
+Explain:
+
+Lifetime
+Cost
+Persistence
+Use cases
+
+A3. Your understanding is actually good already.
+You correctly identified the core idea of all three.
+
+Now let’s refine it into proper EVM understanding.
+
+---
+ Difference Between Stack, Memory, and Storage in EVM
+
+These are the three main places where the EVM handles data during execution.
+
+---
+ 1. Stack
+
+The stack is a small temporary area used by the EVM for calculations and execution operations.
+
+The EVM is a tack-based machine
+
+---
+ Characteristics of Stack
+ Lifetime
+
+Exists only during function execution
+ Persistence
+
+Not permanent
+Cleared after execution
+ Cost
+
+Cheapest and fastest
+ Use Cases
+
+Arithmetic operations
+Temporary calculations
+Opcode execution
+
+---
+ Example
+
+When doing:
+
+```solidity id="3ps8zf"
+uint c = a + b;
+```
+
+The EVM may:
+
+1. Push `a` to stack
+2. Push `b` to stack
+3. Execute `ADD`
+4. Store result temporarily
+
+---
+ Important Facts
+
+Max size = 1024 items
+Each item = 256 bits
+Uses LIFO (Last In First Out)
+
+---
+ 2. Memory
+
+Memory is temporary expandable storage used during function execution.
+
+Unlike stack:
+
+memory can store larger data structures.
+
+---
+ Characteristics of Memory
+ Lifetime
+
+Exists during function execution only
+ Persistence
+
+Temporary
+Deleted after transaction execution
+ Cost
+
+More expensive than stack
+Cheaper than storage
+ Use Cases
+
+Arrays
+Strings
+Function arguments
+Temporary complex data
+
+---
+ Example
+
+```solidity id="a1cny7"
+function test() public pure {
+    string memory name = "Suyash";
+}
+```
+
+`name` exists only while function executes.
+
+After execution:
+
+memory is wiped.
+
+---
+ 3. Storage
+
+Storage is permanent blockchain data storage.
+
+This is where state variables live.
+
+---
+ Characteristics of Storage
+ Lifetime
+
+Permanent until modified/deleted
+ Persistence
+
+Stored on blockchain permanently
+ Cost
+
+Most expensive
+ Use Cases
+
+State variables
+Contract balances
+Persistent contract data
+
+---
+ Example
+
+```solidity id="qte99t"
+contract Test {
+    uint public count;
+}
+```
+
+`count` is stored in storage.
+
+Even after:
+
+transaction ends
+block changes
+node restarts
+
+the value remains.
+
+---
+
+
+
+
+
+
+Q4. Why does the EVM use gas? Explain: Infinite loop prevention, Resource allocation, Network security, Transaction cost
+
+A4.
+
+ 1. Infinite Loop Prevention
+
+Gas prevents contracts from running forever.
+
+For example:
+
+```solidity
+while(true) {
+
+}
+```
+
+Without gas, this loop would run infinitely and nodes would get stuck permanently.
+
+With gas:
+
+every instruction consumes gas,
+gas eventually runs out,
+transaction execution stops automatically.
+
+This protects the network from hanging or crashing.
+
+---
+
+ 2. Resource Allocation
+
+Executing smart contracts requires:
+
+CPU computation,
+memory usage,
+storage,
+bandwidth.
+
+Since every Ethereum node executes every transaction, these resources are valuable.
+
+Gas creates a cost for using network resources, ensuring users cannot consume unlimited computation for free.
+
+More expensive operations require more gas:
+
+simple addition → cheap,
+writing to blockchain storage → expensive.
+
+---
+
+ 3. Network Security
+
+Gas helps protect Ethereum from:
+
+spam attacks,
+denial-of-service attacks,
+malicious contracts.
+
+Without gas, attackers could continuously send heavy computations and overload the network.
+
+Because transactions cost real ETH:
+
+attackers must spend money,
+large-scale abuse becomes expensive.
+
+This economic barrier improves network security.
+
+---
+
+ 4. Validator / Miner Incentives
+
+Validators execute and verify transactions.
+
+Gas fees act as rewards for validators because they:
+
+process transactions,
+execute EVM instructions,
+maintain blockchain consensus.
+
+The gas paid by users becomes part of validator rewards.
+
+---
+
+ 5. Transaction Cost Measurement
+
+Gas also standardizes the cost of EVM operations.
+
+Each opcode has a predefined gas cost.
+
+Examples:
+
+`ADD` → low gas
+`SSTORE` → high gas
+
+This creates predictable pricing for computation.
+
+---
+
+
+
+
+
+
+Q5. What happens inside the EVM when a user calls a smart contract function?
+
+Explain step-by-step:
+
+Transaction creation
+Validation
+Opcode execution
+State changes
+Block inclusion
+
+A5. When a user calls a smart contract function, a 
+transaction containing calldata and gas information 
+is created and broadcast to the network. Nodes validate
+the transaction and place it in the mempool. A validator 
+selects the transaction, and the EVM executes the 
+contract bytecode as opcodes. During execution, gas 
+is consumed and state changes are computed. 
+If execution succeeds, the transaction is included 
+in a block, validated through consensus, and 
+permanently added to the blockchain.
+
+
+
+
+
+
+Q6. 
+
+A6. 
+
+
+
+
+
+
+Q7. 
+
+A7. 
+
+
+
+
+
+
+Q8. 
+
+A8.
+
+
+
+
+
+
+
+Q9. 
+
+A9. 
+
+
+
+
+
+
+Q10.
+
+A10. 
