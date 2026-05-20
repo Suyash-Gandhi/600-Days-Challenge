@@ -1,0 +1,407 @@
+# Setting Up a Basic Express Server
+
+## What is an Express Server?
+
+An Express server is a backend application built using Express.js that listens for client requests and sends responses back.
+
+It helps you:
+
+ Create APIs
+ Handle routes
+ Process requests
+ Send responses
+ Build backend applications faster
+
+---
+
+# Step 1: Create a Project Folder
+
+Open terminal and run:
+
+```bash
+mkdir express-server
+cd express-server
+```
+
+This creates a new folder and moves inside it.
+
+---
+
+# Step 2: Initialize Node Project
+
+Run:
+
+```bash
+npm init -y
+```
+
+This creates a `package.json` file.
+
+### What is package.json?
+
+It stores:
+
+ Project name
+ Dependencies
+ Scripts
+ Project configuration
+
+---
+
+# Step 3: Install Express
+
+Run:
+
+```bash
+npm install express
+```
+
+This installs Express.js inside your project.
+
+After installation:
+
+ `node_modules/` folder is created
+ `package-lock.json` is created
+ Express becomes available to use
+
+---
+
+# Step 4: Create Server File
+
+Create a file:
+
+```bash
+server.js
+```
+
+---
+
+# Step 5: Write Basic Express Server
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/", (req, res) => {
+    res.send("Server is running")
+})
+
+app.listen(5000, () => {
+    console.log("Server started on port 5000")
+})
+```
+
+---
+
+# Step 6: Enable ES Modules
+
+Since you are using `import`, add this inside `package.json`:
+
+```json
+"type": "module"
+```
+
+Example:
+
+```json
+{
+  "name": "express-server",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
+```
+
+---
+
+# Step 7: Run the Server
+
+Run:
+
+```bash
+node server.js
+```
+
+Output:
+
+```bash
+Server started on port 5000
+```
+
+---
+
+# Step 8: Open in Browser
+
+Visit:
+
+```txt
+http://localhost:5000
+```
+
+You will see:
+
+```txt
+Server is running
+```
+
+---
+
+# Understanding the Code
+
+## Import Express
+
+```js
+import express from "express"
+```
+
+Imports the Express library.
+
+---
+
+## Create App
+
+```js
+const app = express()
+```
+
+Creates an Express application.
+
+`app` is the main server object.
+
+---
+
+## Route
+
+```js
+app.get("/", (req, res) => {
+
+})
+```
+
+This handles GET requests.
+
+### Meaning
+
+| Part  | Meaning         |
+| ----- | --------------- |
+| `app` | Express app     |
+| `get` | HTTP GET method |
+| `/`   | Route           |
+| `req` | Request object  |
+| `res` | Response object |
+
+---
+
+## Sending Response
+
+```js
+res.send("Server is running")
+```
+
+Sends response to client/browser.
+
+---
+
+## Starting Server
+
+```js
+app.listen(5000)
+```
+
+Starts server on port `5000`.
+
+---
+
+# Important Terms
+
+## Port
+
+A port is a communication endpoint.
+
+Example:
+
+```txt
+localhost:5000
+```
+
+ `localhost` → your machine
+ `5000` → port number
+
+---
+
+## Route
+
+A route is a URL endpoint.
+
+Examples:
+
+```txt
+/
+```
+
+```txt
+/users
+```
+
+```txt
+/products
+```
+
+---
+
+# Adding More Routes
+
+Example:
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/", (req, res) => {
+    res.send("Home Page")
+})
+
+app.get("/about", (req, res) => {
+    res.send("About Page")
+})
+
+app.get("/contact", (req, res) => {
+    res.send("Contact Page")
+})
+
+app.listen(5000, () => {
+    console.log("Server running on port 5000")
+})
+```
+
+---
+
+# Testing Routes
+
+| URL        | Output       |
+| ---------- | ------------ |
+| `/`        | Home Page    |
+| `/about`   | About Page   |
+| `/contact` | Contact Page |
+
+---
+
+# Common Beginner Errors
+
+## 1. Forgetting `"type": "module"`
+
+Error:
+
+```bash
+Cannot use import statement outside a module
+```
+
+Fix:
+
+```json
+"type": "module"
+```
+
+---
+
+## 2. Express Not Installed
+
+Error:
+
+```bash
+Cannot find module 'express'
+```
+
+Fix:
+
+```bash
+npm install express
+```
+
+---
+
+## 3. Wrong Port Already Running
+
+Error:
+
+```bash
+EADDRINUSE
+```
+
+Meaning:
+
+Port already being used.
+
+Fix:
+
+Use another port:
+
+```js
+app.listen(3000)
+```
+
+---
+
+# Folder Structure
+
+```txt
+express-server/
+│
+├── node_modules/
+├── package.json
+├── package-lock.json
+└── server.js
+```
+
+---
+
+# Real Flow of Express Server
+
+```txt
+Browser Request
+       ↓
+Express Server
+       ↓
+Route Handler
+       ↓
+Response Sent Back
+```
+
+---
+
+# Why Express is Popular
+
+Express.js is popular because it is:
+
+ Lightweight
+ Fast
+ Simple
+ Flexible
+ Great for REST APIs
+ Widely used in MERN stack
+
+---
+
+# Interview Questions
+
+
+
+## Difference between Node.js and Express.js
+
+| Node.js             | Express.js                     |
+| ------------------- | ------------------------------ |
+| Runtime environment | Framework                      |
+| Runs JavaScript     | Simplifies backend development |
+| Built-in modules    | Routing & middleware support   |
+
+---
+
+## What is a route in Express?
+
+A route is an endpoint that handles client requests for a specific URL.
+
+

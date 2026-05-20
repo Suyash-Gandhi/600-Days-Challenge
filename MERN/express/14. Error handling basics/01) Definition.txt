@@ -1,0 +1,435 @@
+# 14. Error Handling Basics in Express (`next(err)`)
+
+Error handling is one of the most important parts of building backend applications using Express.js.
+
+Without proper error handling:
+
+ Your server may crash
+ Users may get confusing responses
+ Bugs become harder to debug
+ APIs become unreliable
+
+Express provides a built-in way to handle errors using:
+
+```js
+next(err)
+```
+
+---
+
+# What is `next()` in Express?
+
+In Express middleware, there are usually 3 parameters:
+
+```js
+(req, res, next)
+```
+
+ `req` → Request object
+ `res` → Response object
+ `next` → Function used to move to the next middleware
+
+Example:
+
+```js
+app.use((req, res, next) => {
+    console.log("Middleware running");
+    next();
+});
+```
+
+Here:
+
+ Middleware runs
+ `next()` passes control to the next middleware/route
+
+---
+
+# What is `next(err)`?
+
+When you pass an error inside `next()`:
+
+```js
+next(err)
+```
+
+Express understands:
+
+> "Something went wrong."
+
+Then Express skips normal middleware and directly goes to the error-handling middleware.
+
+---
+
+# Basic Flow
+
+```text
+Request
+   ↓
+Route/Middleware
+   ↓
+Error occurs
+   ↓
+next(err)
+   ↓
+Error-handling middleware
+   ↓
+Response sent
+```
+
+---
+
+# Basic Example
+
+```js
+import express from "express";
+
+const app = express();
+
+app.get("/", (req, res, next) => {
+
+    const error = new Error("Something went wrong");
+
+    next(error);
+});
+
+app.use((err, req, res, next) => {
+    res.status(500).json({
+        success: false,
+        message: err.message
+    });
+});
+
+app.listen(5000, () => {
+    console.log("Server running");
+});
+```
+
+---
+
+# Output
+
+If user visits:
+
+```text
+http://localhost:5000/
+```
+
+Response:
+
+```json
+{
+  "success": false,
+  "message": "Something went wrong"
+}
+```
+
+---
+
+# Important: Error Middleware Has 4 Parameters
+
+Normal middleware:
+
+```js
+(req, res, next)
+```
+
+Error middleware:
+
+```js
+(err, req, res, next)
+```
+
+The `err` parameter is mandatory.
+
+Without it, Express will NOT treat it as error middleware.
+
+---
+
+# Error Handling Middleware Syntax
+
+```js
+app.use((err, req, res, next) => {
+
+});
+```
+
+Usually placed at the bottom of the server file.
+
+---
+
+# Real Example — User Not Found
+
+```js
+app.get("/users/:id", (req, res, next) => {
+
+    const user = null;
+
+    if (!user) {
+        return next(new Error("User not found"));
+    }
+
+    res.json(user);
+});
+```
+
+Error middleware:
+
+```js
+app.use((err, req, res, next) => {
+    res.status(404).json({
+        success: false,
+        message: err.message
+    });
+});
+```
+
+---
+
+# Why Use `return next(err)`?
+
+Good practice:
+
+```js
+return next(err);
+```
+
+Reason:
+
+ Stops further execution
+ Prevents duplicate responses
+
+Bad:
+
+```js
+next(err);
+
+res.send("Hello");
+```
+
+This can cause:
+
+```text
+Error: Cannot set headers after they are sent
+```
+
+---
+
+# Handling Errors in Async Code
+
+## Problem
+
+This does NOT automatically work:
+
+```js
+app.get("/", async (req, res) => {
+
+    throw new Error("Error");
+});
+```
+
+Express may crash if error is not handled properly.
+
+---
+
+# Correct Async Error Handling
+
+Use `try-catch`:
+
+```js
+app.get("/", async (req, res, next) => {
+
+    try {
+
+        throw new Error("Async error");
+
+    } catch (error) {
+
+        next(error);
+    }
+});
+```
+
+---
+
+# Centralized Error Handling
+
+Instead of writing error responses everywhere:
+
+Bad:
+
+```js
+if (!user) {
+    return res.status(404).json({
+        message: "User not found"
+    });
+}
+```
+
+Better:
+
+```js
+if (!user) {
+    return next(new Error("User not found"));
+}
+```
+
+Then handle everything in one place.
+
+Advantages:
+
+ Cleaner code
+ Reusable
+ Easier debugging
+ Consistent API responses
+
+---
+
+# Custom Status Codes
+
+You can attach status codes to errors.
+
+Example:
+
+```js
+app.get("/", (req, res, next) => {
+
+    const error = new Error("User not found");
+
+    error.statusCode = 404;
+
+    next(error);
+});
+```
+
+Error middleware:
+
+```js
+app.use((err, req, res, next) => {
+
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message
+    });
+});
+```
+
+---
+
+# Complete Professional Example
+
+```js
+import express from "express";
+
+const app = express();
+
+app.get("/users/:id", (req, res, next) => {
+
+    const user = null;
+
+    if (!user) {
+
+        const error = new Error("User not found");
+
+        error.statusCode = 404;
+
+        return next(error);
+    }
+
+    res.json({
+        success: true,
+        user
+    });
+});
+
+app.use((err, req, res, next) => {
+
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message
+    });
+});
+
+app.listen(5000, () => {
+    console.log("Server running on port 5000");
+});
+```
+
+---
+
+# Common HTTP Error Codes
+
+| Status Code | Meaning               |
+| ----------- | --------------------- |
+| 400         | Bad Request           |
+| 401         | Unauthorized          |
+| 403         | Forbidden             |
+| 404         | Not Found             |
+| 500         | Internal Server Error |
+
+---
+
+# Difference Between `throw error` and `next(error)`
+
+| `throw error`                           | `next(error)`           |
+| --------------------------------------- | ----------------------- |
+| Throws error directly                   | Passes error to Express |
+| Can crash app if unhandled              | Safe Express handling   |
+| Mostly used inside try-catch            | Preferred in Express    |
+| Not ideal in async routes without catch | Best practice           |
+
+---
+
+# Best Practices
+
+## 1. Always use centralized error middleware
+
+```js
+app.use((err, req, res, next) => {})
+```
+
+---
+
+## 2. Use `return next(err)`
+
+Prevents further execution.
+
+---
+
+## 3. Use meaningful error messages
+
+Bad:
+
+```js
+new Error("Error")
+```
+
+Better:
+
+```js
+new Error("Product not found")
+```
+
+---
+
+## 4. Handle async errors properly
+
+Use:
+
+```js
+try-catch
+```
+
+---
+
+## 5. Keep error middleware at the end
+
+Correct:
+
+```js
+routes
+middlewares
+error middleware
+```
+
+---

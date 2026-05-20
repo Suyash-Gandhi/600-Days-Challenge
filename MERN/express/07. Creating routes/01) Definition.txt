@@ -1,0 +1,271 @@
+# Creating Routes in Express.js (`app.get`, `app.post`, etc.)
+
+Routes are used to define **what should happen when a client sends a request to a specific URL**.
+
+For example:
+
+* When someone visits `/users`
+* When someone submits a form
+* When frontend sends API data
+* When user wants to delete or update data
+
+Express handles all this using route methods like:
+
+* `app.get()`
+* `app.post()`
+* `app.put()`
+* `app.delete()`
+
+---
+
+# Basic Syntax
+
+```js
+app.METHOD(PATH, CALLBACK)
+```
+
+### Example
+
+```js
+app.get("/", (req, res) => {
+    res.send("Home Page")
+})
+```
+
+### Here:
+
+| Part     | Meaning                             |
+| -------- | ----------------------------------- |
+| `app`    | Express application                 |
+| `get`    | HTTP method                         |
+| `/`      | Route path                          |
+| callback | Function executed when route is hit |
+
+---
+
+# Understanding HTTP Methods
+
+These methods represent different actions.
+
+| Method | Purpose             |
+| ------ | ------------------- |
+| GET    | Fetch data          |
+| POST   | Send/Create data    |
+| PUT    | Update entire data  |
+| PATCH  | Update partial data |
+| DELETE | Delete data         |
+
+---
+
+# 1. `app.get()` — Fetch Data
+
+Used when client wants to retrieve data.
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/", (req, res) => {
+    res.send("Welcome to Home Page")
+})
+
+app.get("/users", (req, res) => {
+    res.send("Users List")
+})
+
+app.listen(5000, () => {
+    console.log("Server running")
+})
+```
+
+---
+
+## How It Works
+
+When user opens:
+
+```txt
+http://localhost:5000/users
+```
+
+Express matches:
+
+```js
+app.get("/users")
+```
+
+and runs its callback.
+
+---
+
+# 2. `app.post()` — Send/Create Data
+
+Used to create new data.
+
+Example:
+
+* Register user
+* Login
+* Add product
+* Create order
+
+---
+
+## Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.post("/users", (req, res) => {
+
+    const user = req.body
+
+    res.json({
+        success: true,
+        message: "User created",
+        data: user
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+# Testing in Postman
+
+### Request
+
+```txt
+POST http://localhost:5000/users
+```
+
+### Body → Raw → JSON
+
+```json
+{
+    "name": "Suyash",
+    "age": 21
+}
+```
+
+### Response
+
+```json
+{
+    "success": true,
+    "message": "User created",
+    "data": {
+        "name": "Suyash",
+        "age": 21
+    }
+}
+```
+
+---
+
+# Why `express.json()` is Important
+
+Without this:
+
+```js
+app.use(express.json())
+```
+
+`req.body` will be `undefined`.
+
+Because Express needs middleware to parse JSON request body.
+
+---
+
+# 3. `app.put()` — Update Entire Resource
+
+Used to fully update existing data.
+
+Example:
+
+```js
+app.put("/users/:id", (req, res) => {
+
+    res.json({
+        message: `User ${req.params.id} updated`,
+        newData: req.body
+    })
+})
+```
+
+---
+
+## Example Request
+
+```txt
+PUT /users/101
+```
+
+Body:
+
+```json
+{
+    "name": "Rahul",
+    "age": 25
+}
+```
+
+---
+
+# 4. `app.patch()` — Partial Update
+
+Used to update only specific fields.
+
+```js
+app.patch("/users/:id", (req, res) => {
+
+    res.json({
+        message: `User ${req.params.id} partially updated`,
+        updatedFields: req.body
+    })
+})
+```
+
+---
+
+# Difference Between PUT and PATCH
+
+| PUT               | PATCH                |
+| ----------------- | -------------------- |
+| Full update       | Partial update       |
+| Replaces resource | Modifies fields only |
+
+---
+
+# 5. `app.delete()` — Delete Data
+
+Used to remove data.
+
+```js
+app.delete("/users/:id", (req, res) => {
+
+    res.json({
+        success: true,
+        message: `User ${req.params.id} deleted`
+    })
+})
+```
+
+# Important Summary
+
+| Concept        | Purpose           |
+| -------------- | ----------------- |
+| `app.get()`    | Fetch data        |
+| `app.post()`   | Create data       |
+| `app.put()`    | Full update       |
+| `app.patch()`  | Partial update    |
+| `app.delete()` | Delete data       |
+| `req.params`   | URL params        |
+| `req.query`    | Query params      |
+| `req.body`     | Request body data |

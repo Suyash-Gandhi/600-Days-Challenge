@@ -1,0 +1,328 @@
+# Serving Static Files in Express (`express.static`)
+
+In Express.js, static files are files that do not change dynamically on the server.
+
+Examples:
+
+ HTML files
+ CSS files
+ JavaScript files
+ Images
+ Videos
+ PDFs
+
+Instead of creating routes manually for every file, Express provides built-in middleware called `express.static()`.
+
+---
+
+# Why `express.static()` is Used
+
+Without static middleware:
+
+```js
+app.get("/logo", (req, res) => {
+   res.sendFile("logo.png")
+})
+```
+
+This becomes difficult when handling many files.
+
+With `express.static()`:
+
+```js
+app.use(express.static("public"))
+```
+
+Now Express automatically serves all files inside the `public` folder.
+
+---
+
+# Basic Syntax
+
+```js
+app.use(express.static("folderName"))
+```
+
+Example:
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.static("public"))
+
+app.listen(5000, () => {
+   console.log("Server running")
+})
+```
+
+---
+
+# Folder Structure
+
+```txt
+project/
+│
+├── public/
+│   ├── style.css
+│   ├── app.js
+│   ├── image.png
+│   └── index.html
+│
+└── server.js
+```
+
+---
+
+# How It Works
+
+If your server runs on:
+
+```txt
+http://localhost:5000
+```
+
+Then files become accessible like:
+
+```txt
+http://localhost:5000/style.css
+http://localhost:5000/app.js
+http://localhost:5000/image.png
+http://localhost:5000/index.html
+```
+
+---
+
+# Full Example
+
+## server.js
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.static("public"))
+
+app.listen(5000, () => {
+   console.log("Server started")
+})
+```
+
+---
+
+## public/index.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Home</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   <h1>Hello Express</h1>
+
+</body>
+</html>
+```
+
+---
+
+## public/style.css
+
+```css
+body {
+   background-color: black;
+   color: white;
+   font-family: Arial;
+}
+```
+
+---
+
+# Result
+
+Opening:
+
+```txt
+http://localhost:5000/index.html
+```
+
+Automatically loads:
+
+ HTML
+ CSS
+ images
+ frontend JS
+
+---
+
+# Serving Frontend Projects
+
+`express.static()` is commonly used to serve:
+
+ React build folder
+ Portfolio websites
+ Landing pages
+ Images/assets
+ Admin dashboards
+
+Example:
+
+```js
+app.use(express.static("dist"))
+```
+
+Used after building frontend apps.
+
+---
+
+# Virtual Path Prefix
+
+You can add a custom URL prefix.
+
+Example:
+
+```js
+app.use("/assets", express.static("public"))
+```
+
+Now files are accessed like:
+
+```txt
+http://localhost:5000/assets/style.css
+```
+
+instead of:
+
+```txt
+http://localhost:5000/style.css
+```
+
+---
+
+# Multiple Static Folders
+
+```js
+app.use(express.static("public"))
+app.use(express.static("images"))
+```
+
+Express checks folders in order.
+
+---
+
+# Important Notes
+
+## 1. Static middleware order matters
+
+```js
+app.use(express.static("public"))
+```
+
+should usually be near the top.
+
+---
+
+## 2. Folder name must exist
+
+Wrong:
+
+```js
+app.use(express.static("pubic"))
+```
+
+Typo causes files not to load.
+
+---
+
+## 3. Avoid putting sensitive files in static folders
+
+Never expose:
+
+ `.env`
+ database files
+ backend code
+ secret keys
+
+---
+
+# Real World Example
+
+Suppose you build:
+
+ frontend in React
+ backend in Express
+
+After running:
+
+```txt
+npm run build
+```
+
+React creates a `dist` or `build` folder.
+
+Then Express serves it:
+
+```js
+app.use(express.static("dist"))
+```
+
+Now the backend can also serve the frontend.
+
+---
+
+# Interview Questions
+
+## Q1. What is `express.static()`?
+
+It is built-in Express middleware used to serve static files like HTML, CSS, JS, and images.
+
+---
+
+## Q2. Why use static middleware?
+
+Because manually creating routes for every file is inefficient.
+
+---
+
+## Q3. Can we use multiple static folders?
+
+Yes.
+
+```js
+app.use(express.static("public"))
+app.use(express.static("uploads"))
+```
+
+---
+
+## Q4. What types of files can be served?
+
+ HTML
+ CSS
+ JS
+ Images
+ Videos
+ PDFs
+
+---
+
+# Simple Analogy
+
+Think of `express.static()` as:
+
+> “Make this folder publicly accessible through URLs.”
+
+Example:
+
+```js
+express.static("public")
+```
+
+means:
+
+> “Anything inside `public` can be directly accessed from the browser.”

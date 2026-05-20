@@ -1,0 +1,307 @@
+# Route Parameters in Express.js
+
+Route parameters are dynamic values passed inside the URL.
+They help us capture specific data from the route, like:
+
+ User ID
+ Product ID
+ Username
+ Category name
+
+Express stores route parameters inside:
+
+```js
+req.params
+```
+
+---
+
+# Basic Syntax
+
+```js
+app.get("/users/:id", (req, res) => {
+    
+})
+```
+
+ `:id` → dynamic parameter
+ Whatever comes in that place gets stored in `req.params.id`
+
+---
+
+# Example 1 — Single Route Parameter
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/users/:id", (req, res) => {
+
+    res.json({
+        success: true,
+        userId: req.params.id
+    })
+
+})
+
+app.listen(5000, () => {
+    console.log("Server running on port 5000")
+})
+```
+
+---
+
+# URL Testing
+
+If you open:
+
+```bash
+http://localhost:5000/users/101
+```
+
+Response:
+
+```json
+{
+   "success": true,
+   "userId": "101"
+}
+```
+
+---
+
+# How It Works
+
+In this route:
+
+```js
+/users/:id
+```
+
+ `:id` is a placeholder
+ Express captures the value from URL
+ Stores it in:
+
+```js
+req.params.id
+```
+
+---
+
+# Example 2 — Multiple Route Parameters
+
+```js
+app.get("/products/:category/:id", (req, res) => {
+
+    res.json({
+        category: req.params.category,
+        productId: req.params.id
+    })
+
+})
+```
+
+---
+
+# URL
+
+```bash
+http://localhost:5000/products/mobile/55
+```
+
+---
+
+# Response
+
+```json
+{
+   "category": "mobile",
+   "productId": "55"
+}
+```
+
+---
+
+# Understanding `req.params`
+
+Suppose URL is:
+
+```bash
+/users/500
+```
+
+Then:
+
+```js
+console.log(req.params)
+```
+
+Output:
+
+```js
+{
+   id: "500"
+}
+```
+
+---
+
+# Common Real-World Examples
+
+| Route                                | Purpose             |
+| ------------------------------------ | ------------------- |
+| `/users/:id`                         | Get user by ID      |
+| `/products/:id`                      | Get product details |
+| `/orders/:id`                        | Get order info      |
+| `/posts/:postId/comments/:commentId` | Nested resources    |
+
+---
+
+# Route Params vs Query Params
+
+| Feature     | Route Params      | Query Params     |
+| ----------- | ----------------- | ---------------- |
+| Used For    | Specific resource | Filtering/search |
+| Example     | `/users/10`       | `/users?page=1`  |
+| Accessed By | `req.params`      | `req.query`      |
+
+---
+
+# Example Comparison
+
+## Route Param
+
+```bash
+/users/25
+```
+
+```js
+req.params.id
+```
+
+---
+
+## Query Param
+
+```bash
+/users?page=2
+```
+
+```js
+req.query.page
+```
+
+---
+
+# Important Notes
+
+## 1. Params are always strings
+
+Even numbers come as strings.
+
+```js
+console.log(typeof req.params.id)
+```
+
+Output:
+
+```js
+string
+```
+
+If needed:
+
+```js
+const id = Number(req.params.id)
+```
+
+---
+
+## 2. Order Matters
+
+This:
+
+```js
+/products/:category/:id
+```
+
+Requires:
+
+```bash
+/products/mobile/10
+```
+
+NOT:
+
+```bash
+/products/10/mobile
+```
+
+---
+
+# Real Project Example
+
+```js
+app.get("/users/:id", async (req, res) => {
+
+    const userId = req.params.id
+
+    // Database logic here
+
+    res.json({
+        message: `Fetching user ${userId}`
+    })
+
+})
+```
+
+Used in:
+
+ E-commerce apps
+ Social media apps
+ Admin dashboards
+ REST APIs
+
+---
+
+# Best Practice
+
+Use meaningful names:
+
+✅ Good
+
+```js
+/users/:userId
+```
+
+❌ Bad
+
+```js
+/users/:x
+```
+
+---
+
+# Interview Questions
+
+## What are route parameters in Express?
+
+Route parameters are dynamic values in the URL used to identify specific resources. They are accessed using `req.params`.
+
+---
+
+## Difference between params and query?
+
+ Params identify a specific resource
+ Query params are used for filtering, sorting, pagination, searching
+
+---
+
+## Where are route params stored?
+
+Inside:
+
+```js
+req.params
+```

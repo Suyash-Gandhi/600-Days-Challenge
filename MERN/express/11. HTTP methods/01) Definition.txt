@@ -1,0 +1,517 @@
+# HTTP Methods in Express.js
+
+HTTP methods define what action the client wants to perform on the server.
+
+When a frontend, Postman, or another API sends a request, it uses an HTTP method to tell the server what it wants to do.
+
+Example:
+
+ `GET` → Fetch data
+ `POST` → Create data
+ `PUT` → Replace/update data
+ `PATCH` → Partially update data
+ `DELETE` → Remove data
+
+In Express, we create routes using these methods:
+
+```js
+app.get()
+app.post()
+app.put()
+app.patch()
+app.delete()
+```
+
+---
+
+# Why HTTP Methods Are Important
+
+Without HTTP methods, the server would not know the intention of the request.
+
+For example:
+
+| Request           | Meaning            |
+| ----------------- | ------------------ |
+| GET `/users`      | Fetch users        |
+| POST `/users`     | Create user        |
+| PUT `/users/1`    | Replace user       |
+| PATCH `/users/1`  | Update some fields |
+| DELETE `/users/1` | Delete user        |
+
+This makes APIs clean, organized, and RESTful.
+
+---
+
+# 1. GET Method
+
+## Purpose
+
+Used to fetch data from the server.
+
+It should NOT modify data.
+
+---
+
+## Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/users", (req, res) => {
+    res.json({
+        success: true,
+        users: ["Suyash", "Rahul", "Aman"]
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+## Testing in Browser
+
+Open:
+
+```txt
+http://localhost:5000/users
+```
+
+or use Postman with:
+
+ Method: `GET`
+
+---
+
+## Response
+
+```json
+{
+  "success": true,
+  "users": ["Suyash", "Rahul", "Aman"]
+}
+```
+
+---
+
+# 2. POST Method
+
+## Purpose
+
+Used to send/create new data on the server.
+
+Usually used with forms, signup, login, creating products, etc.
+
+---
+
+## Important
+
+POST requests usually send data in the request body.
+
+So we use:
+
+```js
+app.use(express.json())
+```
+
+---
+
+## Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.post("/users", (req, res) => {
+
+    const userData = req.body
+
+    res.json({
+        success: true,
+        message: "User created",
+        data: userData
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+## Postman Setup
+
+### Method
+
+```txt
+POST
+```
+
+### URL
+
+```txt
+http://localhost:5000/users
+```
+
+### Body → raw → JSON
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+---
+
+## Response
+
+```json
+{
+  "success": true,
+  "message": "User created",
+  "data": {
+    "name": "Suyash",
+    "age": 21
+  }
+}
+```
+
+---
+
+# 3. PUT Method
+
+## Purpose
+
+Used to completely update/replace existing data.
+
+PUT usually replaces the whole resource.
+
+---
+
+## Example
+
+Suppose user data is:
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+PUT may replace entire object with:
+
+```json
+{
+  "name": "Suyash Gandhi",
+  "age": 22
+}
+```
+
+---
+
+## Express Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.put("/users/:id", (req, res) => {
+
+    res.json({
+        success: true,
+        message: `User ${req.params.id} updated completely`,
+        updatedData: req.body
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+## Test
+
+### Method
+
+```txt
+PUT
+```
+
+### URL
+
+```txt
+http://localhost:5000/users/1
+```
+
+### Body
+
+```json
+{
+  "name": "Rahul",
+  "age": 25
+}
+```
+
+---
+
+# 4. PATCH Method
+
+## Purpose
+
+Used to partially update data.
+
+Unlike PUT, PATCH updates only specific fields.
+
+---
+
+## Example
+
+Current user:
+
+```json
+{
+  "name": "Suyash",
+  "age": 21,
+  "city": "Delhi"
+}
+```
+
+PATCH request:
+
+```json
+{
+  "age": 22
+}
+```
+
+Only age changes.
+
+---
+
+# PUT vs PATCH
+
+| PUT                      | PATCH                     |
+| ------------------------ | ------------------------- |
+| Full update              | Partial update            |
+| Replaces entire resource | Updates selected fields   |
+| Sends full object        | Sends only changed fields |
+
+---
+
+## Express Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.patch("/users/:id", (req, res) => {
+
+    res.json({
+        success: true,
+        message: `User ${req.params.id} partially updated`,
+        updatedFields: req.body
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+# 5. DELETE Method
+
+## Purpose
+
+Used to delete data from the server.
+
+---
+
+## Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.delete("/users/:id", (req, res) => {
+
+    res.json({
+        success: true,
+        message: `User ${req.params.id} deleted`
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+## Test
+
+### Method
+
+```txt
+DELETE
+```
+
+### URL
+
+```txt
+http://localhost:5000/users/1
+```
+
+---
+
+## Response
+
+```json
+{
+  "success": true,
+  "message": "User 1 deleted"
+}
+```
+
+---
+
+# Real REST API Example
+
+| Method | Route         | Action             |
+| ------ | ------------- | ------------------ |
+| GET    | `/products`   | Get all products   |
+| GET    | `/products/1` | Get single product |
+| POST   | `/products`   | Create product     |
+| PUT    | `/products/1` | Replace product    |
+| PATCH  | `/products/1` | Update product     |
+| DELETE | `/products/1` | Delete product     |
+
+---
+
+# Complete Express Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+// GET
+app.get("/users", (req, res) => {
+    res.send("Get all users")
+})
+
+// POST
+app.post("/users", (req, res) => {
+    res.send("Create new user")
+})
+
+// PUT
+app.put("/users/:id", (req, res) => {
+    res.send(`Replace user ${req.params.id}`)
+})
+
+// PATCH
+app.patch("/users/:id", (req, res) => {
+    res.send(`Update user ${req.params.id}`)
+})
+
+// DELETE
+app.delete("/users/:id", (req, res) => {
+    res.send(`Delete user ${req.params.id}`)
+})
+
+app.listen(5000, () => {
+    console.log("Server running on port 5000")
+})
+```
+
+---
+
+# How Backend Flow Works
+
+Example:
+
+Frontend sends:
+
+```txt
+POST /users
+```
+
+with body:
+
+```json
+{
+  "name": "Suyash"
+}
+```
+
+Flow:
+
+1. Request reaches Express server
+2. Express checks matching route
+3. `app.post("/users")` runs
+4. `req.body` gets data
+5. Server processes request
+6. Response sent back using `res.json()`
+
+---
+
+# Important Interview Points
+
+## Why use PATCH instead of PUT?
+
+PATCH is better when updating only a few fields because:
+
+ Less data transfer
+ More efficient
+ Prevents accidental overwriting
+
+---
+
+## Can GET have req.body?
+
+Technically possible in some systems, but generally:
+
+ GET should NOT send body
+ Use query params instead
+
+Example:
+
+```txt
+/users?page=1
+```
+
+---
+
+## Which methods are most common in CRUD?
+
+| CRUD   | HTTP Method |
+| ------ | ----------- |
+| Create | POST        |
+| Read   | GET         |
+| Update | PUT/PATCH   |
+| Delete | DELETE      |
+
+---
+
+# Quick Revision
+
+| Method | Purpose        |
+| ------ | -------------- |
+| GET    | Fetch data     |
+| POST   | Create data    |
+| PUT    | Full update    |
+| PATCH  | Partial update |
+| DELETE | Remove data    |

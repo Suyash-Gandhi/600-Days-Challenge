@@ -1,0 +1,283 @@
+# Difference Between `req.body` vs `req.query` vs `req.params` in Express
+
+In Express.js, these three are used to get data sent by the client, but they come from different parts of the request.
+
+---
+
+# 1. `req.params`
+
+`req.params` is used to capture dynamic values from the URL path.
+
+## Example Route
+
+```js
+app.get("/users/:id", (req, res) => {
+    res.send(req.params)
+})
+```
+
+## Request
+
+```bash
+GET /users/101
+```
+
+## Output
+
+```js
+{ id: "101" }
+```
+
+Here:
+
+ `:id` is a route parameter
+ `101` is captured dynamically
+
+---
+
+## Common Use Cases
+
+ Get user by ID
+ Get product by ID
+ Dynamic routing
+
+Example:
+
+```js
+/users/5
+/products/20
+/orders/1001
+```
+
+---
+
+# 2. `req.query`
+
+`req.query` is used to get data from the query string in the URL.
+
+Query strings come after `?`.
+
+---
+
+## Example Route
+
+```js
+app.get("/search", (req, res) => {
+    res.send(req.query)
+})
+```
+
+## Request
+
+```bash
+GET /search?name=suyash&age=21
+```
+
+## Output
+
+```js
+{
+   name: "suyash",
+   age: "21"
+}
+```
+
+---
+
+## Common Use Cases
+
+ Filtering
+ Searching
+ Pagination
+ Sorting
+
+Examples:
+
+```bash
+/products?category=mobile
+/users?page=2
+/search?name=rahul
+```
+
+---
+
+# 3. `req.body`
+
+`req.body` is used to get data sent inside the request body.
+
+Mostly used with:
+
+ POST
+ PUT
+ PATCH
+
+---
+
+## Important
+
+To use `req.body`, you must enable middleware:
+
+```js
+app.use(express.json())
+```
+
+Otherwise `req.body` will be `undefined`.
+
+---
+
+## Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.post("/users", (req, res) => {
+    res.send(req.body)
+})
+
+app.listen(5000)
+```
+
+---
+
+## Request Body (JSON)
+
+```json
+{
+   "name": "Suyash",
+   "age": 21
+}
+```
+
+## Output
+
+```js
+{
+   name: "Suyash",
+   age: 21
+}
+```
+
+---
+
+# Real-Life Analogy
+
+Suppose this is the URL:
+
+```bash
+/products/10?color=black
+```
+
+And request body is:
+
+```json
+{
+   "quantity": 2
+}
+```
+
+Then:
+
+| Type         | Value                |
+| ------------ | -------------------- |
+| `req.params` | `{ id: "10" }`       |
+| `req.query`  | `{ color: "black" }` |
+| `req.body`   | `{ quantity: 2 }`    |
+
+---
+
+# Main Difference
+
+| Feature        | `req.params`   | `req.query`    | `req.body`     |
+| -------------- | -------------- | -------------- | -------------- |
+| Comes From     | URL path       | Query string   | Request body   |
+| Used For       | Dynamic routes | Filters/search | Sending data   |
+| Mostly Used In | GET            | GET            | POST/PUT/PATCH |
+| Visible In URL | Yes            | Yes            | No             |
+| Example        | `/users/5`     | `?page=2`      | JSON data      |
+
+---
+
+# Example Using All Three Together
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.post("/users/:id", (req, res) => {
+
+    console.log(req.params)
+    console.log(req.query)
+    console.log(req.body)
+
+    res.send("Data received")
+})
+
+app.listen(5000)
+```
+
+## Request
+
+```bash
+POST /users/10?role=admin
+```
+
+## Body
+
+```json
+{
+   "name": "Suyash"
+}
+```
+
+## Values
+
+```js
+req.params -> { id: "10" }
+
+req.query -> { role: "admin" }
+
+req.body -> { name: "Suyash" }
+```
+
+---
+
+# Interview Tip
+
+A very common interview question:
+
+> When should we use params vs query?
+
+### Answer
+
+ Use `params` when the value is required to identify a resource
+
+Example:
+
+```bash
+/users/5
+```
+
+ Use `query` for optional filters/searching
+
+Example:
+
+```bash
+/users?page=2
+```
+
+ Use `body` when sending actual data to create/update something
+
+Example:
+
+```json
+{
+   "name":"Suyash"
+}
+```

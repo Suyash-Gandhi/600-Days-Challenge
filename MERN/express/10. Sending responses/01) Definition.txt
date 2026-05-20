@@ -1,0 +1,332 @@
+# 10. Sending Responses in Express (`res.send`, `res.json`, `res.status`)
+
+In Express.js, the response object (`res`) is used to send data back to the client (browser, frontend app, Postman, mobile app, etc.).
+
+Whenever a client sends a request, the server must return a response.
+
+Example:
+
+ Browser requests `/users`
+ Server sends back:
+
+   Text
+   HTML
+   JSON data
+   Status code
+   Error message
+
+Express provides methods like:
+
+ `res.send()`
+ `res.json()`
+ `res.status()`
+
+---
+
+# 1. `res.send()`
+
+`res.send()` is used to send a response to the client.
+
+It can send:
+
+ Plain text
+ HTML
+ Objects
+ Arrays
+
+---
+
+## Syntax
+
+```js
+res.send(data)
+```
+
+---
+
+# Example 1 — Sending Text
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/", (req, res) => {
+    res.send("Welcome to Express")
+})
+
+app.listen(5000)
+```
+
+---
+
+## Output in Browser
+
+```txt
+Welcome to Express
+```
+
+---
+
+# Example 2 — Sending HTML
+
+```js
+app.get("/", (req, res) => {
+    res.send("<h1>Hello World</h1>")
+})
+```
+
+Browser renders:
+
+# Hello World
+
+---
+
+# Example 3 — Sending Object
+
+```js
+app.get("/user", (req, res) => {
+    res.send({
+        name: "Suyash",
+        age: 21
+    })
+})
+```
+
+Express automatically converts the object into JSON.
+
+Output:
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+---
+
+# Important Points About `res.send()`
+
+### 1. Ends the Request-Response Cycle
+
+After `res.send()`, no more response can be sent.
+
+Wrong:
+
+```js
+res.send("Hello")
+res.send("Again")
+```
+
+Error:
+
+```txt
+Cannot set headers after they are sent
+```
+
+---
+
+### 2. Automatically Detects Content Type
+
+If you send:
+
+ String → text/html
+ Object → application/json
+ Buffer → binary
+
+Express handles it automatically.
+
+---
+
+# 2. `res.json()`
+
+`res.json()` is specifically used to send JSON responses.
+
+Mostly used in:
+
+ REST APIs
+ Backend APIs
+ MERN applications
+
+---
+
+## Syntax
+
+```js
+res.json(data)
+```
+
+---
+
+# Example
+
+```js
+app.get("/api/users", (req, res) => {
+    res.json({
+        success: true,
+        message: "Users fetched successfully"
+    })
+})
+```
+
+---
+
+## Output
+
+```json
+{
+  "success": true,
+  "message": "Users fetched successfully"
+}
+```
+
+---
+
+# Why `res.json()` is Preferred in APIs
+
+Even though `res.send()` can send objects, `res.json()` is clearer and specifically meant for APIs.
+
+Most developers use:
+
+```js
+res.json()
+```
+
+for API responses.
+
+---
+
+# Real MERN Example
+
+```js
+app.get("/products", (req, res) => {
+    const products = [
+        { id: 1, name: "Laptop" },
+        { id: 2, name: "Phone" }
+    ]
+
+    res.json({
+        success: true,
+        products
+    })
+})
+```
+
+---
+
+# 3. `res.status()`
+
+`res.status()` is used to set the HTTP status code of the response.
+
+---
+
+# Common Status Codes
+
+| Code | Meaning               |
+| ---- | --------------------- |
+| 200  | OK                    |
+| 201  | Created               |
+| 400  | Bad Request           |
+| 401  | Unauthorized          |
+| 404  | Not Found             |
+| 500  | Internal Server Error |
+
+---
+
+## Syntax
+
+```js
+res.status(code)
+```
+
+Usually combined with:
+
+ `res.send()`
+ `res.json()`
+
+---
+
+# Example 1 — Success Response
+
+```js
+app.get("/", (req, res) => {
+    res.status(200).send("Success")
+})
+```
+
+---
+
+# Example 2 — JSON Response With Status
+
+```js
+app.get("/user", (req, res) => {
+    res.status(200).json({
+        success: true,
+        user: {
+            name: "Suyash"
+        }
+    })
+})
+```
+
+---
+
+# Example 3 — Error Response
+
+```js
+app.get("/error", (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "User not found"
+    })
+})
+```
+
+---
+
+# Method Chaining
+
+Express allows chaining methods together.
+
+Example:
+
+```js
+res.status(200).json({
+    message: "Success"
+})
+```
+
+Here:
+
+1. `status(200)` sets status code
+2. `json()` sends JSON response
+
+---
+
+# Real Backend Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.get("/users/:id", (req, res) => {
+
+    const user = {
+        id: req.params.id,
+        name: "Suyash"
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+app.listen(5000, () => {
+    console.log("Server running")
+})
+```
+
+---

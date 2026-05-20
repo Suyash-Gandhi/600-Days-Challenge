@@ -1,0 +1,306 @@
+# Built-in Middleware in Express.js
+
+Middleware in Express.js are functions that run between the request and the response cycle.
+
+Express provides some built-in middleware that helps process incoming request data automatically.
+
+The most commonly used built-in middleware are:
+
+1. `express.json()`
+2. `express.urlencoded()`
+
+---
+
+# 1. `express.json()`
+
+## What it does
+
+`express.json()` is middleware used to parse incoming JSON data from the request body.
+
+It converts JSON data into a JavaScript object and stores it inside:
+
+```js
+req.body
+```
+
+---
+
+## Why it is needed
+
+When a client sends JSON data:
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+Node.js cannot understand it automatically.
+
+`express.json()` parses the data so we can use it easily.
+
+---
+
+# Example Without `express.json()`
+
+```js
+import express from "express"
+
+const app = express()
+
+app.post("/user", (req, res) => {
+    console.log(req.body)
+
+    res.send("Done")
+})
+
+app.listen(5000)
+```
+
+## Problem
+
+`req.body` will be:
+
+```js
+undefined
+```
+
+because Express did not parse the JSON body.
+
+---
+
+# Example With `express.json()`
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.json())
+
+app.post("/user", (req, res) => {
+
+    console.log(req.body)
+
+    res.json({
+        success: true,
+        data: req.body
+    })
+})
+
+app.listen(5000, () => {
+    console.log("Server running")
+})
+```
+
+---
+
+# Request from Postman
+
+## Method
+
+```txt
+POST
+```
+
+## URL
+
+```txt
+http://localhost:5000/user
+```
+
+## Body → raw → JSON
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+---
+
+# Output
+
+Console:
+
+```js
+{ name: 'Suyash', age: 21 }
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "name": "Suyash",
+    "age": 21
+  }
+}
+```
+
+---
+
+# Flow of `express.json()`
+
+```txt
+Client sends JSON
+        ↓
+express.json() parses data
+        ↓
+Data stored in req.body
+        ↓
+Route accesses req.body
+```
+
+---
+
+# 2. `express.urlencoded()`
+
+## What it does
+
+`express.urlencoded()` parses data sent from:
+
+ HTML forms
+ Form submissions
+
+It also stores the data inside:
+
+```js
+req.body
+```
+
+---
+
+# Example Form Data
+
+```txt
+name=Suyash&age=21
+```
+
+This is called:
+
+```txt
+application/x-www-form-urlencoded
+```
+
+---
+
+# Syntax
+
+```js
+app.use(express.urlencoded({ extended: true }))
+```
+
+---
+
+# Example
+
+```js
+import express from "express"
+
+const app = express()
+
+app.use(express.urlencoded({ extended: true }))
+
+app.post("/form", (req, res) => {
+
+    console.log(req.body)
+
+    res.json({
+        success: true,
+        data: req.body
+    })
+})
+
+app.listen(5000)
+```
+
+---
+
+# Sending Form Data from Postman
+
+## Method
+
+```txt
+POST
+```
+
+## URL
+
+```txt
+http://localhost:5000/form
+```
+
+## Body → x-www-form-urlencoded
+
+| KEY  | VALUE  |
+| ---- | ------ |
+| name | Suyash |
+| age  | 21     |
+
+---
+
+# Output
+
+```js
+{
+  name: 'Suyash',
+  age: '21'
+}
+```
+
+---
+
+# What does `extended: true` mean?
+
+```js
+express.urlencoded({ extended: true })
+```
+
+This allows parsing of:
+
+ nested objects
+ arrays
+ complex data
+
+---
+
+# Example
+
+## Form Data
+
+```txt
+user[name]=Suyash
+user[age]=21
+```
+
+With:
+
+```js
+extended: true
+```
+
+Output:
+
+```js
+{
+   user: {
+      name: "Suyash",
+      age: "21"
+   }
+}
+```
+
+---
+
+# Difference Between `express.json()` and `express.urlencoded()`
+
+| Feature          | `express.json()`   | `express.urlencoded()`              |
+| ---------------- | ------------------ | ----------------------------------- |
+| Used for         | JSON data          | Form data                           |
+| Content-Type     | `application/json` | `application/x-www-form-urlencoded` |
+| Commonly used in | APIs               | HTML forms                          |
+| Stores data in   | `req.body`         | `req.body`                          |

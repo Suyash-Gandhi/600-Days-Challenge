@@ -1,0 +1,310 @@
+# Application-level vs Router-level Middleware in Express
+
+Middleware in Express.js are functions that run during the request-response cycle.
+They can:
+
+ Access `req` and `res`
+ Modify request/response
+ End the request
+ Pass control using `next()`
+
+---
+
+# 1. Application-level Middleware
+
+Application-level middleware is attached directly to the main Express app object using:
+
+```js
+app.use()
+app.get()
+app.post()
+```
+
+It runs globally or for specific paths across the entire application.
+
+---
+
+## Syntax
+
+```js
+app.use((req, res, next) => {
+  next();
+});
+```
+
+---
+
+# Example
+
+```js
+import express from "express";
+
+const app = express();
+
+// Application-level middleware
+app.use((req, res, next) => {
+  console.log("Middleware executed");
+  next();
+});
+
+app.get("/", (req, res) => {
+  res.send("Home Page");
+});
+
+app.listen(3000);
+```
+
+---
+
+# Flow
+
+When a request comes:
+
+```text
+Request
+   ↓
+Application Middleware
+   ↓
+Route Handler
+   ↓
+Response
+```
+
+---
+
+# Common Uses
+
+Application middleware is used for features needed across the whole app:
+
+ Logging
+ Authentication
+ JSON parsing
+ Error handling
+ Security middleware
+ CORS
+ Rate limiting
+
+---
+
+# Path-specific Application Middleware
+
+You can also apply it only to certain routes.
+
+```js
+app.use("/admin", (req, res, next) => {
+  console.log("Admin middleware");
+  next();
+});
+```
+
+This middleware runs only for routes starting with `/admin`.
+
+Example:
+
+```text
+/admin/users
+/admin/dashboard
+```
+
+---
+
+# 2. Router-level Middleware
+
+Router-level middleware works exactly like application middleware, but it is attached to an Express Router instead of the whole app.
+
+Used when you want middleware only for a specific module or feature.
+
+---
+
+## Syntax
+
+```js
+router.use((req, res, next) => {
+  next();
+});
+```
+
+---
+
+# Example
+
+## users.routes.js
+
+```js
+import express from "express";
+
+const router = express.Router();
+
+// Router-level middleware
+router.use((req, res, next) => {
+  console.log("Users router middleware");
+  next();
+});
+
+router.get("/", (req, res) => {
+  res.send("All Users");
+});
+
+export default router;
+```
+
+---
+
+## server.js
+
+```js
+import express from "express";
+import userRoutes from "./users.routes.js";
+
+const app = express();
+
+app.use("/users", userRoutes);
+
+app.listen(3000);
+```
+
+---
+
+# Flow
+
+Request:
+
+```text
+/users
+```
+
+Execution:
+
+```text
+Request
+   ↓
+Router Middleware
+   ↓
+Router Route Handler
+   ↓
+Response
+```
+
+---
+
+# Why Router-level Middleware is Important
+
+In large MERN apps, routes are usually separated:
+
+```text
+/routes
+   auth.routes.js
+   user.routes.js
+   product.routes.js
+   order.routes.js
+```
+
+Each module may need different middleware.
+
+Example:
+
+| Route Module | Middleware           |
+| ------------ | -------------------- |
+| Auth         | Rate limiting        |
+| Admin        | Admin authentication |
+| Orders       | Payment validation   |
+| Products     | File upload          |
+
+Router middleware keeps things modular and clean.
+
+---
+
+# Real-world Example
+
+## Admin Router Protection
+
+```js
+router.use((req, res, next) => {
+  if (!req.user.isAdmin) {
+    return res.status(403).send("Access denied");
+  }
+
+  next();
+});
+```
+
+Every admin route becomes protected automatically.
+
+---
+
+# Key Differences
+
+| Feature     | Application-level | Router-level             |
+| ----------- | ----------------- | ------------------------ |
+| Attached To | `app`             | `router`                 |
+| Scope       | Entire app        | Specific router/module   |
+| Usage       | Global features   | Module-specific features |
+| Flexibility | Less modular      | More modular             |
+| Common In   | Small apps        | Large scalable apps      |
+
+---
+
+# Execution Order Example
+
+```js
+app.use(globalMiddleware);
+
+app.use("/users", usersRouter);
+```
+
+Inside users router:
+
+```js
+router.use(routerMiddleware);
+
+router.get("/", handler);
+```
+
+Execution order:
+
+```text
+1. globalMiddleware
+2. routerMiddleware
+3. route handler
+```
+
+---
+
+# Best Practice in Real MERN Apps
+
+Usually:
+
+## Application-level middleware
+
+Used for:
+
+```js
+app.use(express.json());
+app.use(cors());
+app.use(logger());
+```
+
+---
+
+## Router-level middleware
+
+Used for:
+
+```js
+router.use(authMiddleware);
+router.use(adminMiddleware);
+```
+
+---
+
+# Interview-style Difference
+
+### Application Middleware
+
+> Middleware applied to the entire Express application.
+
+### Router Middleware
+
+> Middleware applied only to a specific router or feature module.
+
+---

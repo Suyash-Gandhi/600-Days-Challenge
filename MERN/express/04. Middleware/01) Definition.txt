@@ -1,0 +1,395 @@
+# Middleware Concept in Express.js (`req`, `res`, `next`)
+
+Middleware is one of the most important concepts in Express.js.
+
+A middleware is simply a function that runs between the request and the response cycle.
+
+When a client sends a request:
+
+```txt
+Client Request → Middleware → Route Handler → Response
+```
+
+Middleware can:
+
+ Read request data
+ Modify request/response
+ Execute code
+ Validate users
+ Log data
+ Stop request
+ Pass control to next middleware
+
+---
+
+# Basic Middleware Syntax
+
+```js
+app.use((req, res, next) => {
+    console.log("Middleware executed");
+
+    next();
+});
+```
+
+---
+
+# Understanding `req`, `res`, and `next`
+
+---
+
+# 1. `req` (Request Object)
+
+`req` contains all data sent by the client.
+
+You can access:
+
+ URL params
+ Query params
+ Request body
+ Headers
+ Cookies
+ User info
+
+Example:
+
+```js
+app.use((req, res, next) => {
+    console.log(req.method);
+    console.log(req.url);
+
+    next();
+});
+```
+
+If user visits:
+
+```txt
+/users/10
+```
+
+Output:
+
+```txt
+GET
+/users/10
+```
+
+---
+
+# Common `req` Properties
+
+| Property      | Meaning                   |
+| ------------- | ------------------------- |
+| `req.params`  | Route parameters          |
+| `req.query`   | Query string data         |
+| `req.body`    | Data sent in request body |
+| `req.headers` | Request headers           |
+| `req.method`  | HTTP method               |
+| `req.url`     | Current URL               |
+
+---
+
+# Example of `req.params`
+
+```js
+app.get("/users/:id", (req, res) => {
+    console.log(req.params.id);
+
+    res.send("User fetched");
+});
+```
+
+URL:
+
+```txt
+/users/5
+```
+
+Output:
+
+```txt
+5
+```
+
+---
+
+# Example of `req.query`
+
+```js
+app.get("/search", (req, res) => {
+    console.log(req.query.name);
+
+    res.send("Searching");
+});
+```
+
+URL:
+
+```txt
+/search?name=suyash
+```
+
+Output:
+
+```txt
+suyash
+```
+
+---
+
+# 2. `res` (Response Object)
+
+`res` is used to send response back to client.
+
+---
+
+# Common `res` Methods
+
+| Method           | Purpose         |
+| ---------------- | --------------- |
+| `res.send()`     | Send text/html  |
+| `res.json()`     | Send JSON       |
+| `res.status()`   | Set status code |
+| `res.redirect()` | Redirect user   |
+
+---
+
+# Example
+
+```js
+app.get("/", (req, res) => {
+    res.send("Hello");
+});
+```
+
+JSON response:
+
+```js
+app.get("/user", (req, res) => {
+    res.json({
+        success: true,
+        name: "Suyash"
+    });
+});
+```
+
+---
+
+# 3. `next()` Function
+
+`next()` passes control to the next middleware.
+
+Without `next()`, request gets stuck.
+
+---
+
+# Example
+
+```js
+app.use((req, res, next) => {
+    console.log("First middleware");
+
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log("Second middleware");
+
+    next();
+});
+
+app.get("/", (req, res) => {
+    res.send("Home Page");
+});
+```
+
+Output when visiting `/`:
+
+```txt
+First middleware
+Second middleware
+```
+
+Browser:
+
+```txt
+Home Page
+```
+
+---
+
+# What Happens if `next()` is NOT called?
+
+```js
+app.use((req, res, next) => {
+    console.log("Middleware");
+
+    // next() missing
+});
+```
+
+The request will keep loading forever because Express does not know what to execute next.
+
+---
+
+# Real Flow of Middleware
+
+```txt
+Request
+   ↓
+Middleware 1
+   ↓
+Middleware 2
+   ↓
+Route Handler
+   ↓
+Response
+```
+
+---
+
+# Types of Middleware in Express
+
+| Type                   | Purpose             |
+| ---------------------- | ------------------- |
+| Application middleware | Runs globally       |
+| Router middleware      | Runs for router     |
+| Error middleware       | Handles errors      |
+| Built-in middleware    | Provided by Express |
+| Third-party middleware | External packages   |
+
+---
+
+# Application Middleware Example
+
+```js
+app.use((req, res, next) => {
+    console.log("Request received");
+
+    next();
+});
+```
+
+Runs for every request.
+
+---
+
+# Built-in Middleware Example
+
+## `express.json()`
+
+Used to read JSON body.
+
+```js
+app.use(express.json());
+```
+
+Without this:
+
+```js
+req.body
+```
+
+will be `undefined`.
+
+---
+
+# Example of Complete Middleware Flow
+
+```js
+import express from "express";
+
+const app = express();
+
+app.use(express.json());
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+
+    next();
+});
+
+app.post("/users", (req, res) => {
+    console.log(req.body);
+
+    res.json({
+        success: true,
+        data: req.body
+    });
+});
+
+app.listen(5000, () => {
+    console.log("Server running");
+});
+```
+
+---
+
+# Request Example in Postman
+
+```json
+{
+    "name": "Suyash",
+    "age": 22
+}
+```
+
+Console:
+
+```txt
+POST /users
+{ name: 'Suyash', age: 22 }
+```
+
+Response:
+
+```json
+{
+    "success": true,
+    "data": {
+        "name": "Suyash",
+        "age": 22
+    }
+}
+```
+
+---
+
+# Why Middleware is Important
+
+Middleware is heavily used for:
+
+ Authentication
+ Authorization
+ Logging
+ Validation
+ Error handling
+ Parsing JSON
+ File uploads
+ Security
+
+Example:
+
+```js
+app.use(authMiddleware);
+```
+
+Checks user before allowing access.
+---
+
+# Important Interview Point
+
+A middleware function always has access to:
+
+```js
+(req, res, next)
+```
+
+and it must either:
+
+ Send a response
+  OR
+ Call `next()`
+
+Otherwise request hangs.
