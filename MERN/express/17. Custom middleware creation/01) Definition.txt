@@ -1,0 +1,398 @@
+# Custom Middleware Creation in Express.js
+
+Custom middleware means creating your own middleware functions instead of using built-in middleware like `express.json()`.
+
+Middleware functions are used to:
+
+ Run code before request reaches route handler
+ Modify `req` or `res`
+ Check authentication
+ Log requests
+ Validate data
+ Handle errors
+ Control request flow
+
+---
+
+# 1. What is Middleware?
+
+Middleware is a function that gets access to:
+
+```js
+(req, res, next)
+```
+
+ `req` → incoming request data
+ `res` → response object
+ `next()` → passes control to next middleware/route
+
+Basic structure:
+
+```js
+const middleware = (req, res, next) => {
+    // code here
+
+    next();
+};
+```
+
+---
+
+# 2. Creating Your First Custom Middleware
+
+Example:
+
+```js
+const express = require("express");
+
+const app = express();
+
+// Custom middleware
+const logger = (req, res, next) => {
+    console.log("Request received");
+
+    next();
+};
+
+app.use(logger);
+
+app.get("/", (req, res) => {
+    res.send("Home Page");
+});
+
+app.listen(3000);
+```
+
+---
+
+# 3. How It Works Internally
+
+When request comes:
+
+```txt
+Client Request
+      ↓
+Custom Middleware
+      ↓
+Route Handler
+      ↓
+Response Sent
+```
+
+For request to `/`:
+
+```txt
+Request received
+Home Page
+```
+
+---
+
+# 4. Why `next()` is Important
+
+`next()` tells Express:
+
+> "Move to the next middleware or route."
+
+Without `next()`:
+
+ Request gets stuck
+ Browser keeps loading
+ Route handler never runs
+
+Example WITHOUT next:
+
+```js
+const logger = (req, res, next) => {
+    console.log("Request received");
+};
+```
+
+This will hang forever.
+
+Correct version:
+
+```js
+const logger = (req, res, next) => {
+    console.log("Request received");
+
+    next();
+};
+```
+
+---
+
+# 5. Middleware Can Modify Request Object
+
+Very common in real applications.
+
+Example:
+
+```js
+const addUser = (req, res, next) => {
+    req.user = {
+        name: "Suyash",
+        role: "Developer"
+    };
+
+    next();
+};
+
+app.use(addUser);
+
+app.get("/", (req, res) => {
+    res.json(req.user);
+});
+```
+
+Output:
+
+```json
+{
+  "name": "Suyash",
+  "role": "Developer"
+}
+```
+
+---
+
+# 6. Middleware for Authentication
+
+One of the most common real-world uses.
+
+Example:
+
+```js
+const auth = (req, res, next) => {
+    const isLoggedIn = true;
+
+    if (!isLoggedIn) {
+        return res.status(401).send("Unauthorized");
+    }
+
+    next();
+};
+
+app.get("/dashboard", auth, (req, res) => {
+    res.send("Welcome to dashboard");
+});
+```
+
+---
+
+# 7. Middleware for Logging Requests
+
+Example:
+
+```js
+const logger = (req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+
+    next();
+};
+
+app.use(logger);
+```
+
+Output:
+
+```txt
+GET /
+POST /login
+DELETE /user/5
+```
+
+---
+
+# 8. Middleware for Validation
+
+Example:
+
+```js
+const validateAge = (req, res, next) => {
+    const age = req.query.age;
+
+    if (age < 18) {
+        return res.send("Access denied");
+    }
+
+    next();
+};
+
+app.get("/movie", validateAge, (req, res) => {
+    res.send("Welcome");
+});
+```
+
+---
+
+# 9. Global vs Route-Level Custom Middleware
+
+## Global Middleware
+
+Runs for ALL routes.
+
+```js
+app.use(logger);
+```
+
+---
+
+## Route-Level Middleware
+
+Runs only for specific route.
+
+```js
+app.get("/admin", auth, (req, res) => {
+    res.send("Admin Panel");
+});
+```
+
+---
+
+# 10. Multiple Custom Middleware
+
+You can chain middleware.
+
+Example:
+
+```js
+const middleware1 = (req, res, next) => {
+    console.log("Middleware 1");
+    next();
+};
+
+const middleware2 = (req, res, next) => {
+    console.log("Middleware 2");
+    next();
+};
+
+app.get("/", middleware1, middleware2, (req, res) => {
+    res.send("Home");
+});
+```
+
+Execution order:
+
+```txt
+Middleware 1
+Middleware 2
+Home
+```
+
+---
+
+# 11. Middleware Execution Order
+
+Order matters a lot.
+
+Example:
+
+```js
+app.use(middleware1);
+app.use(middleware2);
+```
+
+Execution:
+
+```txt
+middleware1 → middleware2
+```
+
+Express executes middleware top-to-bottom.
+
+---
+
+# 12. Reusable Middleware
+
+Best practice is creating middleware in separate files.
+
+Example structure:
+
+```txt
+project/
+│
+├── middleware/
+│   └── auth.js
+│
+├── server.js
+```
+
+---
+
+## auth.js
+
+```js
+const auth = (req, res, next) => {
+    console.log("Auth middleware");
+
+    next();
+};
+
+module.exports = auth;
+```
+
+---
+
+## server.js
+
+```js
+const express = require("express");
+const auth = require("./middleware/auth");
+
+const app = express();
+
+app.get("/dashboard", auth, (req, res) => {
+    res.send("Dashboard");
+});
+```
+
+---
+
+# 13. Middleware Using Parameters (Middleware Factory)
+
+Sometimes middleware needs custom configuration.
+
+Example:
+
+```js
+const roleCheck = (role) => {
+    return (req, res, next) => {
+        if (req.user.role !== role) {
+            return res.send("Access denied");
+        }
+
+        next();
+    };
+};
+```
+
+Usage:
+
+```js
+app.get("/admin", roleCheck("admin"), (req, res) => {
+    res.send("Admin page");
+});
+```
+
+---
+
+# 14. Async Middleware
+
+Very important in modern Express apps.
+
+Example:
+
+```js
+const asyncMiddleware = async (req, res, next) => {
+    try {
+        const data = await fetchData();
+
+        req.data = data;
+
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+```

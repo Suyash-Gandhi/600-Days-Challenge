@@ -1,0 +1,296 @@
+# Error-Handling Middleware in Express.js
+
+Error-handling middleware is a special type of middleware in Express.js used to catch and handle errors that occur in your application.
+
+Instead of crashing the server or sending ugly error messages, it helps you:
+
+ Handle errors gracefully
+ Send proper responses to users
+ Log errors
+ Keep the application stable
+
+---
+
+# 1. What is Error-Handling Middleware?
+
+Normally middleware looks like this:
+
+```js
+(req, res, next)
+```
+
+But error middleware has 4 parameters:
+
+```js
+(err, req, res, next)
+```
+
+The presence of `err` makes Express recognize it as an error-handling middleware.
+
+---
+
+# 2. Basic Syntax
+
+```js
+app.use((err, req, res, next) => {
+  res.status(500).send("Something went wrong");
+});
+```
+
+---
+
+# 3. How Errors Reach This Middleware
+
+Errors are passed using:
+
+```js
+next(err)
+```
+
+Example:
+
+```js
+app.get("/", (req, res, next) => {
+  const error = new Error("Server failed");
+
+  next(error);
+});
+```
+
+Flow:
+
+```text
+Request →
+Route →
+next(error) →
+Error Middleware →
+Response
+```
+
+---
+
+# 4. Complete Example
+
+```js
+const express = require("express");
+
+const app = express();
+
+app.get("/", (req, res, next) => {
+  const error = new Error("Something broke");
+
+  next(error);
+});
+
+app.use((err, req, res, next) => {
+  console.log(err.message);
+
+  res.status(500).json({
+    success: false,
+    message: err.message
+  });
+});
+
+app.listen(3000);
+```
+
+---
+
+# 5. Output
+
+When visiting:
+
+```text
+localhost:3000
+```
+
+Response:
+
+```json
+{
+  "success": false,
+  "message": "Something broke"
+}
+```
+
+Console:
+
+```text
+Something broke
+```
+
+---
+
+# 6. Why `next(err)` is Important
+
+Without `next(err)`:
+
+ Express does NOT know an error occurred
+ Request may hang forever
+ Application can behave unpredictably
+
+Correct:
+
+```js
+next(error);
+```
+
+Wrong:
+
+```js
+next();
+```
+
+---
+
+# 7. Position of Error Middleware
+
+Error middleware should usually be placed:
+
+ AFTER all routes
+ Near the end of the app
+
+Example:
+
+```js
+app.use(routes);
+
+app.use(errorMiddleware);
+```
+
+Why?
+
+Because Express executes middleware in order.
+
+---
+
+# 8. Catching Route Errors
+
+## Example
+
+```js
+app.get("/user", (req, res, next) => {
+  try {
+    throw new Error("User not found");
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+---
+
+# 9. Custom Error Responses
+
+You can send:
+
+ Status codes
+ Messages
+ Error details
+
+Example:
+
+```js
+app.use((err, req, res, next) => {
+  res.status(404).json({
+    message: err.message
+  });
+});
+```
+
+---
+
+# 10. Common Status Codes
+
+| Status Code | Meaning               |
+| ----------- | --------------------- |
+| 400         | Bad Request           |
+| 401         | Unauthorized          |
+| 403         | Forbidden             |
+| 404         | Not Found             |
+| 500         | Internal Server Error |
+
+---
+
+# 11. Reusable Error Middleware
+
+Instead of writing error logic everywhere:
+
+## errorMiddleware.js
+
+```js
+const errorMiddleware = (err, req, res, next) => {
+  res.status(500).json({
+    success: false,
+    message: err.message
+  });
+};
+
+module.exports = errorMiddleware;
+```
+
+## server.js
+
+```js
+const errorMiddleware = require("./errorMiddleware");
+
+app.use(errorMiddleware);
+```
+
+---
+
+# 12. Handling Async Errors
+
+## Problem
+
+This does NOT automatically catch async errors:
+
+```js
+app.get("/", async (req, res) => {
+  throw new Error("Failed");
+});
+```
+
+---
+
+# 13. Correct Async Error Handling
+
+```js
+app.get("/", async (req, res, next) => {
+  try {
+    throw new Error("Failed");
+  } catch (error) {
+    next(error);
+  }
+});
+```
+
+---
+
+# 14. Async Wrapper Function
+
+Large apps use wrappers to avoid repeated try-catch.
+
+```js
+const asyncHandler = (fn) => {
+  return (req, res, next) => {
+    Promise.resolve(fn(req, res, next))
+      .catch(next);
+  };
+};
+```
+
+Usage:
+
+```js
+app.get("/",
+  asyncHandler(async (req, res) => {
+    throw new Error("Async error");
+  })
+);
+```
+
+This is widely used in professional backend projects.
+
+---
+

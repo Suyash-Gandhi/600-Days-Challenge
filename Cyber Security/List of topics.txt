@@ -1,294 +1,392 @@
+# 🧠 PHASE 1: Web, Systems & Security Foundations
 
+### 🖥️ Linux & System Fundamentals
 
-# 🧠 PHASE 1: Foundations (Think Like a System)
+1. Linux CLI fundamentals
+2. File permissions
+3. Processes & process management
+4. Environment variables
+5. Package managers
+6. SSH basics
+7. Basic Linux hardening
 
-### 🖥️ Systems & OS
+### 🌐 Networking (Web-Focused)
 
-1. OS fundamentals (processes, memory, file systems)
-2. Linux mastery (CLI, permissions, processes)
-3. Windows basics (registry, services, permissions)
+8. HTTP lifecycle
+9. HTTPS/TLS basics
+10. Requests vs responses
+11. Headers
+12. Cookies & sessions
+13. CORS basics
+14. DNS basics
+15. TCP basics
+16. OSI model (basic understanding)
+17. Subnetting & UDP (basic understanding)
 
-### 🌐 Networking
+### 💻 Programming & Backend Security
 
-4. OSI & TCP/IP models
-5. IP, subnetting, ports
-6. DNS, DHCP, NAT
-7. TCP vs UDP
-8. HTTP/HTTPS lifecycle
-9. Cookies, headers, sessions
+18. JavaScript security mindset
+19. DOM manipulation dangers
+20. `eval()` risks
+21. Prototype pollution basics
+22. Unsafe rendering
+23. Client-side trust issues
+24. Python for automation
+25. REST APIs fundamentals
 
-### 💻 Programming
+### 🔐 Authentication & Security Basics
 
-10. JavaScript (security perspective)
-11. Python (automation)
-12. REST APIs
-13. Input validation basics
-
-### 🧠 Security Fundamentals
-
-14. CIA triad
-15. Threats, vulnerabilities, exploits
-16. Attack surface
-17. Risk modeling basics
-
----
-
-# 🔐 PHASE 2: Security Core
-
-### 🔑 Identity & Access
-
-18. Authentication vs authorization
-19. Session management
-20. MFA
-21. RBAC
-22. OAuth2, JWT
-
-### 🔒 Cryptography
-
-23. Hashing
-24. Symmetric vs asymmetric encryption
-25. TLS/HTTPS
-26. Digital signatures
-
-### 🛡️ Secure Design
-
-27. Least privilege
-28. Defense in depth
-29. Zero trust
-30. Secure configurations
-
-### 📊 Threat Modeling (Expanded)
-
-31. STRIDE model
-32. Data flow diagrams (DFDs)
-33. Trust boundaries
+26. Authentication vs authorization
+27. Sessions & cookies
+28. JWT basics
+29. OAuth basics
+30. MFA concepts
+31. RBAC
+32. Threats vs vulnerabilities vs exploits
+33. Attack surface basics
+34. Trust boundaries
+35. Security mindset for developers
 
 ---
 
-# 🌐 PHASE 3: Web Security + DevSecOps (CORE ZONE)
+# 🔥 PHASE 2: Core Web Exploitation (MAIN PHASE)
+
+### 🚨 XSS
+
+36. Stored XSS
+37. Reflected XSS
+38. DOM XSS
+39. CSP basics
+40. Filter bypass techniques
+
+### 💉 Injection Attacks
+
+41. SQL Injection
+42. Authentication bypass via SQLi
+43. UNION attacks
+44. Blind & time-based SQLi
+45. NoSQL Injection
+46. Command injection
+47. Unsafe shell execution
+48. Node.js `child_process` risks
+
+### 🔑 Authentication Vulnerabilities
+
+49. Weak password reset flows
+50. Session fixation
+51. Session hijacking
+52. Broken MFA
+53. Brute-force logic flaws
+54. Authentication bypass techniques
+
+### 🛡️ Access Control Vulnerabilities
+
+55. IDOR
+56. Horizontal privilege escalation
+57. Vertical privilege escalation
+58. Access control flaws
+
+### 🌐 Web Vulnerabilities
+
+59. CSRF
+60. SameSite cookies & anti-CSRF tokens
+61. SSRF
+62. Cloud metadata abuse
+63. Localhost/internal network attacks
+64. File upload vulnerabilities
+65. MIME & extension bypass
+66. Web shells & image polyglots
+67. Clickjacking
+68. Open redirects
+69. CORS misconfiguration
+70. Race conditions
+71. Business logic vulnerabilities
 
 ---
 
-### 🔥 Web Attacks
+# 🌍 PHASE 3: API Security
 
-34. SQL/NoSQL Injection
-35. XSS
-36. CSRF
-37. SSRF
-38. Command injection
-39. File inclusion (LFI/RFI)
-40. Authentication flaws
-41. IDOR
+### 🔌 API Security Fundamentals
 
-### ➕ Advanced Web (Added)
+72. REST API security
+73. API authentication flaws
+74. Broken authorization
+75. Broken object level authorization
+76. Rate limiting flaws
+77. Mass assignment
+78. API business logic flaws
 
-42. Clickjacking
-43. CORS misconfiguration
-44. Open redirects
-45. Race conditions
+### 🔑 JWT & Token Security
 
----
+79. Weak JWT secrets
+80. `none` algorithm attack
+81. Token tampering
+82. Token leakage
+83. Refresh token security
 
-### 🌍 API Security
+### 🛠️ API Testing
 
-46. API auth flaws
-47. JWT attacks
-48. Rate limiting bypass
-49. Mass assignment
-50. Business logic flaws
+84. API testing with Burp Suite
+85. API testing with Postman
+86. API testing with browser DevTools
 
----
+### 🧠 Critical Security Mindset
 
-### 🛠️ Tools
-
-51. Burp Suite
-52. Browser dev tools
+87. Frontend restrictions are NOT security
+88. Client-side validation bypass
 
 ---
 
-### 🧠 Secure Coding
+# 🛠️ PHASE 4: Security Tools, Labs & Practical Hacking
 
-53. Input validation
-54. Output encoding
-55. Secure error handling
-56. Session security
+### 🧰 Burp Suite
 
----
+89. Proxy
+90. Repeater
+91. Intruder
+92. Decoder
+93. Comparer
 
-### 🧪 DevSecOps (NEW — HIGH VALUE)
+### 🌐 Browser DevTools
 
-57. Secure SDLC
-58. SAST vs DAST vs SCA
-59. CI/CD security
-60. Dependency security (npm attacks)
-61. Secrets in code (env leaks, Git exposure)
+94. Network tab
+95. Storage & cookie inspection
+96. DOM inspection
+97. JavaScript debugging
 
----
+### 🔍 Recon & Enumeration
 
-# 🧪 PHASE 4: Networking Security
+98. Subdomain enumeration
+99. Archived URL discovery
+100. Parameter discovery
+101. JavaScript file analysis
+102. Target profiling
+103. OSINT basics
 
-62. Firewalls
-63. IDS/IPS
-64. VPN
-65. Packet structure
-66. Wireshark
-67. Traffic analysis
+### 🧪 Practical Platforms
 
----
-
-# 🧪 PHASE 5: Ethical Hacking
-
-### 🕵️ Recon
-
-68. OSINT
-69. Subdomain enumeration
-70. Target profiling
-
-### 🔍 Scanning
-
-71. Nmap
-72. Service enumeration
-73. Vulnerability scanning
-
-### 💣 Exploitation
-
-74. Exploit concepts
-75. Reverse shells
-76. Privilege escalation
-
-### 🛠️ Tools
-
-77. Metasploit
-78. Automation scripting
+104. [PortSwigger Web Security Academy](https://portswigger.net/web-security?utm_source=chatgpt.com)
+105. [TryHackMe](https://tryhackme.com?utm_source=chatgpt.com)
+106. [Hack The Box](https://www.hackthebox.com?utm_source=chatgpt.com)
 
 ---
 
-# 🖥️ PHASE 6: System & Endpoint Security
+# 🔒 PHASE 5: Secure Coding & MERN Security
 
-79. Linux hardening
-80. Windows hardening
-81. Patch management
-82. Malware basics
-83. EDR
-84. Disk encryption
+### 🛡️ Secure Coding
 
----
+107. Input validation
+108. Output encoding
+109. Secure error handling
+110. Secure session handling
+111. Password hashing
+112. Secure JWT handling
+113. File upload validation
+114. Rate limiting
+115. `helmet.js`
+116. Environment variable security
+117. Secrets management basics
 
-# 📊 PHASE 7: Blue Team + Detection Engineering
+### ⚠️ Common MERN Security Mistakes
 
-85. Log management
-86. SIEM
-87. Incident response
-88. Forensics basics
-89. IoCs
-90. Alert triaging
+118. Exposed MongoDB IDs
+119. Trusting frontend roles
+120. Insecure JWT storage
+121. Insecure CORS configuration
+122. Leaking stack traces
+123. Weak middleware ordering
 
-### ➕ Modern Detection (Added)
+### 🏗️ Secure Development Projects
 
-91. Logs vs metrics vs traces
-92. Detection rules (Sigma basics)
-
----
-
-# ☁️ PHASE 8: Cloud Security
-
-93. Shared responsibility
-94. Cloud IAM
-95. Misconfigurations
-96. Secrets management
-97. Cloud monitoring
+124. Build intentionally vulnerable MERN apps
+125. Exploit your own applications
+126. Patch vulnerabilities
+127. Write vulnerability documentation
 
 ---
 
-# 📦 PHASE 8.5: Container & Kubernetes Security (NEW)
+# ⚙️ PHASE 6: DevSecOps & Cloud Security
 
-98. Docker security
-99. Image vulnerabilities
-100. Kubernetes basics
-101. Kubernetes security risks
-102. Container escape
+### 🐳 Docker & Container Security
 
----
+128. Docker basics
+129. Containers & Dockerfiles
+130. Image vulnerabilities
+131. Secrets inside containers
+132. Docker security basics
 
-# 🔐 PHASE 8.7: Secrets & Key Management (Expanded)
+### ☸️ Kubernetes Security (Basic)
 
-103. Secrets lifecycle
-104. Vaults (HashiCorp Vault)
-105. API key protection
+133. Kubernetes basics
+134. Kubernetes security risks
+135. Container escape basics
 
----
+### ☁️ Cloud Security (Security-Focused)
 
-# 🔗 PHASE 9: Advanced Offensive
+136. AWS basics
+137. Cloud IAM basics
+138. Shared responsibility model
+139. S3 misconfigurations
+140. Secrets management in cloud
+141. Cloud logging & monitoring
 
-106. Recon automation
-107. Exploitation chains
-108. Password attacks
-109. Privilege escalation deep dive
-110. Lateral movement
-111. Active Directory fundamentals
-112. AD attacks (Kerberoasting intro)
-113. Post-exploitation & persistence
+### 📦 Dependency Security
 
----
+142. npm attacks
+143. Malicious packages
+144. Dependency confusion
+145. Lockfiles
 
-# 🔴 PHASE 10: Specialization
+### 🔄 CI/CD Security
 
-### 🔥 Web Security
+146. GitHub Actions basics
+147. Secret leaks in pipelines
+148. Insecure CI/CD pipelines
 
-114. Bug bounty techniques
-115. Business logic exploitation
-116. Auth bypass
-117. Vulnerability chaining
+### 🔐 Secrets Management
 
----
+149. `.env` leaks
+150. API key protection
+151. Git exposure risks
+152. HashiCorp Vault basics
 
-### 🟣 Blockchain Security
+### 🧪 Security Testing Concepts
 
-118. Smart contract basics
-119. Reentrancy
-120. Gas attacks
-121. DeFi risks
-122. Wallet security
-
----
-
-### 🔵 Red Team
-
-123. C2 basics
-124. Evasion techniques
-125. Advanced exploitation
+153. SAST
+154. DAST
+155. SCA
+156. Secure SDLC basics
 
 ---
 
-### 🟢 Blue Team
+# ⛓️ PHASE 7: Blockchain & Smart Contract Security
 
-126. Threat hunting
-127. Detection engineering
+### 🟣 Blockchain Foundations
+
+157. Blockchain architecture basics
+158. Smart contract fundamentals
+159. Solidity basics
+160. EVM basics
+161. Wallet fundamentals
+
+### 🔥 Smart Contract Vulnerabilities
+
+162. Reentrancy
+163. Integer overflow/underflow
+164. Access control vulnerabilities
+165. Oracle manipulation
+166. Flash loan attacks
+167. Signature vulnerabilities
+168. Upgradeable contract risks
+169. Gas-related attacks
+170. Business logic flaws in DeFi
+
+### 🌐 Web3 & Wallet Security
+
+171. Wallet-drainer attacks
+172. RPC/API abuse
+173. Phishing & malicious approvals
+174. Frontend Web3 vulnerabilities
+175. Private key security
+
+### 🛠️ Smart Contract Auditing
+
+176. Smart contract threat modeling
+177. Slither basics
+178. Foundry security testing
+179. Hardhat security testing
+180. Manual smart contract auditing basics
 
 ---
 
-# ⚙️ PHASE 11: Automation (NEW — HIGH ROI)
+# 🕵️ PHASE 8: Bug Bounty & Automation
 
-128. Automating recon with Python
-129. Building security tools/scripts
+### 💰 Bug Bounty
+
+181. Bug bounty methodology
+182. Vulnerability chaining
+183. Authentication bypass hunting
+184. Business logic exploitation
+185. Writing professional vulnerability reports
+
+### ⚙️ Automation
+
+186. Recon automation with Python
+187. Recon automation with JavaScript
+188. Endpoint extraction
+189. URL filtering tools
+190. Security scripting fundamentals
+
+### 🧠 Practical Hacking Skills
+
+191. Reverse shells basics
+192. Privilege escalation basics
+193. Exploit chaining basics
 
 ---
 
-# 📜 PHASE 12: GRC
+# 📊 PHASE 9: Blue Team Awareness
 
-130. Security policies
-131. Risk assessment
-132. Threat modeling (practical usage)
-133. Compliance (ISO, GDPR)
+194. Logs basics
+195. Alerts basics
+196. Suspicious traffic analysis
+197. WAF basics
+198. SIEM concepts
+199. Incident response basics
+
+---
+
+# 🏗️ PHASE 10: Portfolio Projects (CRITICAL)
+
+### 🔥 Core Projects
+
+200. Vulnerable MERN app
+201. JWT analyzer tool
+202. Header analyzer tool
+203. Simple XSS detector
+204. Secure authentication system
+205. RBAC & MFA implementation
+206. Secure refresh token system
+207. Recon automation tool
+208. Dockerized secure MERN deployment
+209. Smart contract vulnerability playground
+210. Basic smart contract auditing reports
 
 ---
 
-# 🧪 PHASE 13: Practical Execution (MOST IMPORTANT)
+# 🧪 PHASE 11: Practical Execution (MOST IMPORTANT)
 
-134. CTF platforms (TryHackMe, HackTheBox)
-135. Bug bounty platforms (HackerOne, Bugcrowd)
-136. Build vulnerable apps
-137. Exploit your own apps
-138. Write professional vulnerability reports
+211. Exploit vulnerable applications
+212. Patch vulnerabilities after exploitation
+213. Build security tooling
+214. Analyze real HTTP traffic
+215. Practice labs consistently
+216. Write professional reports
+217. Document findings publicly
+218. Build a security-focused GitHub portfolio
+219. Participate in bug bounty programs
+220. Audit vulnerable smart contracts
 
 ---
+
+# ❌ SKIP FOR NOW (LOW ROI EARLY)
+
+221. Malware reversing
+222. Kernel exploitation
+223. Advanced cryptography mathematics
+224. Hardware/RF hacking
+225. Advanced Active Directory attacks
+226. Assembly-heavy reverse engineering
+227. Advanced exploit development
+228. Deep forensics
+
+---
+
+# 🥇 BEST CERTIFICATIONS FOR YOU
+
+229. PortSwigger labs completion
+230. Practical GitHub security projects
+231. Bug bounty reports
+232. eLearnSecurity eJPT (early target)
+233. OffSec OSCP (later target)
+234. Smart contract auditing experience & public reports

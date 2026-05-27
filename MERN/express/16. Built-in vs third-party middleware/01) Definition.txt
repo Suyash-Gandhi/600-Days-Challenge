@@ -1,0 +1,236 @@
+# Built-in vs Third-Party Middleware in Express.js
+
+Middleware in Express.js are functions that run between receiving a request and sending a response.
+
+They can:
+
+ Read/modify `req` and `res`
+ Execute code
+ End the request-response cycle
+ Call `next()` to move to the next middleware
+
+---
+
+# 1. Built-in Middleware
+
+Built-in middleware are middleware functions already provided by Express itself.
+
+You do not need to install any extra package for them.
+
+---
+
+# Common Built-in Middleware
+
+## A) `express.json()`
+
+Used to parse incoming JSON data.
+
+```js
+app.use(express.json())
+```
+
+### Example
+
+```js
+app.post("/user", (req, res) => {
+  console.log(req.body)
+  res.send("Data received")
+})
+```
+
+If client sends:
+
+```json
+{
+  "name": "Suyash",
+  "age": 21
+}
+```
+
+Then:
+
+```js
+req.body
+```
+
+becomes:
+
+```js
+{
+  name: "Suyash",
+  age: 21
+}
+```
+
+Without `express.json()`, `req.body` would be `undefined`.
+
+---
+
+## B) `express.urlencoded()`
+
+Parses form data.
+
+```js
+app.use(express.urlencoded({ extended: true }))
+```
+
+Used when HTML forms send data.
+
+---
+
+## C) `express.static()`
+
+Serves static files like:
+
+ CSS
+ Images
+ JavaScript files
+ Videos
+
+```js
+app.use(express.static("public"))
+```
+
+If folder structure:
+
+```txt
+public/
+ ├── style.css
+ └── logo.png
+```
+
+Then:
+
+```txt
+http://localhost:3000/style.css
+```
+
+works automatically.
+
+---
+
+# Characteristics of Built-in Middleware
+
+| Feature                   | Built-in Middleware |
+| ------------------------- | ------------------- |
+| Comes with Express        | Yes                 |
+| Extra installation needed | No                  |
+| Easy to use               | Yes                 |
+| Used for common tasks     | Yes                 |
+| Maintained by Express     | Yes                 |
+
+---
+
+# 2. Third-Party Middleware
+
+Third-party middleware are created by other developers/packages outside Express.
+
+You install them using npm.
+
+---
+
+# Common Third-Party Middleware
+
+## A) `cors`
+
+Used to allow frontend-backend communication across different origins.
+
+Install:
+
+```bash
+npm install cors
+```
+
+Use:
+
+```js
+const cors = require("cors")
+
+app.use(cors())
+```
+
+---
+
+## B) `morgan`
+
+Used for request logging.
+
+Install:
+
+```bash
+npm install morgan
+```
+
+Use:
+
+```js
+const morgan = require("morgan")
+
+app.use(morgan("dev"))
+```
+
+Console output:
+
+```txt
+GET /users 200 5ms
+```
+
+---
+
+## C) `cookie-parser`
+
+Used to read cookies.
+
+Install:
+
+```bash
+npm install cookie-parser
+```
+
+Use:
+
+```js
+const cookieParser = require("cookie-parser")
+
+app.use(cookieParser())
+```
+
+---
+
+## D) `helmet`
+
+Adds security headers.
+
+Install:
+
+```bash
+npm install helmet
+```
+
+Use:
+
+```js
+const helmet = require("helmet")
+
+app.use(helmet())
+```
+
+Helps protect against:
+
+ XSS attacks
+ Clickjacking
+ Some common vulnerabilities
+
+---
+
+# Characteristics of Third-Party Middleware
+
+| Feature                  | Third-Party Middleware |
+| ------------------------ | ---------------------- |
+| Comes with Express       | No                     |
+| Needs npm install        | Yes                    |
+| Created by community     | Yes                    |
+| Adds advanced features   | Yes                    |
+| Huge ecosystem available | Yes                    |
+
+---
