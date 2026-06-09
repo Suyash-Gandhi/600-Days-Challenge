@@ -1,0 +1,174 @@
+
+
+# 🟢 PHASE 1 — Prisma Fundamentals
+
+1. What Prisma Is
+2. Setting Up Prisma
+3. Prisma CLI
+4. Prisma Schema
+5. Datasource
+6. Generator
+7. Prisma Client
+8. Prisma Generate
+9. Connecting Prisma to PostgreSQL
+10. Environment Variables
+
+---
+
+# 🟡 PHASE 2 — Schema Design (MOST IMPORTANT)
+
+11. Models
+12. Scalar Types
+13. IDs & Primary Keys
+14. UUID IDs
+15. Default Values
+16. Unique Fields
+17. Enums
+18. Relations Overview
+
+### 🔥 Real-World Design
+
+19. Designing User Schemas
+20. Designing Product Schemas
+21. Designing Order Schemas
+22. Designing Blog Schemas
+23. Designing Scalable Schemas
+
+---
+
+# 🔵 PHASE 3 — Migrations & Database Workflow
+
+24. What Migrations Are
+25. Creating Migrations
+26. Applying Migrations
+27. Updating Existing Schemas
+28. Resetting Databases
+29. Prisma Studio
+
+### ⚡ Daily Workflow
+
+30. Schema Evolution
+31. Safe Migration Practices
+
+---
+
+# 🟣 PHASE 4 — CRUD Operations
+
+32. Create
+33. CreateMany
+34. FindUnique
+35. FindFirst
+36. FindMany
+37. Update
+38. UpdateMany
+39. Delete
+40. DeleteMany
+41. Upsert
+
+### 🔥 Query Patterns
+
+42. Selecting Single Records
+43. Selecting Multiple Records
+44. Conditional Queries
+
+---
+
+# 🟠 PHASE 5 — Filtering, Sorting & Pagination
+
+45. where
+46. AND Conditions
+47. OR Conditions
+48. NOT Conditions
+49. Sorting
+50. Pagination with skip
+51. Pagination with take
+
+### ⚡ Practical Usage
+
+52. Search Queries
+53. Filter Queries
+54. Paginated Queries
+
+---
+
+# 🔴 PHASE 6 — Relationships (MAKE OR BREAK) - Complete till here then start postgresql phase 5
+
+55. One-to-One Relations
+56. One-to-Many Relations
+57. Many-to-Many Relations
+58. Relation Fields
+59. Foreign Keys
+
+### 🔥 Querying Relations
+
+60. include
+61. select
+62. Nested Reads
+63. Nested Writes
+
+### ⚠️ Relationship Design
+
+64. Relation Design Best Practices
+65. Avoiding Circular Relationships
+
+---
+
+# ⚫ PHASE 7 — Performance & Optimization
+
+66. Selecting Only Required Fields
+67. Avoiding Over-Fetching
+68. Query Optimization
+69. N+1 Query Problem
+70. Database Indexes with Prisma
+
+### ⚡ Practical Performance
+
+71. Optimizing Relation Queries
+72. Query Performance Best Practices
+
+---
+
+# 🟤 PHASE 8 — Transactions & Data Integrity
+
+73. Prisma Transactions
+74. Interactive Transactions
+75. Atomic Operations
+
+### 🔥 Data Integrity
+
+76. Consistent Writes
+77. Multi-Step Database Operations
+
+---
+
+# 🟣 PHASE 9 — Prisma in Next.js
+
+78. Prisma Singleton Pattern
+79. Prisma with Route Handlers
+80. Prisma with Server Actions
+81. Prisma with Auth.js
+82. Prisma with Validation (Zod)
+
+### Full-Stack Integration
+
+83. Building CRUD APIs
+84. Building Dashboard Features
+85. Building Authentication Systems
+
+---
+
+# ⚪ PHASE 10 — Production Essentials
+
+86. Seeding Data
+87. Error Handling
+88. Connection Pooling
+89. Production Best Practices
+
+### 🚀 Deployment
+
+90. Prisma in Production
+91. Handling Production Migrations
+
+---
+
+

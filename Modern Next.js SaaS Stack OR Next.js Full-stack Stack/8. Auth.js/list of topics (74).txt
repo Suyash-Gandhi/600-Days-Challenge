@@ -1,0 +1,144 @@
+
+
+# 🟢 PHASE 1 — Authentication Fundamentals
+
+1. What Authentication Is
+2. Authentication vs Authorization
+3. Sessions vs JWT
+4. Cookies
+5. HTTP-Only Cookies
+6. Authentication Flow
+7. Login Flow
+8. Logout Flow
+9. Protected Routes
+
+### 🔥 Core Security Concepts
+
+10. Password Hashing
+11. Session Security
+12. Authentication Best Practices
+
+---
+
+# 🟡 PHASE 2 — Auth.js Fundamentals
+
+13. What Auth.js Is
+14. Installing Auth.js
+15. Auth.js Configuration
+16. Auth Providers Overview
+17. Session Strategy
+18. JWT Strategy
+19. Database Session Strategy
+20. Environment Variables
+
+### ⚡ Core Setup
+
+21. auth()
+22. auth.ts Configuration
+23. Middleware Setup
+24. Route Protection Basics
+
+---
+
+# 🔵 PHASE 3 — Credentials Authentication
+
+25. Credentials Provider
+26. Login Form Integration
+27. Password Verification
+28. User Lookup with Prisma
+29. Handling Invalid Credentials
+
+### 🔥 Authentication Flow
+
+30. Sign In
+31. Sign Out
+32. Session Persistence
+33. Registration Flow
+
+---
+
+# 🟣 PHASE 4 — OAuth Authentication
+
+34. OAuth Fundamentals
+35. Google Provider
+36. GitHub Provider
+37. OAuth Login Flow
+
+### ⚡ Provider Configuration
+
+38. OAuth Environment Variables
+39. Callback URLs
+
+---
+
+# 🟠 PHASE 5 — Session Management
+
+40. Session Retrieval
+41. Session Callbacks
+42. JWT Callbacks
+43. Custom Session Data
+
+### 🔥 Real-World Usage
+
+44. User Profile Data
+45. User Roles
+46. Permission Data
+
+---
+
+# 🔴 PHASE 6 — Authorization & Route Protection
+
+47. Middleware Protection
+48. Protecting Pages
+49. Protecting Route Handlers
+50. Protecting Server Actions
+
+### ⚡ Authorization
+
+51. Role-Based Access Control (RBAC)
+52. Permission Checks
+53. Multi-Role Systems
+
+---
+
+# ⚫ PHASE 7 — Auth.js + Prisma
+
+54. Prisma Adapter
+55. User Model Design
+56. Account Model Design
+57. Session Model Design
+58. Database Sessions
+
+### 🔥 Database Integration
+
+59. User Creation Flow
+60. OAuth User Creation
+61. Session Storage
+
+---
+
+# 🟤 PHASE 8 — Auth.js + Next.js
+
+62. Auth in Server Components
+63. Auth in Client Components
+64. Auth in Route Handlers
+65. Auth in Server Actions
+
+### ⚡ Full-Stack Integration
+
+66. Authentication Forms
+67. Password Reset Architecture
+68. Email Verification Architecture
+
+---
+
+# ⚪ PHASE 9 — Production Security
+
+69. Secure Cookie Configuration
+70. Session Expiration
+71. CSRF Protection
+72. Preventing Session Hijacking
+73. Rate Limiting Authentication Endpoints
+74. Security Best Practices
+
+---

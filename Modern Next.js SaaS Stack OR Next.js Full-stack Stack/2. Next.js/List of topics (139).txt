@@ -1,0 +1,216 @@
+
+# PHASE 1 — Next.js Fundamentals
+
+1. What Next.js is
+2. Next.js vs React
+3. Next.js Architecture
+4. App Router
+5. Project Structure
+6. File-Based Routing
+7. Layouts
+8. Nested Layouts
+9. Templates
+10. Page Components
+11. Loading UI
+12. Error UI
+13. Not Found UI
+14. Metadata
+15. Static Assets
+16. Public Folder
+17. Environment Variables
+
+---
+
+# PHASE 2 — Routing System
+
+18. Static Routes
+19. Dynamic Routes
+20. Catch-All Routes
+21. Nested Routes
+22. Route Groups
+23. Route Handlers
+24. Programmatic Navigation
+25. Link Component
+26. useRouter
+27. usePathname
+28. useSearchParams
+29. Redirects
+
+---
+
+# PHASE 3 — Server & Client Components
+
+30. React Server Components (RSC)
+31. Client Components
+32. use client
+33. Server-First Architecture
+34. Component Boundaries
+35. Data Fetching in Server Components
+36. Data Fetching in Client Components
+37. Server Component Composition
+38. Passing Data Between Server and Client
+39. Common RSC Mistakes
+
+---
+
+# PHASE 4 — Rendering System
+
+40. Static Rendering
+41. Dynamic Rendering
+42. SSR
+43. SSG
+44. ISR
+45. CSR
+46. Partial Prerendering (PPR)
+47. Streaming
+48. Hydration
+49. Choosing Rendering Strategies
+
+---
+
+# PHASE 5 — Data Fetching
+
+50. Fetch API in Next.js
+51. Async Server Components
+52. Request Memoization
+53. Data Caching
+54. Dynamic Data Fetching
+55. Revalidation
+56. Cache Invalidation
+57. Parallel Data Fetching
+58. Suspense
+59. Error Handling in Fetches
+60. Loading States
+
+---
+
+# PHASE 6 — Next.js Caching - Complete this and move to PostgreSQL -> Prisma -> Zod -> React Hook Form -> Auth.js
+
+61. Request Cache
+62. Data Cache
+63. Full Route Cache
+64. Router Cache
+65. Cache Revalidation
+66. revalidatePath()
+67. revalidateTag()
+68. Cache Tags
+69. force-cache
+70. no-store
+71. Cache Debugging
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Auth.js
+
+
+# PHASE 7 — Server Actions
+
+72. What Server Actions Are
+73. Creating Server Actions
+74. Form Submissions
+75. Data Mutations
+76. CRUD Operations
+77. useActionState
+78. useFormStatus
+79. Optimistic Updates
+80. Validation Patterns
+81. Error Handling in Actions
+82. Redirects After Actions
+
+---
+
+# PHASE 8 — Route Handlers & APIs
+
+83. Route Handlers
+84. GET Requests
+85. POST Requests
+86. PUT Requests
+87. PATCH Requests
+88. DELETE Requests
+89. Request Object
+90. Response Object
+91. JSON Responses
+92. Headers
+93. Cookies
+94. API Validation Patterns
+95. API Error Handling
+
+---
+
+# PHASE 9 — Middleware
+
+96. Middleware Fundamentals
+97. Request Interception
+98. Route Protection
+99. Authentication Middleware
+100. Redirect Logic
+101. Middleware Performance
+
+---
+
+# PHASE 10 — Performance Optimization
+
+102. Code Splitting
+103. Dynamic Imports
+104. Lazy Loading
+105. Image Optimization
+106. Next.js Image Component
+107. Font Optimization
+108. Bundle Analysis
+109. Streaming Optimization
+110. Reducing Client-Side JavaScript
+111. Core Web Vitals
+112. Lighthouse Optimization
+
+---
+
+# PHASE 11 — SEO
+
+113. Metadata API
+114. generateMetadata()
+115. Dynamic Metadata
+116. Open Graph Tags
+117. Canonical URLs
+118. Sitemap Generation
+119. Robots.txt
+120. Structured Data
+121. JSON-LD
+
+---
+
+# PHASE 12 — Error Handling
+
+122. error.js
+123. global-error.js
+124. not-found.js
+125. Error Boundaries
+126. API Error Handling
+
+---
+
+# PHASE 13 — Security
+
+127. XSS Prevention
+128. CSRF Protection
+129. Secure Cookies
+130. HTTP-Only Cookies
+131. Environment Variable Security
+132. Authorization Security
+133. Rate Limiting
+
+---
+
+# PHASE 14 — Deployment
+
+134. Production Builds
+135. Build Optimization
+136. Environment Management
+137. Deployment on [Vercel](https://vercel.com?utm_source=chatgpt.com)
+
+---
+
+# PHASE 15 — Advanced Routing & App Router Patterns
+
+138. Parallel Routes
+139. Intercepting Routes
+
+---

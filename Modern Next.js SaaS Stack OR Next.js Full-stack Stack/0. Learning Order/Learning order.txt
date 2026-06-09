@@ -1,0 +1,22 @@
+
+1. TypeScript Phase 1-3
+        ↓
+2. Next.js Phase 1-6
+        ↓
+3. PostgreSQL Phase 1-4
+        ↓
+4. Prisma Phase 1-6
+        ↓
+5. PostgreSQL Phase 5-7
+        ↓
+6. Next.js Phase 7 (Server Actions)
+        ↓
+7. Zod Phase 1-7
+        ↓
+8. React Hook Form Phase 1-7
+        ↓
+9. Auth.js Phase 1-7
+        ↓
+10. Next.js Phase 8-15
+        ↓
+11. TypeScript Phase 4-12
