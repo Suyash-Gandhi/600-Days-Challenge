@@ -1,0 +1,196 @@
+
+
+# PHASE 1 — Lua Essentials
+
+1. What Lua is and why Roblox uses it
+2. Lua syntax basics
+3. Variables and data types
+4. Operators
+5. Strings
+6. Numbers
+7. Booleans
+8. Nil
+9. Local vs global variables
+10. If statements
+11. Loops
+12. Functions
+13. Return values
+14. Tables
+15. Arrays
+16. Dictionaries
+17. Nested tables
+18. Iterating tables
+
+---
+
+# PHASE 2 — Roblox Studio
+
+19. Roblox Studio interface
+20. Explorer
+21. Properties
+22. Workspace
+23. Parts
+24. Anchored vs unanchored parts
+25. Materials
+26. Terrain
+27. Lighting
+28. Basic map building
+
+---
+
+# PHASE 3 — Roblox Core Scripting
+
+29. Scripts
+30. LocalScripts
+31. ModuleScripts
+32. Finding objects
+33. WaitForChild
+34. Cloning objects
+35. Destroying objects
+36. Creating instances
+37. Script debugging
+
+---
+
+# PHASE 4 — Roblox Object Model
+
+38. Workspace
+39. Players
+40. ReplicatedStorage
+41. ServerStorage
+42. StarterGui
+43. StarterPlayer
+44. ServerScriptService
+
+---
+
+# PHASE 5 — Events & User Input
+
+45. Events
+46. Connect
+47. ClickDetector
+48. Touch events
+49. UserInputService
+50. Keyboard input
+51. Mouse input
+52. Mobile input
+
+---
+
+# PHASE 6 — GUI Development
+
+53. ScreenGui
+54. Frames
+55. TextLabels
+56. TextButtons
+57. ImageLabels
+58. ImageButtons
+59. UI layouts
+60. UI scaling
+61. Responsive UI
+62. Tweened UI animations
+
+---
+
+# PHASE 7 — Multiplayer Essentials
+
+63. Client-server architecture
+64. RemoteEvents
+65. RemoteFunctions
+66. Replication
+67. Server validation
+68. Basic anti-exploit
+
+---
+
+# PHASE 8 — Game Systems
+
+69. Currency systems
+70. Inventory systems
+71. Shop systems
+72. Item systems
+73. Reward systems
+74. Daily rewards
+75. Quest systems
+76. Progression systems
+
+---
+
+# PHASE 9 — Data Saving
+
+77. DataStoreService
+78. Saving data
+79. Loading data
+80. Error handling
+81. Autosave systems
+82. ProfileService
+
+---
+
+# PHASE 10 — Animation & Effects
+
+83. Animation Editor
+84. Creating animations
+85. Playing animations
+86. TweenService
+87. Particle effects
+88. Sound effects
+
+---
+
+# PHASE 11 — Monetization
+
+89. Game Passes
+90. Developer Products
+91. MarketplaceService
+92. Retention systems
+93. Monetization design
+
+---
+
+# PHASE 12 — Optimization & Security
+
+94. Reducing lag
+95. Network optimization
+96. Memory optimization
+97. Remote security
+98. Data validation
+99. Economy protection
+
+---
+
+# PHASE 13 — Genre Specialization
+
+Choose ONE:
+
+### Simulator Path
+
+100. Pets
+101. Rebirths
+102. Multipliers
+103. Eggs
+104. Auto systems
+
+### Tycoon Path
+
+100. Tycoon mechanics
+101. Upgrades
+102. Production systems
+103. Prestige systems
+
+### Anime Battlegrounds Path
+
+100. Combat systems
+101. Hitboxes
+102. Raycasting
+103. Abilities
+104. Cooldowns
+
+### Tower Defense Path
+
+100. Towers
+101. Enemy waves
+102. Pathfinding
+103. Upgrade systems
+
+---
