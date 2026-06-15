@@ -1,0 +1,625 @@
+
+# Solidity Cheat Sheet (2026)
+
+---
+
+# 1. Basic Contract Structure
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MyContract {
+
+}
+```
+
+ SPDX License Identifier
+ Pragma Version
+ Contract Declaration
+
+---
+
+# 2. Variables
+
+## State Variables
+
+Stored permanently on blockchain.
+
+```solidity
+uint public age = 20;
+string public name = "Suyash";
+bool public isActive = true;
+```
+
+---
+
+## Local Variables
+
+Inside functions only.
+
+```solidity
+function test() public pure {
+    uint x = 10;
+}
+```
+
+---
+
+## Global Variables
+
+```solidity
+msg.sender
+msg.value
+block.timestamp
+block.number
+tx.origin
+```
+
+---
+
+# 3. Data Types
+
+## Integer
+
+```solidity
+uint age = 25;
+int temp = -10;
+```
+
+### Sizes
+
+```solidity
+uint8
+uint16
+uint32
+uint64
+uint128
+uint256
+```
+
+Default:
+
+```solidity
+uint == uint256
+int == int256
+```
+
+---
+
+## Boolean
+
+```solidity
+bool isStudent = true;
+```
+
+---
+
+## String
+
+```solidity
+string public name = "Suyash";
+```
+
+---
+
+## Address
+
+```solidity
+address public owner;
+```
+
+Store Ethereum wallet address.
+
+---
+
+## Bytes
+
+```solidity
+bytes32 hash;
+```
+
+Used for hashes.
+
+---
+
+# 4. Functions
+
+## Basic Function
+
+```solidity
+function greet() public {
+
+}
+```
+
+---
+
+## Return Value
+
+```solidity
+function getAge() public pure returns(uint) {
+    return 20;
+}
+```
+
+---
+
+## Multiple Returns
+
+```solidity
+function data()
+public
+pure
+returns(uint,string memory)
+{
+    return (1,"Hello");
+}
+```
+
+---
+
+# 5. Function Visibility
+
+| Visibility | Accessible       |
+| ---------- | ---------------- |
+| public     | Everywhere       |
+| private    | Same Contract    |
+| internal   | Contract + Child |
+| external   | Outside Only     |
+
+---
+
+# 6. Function Modifiers
+
+## Pure
+
+Reads nothing.
+
+```solidity
+function add(uint a,uint b)
+public
+pure
+returns(uint)
+{
+    return a+b;
+}
+```
+
+---
+
+## View
+
+Reads state.
+
+```solidity
+function getAge()
+public
+view
+returns(uint)
+{
+    return age;
+}
+```
+
+---
+
+## Payable
+
+Accept ETH.
+
+```solidity
+function deposit()
+public
+payable
+{
+
+}
+```
+
+---
+
+# 7. Constructor
+
+Runs once during deployment.
+
+```solidity
+constructor() {
+    owner = msg.sender;
+}
+```
+
+---
+
+# 8. If Else
+
+```solidity
+if(age > 18){
+}
+else{
+}
+```
+
+---
+
+# 9. Loops
+
+## For
+
+```solidity
+for(uint i=0;i<5;i++){
+
+}
+```
+
+---
+
+## While
+
+```solidity
+while(i<5){
+
+}
+```
+
+---
+
+# 10. Arrays
+
+## Fixed
+
+```solidity
+uint[5] numbers;
+```
+
+---
+
+## Dynamic
+
+```solidity
+uint[] numbers;
+```
+
+---
+
+## Operations
+
+```solidity
+numbers.push(10);
+
+numbers.pop();
+
+numbers.length;
+```
+
+---
+
+# 11. Struct
+
+```solidity
+struct Student{
+    string name;
+    uint age;
+}
+```
+
+Create object:
+
+```solidity
+Student public s1 =
+Student("Suyash",20);
+```
+
+---
+
+# 12. Mapping
+
+Key → Value
+
+```solidity
+mapping(address => uint) balances;
+```
+
+Store:
+
+```solidity
+balances[msg.sender] = 100;
+```
+
+Get:
+
+```solidity
+balances[msg.sender];
+```
+
+---
+
+# 13. Enum
+
+```solidity
+enum Status{
+    Pending,
+    Approved,
+    Rejected
+}
+```
+
+---
+
+# 14. Events
+
+Used by frontend to listen.
+
+```solidity
+event Deposit(
+    address user,
+    uint amount
+);
+```
+
+Emit:
+
+```solidity
+emit Deposit(
+    msg.sender,
+    msg.value
+);
+```
+
+---
+
+# 15. Require
+
+Validation.
+
+```solidity
+require(
+    age >= 18,
+    "Not Eligible"
+);
+```
+
+---
+
+# 16. Assert
+
+Internal error.
+
+```solidity
+assert(balance >= 0);
+```
+
+---
+
+# 17. Revert
+
+```solidity
+if(age < 18){
+    revert("Not Eligible");
+}
+```
+
+---
+
+# 18. Modifiers
+
+Reusable checks.
+
+```solidity
+modifier onlyOwner(){
+    require(
+        msg.sender == owner,
+        "Not Owner"
+    );
+    _;
+}
+```
+
+Use:
+
+```solidity
+function withdraw()
+public
+onlyOwner
+{
+
+}
+```
+
+---
+
+# 19. Inheritance
+
+```solidity
+contract A{
+
+}
+
+contract B is A{
+
+}
+```
+
+---
+
+# 20. Interface
+
+```solidity
+interface IERC20{
+
+    function transfer(
+        address to,
+        uint amount
+    ) external returns(bool);
+}
+```
+
+---
+
+# 21. Contract Interaction
+
+```solidity
+OtherContract obj =
+OtherContract(address);
+```
+
+Call:
+
+```solidity
+obj.someFunction();
+```
+
+---
+
+# 22. Memory vs Storage
+
+## Storage
+
+Permanent blockchain data.
+
+```solidity
+string storage name;
+```
+
+---
+
+## Memory
+
+Temporary.
+
+```solidity
+string memory name;
+```
+
+---
+
+# 23. Ether Units
+
+```solidity
+1 wei
+
+1 gwei
+
+1 ether
+```
+
+Examples:
+
+```solidity
+1 ether
+100 gwei
+```
+
+---
+
+# 24. Common Keywords
+
+```solidity
+msg.sender
+msg.value
+
+block.timestamp
+block.number
+
+address(this)
+
+payable
+
+mapping
+
+struct
+
+enum
+
+event
+
+modifier
+
+constructor
+
+require
+
+assert
+
+revert
+```
+
+---
+
+# 25. Most Important Syntax Patterns
+
+### State Variable
+
+```solidity
+uint public count;
+```
+
+### Setter
+
+```solidity
+function setCount(uint _count)
+public
+{
+    count = _count;
+}
+```
+
+### Getter
+
+```solidity
+function getCount()
+public
+view
+returns(uint)
+{
+    return count;
+}
+```
+
+### Require
+
+```solidity
+require(condition,"Error");
+```
+
+### Mapping
+
+```solidity
+mapping(address => uint) balances;
+```
+
+### Event
+
+```solidity
+emit Transfer(
+    msg.sender,
+    amount
+);
+```
+
+---
+
+## The 20 Concepts You Must Know Cold Before Moving to Intermediate Solidity
+
+1. Contract Structure
+2. State Variables
+3. Local Variables
+4. Global Variables
+5. Data Types
+6. Functions
+7. Visibility
+8. Pure
+9. View
+10. Payable
+11. Constructor
+12. Arrays
+13. Structs
+14. Mappings
+15. Enums
+16. Events
+17. Require
+18. Modifiers
+19. Inheritance
+20. Interfaces
+
+If you can write all 20 of these from memory without looking at notes, you're ready to start building real smart contracts and move into ERC-20, ERC-721, DeFi, and security-focused development.
