@@ -143,133 +143,198 @@
 
 ---
 
+# 🔥 MUST BE ABLE TO WRITE CODE (Junior + Mid-Level)
 
-# 🧠 HIGH-FREQUENCY INTERVIEW TOPICS (34 TOPICS - 40 QUESTIONS )
+### React Fundamentals
 
-👉 If you master ONLY these, you cover ~80% of interviews
-
----
-
-##  🔴 CORE FUNDAMENTALS (ALMOST GUARANTEED QUESTIONS)
-
- 2. JSX syntax and rules
- 3. React components (function vs class)
  4. Props and component composition
  5. Rendering lists and keys
- 9. Virtual DOM vs Real DOM
- 10. One-way data flow
+ 6. Event handling
+ 7. Conditional rendering
 
-
----
-
-##  STATE & DATA FLOW (VERY HIGH FREQUENCY)
+### State
 
  11. State in React
  12. Controlled vs uncontrolled components
- 14. Passing callbacks between components
+ 13. Handling form inputs
+ 14. Passing callbacks
  15. Immutable state updates
  16. Lifting state up
 
----
+### Hooks
 
-##  HOOKS (MOST IMPORTANT MODERN AREA)
-
- 19. useEffect (dependencies, cleanup, pitfalls)
- 21. useState deep dive
+ 19. useEffect
+ 21. useState
  22. useRef
  23. useContext
- 24. Rules of Hooks
- 25. Custom hooks
+ 25. Custom Hooks
 
----
+### Performance
 
-##  RENDERING & PERFORMANCE (HIGH SIGNAL FOR MID/SENIOR)
-
- 30. When React components re-render
- 31. Reconciliation and keys
  32. React.memo
  33. useMemo
  34. useCallback
 
----
+### Forms
 
-##  DATA FLOW + ARCHITECTURE
+ 39. Controlled vs uncontrolled forms
+ 40. File uploads
+ 41. Debouncing inputs
+ 42. Throttling inputs
 
- 26. Prop drilling problem
- 27. Context API usage
- 29. Global vs local state decisions
-
-
----
-
-##  DATA FETCHING & REAL-WORLD PROBLEMS
-
- 51. Fetch / Axios with useEffect
- 52. Loading / error / empty states
- 53. Async error handling
- 55. Race conditions
-
-
----
-
-##  ROUTING (COMMON BUT NOT DEEP)
+### Routing
 
  44. React Router basics
+ 45. Nested routes
  46. Dynamic routes
+ 47. useNavigate
  48. Protected routes
+ 49. Lazy loaded routes
 
+### Data Fetching
+
+ 51. Fetch / Axios with useEffect
+ 52. Loading / Error states
+ 53. Async error handling
+ 54. AbortController
+ 55. Race conditions
+
+### State Management
+
+ 60. Redux Toolkit OR Zustand
+
+### Concurrent React
+
+ 63. Suspense
+ 65. useTransition
+ 66. useDeferredValue
+
+### Architecture
+
+ 67. Error Boundaries
+ 73. Portals
 
 ---
 
-##  ADVANCED BUT FREQUENT
+# 🟡 SOMETIMES CODING, SOMETIMES THEORY
+
+These are often discussed conceptually, but mid-level interviews may require implementation.
+
+### Core Concepts
+
+ 3. Function vs Class Components
+ 17. Derived state pitfalls
+ 24. Rules of Hooks
+
+### Context
+
+ 26. Prop drilling
+ 27. Context API
+ 28. Avoiding re-renders with Context
+ 29. Global vs local state
+
+### Rendering
+
+ 30. When React re-renders
+ 31. Reconciliation and keys
+
+### Advanced Hooks
 
  35. useReducer
- 67. Error boundaries
-
-
----
-
-# 🟡 MEDIUM-FREQUENCY (ASKED SOMETIMES)
-
-These show up, but not always:
-
- 1. What React is
- 6. Event handling
- 7. Conditional rendering
- 17. Derived state pitfalls
- 18. Lifecycle vs hooks
- 20. StrictMode
- 28. Avoiding re-renders with context
- 54. AbortController
- 56. Server vs client state
- 60. Redux Toolkit
-
-
----
-
-# 🟢 LOW-FREQUENCY (RARELY ASKED DIRECTLY)
-
- 8. Fragments
- 40. File uploads
- 41. Debouncing
- 42. Throttling
- 43. Explicit Trigger Model
- 49. Lazy loaded routes
- 57–59 React Query (sometimes asked in good companies only)
-
----
-
-# ⚫ VERY RARE / EDGE INTERVIEW TOPICS
-
  36. useLayoutEffect
  37. useImperativeHandle
  38. Advanced hook patterns
- 68–70 (HOC, render props, compound components)
- 73. Portals
 
-👉 These are:
+### React Query
 
- either outdated patterns
- or niche use-cases
+ 57. React Query basics
+ 58. React Query caching
+ 59. React Query error handling
+
+### Concurrent React
+
+ 64. Concurrent rendering
+
+### Patterns
+
+ 68. Higher Order Components
+ 69. Render Props
+ 70. Compound Components
+
+---
+
+# 🔵 MOSTLY THEORY / EXPLANATION
+
+Usually asked as:
+
+> "Explain this."
+
+rather than
+
+> "Write code."
+
+ 1. What React is
+ 2. JSX syntax and rules
+ 8. Fragments
+ 9. Virtual DOM vs Real DOM
+ 10. One-way data flow
+ 18. Lifecycle vs Hooks mental model
+ 20. StrictMode behavior
+ 43. Explicit Trigger Model
+ 50. Client-side vs server-side routing
+ 56. Server vs client state
+ 61. XSS in React
+ 62. Token storage
+ 71. Smart vs dumb components
+ 72. State colocation principle
+
+---
+
+# 🚀 MOST COMMON REACT CODING QUESTIONS IN 2026
+
+If I had only 2 weeks to prepare for React interviews, I'd prioritize these:
+
+### Tier 1 (Asked Everywhere)
+
+1. useState
+2. useEffect
+3. Forms
+4. Controlled components
+5. Lifting state up
+6. Lists and keys
+7. React Router
+8. Fetch API / Axios
+9. Loading & error states
+10. useContext
+11. Redux Toolkit / Zustand
+
+---
+
+### Tier 2 (Very Common)
+
+12. Custom Hooks
+13. useRef
+14. Debouncing
+15. Protected Routes
+16. React.memo
+17. useMemo
+18. useCallback
+19. File Upload
+20. Error Boundaries
+
+---
+
+### Tier 3 (Mostly Mid-Level)
+
+21. useReducer
+22. AbortController
+23. Race Conditions
+24. React Query
+25. Suspense
+26. Portals
+27. Compound Components
+28. useTransition
+29. useDeferredValue
+30. Context Optimization
 
 ---
