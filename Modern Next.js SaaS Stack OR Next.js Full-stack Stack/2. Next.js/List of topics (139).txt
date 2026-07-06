@@ -19,6 +19,28 @@
 16. Public Folder
 17. Environment Variables
 
+Project 1 — Personal Portfolio Website
+
+Features:
+
+Home
+About
+Projects
+Contact
+Metadata
+Static Assets
+Layouts
+Nested Layouts
+Custom 404
+
+Skills Used:
+
+App Router
+Layouts
+Metadata
+File-Based Routing
+Static Assets
+
 ---
 
 # PHASE 2 — Routing System
@@ -36,6 +58,25 @@
 28. useSearchParams
 29. Redirects
 
+Project 2 — Multi-Page Documentation Website
+
+Features:
+
+Dynamic Routes
+Nested Routes
+Search Params
+Category Pages
+Article Pages
+Breadcrumb Navigation
+
+Skills Used:
+
+Dynamic Routes
+Catch-All Routes
+Route Groups
+useRouter
+usePathname
+Redirects
 ---
 
 # PHASE 3 — Server & Client Components
@@ -51,6 +92,28 @@
 38. Passing Data Between Server and Client
 39. Common RSC Mistakes
 
+Project 3 — GitHub User Explorer
+
+Use:
+
+GitHub API
+
+Features:
+
+Search User
+User Profile
+Repositories
+Followers
+Following
+
+Skills Used:
+
+RSC
+Client Components
+Server Components
+Data Fetching
+Component Boundaries
+
 ---
 
 # PHASE 4 — Rendering System
@@ -65,6 +128,26 @@
 47. Streaming
 48. Hydration
 49. Choosing Rendering Strategies
+
+Project 4 — Developer Blog Platform
+
+Features:
+
+Blog List
+Blog Detail
+ISR
+Metadata
+SEO
+
+Practice:
+
+SSR
+SSG
+ISR
+Streaming
+Hydration
+
+This project teaches when to use each rendering strategy.
 
 ---
 
@@ -82,7 +165,36 @@
 59. Error Handling in Fetches
 60. Loading States
 
----
+Project 5 — TMDB Movie Application
+
+You already have TMDB experience, so rebuild it in Next.js.
+
+Features:
+
+Trending Movies
+Search
+Categories
+Movie Details
+Suspense
+Loading UI
+Error UI
+
+Skills Used:
+
+Async Components
+Data Fetching
+Revalidation
+Caching
+Suspense
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Start after decent understanding of :
+
+PostgreSQL
+Prisma
+Zod
+React Hook Form
+Auth.js
 
 # PHASE 6 — Next.js Caching - Complete this and move to PostgreSQL -> Prisma -> Zod -> React Hook Form -> Auth.js
 
@@ -98,9 +210,28 @@
 70. no-store
 71. Cache Debugging
 
--------------------------------------------------------------------------------------------------------------------------------------
-Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Auth.js
+Project 6 — Full Authentication System
 
+Features:
+
+Register
+Login
+Logout
+Forgot Password
+Protected Routes
+Role Based Access
+
+Skills:
+
+PostgreSQL
+Prisma
+Auth.js
+Zod
+RHF
+
+This becomes your reusable auth boilerplate.
+
+---
 
 # PHASE 7 — Server Actions
 
@@ -115,6 +246,23 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 80. Validation Patterns
 81. Error Handling in Actions
 82. Redirects After Actions
+
+Project 7 — Task Management Application
+
+Features:
+
+Create Task
+Update Task
+Delete Task
+Complete Task
+Optimistic Updates
+
+Skills:
+
+Server Actions
+CRUD
+Validation
+Error Handling
 
 ---
 
@@ -134,6 +282,24 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 94. API Validation Patterns
 95. API Error Handling
 
+
+
+Project 8 — Notes API Platform
+
+Features:
+
+REST API
+CRUD Operations
+Validation
+Authentication
+Pagination
+
+Build:
+
+Frontend + API
+
+This teaches Route Handlers deeply.
+
 ---
 
 # PHASE 9 — Middleware
@@ -144,6 +310,26 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 99. Authentication Middleware
 100. Redirect Logic
 101. Middleware Performance
+
+Project 9 — Admin Dashboard
+
+Roles:
+
+Admin
+User
+
+Features:
+
+Route Protection
+Middleware
+Authentication
+Authorization
+
+Skills:
+
+Middleware
+Redirects
+Protected Routes
 
 ---
 
@@ -161,6 +347,18 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 111. Core Web Vitals
 112. Lighthouse Optimization
 
+Upgrade Project 9
+
+Optimize:
+
+Dynamic Imports
+Lazy Loading
+Bundle Analysis
+Image Optimization
+Lighthouse 90+
+
+No new project needed.
+
 ---
 
 # PHASE 11 — SEO
@@ -175,6 +373,18 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 120. Structured Data
 121. JSON-LD
 
+Project 10 — SEO Optimized Blog
+
+Features:
+
+Dynamic Metadata
+Open Graph
+JSON-LD
+Sitemap
+Robots
+
+This is excellent freelance portfolio material.
+
 ---
 
 # PHASE 12 — Error Handling
@@ -184,6 +394,16 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 124. not-found.js
 125. Error Boundaries
 126. API Error Handling
+
+Upgrade Existing Projects
+
+Add:
+
+error.js
+global-error.js
+not-found.js
+
+No separate project.
 
 ---
 
@@ -197,6 +417,17 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 132. Authorization Security
 133. Rate Limiting
 
+Upgrade Existing Projects
+
+Implement:
+
+Secure Cookies
+CSRF Protection
+Authorization
+Rate Limiting
+
+No separate project.
+
 ---
 
 # PHASE 14 — Deployment
@@ -206,11 +437,39 @@ Start after decent understanding of PostgreSQL, Prisma, Zod, React Hook Form, Au
 136. Environment Management
 137. Deployment on [Vercel](https://vercel.com?utm_source=chatgpt.com)
 
+Deploy Everything
+
+Deploy:
+
+Portfolio
+Blog
+Auth System
+Task Manager
+Admin Dashboard
+
+Using:
+
+Vercel
+
 ---
 
 # PHASE 15 — Advanced Routing & App Router Patterns
 
 138. Parallel Routes
 139. Intercepting Routes
+
+Project 11 — SaaS Dashboard Clone
+
+Examples:
+
+Linear
+Notion
+Trello
+
+Features:
+
+Parallel Routes
+Intercepting Routes
+Complex Navigation
 
 ---
