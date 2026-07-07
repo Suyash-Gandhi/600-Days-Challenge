@@ -1,0 +1,212 @@
+## Next.js vs React
+
+A lot of beginners think Next.js and React are competitors, but they're not.
+
+ React = a JavaScript library for building user interfaces.
+ Next.js = a framework built on top of React that adds features needed for production applications.
+
+Think of it like this:
+
+React = Engine 🚗
+Next.js = Complete Car 🚘
+
+---
+
+### React
+
+With React, you build the UI yourself and choose additional tools for:
+
+ Routing (React Router)
+ SEO
+ Authentication
+ API calls
+ Image optimization
+ Server-side rendering
+ Deployment configuration
+
+A typical React app structure:
+
+```text
+React
+├── React Router
+├── Redux/Context
+├── Axios
+├── Authentication
+├── SEO setup
+└── Deployment setup
+```
+
+---
+
+### Next.js
+
+Next.js already provides many of these features:
+
+ File-based routing
+ Server-Side Rendering (SSR)
+ Static Site Generation (SSG)
+ API routes
+ Image optimization
+ SEO support
+ Middleware
+ Server Components
+ Better performance by default
+
+A typical Next.js app:
+
+```text
+Next.js
+├── Routing (built-in)
+├── SSR (built-in)
+├── SEO (built-in)
+├── API Routes (built-in)
+├── Image Optimization (built-in)
+└── Deployment Optimized
+```
+
+---
+
+## Example Routing
+
+### React
+
+Install React Router:
+
+```bash
+npm install react-router-dom
+```
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+---
+
+### Next.js
+
+Create files:
+
+```text
+app/
+├── page.js
+└── about/
+    └── page.js
+```
+
+That's it.
+
+Next.js automatically creates:
+
+```text
+/        -> Home Page
+/about   -> About Page
+```
+
+No router setup needed.
+
+---
+
+## SEO Comparison
+
+### React
+
+React mostly renders in the browser.
+
+Search engines may not immediately see content.
+
+Example:
+
+```html
+<div id="root"></div>
+```
+
+Browser downloads JS → then renders content.
+
+---
+
+### Next.js
+
+Can render pages on the server before sending them.
+
+Example:
+
+```html
+<h1>Best Laptop Reviews</h1>
+<p>Content already available</p>
+```
+
+This is much better for:
+
+ Google ranking
+ Blogs
+ E-commerce
+ Business websites
+
+---
+
+## Backend Support
+
+### React
+
+Needs a separate backend:
+
+```text
+React Frontend
+      ↓
+Node.js/Express Backend
+      ↓
+MongoDB
+```
+
+---
+
+### Next.js
+
+Can include backend code inside the same project:
+
+```text
+Next.js
+├── Frontend
+├── API Routes
+└── Database
+```
+
+Example:
+
+```js
+// app/api/users/route.js
+
+export async function GET() {
+  return Response.json({
+    name: "Suyash"
+  });
+}
+```
+
+---
+
+## Performance
+
+| Feature                | React            | Next.js   |
+| ---------------------- | ---------------- | --------- |
+| Client Side Rendering  | ✅                | ✅         |
+| Server Side Rendering  | ❌                | ✅         |
+| Static Site Generation | ❌                | ✅         |
+| SEO                    | Average          | Excellent |
+| Routing                | External Library | Built-in  |
+| API Routes             | ❌                | ✅         |
+| Image Optimization     | ❌                | ✅         |
+| Performance            | Good             | Better    |
+
+---

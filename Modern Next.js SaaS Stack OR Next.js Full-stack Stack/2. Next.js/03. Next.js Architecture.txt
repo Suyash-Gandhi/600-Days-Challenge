@@ -1,0 +1,293 @@
+### 3. Next.js Architecture
+
+Next.js follows a structured architecture that combines frontend and backend development in a single project. Instead of creating separate React frontend and Node.js backend applications, Next.js allows both to exist together.
+
+## High-Level Architecture
+
+```text
+User Browser
+      │
+      ▼
+ ┌───────────┐
+ │ Next.js   │
+ │ Frontend  │
+ └───────────┘
+      │
+      ▼
+ ┌───────────┐
+ │ API Routes│
+ │ (Backend) │
+ └───────────┘
+      │
+      ▼
+ ┌───────────┐
+ │ Database  │
+ │ MongoDB   │
+ └───────────┘
+```
+
+---
+
+## Main Components
+
+### 1. App Router (`app/`)
+
+The App Router is the modern routing system in Next.js.
+
+```text
+app/
+│
+├── page.js
+├── about/
+│   └── page.js
+├── contact/
+│   └── page.js
+```
+
+Routes generated:
+
+```text
+/           → page.js
+/about      → about/page.js
+/contact    → contact/page.js
+```
+
+---
+
+### 2. Components
+
+Reusable UI blocks.
+
+```jsx
+export default function Button() {
+  return <button>Click Me</button>;
+}
+```
+
+Stored inside:
+
+```text
+components/
+├── Navbar.jsx
+├── Footer.jsx
+└── Button.jsx
+```
+
+---
+
+### 3. Layouts
+
+Layouts are shared across pages.
+
+```jsx
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+Useful for:
+
+ Navbar
+ Sidebar
+ Footer
+ Dashboard Layout
+
+---
+
+### 4. API Routes (Backend)
+
+Next.js can create backend endpoints without Express.
+
+```text
+app/
+└── api/
+    └── users/
+        └── route.js
+```
+
+```js
+export async function GET() {
+  return Response.json({
+    message: "Users fetched"
+  });
+}
+```
+
+API URL:
+
+```text
+/api/users
+```
+
+---
+
+### 5. Server Components
+
+Default in Next.js 13+.
+
+Runs on the server.
+
+```jsx
+async function Home() {
+  const users = await fetch("API_URL");
+
+  return <div>{users.length}</div>;
+}
+```
+
+Benefits:
+
+ Faster loading
+ Better SEO
+ Smaller JavaScript bundle
+
+---
+
+### 6. Client Components
+
+Used when browser interaction is needed.
+
+```jsx
+"use client";
+
+import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      {count}
+    </button>
+  );
+}
+```
+
+Used for:
+
+ Forms
+ Buttons
+ State Management
+ Event Handling
+
+---
+
+### 7. Database Layer
+
+Next.js connects directly to databases.
+
+Example:
+
+```js
+import mongoose from "mongoose";
+
+await mongoose.connect(process.env.MONGODB_URI);
+```
+
+Popular databases:
+
+ MongoDB
+ PostgreSQL
+ MySQL
+ SQLite
+
+---
+
+### 8. Middleware
+
+Runs before a request reaches a page.
+
+```js
+import { NextResponse } from "next/server";
+
+export function middleware(request) {
+  return NextResponse.next();
+}
+```
+
+Uses:
+
+ Authentication
+ Authorization
+ Redirects
+ Rate Limiting
+
+---
+
+### Typical Folder Structure
+
+```text
+project/
+│
+├── app/
+│   ├── page.js
+│   ├── layout.js
+│   ├── api/
+│
+├── components/
+│
+├── lib/
+│   ├── db.js
+│
+├── models/
+│   ├── User.js
+│
+├── public/
+│
+├── middleware.js
+│
+└── .env
+```
+
+---
+
+## Architecture of a MERN Chat App vs Next.js Chat App
+
+### MERN
+
+```text
+React Frontend
+      │
+      ▼
+Express Backend
+      │
+      ▼
+MongoDB
+```
+
+Requires:
+
+ Separate frontend
+ Separate backend
+ CORS configuration
+ Two deployments
+
+---
+
+### Next.js
+
+```text
+Next.js Frontend
+       │
+       ▼
+Next.js API Routes
+       │
+       ▼
+MongoDB
+```
+
+Requires:
+
+ One codebase
+ One deployment
+ No CORS issues (usually)
+ Easier full-stack development
+
+---
