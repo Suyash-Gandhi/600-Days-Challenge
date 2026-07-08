@@ -1,0 +1,297 @@
+# 5. Next.js Project Structure
+
+A typical Next.js project (using the App Router) looks like this:
+
+```plaintext
+my-app/
+│
+├── app/
+│   ├── page.js
+│   ├── layout.js
+│   ├── loading.js
+│   ├── error.js
+│   ├── not-found.js
+│   │
+│   ├── about/
+│   │   └── page.js
+│   │
+│   └── dashboard/
+│       ├── page.js
+│       ├── layout.js
+│       └── settings/
+│           └── page.js
+│
+├── components/
+│   ├── Navbar.jsx
+│   ├── Footer.jsx
+│   └── Button.jsx
+│
+├── lib/
+│   ├── db.js
+│   └── auth.js
+│
+├── public/
+│   ├── logo.png
+│   └── images/
+│
+├── styles/
+│   └── globals.css
+│
+├── .env.local
+├── next.config.js
+├── package.json
+└── jsconfig.json
+```
+
+---
+
+## Important Folders
+
+### 1. `app/`
+
+The most important folder in modern Next.js.
+
+Contains:
+
+ Pages
+ Layouts
+ Routes
+ Loading UI
+ Error UI
+
+Example:
+
+```plaintext
+app/
+├── page.js
+├── about/
+│   └── page.js
+```
+
+Creates:
+
+```plaintext
+/          → page.js
+/about     → about/page.js
+```
+
+---
+
+### 2. `components/`
+
+Reusable UI components.
+
+Example:
+
+```jsx
+export default function Button() {
+  return <button>Click Me</button>;
+}
+```
+
+Usage:
+
+```jsx
+import Button from "@/components/Button";
+```
+
+---
+
+### 3. `public/`
+
+Stores static assets.
+
+```plaintext
+public/
+├── logo.png
+├── avatar.jpg
+```
+
+Access directly:
+
+```jsx
+<img src="/logo.png" />
+```
+
+URL:
+
+```plaintext
+http://localhost:3000/logo.png
+```
+
+---
+
+### 4. `lib/`
+
+Common utilities.
+
+Examples:
+
+```plaintext
+lib/
+├── db.js
+├── auth.js
+├── api.js
+```
+
+Used for:
+
+ Database connections
+ Authentication helpers
+ API functions
+ Utility methods
+
+---
+
+### 5. `styles/`
+
+Global CSS files.
+
+```plaintext
+styles/
+└── globals.css
+```
+
+Imported in:
+
+```jsx
+app/layout.js
+```
+
+---
+
+## Special Files in App Router
+
+### `page.js`
+
+Represents a route.
+
+```jsx
+export default function Home() {
+  return <h1>Home Page</h1>;
+}
+```
+
+---
+
+### `layout.js`
+
+Shared UI.
+
+```jsx
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+Used for:
+
+ Navbar
+ Footer
+ Sidebar
+
+---
+
+### `loading.js`
+
+Loading state.
+
+```jsx
+export default function Loading() {
+  return <h1>Loading...</h1>;
+}
+```
+
+Shows automatically while data loads.
+
+---
+
+### `error.js`
+
+Handles route errors.
+
+```jsx
+"use client";
+
+export default function Error() {
+  return <h1>Something went wrong</h1>;
+}
+```
+
+---
+
+### `not-found.js`
+
+404 page.
+
+```jsx
+export default function NotFound() {
+  return <h1>Page Not Found</h1>;
+}
+```
+
+---
+
+## Route Example
+
+```plaintext
+app/
+├── page.js
+├── about/
+│   └── page.js
+├── blog/
+│   ├── page.js
+│   └── [id]/
+│       └── page.js
+```
+
+Routes:
+
+```plaintext
+/              → Home
+/about         → About
+/blog          → Blog
+/blog/123      → Dynamic Route
+/blog/abc      → Dynamic Route
+```
+
+---
+
+## Project Structure for a MERN Developer
+
+```plaintext
+app/
+├── page.js
+├── login/
+│   └── page.js
+├── register/
+│   └── page.js
+├── dashboard/
+│   └── page.js
+├── api/
+│   ├── auth/
+│   │   └── route.js
+│   └── users/
+│       └── route.js
+
+components/
+├── Navbar.jsx
+├── Sidebar.jsx
+├── UserCard.jsx
+
+lib/
+├── db.js
+├── auth.js
+
+models/
+├── User.js
+
+public/
+styles/
+```
+
+This is the structure you'll see in most production Next.js applications, especially when building full-stack apps with MongoDB, authentication, payments, dashboards, and SaaS products.
