@@ -1,0 +1,231 @@
+
+# 1. Layout & Display
+
+1. `block`
+2. `inline`
+3. `inline-block`
+4. `hidden`
+5. `flex`
+6. `grid`
+7. `contents`
+8. `container`
+
+---
+
+# 2. Flexbox (Most Important)
+
+9. `flex-row`
+10. `flex-col`
+11. `flex-wrap`
+12. `items-start`
+13. `items-center`
+14. `items-end`
+15. `justify-start`
+16. `justify-center`
+17. `justify-between`
+18. `justify-around`
+19. `justify-evenly`
+20. `gap-`
+
+Example:
+
+```
+<div class="flex items-center justify-between gap-4">
+```
+
+---
+
+# 3. Grid
+
+21. `grid-cols-1`
+22. `grid-cols-2`
+23. `grid-cols-3`
+24. `grid-cols-4`
+25. `col-span-`
+26. `row-span-`
+
+Example:
+
+```
+<div class="grid grid-cols-3 gap-4">
+```
+
+---
+
+# 4. Spacing (Used Everywhere)
+
+27. `p-`
+28. `px-`
+29. `py-`
+30. `m-`
+31. `mx-`
+32. `my-`
+33. `mt-`
+34. `mb-`
+35. `ml-`
+36. `mr-`
+
+Common values:
+
+```txt
+0 1 2 3 4 6 8 10 12 16
+```
+
+---
+
+# 5. Width & Height
+
+37. `w-full`
+38. `w-screen`
+39. `w-fit`
+40. `h-full`
+41. `h-screen`
+42. `min-h-screen`
+
+---
+
+# 6. Typography
+
+43. `text-sm`
+44. `text-base`
+45. `text-lg`
+46. `text-xl`
+47. `text-2xl`
+48. `font-medium`
+49. `font-semibold`
+50. `font-bold`
+51. `text-center`
+52. `leading-relaxed`
+
+---
+
+# 7. Colors
+
+53. `bg-`
+54. `text-`
+55. `border-`
+
+Most common colors:
+
+```txt
+white
+black
+gray
+blue
+red
+green
+yellow
+```
+
+---
+
+# 8. Borders & Radius
+
+56. `border`
+57. `rounded`
+58. `rounded-lg`
+59. `rounded-xl`
+60. `rounded-full`
+
+---
+
+# These Concepts Matter More Than Classes
+
+After learning the 60 items above, master these concepts:
+
+### Responsive Design
+
+```
+sm:
+md:
+lg:
+xl:
+2xl:
+```
+
+Example:
+
+```
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+```
+
+---
+
+### Hover States
+
+```
+hover:bg-blue-600
+hover:scale-105
+hover:text-white
+```
+
+---
+
+### Transitions
+
+```
+transition
+duration-300
+ease-in-out
+```
+
+---
+
+### Positioning
+
+```
+relative
+absolute
+fixed
+sticky
+top-0
+left-0
+z-10
+```
+
+---
+
+### Overflow
+
+```
+overflow-hidden
+overflow-auto
+```
+
+---
+
+### Object Fit (Images)
+
+```
+object-cover
+object-contain
+```
+
+---
+
+### Dark Mode
+
+```
+dark:bg-black
+dark:text-white
+```
+
+---
+
+# Learning Order
+
+Follow this sequence:
+
+1. Layout & Display
+2. Flexbox
+3. Spacing
+4. Width & Height
+5. Typography
+6. Colors
+7. Borders & Radius
+8. Grid
+9. Responsive Design
+10. Hover + Transition
+11. Positioning
+12. Dark Mode
+
