@@ -1,0 +1,265 @@
+
+## A. Foundation (Must Know)
+
+1. What Next.js Is
+2. Next.js vs React
+3. App Router
+4. Project Structure
+5. File-Based Routing
+6. Page Components
+7. Layouts
+8. Nested Layouts
+9. Metadata
+10. Environment Variables
+
+---
+
+## B. Routing (Used Daily)
+
+11. Static Routes
+12. Dynamic Routes
+13. Nested Routes
+14. Link Component
+15. Programmatic Navigation
+16. useRouter
+17. usePathname
+18. useSearchParams
+19. Route Groups
+20. Redirects
+
+---
+
+## C. Server & Client Components (Most Important Next.js Concept)
+
+21. React Server Components
+22. Client Components
+23. `"use client"`
+24. Server-First Architecture
+25. Component Boundaries
+26. Server Component Composition
+27. Passing Data Between Server & Client
+28. Common RSC Mistakes
+
+---
+
+## D. Rendering (Interview Favorite)
+
+29. SSR
+30. SSG
+31. ISR
+32. CSR
+33. Static Rendering
+34. Dynamic Rendering
+35. Hydration
+36. Streaming
+
+You should be able to answer:
+
+> "When should I use SSR vs SSG vs ISR?"
+
+without Googling.
+
+--- 
+
+## E. Data Fetching (Used Everywhere)
+
+37. Fetch API
+38. Async Server Components
+39. Data Fetching in Server Components
+40. Data Fetching in Client Components
+41. Data Caching
+42. Revalidation
+43. Parallel Data Fetching
+44. Suspense
+45. Loading States
+46. Error Handling
+
+--- LEARN ZOD AND REACT HOOK FROMS BEFORE CONTINUEING ---
+
+## F. Server Actions (Modern Next.js)
+
+47. Creating Server Actions
+48. Form Submissions
+49. Data Mutations
+50. CRUD Operations
+51. useActionState
+52. useFormStatus
+53. Validation Patterns
+54. Redirects After Actions
+
+--- LEARN POSTGRESQL AND PRISMA BEFORE CONTINUEING
+
+## G. APIs & Backend
+
+55. Route Handlers
+56. GET Requests
+57. POST Requests
+58. Cookies
+59. API Validation
+60. API Error Handling
+
+---
+
+# Topics You Should Know But Not Obsess Over
+
+These are useful but not daily:
+
+ Catch-All Routes
+ Request Memoization
+ Cache Tags
+ Router Cache
+ force-cache
+ no-store
+ PATCH Requests
+ Parallel Routes
+ Intercepting Routes
+ global-error.js
+
+Learn them later.
+
+---
+
+# Next.js After the Core 60 Topics
+
+## PHASE 1 — Foundation Extras
+
+### Learn
+
+1. Loading UI (`loading.js`)
+2. Error UI (`error.js`)
+3. Not Found UI (`not-found.js`)
+4. Static Assets
+
+> You already know App Router, Layouts, Routing, Metadata, etc.
+
+---
+
+## PHASE 2 — Authentication
+
+### Learn
+
+5. Auth.js
+6. Session Management
+7. Protected Routes
+8. Role-Based Access
+9. Secure Authentication Patterns
+
+---
+
+## PHASE 3 — Middleware
+
+### Learn
+
+10. Middleware Fundamentals
+11. Route Protection
+12. Authentication Middleware
+13. Redirect Logic
+
+---
+
+## PHASE 4 — Performance Optimization
+
+### Learn
+
+14. Dynamic Imports
+15. Lazy Loading
+16. Next.js Image Component
+17. Image Optimization
+18. Font Optimization
+19. Core Web Vitals
+20. Lighthouse Optimization
+
+### Learn Later
+
+ Bundle Analysis
+ Code Splitting
+
+---
+
+## PHASE 5 — SEO
+
+### Learn
+
+21. generateMetadata()
+22. Dynamic Metadata
+23. Open Graph Tags
+24. Sitemap Generation
+25. Robots.txt
+26. JSON-LD
+
+---
+
+## PHASE 6 — Error Handling
+
+### Learn
+
+27. Error Boundaries
+
+> You already learned `error.js` and `not-found.js` above.
+
+---
+
+## PHASE 7 — Security
+
+### Learn
+
+28. XSS Prevention
+29. Secure Cookies
+30. HTTP-Only Cookies
+31. Authorization Security
+32. Rate Limiting
+
+### Learn Later
+
+ CSRF Protection
+
+---
+
+## PHASE 8 — Deployment
+
+### Learn
+
+33. Production Builds
+34. Environment Variables in Production
+35. Deployment on 
+
+----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+# Optional Advanced Topics
+
+Only after building several projects.
+
+### Advanced Caching
+
+36. Request Cache
+37. Data Cache
+38. Full Route Cache
+39. Router Cache
+40. revalidatePath()
+41. revalidateTag()
+42. Cache Tags
+43. force-cache
+44. no-store
+45. Cache Debugging
+
+### Advanced Routing
+
+46. Catch-All Routes
+47. Parallel Routes
+48. Intercepting Routes
+
+### Advanced Rendering
+
+49. Partial Prerendering (PPR)
+
+### API Extras
+
+50. PATCH Requests
+51. Headers
+
+### Rare Topics
+
+52. global-error.js
+
+---
