@@ -1,0 +1,143 @@
+
+# NestJS Roadmap (Beginner → Senior)
+
+## 1. Fundamentals
+
+1. What is NestJS?
+2. NestJS vs Express.js
+3. Nest CLI & Project Structure
+4. Dependency Injection (DI) & IoC
+5. Modules (Feature, Shared, Global, Dynamic)
+6. Nest Application Lifecycle
+7. Request Lifecycle
+
+---
+
+## 2. Controllers & Routing
+
+8. Controllers
+9. Routing
+10. Route Parameters
+11. Query Parameters
+12. Request Body
+13. Headers & Cookies
+14. HTTP Methods
+15. Response Handling & Status Codes
+16. API Versioning
+17. Request Transformation
+18. Request Sanitization
+
+---
+
+## 3. Providers & Services
+
+19. Providers & Services
+20. Provider Scopes
+21. Custom Providers
+22. Factory Providers
+23. Async Providers
+24. Request Scope
+25. Circular Dependencies
+26. ModuleRef
+
+---
+
+## 4. Validation
+
+27. DTOs
+28. ValidationPipe
+29. Pipes & Custom Pipes
+30. `class-validator`
+31. `class-transformer`
+
+---
+
+## 5. Middleware
+
+32. Middleware
+33. Functional Middleware
+34. Class Middleware
+35. Global vs Route Middleware
+
+---
+
+## 6. Exception Handling
+
+36. HttpException
+37. Exception Filters
+38. Global Exception Filters
+39. ArgumentsHost
+
+---
+
+## 7. Guards & Authorization
+
+40. Guards
+41. Global Guards
+42. Authentication Guards
+43. Authorization Guards
+44. ExecutionContext
+45. Reflector & Custom Metadata
+46. RBAC & Permission-Based Authorization
+
+---
+
+## 8. Interceptors
+
+47. Interceptors
+48. Global Interceptors
+49. Serialization & Response Mapping
+
+---
+
+## 9. Decorators
+
+50. Built-in Decorators
+51. Custom Decorators
+52. Parameter / Method / Class Decorators
+53. Reflect Metadata API
+
+---
+
+## 10. Configuration
+
+54. ConfigModule & ConfigService
+55. Environment Variables
+
+---
+
+## 11. Authentication
+
+56. Passport Integration
+57. Authentication Flow (Local, JWT, Refresh Tokens)
+
+---
+
+## 12. Architecture
+
+58. Modular Architecture
+59. Feature-Based Folder Structure
+
+-------------------------------------------------------------------------------
+
+## 13. Advanced NestJS
+
+60. Lifecycle Hooks
+61. OnModuleInit
+62. OnApplicationBootstrap
+63. OnModuleDestroy
+64. OnApplicationShutdown
+65. Injection Tokens & Forward References
+66. Discovery Service & Nest Container
+
+---
+
+## 14. Testing
+
+67. TestingModule
+68. Unit Testing
+69. Integration Testing
+70. End-to-End Testing
+
+---
+
