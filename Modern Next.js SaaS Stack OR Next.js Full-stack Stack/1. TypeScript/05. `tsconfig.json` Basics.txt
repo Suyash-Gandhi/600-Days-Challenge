@@ -1,0 +1,352 @@
+# 5. `tsconfig.json` Basics
+
+`tsconfig.json` is the configuration file for a TypeScript project.
+
+It tells the TypeScript compiler (`tsc`):
+
+> “Here is how I want you to check and compile my TypeScript code.”
+
+---
+
+## 1. Creating `tsconfig.json`
+
+Instead of creating it manually:
+
+```bash
+npx tsc --init
+```
+
+This generates:
+
+```text
+project/
+├── src/
+│   └── index.ts
+├── tsconfig.json
+└── package.json
+```
+
+Then running:
+
+```bash
+npx tsc
+```
+
+makes TypeScript read the configuration from `tsconfig.json`.
+
+---
+
+## 2. Basic Structure
+
+A simple `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["src"]
+}
+```
+
+The most important part is:
+
+```json
+"compilerOptions": {}
+```
+
+This controls how TypeScript checks and compiles your code.
+
+---
+
+# 3. Important Options
+
+### `target`
+
+```json
+"target": "ES2022"
+```
+
+Determines which JavaScript version TypeScript generates.
+
+For example:
+
+```ts
+const greet = (name: string) => {
+  console.log(`Hello ${name}`);
+};
+```
+
+Depending on your `target`, TypeScript may preserve modern JS syntax or convert newer features to older-compatible JavaScript.
+
+For modern projects, you'll commonly encounter:
+
+```json
+"target": "ES2020"
+```
+
+or:
+
+```json
+"target": "ES2022"
+```
+
+---
+
+### `module`
+
+```json
+"module": "ESNext"
+```
+
+Controls the JavaScript module system.
+
+You write:
+
+```ts
+export const add = (a: number, b: number) => a + b;
+```
+
+and:
+
+```ts
+import { add } from "./math";
+```
+
+Common values you'll encounter include:
+
+```json
+"module": "ESNext"
+```
+
+```json
+"module": "NodeNext"
+```
+
+```json
+"module": "CommonJS"
+```
+
+You don't need to memorize the differences yet. Just understand that this option controls how modules/imports are handled.
+
+---
+
+### `strict`
+
+```json
+"strict": true
+```
+
+This is one of the most important settings.
+
+It enables TypeScript's strict type checking.
+
+For example:
+
+```ts
+function greet(name: string) {
+  console.log(name.toUpperCase());
+}
+
+greet(null);
+```
+
+With strict checking, TypeScript catches the problem:
+
+```text
+Argument of type 'null' is not assignable to parameter of type 'string'.
+```
+
+For modern TypeScript projects, generally keep:
+
+```json
+"strict": true
+```
+
+---
+
+### `rootDir`
+
+```json
+"rootDir": "./src"
+```
+
+Tells TypeScript where your source code lives.
+
+```text
+project/
+├── src/        ← TypeScript source
+│   ├── app.ts
+│   └── user.ts
+└── tsconfig.json
+```
+
+---
+
+### `outDir`
+
+```json
+"outDir": "./dist"
+```
+
+Tells TypeScript where to put generated JavaScript.
+
+Before:
+
+```text
+src/
+├── app.ts
+└── user.ts
+```
+
+After:
+
+```bash
+npx tsc
+```
+
+you might get:
+
+```text
+src/
+├── app.ts
+└── user.ts
+
+dist/
+├── app.js
+└── user.js
+```
+
+So remember:
+
+```text
+rootDir → TypeScript source
+outDir  → compiled JavaScript
+```
+
+---
+
+### `include`
+
+```json
+"include": ["src"]
+```
+
+Tells TypeScript which files should be part of the project.
+
+For example:
+
+```json
+"include": ["src//.ts", "src//.tsx"]
+```
+
+means TypeScript should include `.ts` and `.tsx` files inside `src`.
+
+---
+
+### `exclude`
+
+You can also tell TypeScript what to ignore:
+
+```json
+"exclude": ["node_modules", "dist"]
+```
+
+For example:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true
+  },
+
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+---
+
+## 4. `noEmit`
+
+Another useful option:
+
+```json
+"noEmit": true
+```
+
+It means:
+
+> Check my TypeScript for errors, but don't generate JavaScript files.
+
+This is common when another tool handles the actual build process.
+
+```text
+.ts files
+   ↓
+TypeScript
+   ↓
+Type checking only
+   ↓
+No .js output
+```
+
+You'll encounter this frequently in modern frameworks.
+
+---
+
+# 5. A Good Basic Configuration
+
+For learning plain TypeScript, something like this is enough:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+Don't try to memorize every `tsconfig` option. There are many of them.
+
+For now, remember these:
+
+| Option    | Meaning                          |
+| --------- | -------------------------------- |
+| `target`  | JavaScript version to generate   |
+| `module`  | Module system/module behavior    |
+| `strict`  | Enables strict type checking     |
+| `rootDir` | Where source code is             |
+| `outDir`  | Where compiled code goes         |
+| `include` | Files/folders to include         |
+| `exclude` | Files/folders to ignore          |
+| `noEmit`  | Type-check without generating JS |
+
+### Mental model
+
+```text
+             tsconfig.json
+                  │
+                  ▼
+             TypeScript tsc
+                  │
+       ┌──────────┼──────────┐
+       ▼          ▼          ▼
+   What files   How strict   How to
+   to check     checking     compile
+       │          │          │
+    include     strict     target/module
+    exclude                 outDir
+```
+
+For your TypeScript fundamentals, this is enough `tsconfig.json` knowledge for now. You can learn advanced options such as `lib`, `types`, `moduleResolution`, `paths`, `esModuleInterop`, and project references when you actually encounter them in Node/NestJS/React projects.

@@ -1,0 +1,191 @@
+# 7. Type Inference in TypeScript
+
+Type inference means TypeScript can automatically determine the type of a variable from the value you assign to it.
+
+So you often don't need to explicitly write the type.
+
+### Example
+
+```ts
+let name = "Suyash";
+let age = 22;
+let isDeveloper = true;
+```
+
+TypeScript automatically understands this as roughly:
+
+```ts
+let name: string = "Suyash";
+let age: number = 22;
+let isDeveloper: boolean = true;
+```
+
+So these are effectively equivalent:
+
+```ts
+// Explicit annotation
+let username: string = "Suyash";
+
+// Type inference
+let username = "Suyash";
+```
+
+In most simple cases, prefer inference because it keeps the code cleaner.
+
+## TypeScript still enforces the inferred type
+
+Once TypeScript infers a type, you can't later assign an incompatible value:
+
+```ts
+let age = 22; // inferred as number
+
+age = 25;     // ✅
+age = "25";   // ❌ Type 'string' is not assignable to type 'number'
+```
+
+Similarly:
+
+```ts
+let loggedIn = true;
+
+loggedIn = false; // ✅
+loggedIn = "yes"; // ❌
+```
+
+## Inference with arrays
+
+```ts
+let numbers = [10, 20, 30];
+```
+
+TypeScript infers:
+
+```ts
+number[]
+```
+
+Therefore:
+
+```ts
+numbers.push(40);      // ✅
+numbers.push("hello"); // ❌
+```
+
+For strings:
+
+```ts
+let languages = ["JavaScript", "TypeScript"];
+
+languages.push("Go"); // ✅
+languages.push(10);   // ❌
+```
+
+## Inference with objects
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 22,
+  active: true
+};
+```
+
+TypeScript infers approximately:
+
+```ts
+{
+  name: string;
+  age: number;
+  active: boolean;
+}
+```
+
+Therefore:
+
+```ts
+user.age = 23;       // ✅
+user.age = "twenty"; // ❌
+```
+
+## Inference with functions
+
+TypeScript can also infer types from context:
+
+```ts
+const numbers = [1, 2, 3];
+
+numbers.map((num) => num  2);
+```
+
+You didn't write:
+
+```ts
+(num: number)
+```
+
+TypeScript already knows `numbers` contains numbers, so it infers that `num` is a `number`.
+
+This is called contextual typing.
+
+## `const` inference
+
+There's an important difference between `let` and `const`.
+
+```ts
+let role = "admin";
+```
+
+TypeScript generally infers:
+
+```ts
+string
+```
+
+But:
+
+```ts
+const role = "admin";
+```
+
+TypeScript can infer the more specific literal type:
+
+```ts
+"admin"
+```
+
+This makes sense because a `const` variable cannot be reassigned.
+
+## When should you use inference?
+
+Use inference when the type is obvious:
+
+```ts
+const name = "Suyash";
+const age = 22;
+const active = true;
+const scores = [90, 85, 95];
+```
+
+Writing this is usually unnecessary:
+
+```ts
+const name: string = "Suyash";
+const age: number = 22;
+const active: boolean = true;
+```
+
+Explicit annotations become more useful when the type isn't obvious, especially with function parameters, APIs, object contracts, and complex data structures.
+
+### Easy rule to remember
+
+> If TypeScript already knows the type, don't repeat yourself.
+
+```ts
+let price = 500;
+// TypeScript: "That's a number. I got it."
+```
+
+Type annotation: You tell TypeScript the type.
+Type inference: TypeScript figures out the type itself.
+
+That's essentially everything you need about type inference before moving on to primitive types and arrays.

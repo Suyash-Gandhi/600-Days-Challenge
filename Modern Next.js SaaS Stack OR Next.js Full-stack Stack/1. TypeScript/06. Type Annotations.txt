@@ -1,0 +1,273 @@
+# 6. Type Annotations in TypeScript
+
+A type annotation means explicitly telling TypeScript what type a variable, parameter, or function result should have.
+
+The basic syntax is:
+
+```ts
+let variableName: type = value;
+```
+
+For example:
+
+```ts
+let username: string = "Suyash";
+let age: number = 22;
+let isStudent: boolean = true;
+```
+
+Here, `: string`, `: number`, and `: boolean` are type annotations.
+
+## 1. JavaScript vs TypeScript
+
+In JavaScript:
+
+```js
+let age = 22;
+
+age = "twenty two"; // Allowed
+```
+
+In TypeScript:
+
+```ts
+let age: number = 22;
+
+age = "twenty two"; // ❌ Error
+```
+
+TypeScript knows that `age` must always contain a number.
+
+---
+
+## 2. Variable Type Annotations
+
+```ts
+let name: string = "Suyash";
+let age: number = 22;
+let isLoggedIn: boolean = false;
+```
+
+Pattern:
+
+```ts
+let variable: type = value;
+```
+
+The most common basic types are:
+
+```ts
+let username: string = "Suyash";
+let score: number = 95;
+let passed: boolean = true;
+```
+
+---
+
+## 3. Function Parameter Annotations
+
+Type annotations become especially important with functions.
+
+JavaScript:
+
+```js
+function add(a, b) {
+    return a + b;
+}
+```
+
+There's nothing preventing:
+
+```js
+add("10", "20");
+```
+
+TypeScript:
+
+```ts
+function add(a: number, b: number) {
+    return a + b;
+}
+```
+
+Now:
+
+```ts
+add(10, 20);       // ✅
+add("10", "20");   // ❌
+```
+
+This is one of the biggest practical benefits of TypeScript.
+
+---
+
+## 4. Function Return Type Annotations
+
+You can also specify what a function must return.
+
+```ts
+function add(a: number, b: number): number {
+    return a + b;
+}
+```
+
+Notice the two different annotations:
+
+```ts
+function add(
+    a: number,      // parameter type
+    b: number       // parameter type
+): number {         // return type
+    return a + b;
+}
+```
+
+Another example:
+
+```ts
+function getName(): string {
+    return "Suyash";
+}
+```
+
+This would produce an error:
+
+```ts
+function getName(): string {
+    return 100; // ❌ number is not assignable to string
+}
+```
+
+---
+
+## 5. Array Type Annotations
+
+You can specify the type of values an array contains:
+
+```ts
+let numbers: number[] = [10, 20, 30];
+
+let names: string[] = ["Aman", "Rahul", "Suyash"];
+```
+
+Therefore:
+
+```ts
+numbers.push(40);      // ✅
+numbers.push("hello"); // ❌
+```
+
+Another syntax you'll encounter is:
+
+```ts
+let numbers: Array<number> = [10, 20, 30];
+```
+
+Both mean the same thing. `number[]` is usually simpler.
+
+---
+
+## 6. Object Type Annotations
+
+You can describe the structure of an object:
+
+```ts
+let user: {
+    name: string;
+    age: number;
+} = {
+    name: "Suyash",
+    age: 22
+};
+```
+
+Now TypeScript checks the structure:
+
+```ts
+user.age = 23;       // ✅
+user.age = "23";     // ❌
+```
+
+For larger objects, you'll later learn to use interfaces and type aliases instead of writing the structure inline.
+
+---
+
+## 7. Why Type Annotations Matter
+
+Suppose you're building an API:
+
+```ts
+function createUser(name: string, age: number): string {
+    return `${name} is ${age} years old`;
+}
+```
+
+TypeScript prevents incorrect usage:
+
+```ts
+createUser("Suyash", 22);     // ✅
+
+createUser(22, "Suyash");     // ❌
+```
+
+So instead of discovering the problem while your application is running, TypeScript catches it while you're coding/compiling.
+
+---
+
+## 8. Don't Annotate Everything
+
+This is important.
+
+You can write:
+
+```ts
+let name: string = "Suyash";
+let age: number = 22;
+let active: boolean = true;
+```
+
+But TypeScript can already figure these types out:
+
+```ts
+let name = "Suyash";
+let age = 22;
+let active = true;
+```
+
+TypeScript automatically knows:
+
+```text
+name   → string
+age    → number
+active → boolean
+```
+
+This is called type inference, which is the next major concept.
+
+In real TypeScript code, you'll usually rely on inference when the type is obvious and add annotations where they provide useful information—especially function parameters, object shapes, public APIs, and places where inference isn't enough.
+
+### Remember this syntax
+
+```ts
+// Variable
+let age: number = 22;
+
+// Function parameter
+function greet(name: string) {}
+
+// Function return
+function getAge(): number {
+    return 22;
+}
+
+// Array
+let scores: number[] = [90, 80, 70];
+
+// Object
+let user: { name: string; age: number } = {
+    name: "Suyash",
+    age: 22
+};
+```
+
+Core idea: `: type` tells TypeScript, "this value is expected to have this type."

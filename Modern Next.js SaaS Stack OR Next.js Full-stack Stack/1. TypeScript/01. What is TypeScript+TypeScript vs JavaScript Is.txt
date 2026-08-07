@@ -1,0 +1,331 @@
+# 1. What TypeScript Is + TypeScript vs JavaScript
+
+## What is TypeScript?
+
+TypeScript (TS) is JavaScript with a type system added on top.
+
+It lets you specify what kind of data a variable, parameter, object property, or function should contain.
+
+JavaScript:
+
+```js
+let age = 21;
+
+age = "twenty one"; // JavaScript allows this
+```
+
+TypeScript:
+
+```ts
+let age: number = 21;
+
+age = "twenty one"; // ❌ TypeScript error
+```
+
+The important idea is:
+
+> TypeScript catches many mistakes while you're writing/compiling code instead of waiting for them to cause problems at runtime.
+
+---
+
+## TypeScript is a superset of JavaScript
+
+Think of it like:
+
+```text
+JavaScript
+    ↓
+JavaScript + Types
+    ↓
+TypeScript
+```
+
+Almost all normal JavaScript syntax is valid TypeScript.
+
+For example, this is perfectly valid TypeScript:
+
+```ts
+const name = "Suyash";
+
+function greet(name) {
+    return `Hello ${name}`;
+}
+```
+
+But TypeScript allows you to make the expected types explicit:
+
+```ts
+const name: string = "Suyash";
+
+function greet(name: string): string {
+    return `Hello ${name}`;
+}
+```
+
+Now TypeScript knows:
+
+```text
+name parameter → must be string
+return value   → must be string
+```
+
+So this gets caught:
+
+```ts
+greet(100);
+// ❌ Argument of type 'number' is not assignable to 'string'
+```
+
+---
+
+# Why does TypeScript exist?
+
+Consider a JavaScript function:
+
+```js
+function add(a, b) {
+    return a + b;
+}
+
+add(10, 20);      // 30
+add("10", 20);    // "1020"
+```
+
+JavaScript doesn't know that you intended `a` and `b` to be numbers.
+
+With TypeScript:
+
+```ts
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+add(10, 20);      // ✅
+add("10", 20);    // ❌
+```
+
+This becomes especially useful when applications get large.
+
+---
+
+# TypeScript doesn't run directly in the browser
+
+Browsers execute JavaScript, not TypeScript.
+
+So:
+
+```text
+TypeScript (.ts)
+      ↓
+TypeScript Compiler
+      ↓
+JavaScript (.js)
+      ↓
+Browser / Node.js
+```
+
+For example, you write:
+
+```ts
+const age: number = 21;
+```
+
+The generated JavaScript could simply be:
+
+```js
+const age = 21;
+```
+
+The type information is mainly there for development and type checking.
+
+---
+
+# TypeScript vs JavaScript
+
+| Feature           | JavaScript                        | TypeScript                          |
+| ----------------- | --------------------------------- | ----------------------------------- |
+| Typing            | Dynamic                           | Static type checking                |
+| Type errors       | Usually runtime                   | Often caught before runtime         |
+| Type annotations  | ❌                                 | ✅                                   |
+| Interfaces        | ❌                                 | ✅                                   |
+| Generics          | Limited/no TS-style type generics | ✅                                   |
+| Browser execution | Direct                            | Compiled/transformed to JS          |
+| Autocomplete      | Good                              | Usually much better                 |
+| Refactoring       | Harder in large apps              | Safer                               |
+| Learning curve    | Lower                             | Slightly higher                     |
+| Large projects    | Can become harder to maintain     | Designed to improve maintainability |
+
+---
+
+## Dynamic vs Static Typing
+
+This is one of the most important differences.
+
+### JavaScript — Dynamic Typing
+
+```js
+let value = 10;
+
+value = "hello";
+value = true;
+value = [];
+```
+
+JavaScript determines types while the program runs and allows the variable to hold different kinds of values.
+
+### TypeScript — Static Type Checking
+
+```ts
+let value: number = 10;
+
+value = 20;       // ✅
+value = "hello";  // ❌
+value = true;     // ❌
+```
+
+TypeScript checks whether your code obeys its type rules before the JavaScript executes.
+
+---
+
+# TypeScript doesn't replace JavaScript
+
+This distinction matters.
+
+You are still writing JavaScript applications.
+
+TypeScript adds a development-time type system around JavaScript.
+
+```text
+JavaScript knowledge
+        +
+TypeScript type system
+        =
+TypeScript development
+```
+
+That's why knowing JavaScript first makes learning TypeScript much easier.
+
+---
+
+# Real-world example
+
+Imagine receiving user data from your application:
+
+### JavaScript
+
+```js
+function printUser(user) {
+    console.log(user.name);
+    console.log(user.age);
+}
+```
+
+What does `user` contain?
+
+You don't really know from the function itself.
+
+Someone could call:
+
+```js
+printUser({
+    username: "Suyash"
+});
+```
+
+Then:
+
+```js
+user.name // undefined
+user.age  // undefined
+```
+
+### TypeScript
+
+You can define the expected structure:
+
+```ts
+type User = {
+    name: string;
+    age: number;
+};
+
+function printUser(user: User) {
+    console.log(user.name);
+    console.log(user.age);
+}
+```
+
+Now:
+
+```ts
+printUser({
+    username: "Suyash"
+});
+```
+
+produces an error before you run the program.
+
+TypeScript tells you that the object doesn't match the expected `User` structure.
+
+---
+
+# Why TypeScript is useful in React/Next.js/NestJS
+
+Suppose you have:
+
+```tsx
+<UserCard
+    name="Suyash"
+    age={21}
+/>
+```
+
+You can define:
+
+```ts
+type UserCardProps = {
+    name: string;
+    age: number;
+};
+
+function UserCard({ name, age }: UserCardProps) {
+    return <h1>{name} - {age}</h1>;
+}
+```
+
+Now this is caught:
+
+```tsx
+<UserCard
+    name={123}
+    age="twenty"
+/>
+```
+
+TypeScript knows exactly what the component expects.
+
+The same principle applies to API responses, database objects, function parameters, DTOs, configuration objects, and essentially every part of a large application.
+
+---
+
+# The mental model to remember
+
+Don't think:
+
+> TypeScript is a completely different language from JavaScript.
+
+Think:
+
+> TypeScript = JavaScript + compile-time type checking + better developer tooling.
+
+For now, remember these five things:
+
+1. TypeScript is a superset of JavaScript.
+2. It adds static type checking to JavaScript.
+3. It catches many errors before runtime.
+4. TypeScript eventually becomes JavaScript for execution.
+5. Its biggest advantage appears as applications become larger and more complex.
+
+### One-line definition
+
+TypeScript is a statically typed superset of JavaScript that adds compile-time type checking and developer tooling while ultimately producing JavaScript for execution.

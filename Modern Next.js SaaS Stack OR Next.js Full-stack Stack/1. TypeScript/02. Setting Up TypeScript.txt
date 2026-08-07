@@ -1,0 +1,180 @@
+# 2. Setting Up TypeScript
+
+Since you already know JavaScript, TypeScript setup is straightforward.
+
+## 1. Check Node.js
+
+Open your terminal:
+
+```bash
+node -v
+npm -v
+```
+
+If both return versions, you're ready.
+
+---
+
+## 2. Create a project
+
+```bash
+mkdir typescript-practice
+cd typescript-practice
+
+npm init -y
+```
+
+This creates:
+
+```text
+typescript-practice/
+└── package.json
+```
+
+---
+
+## 3. Install TypeScript
+
+For a real project, install TypeScript locally:
+
+```bash
+npm install --save-dev typescript
+```
+
+Check it:
+
+```bash
+npx tsc --version
+```
+
+`tsc` means TypeScript Compiler.
+
+---
+
+## 4. Create your first TypeScript file
+
+Create:
+
+```text
+src/index.ts
+```
+
+Write:
+
+```typescript
+const username: string = "Suyash";
+const age: number = 22;
+
+console.log(username, age);
+```
+
+Notice the extension:
+
+```text
+JavaScript  → .js
+TypeScript  → .ts
+```
+
+---
+
+## 5. Compile TypeScript to JavaScript
+
+Run:
+
+```bash
+npx tsc src/index.ts
+```
+
+TypeScript generates:
+
+```text
+src/
+├── index.ts
+└── index.js
+```
+
+Why?
+
+Browsers and Node.js traditionally execute JavaScript, so TypeScript is compiled into JavaScript.
+
+Conceptually:
+
+```text
+index.ts
+   ↓
+ TypeScript Compiler (tsc)
+   ↓
+index.js
+   ↓
+Node.js / Browser
+```
+
+Now run:
+
+```bash
+node src/index.js
+```
+
+Output:
+
+```text
+Suyash 22
+```
+
+---
+
+## 6. Create `tsconfig.json`
+
+Instead of configuring TypeScript manually every time:
+
+```bash
+npx tsc --init
+```
+
+This creates:
+
+```text
+typescript-practice/
+├── src/
+│   └── index.ts
+├── package.json
+├── package-lock.json
+└── tsconfig.json
+```
+
+`tsconfig.json` controls how TypeScript compiles your project.
+
+You don't need to understand all its settings yet; that's a separate topic.
+
+---
+
+## 7. Normal development workflow
+
+Your basic workflow is:
+
+```text
+Write TypeScript
+      ↓
+src/index.ts
+      ↓
+npx tsc
+      ↓
+JavaScript generated
+      ↓
+node index.js
+```
+
+For learning, these commands are enough:
+
+```bash
+npm init -y
+npm install -D typescript
+npx tsc --init
+npx tsc
+```
+
+### One thing to remember
+
+TypeScript is normally installed as a development dependency, you write code in `.ts` files, and `tsc` compiles that TypeScript into JavaScript.
+
+Don't spend much time memorizing setup commands. Once you understand this workflow, move on to `.ts` vs `.tsx` and then the TypeScript compiler (`tsc`).

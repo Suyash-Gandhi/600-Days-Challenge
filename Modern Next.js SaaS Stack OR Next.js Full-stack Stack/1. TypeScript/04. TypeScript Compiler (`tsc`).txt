@@ -1,0 +1,211 @@
+# 4. TypeScript Compiler (`tsc`)
+
+`tsc` stands for TypeScript Compiler.
+
+Its main job is:
+
+> Take TypeScript (`.ts`) code → check it for type errors → generate JavaScript (`.js`) code.
+
+### Basic example
+
+Suppose you have:
+
+```ts
+// app.ts
+
+const username: string = "Suyash";
+const age: number = 22;
+
+console.log(username, age);
+```
+
+Run:
+
+```bash
+tsc app.ts
+```
+
+TypeScript generates:
+
+```js
+// app.js
+
+var username = "Suyash";
+var age = 22;
+
+console.log(username, age);
+```
+
+The browser or Node.js ultimately executes the JavaScript, not the TypeScript.
+
+---
+
+## Installing `tsc`
+
+Usually install TypeScript inside your project:
+
+```bash
+npm install --save-dev typescript
+```
+
+Then check the compiler:
+
+```bash
+npx tsc --version
+```
+
+Compile a file:
+
+```bash
+npx tsc app.ts
+```
+
+If TypeScript is installed globally:
+
+```bash
+npm install -g typescript
+```
+
+you can directly use:
+
+```bash
+tsc app.ts
+```
+
+For real projects, the local installation + `npx tsc` approach is generally preferable.
+
+---
+
+## Type checking
+
+One of `tsc`'s most important jobs is finding type errors.
+
+```ts
+let age: number = 20;
+
+age = "twenty";
+```
+
+Running:
+
+```bash
+npx tsc app.ts
+```
+
+produces an error similar to:
+
+```text
+Type 'string' is not assignable to type 'number'.
+```
+
+This lets you catch many mistakes before running the program.
+
+---
+
+## Compiling the whole project
+
+Instead of compiling individual files:
+
+```bash
+npx tsc app.ts
+```
+
+you'll normally have a `tsconfig.json` and simply run:
+
+```bash
+npx tsc
+```
+
+`tsc` reads the configuration from `tsconfig.json` and compiles the project accordingly.
+
+For example:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "outDir": "./dist",
+    "strict": true
+  }
+}
+```
+
+Then:
+
+```text
+src/
+  app.ts
+  user.ts
+
+        ↓ npx tsc
+
+dist/
+  app.js
+  user.js
+```
+
+You'll learn the important `tsconfig.json` options separately, so don't worry about them yet.
+
+---
+
+## Useful `tsc` commands
+
+```bash
+# Compile one file
+npx tsc app.ts
+
+# Compile project using tsconfig.json
+npx tsc
+
+# Create tsconfig.json
+npx tsc --init
+
+# Show compiler version
+npx tsc --version
+
+# Watch files and recompile when they change
+npx tsc --watch
+
+# Type-check without generating JavaScript
+npx tsc --noEmit
+```
+
+`--noEmit` is especially important in modern projects:
+
+```bash
+npx tsc --noEmit
+```
+
+It means:
+
+> "Check my TypeScript for errors, but don't create `.js` files."
+
+Frameworks/build tools may handle the actual transformation, while TypeScript is primarily used for type checking.
+
+---
+
+## What you should remember
+
+The mental model is simply:
+
+```text
+        TypeScript
+            ↓
+           tsc
+       ↙         ↘
+ Type Checking   Compilation
+       ↓             ↓
+    Errors       JavaScript
+```
+
+So when you see:
+
+```bash
+npx tsc
+```
+
+think:
+
+> "Run the TypeScript compiler and check/compile my project."
+
+For your current TypeScript learning stage, knowing `npx tsc`, `npx tsc --watch`, `npx tsc --noEmit`, and that `tsc` uses `tsconfig.json` is enough.
