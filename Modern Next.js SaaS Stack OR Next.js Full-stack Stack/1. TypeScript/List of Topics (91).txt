@@ -1,0 +1,288 @@
+
+
+## PHASE 1 — TypeScript Fundamentals
+
+1. What TypeScript Is + TypeScript vs JavaScript
+2. Setting Up TypeScript
+3. `.ts` vs `.tsx`
+4. TypeScript Compiler (`tsc`)
+5. `tsconfig.json` Basics
+6. Type Annotations
+7. Type Inference
+8. Primitive Types — `string`, `number`, `boolean`
+9. `null` and `undefined`
+10. Arrays
+11. Tuples
+12. Object Types
+13. `any`
+14. `unknown`
+15. `void`
+16. `never`
+17. Type Assertions (`as`)
+
+Goal: Understand how TypeScript adds static typing to normal JavaScript.
+
+---
+
+# PHASE 2 — Functions
+
+18. Parameter Types
+19. Return Types
+20. Optional Parameters
+21. Default Parameters
+22. Rest Parameters
+23. Function Types
+24. Callback Types
+25. Async Functions + `Promise<T>`
+
+You already know JS, so don't separately study `await`, Promises, async error handling, etc. Learn how to type them.
+
+---
+
+# PHASE 3 — Types & Interfaces
+
+26. Type Aliases
+27. Interfaces
+28. Interface vs Type
+29. Optional Properties
+30. Readonly Properties
+31. Nested Object Types
+32. Arrays of Objects
+33. Extending Interfaces
+34. Intersection Types
+35. Index Signatures
+
+These are extremely high ROI because you'll constantly model users, products, API data, DTOs, configs, props, etc.
+
+---
+
+# PHASE 4 — Unions & Narrowing
+
+36. Union Types
+37. Literal Types
+38. Type Narrowing
+39. `typeof` Narrowing
+40. `instanceof` Narrowing
+41. `in` Narrowing
+42. Type Guards
+43. Custom Type Guards
+44. Discriminated Unions
+
+Don't study "truthiness narrowing" as a separate topic. You'll naturally learn it while learning narrowing.
+
+---
+
+# PHASE 5 — Everyday Type Operators
+
+45. `keyof`
+46. `typeof` Type Operator
+47. Indexed Access Types
+48. Optional Chaining (`?.`)
+49. Nullish Coalescing (`??`)
+50. Non-Null Assertion (`!`)
+
+`?.` and `??` are technically JavaScript features, but they're worth understanding because they appear constantly in TS code.
+
+---
+
+# PHASE 6 — Generics
+
+51. Generics Fundamentals
+52. Generic Functions
+53. Generic Types & Interfaces
+54. Generic Constraints
+55. Multiple Generic Parameters
+56. Generics with Arrays/Objects
+57. Real-World Generic Patterns
+
+For example:
+
+```ts
+type ApiResponse<T> = {
+  data: T;
+  success: boolean;
+  message: string;
+};
+```
+
+Generics are one area I wouldn't cut too aggressively. React libraries, APIs, NestJS, Prisma-style APIs, reusable utilities, hooks, etc. expose them constantly.
+
+---
+
+# PHASE 7 — Utility Types
+
+58. `Partial<T>`
+59. `Required<T>`
+60. `Readonly<T>`
+61. `Pick<T>`
+62. `Omit<T>`
+63. `Record<K, T>`
+64. `Exclude<T, U>`
+65. `NonNullable<T>`
+66. `ReturnType<T>`
+67. `Awaited<T>`
+
+I removed `Extract` and `Parameters` from the core roadmap. They're useful, but you can learn them when you encounter them.
+
+---
+
+# 🚀 START NEXT.JS HERE
+
+At this point you have enough TypeScript.
+
+Do not wait until you "finish TypeScript."
+
+Your learning should switch to:
+
+Next.js = main subject
+
+TypeScript = learned through actual Next.js development
+
+This is where you'll get much more value from building than continuing isolated TS exercises.
+
+---
+
+# PHASE 8 — Classes for NestJS
+
+Learn this shortly before/during NestJS.
+
+68. Classes
+69. Constructors
+70. Properties & Methods
+71. Access Modifiers — `public`, `private`, `protected`
+72. `readonly`
+73. Static Members
+74. Inheritance
+75. Abstract Classes
+76. `implements`
+77. Interfaces with Classes
+
+You don't need separate topics for `extends`, getters, setters, etc. They're either trivial or can be learned when needed.
+
+---
+
+# PHASE 9 — Modules & Project Organization
+
+78. ES Modules with TypeScript
+79. `import` / `export`
+80. Named vs Default Exports
+81. Type-Only Imports
+82. Organizing Types Across Files
+83. Path Aliases
+
+Re-exports/barrel files can be learned when you encounter them.
+
+---
+
+# PHASE 10 — Production Type Safety
+
+84. `unknown` in Error Handling
+85. Exhaustiveness Checking with `never`
+86. Strict Mode
+87. `strictNullChecks`
+88. Avoiding `any`
+89. Avoiding Unnecessary Type Assertions
+90. TypeScript Types vs Runtime Validation
+91. Type-Safe API Design
+
+#90 is particularly important.
+
+TypeScript:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+does not guarantee that incoming HTTP data actually has that structure.
+
+That's why you'll eventually use runtime validation with things such as Zod or NestJS DTO validation.
+
+---
+
+# Learn Through React/Next.js Projects
+
+Don't treat these as another TypeScript theory phase.
+
+Learn them naturally when they appear:
+
+ Component props
+ `children`
+ Callback props
+ `useState`
+ `useRef`
+ Events
+ Forms
+ Context
+ Custom hooks
+ API responses
+ Fetch responses
+ Generic components
+ Server Components
+ Client Components
+ Page props
+ Dynamic route params
+ Search params
+ Server Actions
+ Route Handlers
+ Environment variables
+
+For example, when building:
+
+```tsx
+type UserCardProps = {
+  name: string;
+  age: number;
+};
+
+function UserCard({ name, age }: UserCardProps) {
+  return <div>{name}</div>;
+}
+```
+
+you're learning props + object types + React TypeScript simultaneously. There's little benefit in treating each as an isolated chapter.
+
+---
+
+# Learn Through NestJS
+
+Similarly, don't study these independently before NestJS:
+
+ DTOs
+ DTO classes
+ Controllers
+ Services
+ Decorators
+ Dependency injection typing
+ Request/response types
+ Entity/model types
+ Validation
+ Generic responses
+
+NestJS itself gives these concepts context.
+
+---
+
+# Learn Later / On Demand
+
+Don't spend dedicated study time on these right now:
+
+ Function Overloads
+ Mapped Types
+ Conditional Types
+ `infer`
+ Template Literal Types
+ Advanced Generic Patterns
+ Advanced Type Guards
+ Advanced Decorators
+ Declaration Files (`.d.ts`)
+ Declaration Merging
+ Advanced Module Resolution
+ Type-Level Programming
+ Compiler Internals
+
+They're not "useless." They're simply lower ROI at your current stage.
+
+---
