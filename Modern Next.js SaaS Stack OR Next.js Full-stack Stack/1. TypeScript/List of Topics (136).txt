@@ -1,196 +1,302 @@
 
+
 # PHASE 1 — TypeScript Fundamentals
 
 1. What TypeScript Is
 2. TypeScript vs JavaScript
 3. Setting Up TypeScript
-4. TypeScript Compiler (tsc)
-5. tsconfig.json
-6. Type Checking
-7. Type Inference
-8. Primitive Types
-9. Arrays
-10. Tuples
-11. Objects
-12. Functions
-13. Optional Parameters
-14. Default Parameters
-15. Rest Parameters
-16. Return Types
-17. Void Type
-18. Never Type
-19. Unknown Type
-20. Any Type
+4. `.ts` vs `.tsx`
+5. TypeScript Compiler (`tsc`)
+6. `tsconfig.json` Basics
+7. Type Annotations
+8. Type Inference
+9. `string`
+10. `number`
+11. `boolean`
+12. `null`
+13. `undefined`
+14. Arrays
+15. Tuples
+16. Objects
+17. `any`
+18. `unknown`
+19. `void`
+20. `never`
 21. Type Assertions
 
 ---
 
-# PHASE 2 — Working with Types - Complete these then start next.js
+# PHASE 2 — Functions
 
-22. Type Aliases
-23. Interfaces
-24. Interface vs Type
-25. Readonly Properties
-26. Optional Properties
-27. Index Signatures
-28. Function Types
-29. Literal Types
-30. Union Types
-31. Intersection Types
-32. Type Narrowing
-33. Type Guards
-34. typeof Type Guards
-35. instanceof Type Guards
-36. in Operator Type Guards
-37. Discriminated Unions
+22. Parameter Types
+23. Return Types
+24. Optional Parameters
+25. Default Parameters
+26. Rest Parameters
+27. Function Types
+28. Callback Types
+29. Async Functions
+30. `Promise<T>`
 
 ---
 
-# PHASE 3 — Generics & Advanced Types - Continue with next.js
+# PHASE 3 — Interfaces & Types
 
-38. Generics Fundamentals
-39. Generic Functions
-40. Generic Constraints
-41. Default Generic Types
-42. Generic React Components
-43. keyof Operator
-44. typeof Type Operator
-45. Indexed Access Types
-46. Mapped Types
-47. Conditional Types
-48. Infer Keyword
-49. Template Literal Types
+31. Type Aliases
+32. Interfaces
+33. Interface vs Type
+34. Optional Properties
+35. Readonly Properties
+36. Nested Object Types
+37. Arrays of Objects
+38. Extending Interfaces
+39. Intersection Types
+40. Index Signatures
 
 ---
 
-# PHASE 4 — Utility Types
+# PHASE 4 — Unions & Type Narrowing
 
-50. Partial
-51. Required
-52. Readonly
-53. Pick
-54. Omit
-55. Record
-56. Exclude
-57. Extract
-58. NonNullable
-59. Parameters
-60. ReturnType
-61. Awaited
+41. Union Types
+42. Literal Types
+43. Type Narrowing
+44. `typeof` Narrowing
+45. `instanceof` Narrowing
+46. `in` Operator Narrowing
+47. Truthiness Narrowing
+48. Type Guards
+49. Custom Type Guards
+50. Discriminated Unions
 
 ---
 
-# PHASE 5 — Object-Oriented TypeScript
+# PHASE 5 — Working With Types
 
-62. Classes
-63. Constructors
-64. Access Modifiers
-65. Private
-66. Protected
-67. Readonly Properties
-68. Getters
-69. Setters
-70. Static Members
-71. Inheritance
-72. Abstract Classes
-73. Interfaces with Classes
-74. Implements Keyword
+51. `keyof` Operator
+52. `typeof` Type Operator
+53. Indexed Access Types
+54. Optional Chaining (`?.`)
+55. Nullish Coalescing (`??`)
+56. Non-Null Assertion (`!`)
+57. Type Assertions (`as`)
 
 ---
 
-# PHASE 6 — Modules & Code Organization
+# PHASE 6 — Generics
 
-75. ES Modules
-76. Import Statements
-77. Export Statements
-78. Default Exports
-79. Named Exports
-80. Re-exports
-81. Module Resolution
-82. Path Aliases
-83. Declaration Files (.d.ts)
-
----
-
-# PHASE 7 — Asynchronous TypeScript
-
-84. Promises
-85. Typing Promises
-86. Async Functions
-87. Await
-88. Error Handling with Async Code
-89. Promise Generics
-90. Promise.all Typing
-91. Awaited Type
+58. Generics Fundamentals
+59. Generic Functions
+60. Generic Types
+61. Generic Interfaces
+62. Generic Constraints
+63. Multiple Generic Parameters
+64. Generics with Arrays
+65. Generics with Objects
+66. Real-World Generics like `ApiResponse<T>`
 
 ---
 
-# PHASE 8 — Error Handling & Type Safety
+# PHASE 7 — Utility Types
 
-92. Error Objects
-93. Custom Error Classes
-94. Unknown in Catch Blocks
-95. Type-Safe Error Handling
-96. Assertion Functions
-97. Exhaustiveness Checking
-98. Never for Exhaustive Checks
-
----
-
-# PHASE 9 — TypeScript for React - Complete next.js phase 6 to 10 then start this
-
-99. Typing Props
-100. Typing Components
-101. Typing Children
-102. Typing Events
-103. Typing Forms
-104. Typing State
-105. Typing useState
-106. Typing useReducer
-107. Typing useMemo
-108. Typing useCallback
-109. Typing Context
-110. Typing Custom Hooks
-111. Typing Refs
-112. Typing Fetch Responses
-113. Typing API Responses
+67. `Partial<T>`
+68. `Required<T>`
+69. `Readonly<T>`
+70. `Pick<T>`
+71. `Omit<T>`
+72. `Record<K, T>`
+73. `Exclude<T, U>`
+74. `Extract<T, U>`
+75. `NonNullable<T>`
+76. `Parameters<T>`
+77. `ReturnType<T>`
+78. `Awaited<T>`
 
 ---
 
-# PHASE 10 — TypeScript for Next.js
+# 🚀 START NEXT.JS HERE
 
-114. Typing Server Components
-115. Typing Client Components
-116. Typing Async Components
-117. Typing Server Actions
-118. Typing Route Handlers
-119. Typing Dynamic Route Params
-120. Typing Search Params
-121. Typing Middleware
-122. Typing Environment Variables
+At this point, stop studying TypeScript separately as your main activity.
+
+You know enough TypeScript to start Next.js.
+
+From here:
+
+> Next.js becomes your main subject + continue the remaining TypeScript alongside it.
 
 ---
 
-# PHASE 11 — Configuration & Tooling
+# PHASE 8 — Object-Oriented TypeScript
 
-123. Strict Mode
-124. Strict TypeScript Configuration
-125. noImplicitAny
-126. strictNullChecks
-127. Module Configuration
-128. Target Configuration
+79. Classes
+80. Constructors
+81. Properties
+82. Methods
+83. `public`
+84. `private`
+85. `protected`
+86. `readonly`
+87. Getters
+88. Setters
+89. Static Members
+90. Inheritance
+91. `extends`
+92. Abstract Classes
+93. Interfaces with Classes
+94. `implements`
+
+Important: This phase becomes especially useful when you start NestJS.
 
 ---
 
-# PHASE 12 — Professional TypeScript Patterns
+# PHASE 9 — Modules & Code Organization
 
-129. Function Overloads
-130. Advanced Generic Patterns
-131. Type-Safe API Design
-132. Refactoring with Types
-133. Avoiding any
-134. Avoiding Type Assertions
-135. Common TypeScript Pitfalls
-136. TypeScript Best Practices
+95. ES Modules
+96. `import`
+97. `export`
+98. Default Exports
+99. Named Exports
+100. Type-Only Imports
+101. Re-exports
+102. Organizing Types Across Files
+103. Path Aliases
 
 ---
+
+# PHASE 10 — Asynchronous TypeScript
+
+104. Promises
+105. Typing Promises
+106. Async Functions
+107. `await`
+108. Async Return Types
+109. Error Handling in Async Code
+110. `Promise.all` Typing
+
+A lot of this will already be familiar from JavaScript. Focus on the TypeScript-specific parts.
+
+---
+
+# PHASE 11 — Error Handling & Type Safety
+
+111. Error Objects
+112. `unknown` in Catch Blocks
+113. Type-Safe Error Handling
+114. Custom Error Classes
+115. Exhaustiveness Checking
+116. `never` for Exhaustive Checks
+
+---
+
+# PHASE 12 — TypeScript With React
+
+117. Typing Component Props
+118. Typing Components
+119. Typing `children`
+120. Optional Props
+121. Function/Callback Props
+122. Typing `useState`
+123. Typing `useRef`
+124. Typing Events
+125. Typing Forms
+126. Typing Input Events
+127. Typing `useReducer`
+128. Typing Context
+129. Typing Custom Hooks
+130. Typing API Responses
+131. Typing Fetch Responses
+132. Basic Generic Components
+
+Don't wait until here to use React + TypeScript. You'll naturally encounter many of these while learning Next.js.
+
+---
+
+# PHASE 13 — TypeScript With APIs & Backend
+
+133. Request Types
+134. Response Types
+135. DTO-Style Objects
+136. Database Model Types
+137. Async API Return Types
+138. `Promise<T>` with APIs
+139. JSON Data
+140. External API Data
+141. Environment Variables
+142. Error Handling with `unknown`
+143. TypeScript Types vs Runtime Validation
+
+That final topic is very important for your Next.js/NestJS career.
+
+---
+
+# PHASE 14 — TypeScript With Next.js
+
+Learn these while learning Next.js, not beforehand.
+
+144. Typing Server Components
+145. Typing Client Components
+146. Typing Async Components
+147. Typing Page Props
+148. Typing Dynamic Route Parameters
+149. Typing Search Parameters
+150. Typing Forms
+151. Typing Server Actions
+152. Typing Route Handlers
+153. Typing API Responses
+154. Typing Environment Variables
+
+---
+
+# PHASE 15 — TypeScript With NestJS
+
+Learn these when you start NestJS.
+
+155. DTOs
+156. DTO Classes
+157. Interfaces vs DTOs
+158. Typing Controllers
+159. Typing Services
+160. Request/Response Types
+161. Decorators Basics
+162. Access Modifiers
+163. Dependency Injection Types
+164. Entity/Model Types
+165. Generic Services/Responses
+166. Validation with DTOs
+
+---
+
+# PHASE 16 — Configuration & Best Practices
+
+167. Strict Mode
+168. `strict`
+169. `noImplicitAny`
+170. `strictNullChecks`
+171. Module Configuration
+172. Target Configuration
+173. Avoiding `any`
+174. Avoiding Unnecessary Type Assertions
+175. Type-Safe API Design
+176. Refactoring with Types
+177. Common TypeScript Mistakes
+178. TypeScript Best Practices
+
+---
+
+# ⏳ LEARN LATER — NOT NOW
+
+These are not priorities for your current 2-month job plan:
+
+179. Function Overloads
+180. Mapped Types
+181. Conditional Types
+182. `infer` Keyword
+183. Template Literal Types
+184. Advanced Generic Patterns
+185. Advanced Type Guards
+186. Advanced Decorators
+187. Declaration Files (`.d.ts`)
+188. Declaration Merging
+189. Advanced Module Resolution
+190. Type-Level Programming
+191. TypeScript Compiler Internals
+
