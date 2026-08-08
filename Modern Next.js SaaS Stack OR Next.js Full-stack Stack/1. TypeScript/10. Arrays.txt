@@ -1,0 +1,399 @@
+# 10. Arrays in TypeScript
+
+Arrays in TypeScript are just JavaScript arrays, but TypeScript lets you specify what type of values the array can contain.
+
+## 1. Basic Array Types
+
+There are two common syntaxes:
+
+```ts
+let numbers: number[] = [10, 20, 30];
+let names: string[] = ["Suyash", "Rahul", "Aman"];
+let flags: boolean[] = [true, false, true];
+```
+
+Or using `Array<Type>`:
+
+```ts
+let numbers: Array<number> = [10, 20, 30];
+let names: Array<string> = ["Suyash", "Rahul"];
+```
+
+Both mean exactly the same thing.
+
+Prefer `type[]` because it's shorter and more commonly used.
+
+---
+
+## 2. Type Safety
+
+Once an array has a type, TypeScript prevents you from adding incompatible values.
+
+```ts
+let scores: number[] = [80, 90, 75];
+
+scores.push(100);    // ✅
+scores.push("95");   // ❌ Error
+```
+
+Similarly:
+
+```ts
+let users: string[] = ["Aman", "Rahul"];
+
+users.push("Suyash"); // ✅
+users.push(10);       // ❌ Error
+```
+
+This is one of the main benefits over plain JavaScript.
+
+---
+
+## 3. Type Inference with Arrays
+
+You don't always need to explicitly write the type.
+
+```ts
+let fruits = ["apple", "banana", "mango"];
+```
+
+TypeScript infers:
+
+```ts
+string[]
+```
+
+Therefore:
+
+```ts
+fruits.push("orange"); // ✅
+fruits.push(10);       // ❌
+```
+
+Similarly:
+
+```ts
+let prices = [100, 200, 300];
+// inferred as number[]
+```
+
+For obvious values, prefer inference:
+
+```ts
+const names = ["Aman", "Rahul"];
+```
+
+instead of unnecessarily writing:
+
+```ts
+const names: string[] = ["Aman", "Rahul"];
+```
+
+---
+
+## 4. Mixed-Type Arrays
+
+Sometimes an array intentionally contains multiple types.
+
+Use a union type:
+
+```ts
+let values: (string | number)[] = [
+    "hello",
+    10,
+    "world",
+    20
+];
+```
+
+Now:
+
+```ts
+values.push("TypeScript"); // ✅
+values.push(100);          // ✅
+values.push(true);         // ❌
+```
+
+Notice the parentheses:
+
+```ts
+(string | number)[]
+```
+
+This means:
+
+> An array where every element can be either a `string` or a `number`.
+
+You'll learn union types properly later.
+
+---
+
+## 5. Arrays of Objects
+
+Very common in React, APIs, and backend development.
+
+```ts
+let users: {
+    name: string;
+    age: number;
+}[] = [
+    {
+        name: "Aman",
+        age: 22
+    },
+    {
+        name: "Rahul",
+        age: 24
+    }
+];
+```
+
+Later, you'll normally define a reusable type:
+
+```ts
+type User = {
+    name: string;
+    age: number;
+};
+
+const users: User[] = [
+    { name: "Aman", age: 22 },
+    { name: "Rahul", age: 24 }
+];
+```
+
+This pattern is extremely common:
+
+```ts
+User[]
+Product[]
+Post[]
+Order[]
+```
+
+For example, React state often looks like:
+
+```ts
+const [users, setUsers] = useState<User[]>([]);
+```
+
+---
+
+## 6. Array Methods Remain the Same
+
+All normal JavaScript array methods work.
+
+```ts
+const numbers: number[] = [1, 2, 3, 4];
+
+numbers.push(5);
+numbers.pop();
+
+numbers.map(num => num  2);
+
+numbers.filter(num => num > 2);
+
+numbers.find(num => num === 3);
+```
+
+The advantage is that TypeScript knows the element type.
+
+For example:
+
+```ts
+const names: string[] = ["Aman", "Rahul"];
+
+names.map(name => {
+    return name.toUpperCase();
+});
+```
+
+TypeScript automatically knows:
+
+```ts
+name // string
+```
+
+So you don't need:
+
+```ts
+names.map((name: string) => ...)
+```
+
+---
+
+## 7. Function Parameters with Arrays
+
+You can specify that a function accepts an array:
+
+```ts
+function printNames(names: string[]) {
+    names.forEach(name => {
+        console.log(name);
+    });
+}
+
+printNames(["Aman", "Rahul"]); // ✅
+```
+
+But:
+
+```ts
+printNames([10, 20]); // ❌
+```
+
+Similarly:
+
+```ts
+function getTotal(prices: number[]) {
+    return prices.reduce((total, price) => total + price, 0);
+}
+```
+
+---
+
+## 8. Function Returning an Array
+
+```ts
+function getNames(): string[] {
+    return ["Aman", "Rahul", "Suyash"];
+}
+```
+
+Or:
+
+```ts
+function getScores(): number[] {
+    return [80, 90, 100];
+}
+```
+
+---
+
+## 9. Empty Arrays — Important
+
+Be careful with empty arrays.
+
+Instead of relying on inference:
+
+```ts
+let users = [];
+```
+
+it's usually better to explicitly provide the intended type:
+
+```ts
+let users: string[] = [];
+```
+
+For objects:
+
+```ts
+type User = {
+    name: string;
+    age: number;
+};
+
+let users: User[] = [];
+```
+
+This becomes especially important when working with API data and React state.
+
+---
+
+## 10. Readonly Arrays
+
+Sometimes you want an array that shouldn't be modified.
+
+```ts
+const numbers: readonly number[] = [1, 2, 3];
+```
+
+Reading is fine:
+
+```ts
+console.log(numbers[0]); // ✅
+```
+
+Modification isn't:
+
+```ts
+numbers.push(4); // ❌
+numbers.pop();   // ❌
+numbers[0] = 10; // ❌
+```
+
+Alternative syntax:
+
+```ts
+const numbers: ReadonlyArray<number> = [1, 2, 3];
+```
+
+You don't need to focus heavily on this yet, but you should recognize it.
+
+---
+
+## `const` vs `readonly`
+
+Important distinction:
+
+```ts
+const numbers = [1, 2, 3];
+
+numbers.push(4); // ✅
+```
+
+`const` prevents reassignment:
+
+```ts
+numbers = [5, 6]; // ❌
+```
+
+It does not prevent modifying the array.
+
+Whereas:
+
+```ts
+const numbers: readonly number[] = [1, 2, 3];
+
+numbers.push(4); // ❌
+```
+
+---
+
+## What You Need to Remember
+
+For now, these are the high-ROI concepts:
+
+```ts
+// Basic arrays
+let names: string[] = ["A", "B"];
+let scores: number[] = [10, 20];
+
+// Type inference
+let prices = [100, 200, 300]; // number[]
+
+// Mixed types
+let values: (string | number)[] = ["hello", 10];
+
+// Object arrays
+type User = {
+    name: string;
+    age: number;
+};
+
+let users: User[] = [];
+
+// Function accepting array
+function printUsers(users: User[]) {}
+
+// Function returning array
+function getUsers(): User[] {
+    return [];
+}
+
+// Readonly
+const ids: readonly number[] = [1, 2, 3];
+```
+
+Core mental model: JavaScript gives you arrays; TypeScript lets you define what is allowed inside those arrays.

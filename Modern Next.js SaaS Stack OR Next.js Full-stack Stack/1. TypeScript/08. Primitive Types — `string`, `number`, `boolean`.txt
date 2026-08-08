@@ -1,0 +1,221 @@
+# 8. Primitive Types — `string`, `number`, `boolean`
+
+TypeScript has three primitive types you'll use constantly:
+
+```ts
+string
+number
+boolean
+```
+
+## 1. `string`
+
+Used for text.
+
+```ts
+let username: string = "Suyash";
+let email: string = "suyash@gmail.com";
+let message: string = `Hello ${username}`;
+```
+
+❌ TypeScript prevents assigning another type:
+
+```ts
+let username: string = "Suyash";
+
+username = 25;
+// Error: Type 'number' is not assignable to type 'string'
+```
+
+JavaScript's `typeof`:
+
+```ts
+console.log(typeof username);
+// "string"
+```
+
+---
+
+## 2. `number`
+
+Used for all JavaScript numbers.
+
+Unlike languages such as Java or C++, TypeScript doesn't normally separate numbers into `int`, `float`, `double`, etc.
+
+```ts
+let age: number = 22;
+let price: number = 99.99;
+let temperature: number = -5;
+```
+
+All are `number`.
+
+You can also use different numeric representations:
+
+```ts
+let decimal: number = 100;
+let binary: number = 0b1010;
+let hexadecimal: number = 0xff;
+```
+
+### Important
+
+There is no:
+
+```ts
+let age: int;       // ❌
+let price: float;   // ❌
+let value: double;  // ❌
+```
+
+Use:
+
+```ts
+let age: number = 22;
+```
+
+---
+
+## 3. `boolean`
+
+A boolean can only be:
+
+```ts
+true
+false
+```
+
+Example:
+
+```ts
+let isLoggedIn: boolean = true;
+let isAdmin: boolean = false;
+```
+
+This won't work:
+
+```ts
+let isLoggedIn: boolean = "yes";
+// ❌ Type 'string' is not assignable to type 'boolean'
+```
+
+---
+
+# Using Them Together
+
+Suppose you're storing user information:
+
+```ts
+let username: string = "Suyash";
+let age: number = 22;
+let isLoggedIn: boolean = true;
+
+console.log(username);
+console.log(age);
+console.log(isLoggedIn);
+```
+
+TypeScript now knows exactly what kind of value each variable should contain.
+
+---
+
+# Type Inference
+
+You don't always need to write the type explicitly.
+
+Instead of:
+
+```ts
+let username: string = "Suyash";
+let age: number = 22;
+let isLoggedIn: boolean = true;
+```
+
+You can write:
+
+```ts
+let username = "Suyash";
+let age = 22;
+let isLoggedIn = true;
+```
+
+TypeScript automatically infers:
+
+```text
+username    → string
+age         → number
+isLoggedIn  → boolean
+```
+
+So this still fails:
+
+```ts
+let age = 22;
+
+age = "twenty two";
+// ❌ Type 'string' is not assignable to type 'number'
+```
+
+For simple initialized variables, prefer inference:
+
+```ts
+let name = "Suyash";     // ✅ usually preferred
+```
+
+rather than unnecessarily writing:
+
+```ts
+let name: string = "Suyash"; // valid, but redundant
+```
+
+---
+
+## Primitive vs Wrapper Types
+
+Use lowercase types:
+
+```ts
+string
+number
+boolean
+```
+
+Avoid uppercase wrapper types:
+
+```ts
+String
+Number
+Boolean
+```
+
+So:
+
+```ts
+let name: string = "Suyash";    // ✅
+let age: number = 22;            // ✅
+let active: boolean = true;      // ✅
+```
+
+This distinction becomes more important as you learn objects and interfaces.
+
+---
+
+## Quick Cheat Sheet
+
+| Type      | Stores     | Examples                      |
+| --------- | ---------- | ----------------------------- |
+| `string`  | Text       | `"hello"`, `'TS'`, `` `Hi` `` |
+| `number`  | Numbers    | `10`, `3.14`, `-50`           |
+| `boolean` | True/false | `true`, `false`               |
+
+The main syntax to remember is:
+
+```ts
+let variableName: type = value;
+
+let name: string = "Suyash";
+let age: number = 22;
+let learningTypeScript: boolean = true;
+```
+
+High-ROI takeaway: `string`, `number`, and `boolean` work almost exactly like the values you already use in JavaScript. TypeScript's addition is that it can enforce which type a variable is allowed to hold at compile time.

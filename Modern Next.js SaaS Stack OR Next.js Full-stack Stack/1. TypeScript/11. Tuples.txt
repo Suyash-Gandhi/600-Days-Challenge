@@ -1,0 +1,227 @@
+# 11. Tuples in TypeScript
+
+A tuple is an array with a fixed number of elements, where the type of each position is predefined.
+
+```ts
+let user: [string, number] = ["Suyash", 22];
+```
+
+Here TypeScript knows:
+
+```text
+Position 0 → string
+Position 1 → number
+```
+
+So these are invalid:
+
+```ts
+user = [22, "Suyash"];       // ❌ wrong order
+user = ["Suyash"];           // ❌ missing element
+user = ["Suyash", 22, true]; // ❌ extra element
+```
+
+## 1. Tuple vs Array
+
+Normal array:
+
+```ts
+let data: (string | number)[] = ["Suyash", 22];
+
+data = [22, "Suyash"]; // ✅ allowed
+data = [1, 2, 3];      // ✅ allowed
+```
+
+Tuple:
+
+```ts
+let data: [string, number] = ["Suyash", 22];
+
+data = [22, "Suyash"]; // ❌
+```
+
+The key difference is that a tuple specifies both length and position types.
+
+---
+
+## 2. Accessing Tuple Values
+
+```ts
+let user: [string, number] = ["Suyash", 22];
+
+console.log(user[0]); // "Suyash"
+console.log(user[1]); // 22
+```
+
+TypeScript also knows their exact types:
+
+```ts
+user[0].toUpperCase(); // ✅ string method
+user[1].toFixed(2);    // ✅ number method
+```
+
+This would fail:
+
+```ts
+user[0].toFixed(2); // ❌ string doesn't have toFixed()
+```
+
+---
+
+## 3. Named Tuples
+
+You can give tuple positions labels:
+
+```ts
+let user: [name: string, age: number];
+
+user = ["Suyash", 22];
+```
+
+This doesn't change how the tuple works, but makes its meaning clearer.
+
+```ts
+type User = [
+    name: string,
+    age: number,
+    isAdmin: boolean
+];
+
+const user: User = ["Suyash", 22, false];
+```
+
+---
+
+## 4. Optional Tuple Elements
+
+Tuple elements can be optional using `?`.
+
+```ts
+let user: [string, number?];
+
+user = ["Suyash"];     // ✅
+user = ["Suyash", 22]; // ✅
+```
+
+Named version:
+
+```ts
+type User = [
+    name: string,
+    age?: number
+];
+```
+
+Optional elements normally come after required elements.
+
+---
+
+## 5. Readonly Tuples
+
+You can prevent modification:
+
+```ts
+const point: readonly [number, number] = [10, 20];
+
+point[0] = 50; // ❌ Cannot assign
+```
+
+You can also write:
+
+```ts
+type Point = readonly [number, number];
+
+const position: Point = [10, 20];
+```
+
+---
+
+## 6. Tuples in Functions
+
+Tuples are useful when a function returns multiple values with different types.
+
+```ts
+function getUser(): [string, number] {
+    return ["Suyash", 22];
+}
+
+const [name, age] = getUser();
+
+console.log(name); // string
+console.log(age);  // number
+```
+
+TypeScript automatically understands:
+
+```ts
+name // string
+age  // number
+```
+
+This pattern is common in React-style APIs:
+
+```ts
+const [value, setValue] = useState(0);
+```
+
+Conceptually, this is tuple-like because position determines what each value represents.
+
+---
+
+## 7. Rest Elements in Tuples
+
+Tuples can also contain a variable number of elements:
+
+```ts
+type Data = [string, ...number[]];
+
+const a: Data = ["scores"];
+const b: Data = ["scores", 10, 20, 30];
+```
+
+Meaning:
+
+```text
+First element → string
+Remaining elements → numbers
+```
+
+This is useful but less important for now.
+
+---
+
+## What You Need to Remember
+
+```ts
+// Basic tuple
+let user: [string, number] = ["Suyash", 22];
+
+// Named tuple
+let product: [name: string, price: number] =
+    ["Laptop", 50000];
+
+// Optional element
+let person: [string, number?] = ["Suyash"];
+
+// Readonly tuple
+let point: readonly [number, number] = [10, 20];
+
+// Function returning tuple
+function getData(): [string, boolean] {
+    return ["Success", true];
+}
+
+const [message, success] = getData();
+```
+
+### Array vs Tuple
+
+| Array                              | Tuple                                   |
+| ---------------------------------- | --------------------------------------- |
+| Usually variable length            | Fixed structure                         |
+| Elements usually share a type      | Each position can have a different type |
+| Order often doesn't define meaning | Position has specific meaning           |
+| `number[]`                         | `[string, number]`                      |
+
+Core idea: A tuple is essentially a strictly structured array.
+

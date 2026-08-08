@@ -1,0 +1,275 @@
+# 9. `null` and `undefined` in TypeScript
+
+Both represent absence of a value, but they usually mean slightly different things:
+
+ `undefined` → a value has not been assigned / does not exist
+ `null` → a value was intentionally set to nothing
+
+## 1. `undefined`
+
+A variable or property can be explicitly typed as `undefined`.
+
+```ts
+let value: undefined = undefined;
+```
+
+More commonly, you encounter it when something is optional:
+
+```ts
+let username: string | undefined;
+
+username = "Suyash";
+username = undefined;
+```
+
+The `|` creates a union type:
+
+```ts
+string | undefined
+```
+
+Meaning:
+
+> `username` can contain either a `string` or `undefined`.
+
+### Optional properties
+
+```ts
+let user: {
+  name: string;
+  age?: number;
+} = {
+  name: "Suyash"
+};
+
+console.log(user.age); // undefined
+```
+
+`age?: number` means the property is optional.
+
+---
+
+## 2. `null`
+
+`null` usually means we deliberately have no value.
+
+```ts
+let selectedUser: string | null = null;
+
+selectedUser = "Suyash";
+selectedUser = null;
+```
+
+A common example is searching for something:
+
+```ts
+let result: string | null = null;
+
+// later
+result = "User found";
+```
+
+Here, `null` represents:
+
+> "There currently isn't a result."
+
+---
+
+## 3. `null` vs `undefined`
+
+```ts
+let a: undefined = undefined;
+let b: null = null;
+```
+
+Conceptually:
+
+| Value       | Typical meaning               |
+| ----------- | ----------------------------- |
+| `undefined` | Value is missing/not provided |
+| `null`      | Intentionally no value        |
+
+For example:
+
+```ts
+let middleName: string | undefined;
+let selectedProduct: string | null = null;
+```
+
+---
+
+## 4. Why can't we just do this?
+
+With TypeScript's recommended `strictNullChecks` behavior:
+
+```ts
+let name: string = "Suyash";
+
+name = null;       // ❌ Error
+name = undefined;  // ❌ Error
+```
+
+Because you told TypeScript:
+
+```ts
+let name: string
+```
+
+So TypeScript expects only strings.
+
+If absence is valid, explicitly include it:
+
+```ts
+let name: string | null = null;
+```
+
+or:
+
+```ts
+let name: string | undefined;
+```
+
+or, occasionally:
+
+```ts
+let name: string | null | undefined;
+```
+
+---
+
+## 5. Checking before using a value
+
+Consider:
+
+```ts
+let username: string | null = null;
+
+console.log(username.toUpperCase()); // ❌
+```
+
+TypeScript complains because `username` might be `null`.
+
+You need to narrow the type first:
+
+```ts
+if (username !== null) {
+  console.log(username.toUpperCase());
+}
+```
+
+Inside the `if`, TypeScript knows:
+
+```text
+Before check:
+string | null
+
+       ↓ null check
+
+Inside if:
+string
+```
+
+This is type narrowing, which we'll cover properly later.
+
+---
+
+## 6. Very common function example
+
+```ts
+function findUser(id: number): string | null {
+  if (id === 1) {
+    return "Suyash";
+  }
+
+  return null;
+}
+
+const user = findUser(1);
+```
+
+The return type:
+
+```ts
+string | null
+```
+
+tells developers:
+
+> This function might return a user, but it might also return nothing.
+
+---
+
+## 7. Optional parameters and `undefined`
+
+```ts
+function greet(name?: string) {
+  console.log(name);
+}
+
+greet("Suyash"); // Suyash
+greet();         // undefined
+```
+
+This:
+
+```ts
+name?: string
+```
+
+roughly means the parameter can be:
+
+```ts
+string | undefined
+```
+
+---
+
+## 8. `??` — Nullish Coalescing
+
+You'll see this constantly in TypeScript/React:
+
+```ts
+let username: string | null = null;
+
+const displayName = username ?? "Guest";
+
+console.log(displayName); // Guest
+```
+
+`??` uses the value on the right when the left side is `null` or `undefined`.
+
+```ts
+null ?? "Guest"       // "Guest"
+undefined ?? "Guest"  // "Guest"
+"Suyash" ?? "Guest"   // "Suyash"
+```
+
+This is often better than `||` when `0`, `false`, or `""` are legitimate values.
+
+---
+
+## What you need to remember
+
+```ts
+// undefined = missing/not assigned
+let email: string | undefined;
+
+// null = intentionally empty
+let selectedUser: string | null = null;
+
+// allow both
+let value: string | null | undefined;
+
+// optional property
+age?: number;
+
+// optional parameter
+function test(name?: string) {}
+
+// fallback for null/undefined
+const name = username ?? "Guest";
+```
+
+For now, the most important concept is:
+
+> TypeScript doesn't automatically let `null` or `undefined` go everywhere. If a value can be absent, represent that possibility in its type, usually with a union such as `string | null` or `string | undefined`.
