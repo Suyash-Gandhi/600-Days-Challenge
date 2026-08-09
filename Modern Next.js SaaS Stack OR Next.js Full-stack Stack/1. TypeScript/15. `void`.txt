@@ -1,0 +1,168 @@
+# 15. `void` in TypeScript
+
+`void` means a function does not return a useful value.
+
+### Basic Example
+
+```ts
+function greet(): void {
+  console.log("Hello");
+}
+
+greet();
+```
+
+The function performs an action but doesn't return anything, so its return type is `void`.
+
+## `void` vs Returning a Value
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+function printSum(a: number, b: number): void {
+  console.log(a + b);
+}
+```
+
+Here:
+
+```ts
+add(2, 3);       // returns 5
+printSum(2, 3);  // prints 5, but returns no useful value
+```
+
+Think of it as:
+
+```text
+number → function gives you a number
+string → function gives you a string
+void   → function gives you nothing useful
+```
+
+## Common Use Cases
+
+### 1. Logging functions
+
+```ts
+function logMessage(message: string): void {
+  console.log(message);
+}
+```
+
+### 2. Functions that modify something
+
+```ts
+let count = 0;
+
+function increment(): void {
+  count++;
+}
+```
+
+### 3. Event handlers
+
+Very common when you later use TypeScript with React:
+
+```ts
+function handleClick(): void {
+  console.log("Button clicked");
+}
+```
+
+## TypeScript Can Infer `void`
+
+You usually don't have to explicitly write it:
+
+```ts
+function greet() {
+  console.log("Hello");
+}
+```
+
+TypeScript infers:
+
+```ts
+function greet(): void
+```
+
+## Important: `void` vs `undefined`
+
+They are related but not exactly the same.
+
+```ts
+function test(): void {
+  console.log("hello");
+}
+```
+
+At runtime, calling this technically produces `undefined`:
+
+```ts
+const result = test();
+
+console.log(result); // undefined
+```
+
+But `void` is mainly used at the type level to say:
+
+> "Don't expect or use a return value from this function."
+
+## Function Type with `void`
+
+You'll often see:
+
+```ts
+let callback: () => void;
+```
+
+This means:
+
+> `callback` must be a function that takes no arguments, and its return value isn't important.
+
+For example:
+
+```ts
+callback = () => {
+  console.log("Done");
+};
+```
+
+Or with parameters:
+
+```ts
+let logger: (message: string) => void;
+
+logger = (message) => {
+  console.log(message);
+};
+```
+
+## One TypeScript Quirk
+
+A function assigned to a `() => void` type can actually return something:
+
+```ts
+const numbers = [1, 2, 3];
+
+numbers.forEach((num) => {
+  return num  2;
+});
+```
+
+`forEach` expects a callback whose return value is ignored. TypeScript's `void` in callback types often means "the caller won't use the returned value", rather than strictly "this function is physically incapable of returning anything."
+
+You don't need to memorize this yet—just remember it when you encounter callbacks.
+
+### For now, remember
+
+```ts
+function doSomething(): void {
+  // perform some action
+}
+```
+
+`void` = the function doesn't provide a useful return value to the caller.
+
+This is the main use of `void` you'll encounter in TypeScript.

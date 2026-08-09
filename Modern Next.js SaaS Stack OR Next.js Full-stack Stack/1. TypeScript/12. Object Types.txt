@@ -1,0 +1,354 @@
+# 12. Object Types in TypeScript
+
+In JavaScript, objects can contain any properties. TypeScript lets you define exactly what properties an object should contain and what type each property should have.
+
+### 1. Basic Object Type
+
+```ts
+let user: {
+  name: string;
+  age: number;
+  isAdmin: boolean;
+};
+
+user = {
+  name: "Suyash",
+  age: 22,
+  isAdmin: false
+};
+```
+
+The structure after `:` describes the shape of the object.
+
+```ts
+{
+  name: string;
+  age: number;
+  isAdmin: boolean;
+}
+```
+
+TypeScript now checks the object.
+
+```ts
+user = {
+  name: "Suyash",
+  age: "22", // ❌ string is not assignable to number
+  isAdmin: false
+};
+```
+
+---
+
+## 2. Type Inference with Objects
+
+Usually, you don't need to explicitly write the object type.
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 22,
+  isAdmin: false
+};
+```
+
+TypeScript automatically infers:
+
+```ts
+{
+  name: string;
+  age: number;
+  isAdmin: boolean;
+}
+```
+
+Therefore:
+
+```ts
+user.age = 23;      // ✅
+user.age = "23";    // ❌
+
+user.name = "John"; // ✅
+user.name = 100;    // ❌
+```
+
+For simple local objects, type inference is usually preferred.
+
+---
+
+## 3. Objects as Function Parameters
+
+This is extremely common.
+
+```ts
+function printUser(user: { name: string; age: number }) {
+  console.log(user.name);
+  console.log(user.age);
+}
+
+printUser({
+  name: "Suyash",
+  age: 22
+});
+```
+
+Wrong types are caught:
+
+```ts
+printUser({
+  name: "Suyash",
+  age: "22" // ❌
+});
+```
+
+---
+
+## 4. Optional Properties `?`
+
+Sometimes a property doesn't have to exist.
+
+```ts
+let user: {
+  name: string;
+  age: number;
+  email?: string;
+};
+
+user = {
+  name: "Suyash",
+  age: 22
+};
+```
+
+This is valid because `email` is optional.
+
+This is also valid:
+
+```ts
+user = {
+  name: "Suyash",
+  age: 22,
+  email: "suyash@example.com"
+};
+```
+
+The `?` means:
+
+```ts
+email?: string
+```
+
+> `email` may be present, and if it is present, it must be a `string`.
+
+---
+
+## 5. Readonly Properties
+
+You can prevent a property from being reassigned.
+
+```ts
+let user: {
+  readonly id: number;
+  name: string;
+} = {
+  id: 101,
+  name: "Suyash"
+};
+
+user.name = "Rahul"; // ✅
+user.id = 102;       // ❌
+```
+
+`readonly` is useful for values such as IDs that shouldn't change.
+
+---
+
+## 6. Nested Objects
+
+Objects can contain other objects.
+
+```ts
+const user: {
+  name: string;
+  address: {
+    city: string;
+    pinCode: number;
+  };
+} = {
+  name: "Suyash",
+  address: {
+    city: "Delhi",
+    pinCode: 110001
+  }
+};
+```
+
+Access normally:
+
+```ts
+console.log(user.address.city);
+```
+
+---
+
+## 7. Arrays of Objects
+
+A very common pattern in React/backend development:
+
+```ts
+const users: {
+  name: string;
+  age: number;
+}[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+Think of:
+
+```ts
+{ name: string; age: number }[]
+```
+
+as:
+
+> An array where every element must be an object containing a `name` string and an `age` number.
+
+---
+
+## 8. Returning Objects from Functions
+
+```ts
+function createUser(): { name: string; age: number } {
+  return {
+    name: "Suyash",
+    age: 22
+  };
+}
+```
+
+TypeScript ensures the returned object follows the specified structure.
+
+---
+
+## 9. Repeating Object Types
+
+Suppose you keep writing:
+
+```ts
+const user1: {
+  name: string;
+  age: number;
+} = {
+  name: "Suyash",
+  age: 22
+};
+
+const user2: {
+  name: string;
+  age: number;
+} = {
+  name: "Rahul",
+  age: 25
+};
+```
+
+This becomes repetitive.
+
+TypeScript provides better ways to create reusable object types:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+const user1: User = {
+  name: "Suyash",
+  age: 22
+};
+
+const user2: User = {
+  name: "Rahul",
+  age: 25
+};
+```
+
+You'll cover type aliases and interfaces separately, so for now just understand why they're useful.
+
+---
+
+## 10. Important Real-World Example
+
+Imagine data coming from your backend:
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  inStock: boolean;
+};
+
+const product: Product = {
+  id: 101,
+  name: "Laptop",
+  price: 50000,
+  inStock: true
+};
+```
+
+Now TypeScript knows:
+
+```ts
+product.id       // number
+product.name     // string
+product.price    // number
+product.inStock  // boolean
+```
+
+And catches mistakes:
+
+```ts
+product.price = "50000"; // ❌
+```
+
+This is one of the biggest practical benefits of TypeScript when working with API data, React props, database objects, and backend DTOs.
+
+### What you should remember
+
+```ts
+// Basic object
+let user: {
+  name: string;
+  age: number;
+};
+
+// Optional
+email?: string;
+
+// Readonly
+readonly id: number;
+
+// Array of objects
+let users: { name: string; age: number }[];
+
+// Nested object
+let user: {
+  address: {
+    city: string;
+  };
+};
+```
+
+The central idea is simple:
+
+Object types describe the shape an object is required to have.
+

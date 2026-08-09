@@ -1,0 +1,224 @@
+# 13. `any` in TypeScript
+
+`any` is a special TypeScript type that basically tells TypeScript:
+
+> “Don’t type-check this value. Allow anything.”
+
+It essentially turns off TypeScript’s type safety for that variable.
+
+### Basic Example
+
+```ts
+let value: any = "Hello";
+
+value = 100;
+value = true;
+value = [1, 2, 3];
+value = { name: "Suyash" };
+```
+
+All of these are valid because `value` has type `any`.
+
+Compare this with:
+
+```ts
+let value: string = "Hello";
+
+value = 100; // ❌ Error
+```
+
+---
+
+## Why `any` Exists
+
+Sometimes TypeScript doesn't know what type some data will have.
+
+For example, imagine receiving unpredictable data:
+
+```ts
+let data: any;
+
+data = "Hello";
+data = 100;
+data = { name: "Suyash" };
+```
+
+`any` can also be useful temporarily when converting an old JavaScript project to TypeScript.
+
+---
+
+## The Big Problem with `any`
+
+Once something is `any`, TypeScript stops protecting you.
+
+```ts
+let user: any = {
+  name: "Suyash"
+};
+
+console.log(user.name);       // ✅
+console.log(user.age);        // ✅ TypeScript doesn't complain
+console.log(user.abc.xyz);    // ✅ TypeScript still doesn't complain
+user.doSomethingRandom();     // ✅ TypeScript still doesn't complain
+```
+
+But at runtime:
+
+```ts
+console.log(user.abc.xyz);
+```
+
+could crash because `abc` doesn't exist.
+
+So:
+
+```text
+any
+ ↓
+TypeScript stops checking
+ ↓
+Errors aren't caught during development
+ ↓
+Possible runtime errors
+```
+
+---
+
+## `any` in Functions
+
+You can use it for parameters:
+
+```ts
+function printValue(value: any) {
+  console.log(value);
+}
+
+printValue("Hello");
+printValue(100);
+printValue(true);
+```
+
+But this is usually poor TypeScript:
+
+```ts
+function getName(user: any) {
+  return user.name;
+}
+```
+
+TypeScript can't verify that `user` actually has a `name`.
+
+A proper type is better:
+
+```ts
+function getName(user: { name: string }) {
+  return user.name;
+}
+```
+
+Now:
+
+```ts
+getName({ name: "Suyash" }); // ✅
+
+getName({ age: 22 });        // ❌ Error
+```
+
+---
+
+## `any` Can Spread
+
+One particularly dangerous property of `any` is that it can remove type safety from other expressions too.
+
+```ts
+let data: any = "hello";
+
+let result = data.toUpperCase();
+```
+
+TypeScript can't reliably determine what `result` is because `data` is `any`.
+
+You can even write:
+
+```ts
+data.this.does.not.exist();
+```
+
+and TypeScript won't stop you.
+
+---
+
+## Explicit vs Implicit `any`
+
+### Explicit `any`
+
+You deliberately write:
+
+```ts
+let value: any;
+```
+
+### Implicit `any`
+
+TypeScript may infer `any` when it doesn't have enough type information in certain configurations.
+
+For example, without strict checking:
+
+```ts
+function add(a, b) {
+  return a + b;
+}
+```
+
+`a` and `b` may implicitly become `any`.
+
+With:
+
+```json
+{
+  "compilerOptions": {
+    "noImplicitAny": true
+  }
+}
+```
+
+TypeScript will complain and force you to provide appropriate types.
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+---
+
+## When Should You Use `any`?
+
+Avoid it whenever you can.
+
+It can be reasonable for temporary migration/debugging code, or when interacting with genuinely difficult-to-type legacy code.
+
+Think of it as an escape hatch, not a normal TypeScript type.
+
+```ts
+// ❌ Avoid
+let user: any;
+
+// ✅ Prefer a real type
+let user: {
+  name: string;
+  age: number;
+};
+```
+
+You'll soon see another type called `unknown`, which is usually a safer alternative to `any`.
+
+### Remember
+
+```text
+any = "I don't want TypeScript to check this."
+```
+
+The most important rule:
+
+> Using `any` removes one of the main benefits of TypeScript: type safety.

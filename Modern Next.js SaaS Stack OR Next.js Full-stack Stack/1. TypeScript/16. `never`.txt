@@ -1,0 +1,196 @@
+# 16. `never` in TypeScript
+
+`never` represents a value that can never exist.
+
+Think of it as:
+
+> “This code will never successfully produce a value.”
+
+## 1. Functions that never return
+
+The most common use is a function that always throws an error.
+
+```ts
+function throwError(message: string): never {
+  throw new Error(message);
+}
+```
+
+The function never reaches a normal `return`, so its return type is `never`.
+
+Another example is an infinite loop:
+
+```ts
+function runForever(): never {
+  while (true) {
+    console.log("Running...");
+  }
+}
+```
+
+Execution never leaves the function.
+
+## 2. `void` vs `never`
+
+These are easy to confuse.
+
+```ts
+function logMessage(): void {
+  console.log("Hello");
+}
+```
+
+This function finishes normally, but doesn't return a useful value.
+
+```ts
+function crash(): never {
+  throw new Error("Something went wrong");
+}
+```
+
+This function never finishes normally.
+
+| Type    | Meaning                                       |
+| ------- | --------------------------------------------- |
+| `void`  | Function completes but returns nothing useful |
+| `never` | Function never completes normally             |
+
+A simple way to remember:
+
+`void` → returns nothing
+
+`never` → never returns
+
+## 3. `never` from impossible conditions
+
+TypeScript can infer `never` when you've eliminated every possible type.
+
+```ts
+function process(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else if (typeof value === "number") {
+    console.log(value.toFixed(2));
+  } else {
+    // value is never here
+  }
+}
+```
+
+Since `value` can only be `string | number`, after checking both possibilities there is nothing left.
+
+Therefore, TypeScript considers `value` to be `never` in the final branch.
+
+## 4. Important real-world use: exhaustive checking
+
+This is one of the most useful applications of `never`.
+
+```ts
+type Status = "loading" | "success" | "error";
+
+function handleStatus(status: Status) {
+  switch (status) {
+    case "loading":
+      console.log("Loading...");
+      break;
+
+    case "success":
+      console.log("Success!");
+      break;
+
+    case "error":
+      console.log("Error!");
+      break;
+
+    default:
+      const impossible: never = status;
+  }
+}
+```
+
+We've handled every possible `Status`, so inside `default`, `status` should be `never`.
+
+Now imagine we add:
+
+```ts
+type Status =
+  | "loading"
+  | "success"
+  | "error"
+  | "cancelled";
+```
+
+but forget to update the `switch`.
+
+TypeScript will complain here:
+
+```ts
+const impossible: never = status;
+```
+
+because `"cancelled"` can reach that line.
+
+This makes `never` useful for catching missing cases.
+
+## 5. `never` with union types
+
+`never` basically means no possible value, so it disappears from unions:
+
+```ts
+type Example = string | never;
+```
+
+This becomes effectively:
+
+```ts
+type Example = string;
+```
+
+You can think of it mathematically:
+
+```text
+string OR impossible
+      ↓
+string
+```
+
+## 6. Don't normally create `never` variables
+
+This isn't something you'd typically write:
+
+```ts
+let value: never;
+```
+
+You can't meaningfully assign normal values to it:
+
+```ts
+value = "hello"; // ❌
+value = 10;      // ❌
+value = true;    // ❌
+```
+
+`never` represents the absence of any possible value.
+
+## Quick mental model
+
+```text
+any      → could be anything
+unknown  → value exists, but type isn't known yet
+void     → function returns nothing useful
+never    → value can never exist / function never completes normally
+```
+
+For now, the two things worth remembering are:
+
+```ts
+// 1. Function that never returns
+function fail(): never {
+  throw new Error("Failed");
+}
+
+// 2. Impossible/exhaustive case
+const impossible: never = value;
+```
+
+Those cover the vast majority of situations where you'll encounter `never`.

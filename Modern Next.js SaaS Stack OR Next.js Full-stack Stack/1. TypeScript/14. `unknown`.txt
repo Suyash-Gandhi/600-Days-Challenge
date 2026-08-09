@@ -1,0 +1,149 @@
+# 14. `unknown` in TypeScript
+
+`unknown` means:
+
+> “I don't know the type of this value yet.”
+
+It is similar to `any`, but much safer.
+
+### Basic Example
+
+```ts
+let value: unknown;
+
+value = "Hello";
+value = 100;
+value = true;
+value = {};
+```
+
+Just like `any`, an `unknown` variable can hold any type of value.
+
+The difference appears when you try to use that value.
+
+```ts
+let value: unknown = "Hello";
+
+console.log(value.toUpperCase()); // ❌ Error
+```
+
+TypeScript doesn't know whether `value` is actually a string, so it prevents you from calling string methods.
+
+You must first check its type:
+
+```ts
+let value: unknown = "Hello";
+
+if (typeof value === "string") {
+  console.log(value.toUpperCase()); // ✅
+}
+```
+
+This process is called type narrowing.
+
+## `unknown` vs `any`
+
+With `any`:
+
+```ts
+let value: any = 10;
+
+value.toUpperCase(); // ✅ TypeScript allows it
+```
+
+But this crashes at runtime because numbers don't have `toUpperCase()`.
+
+With `unknown`:
+
+```ts
+let value: unknown = 10;
+
+value.toUpperCase(); // ❌ TypeScript stops you
+```
+
+You have to verify the type:
+
+```ts
+if (typeof value === "string") {
+  value.toUpperCase();
+}
+```
+
+So remember:
+
+| `any`                | `unknown`                    |
+| -------------------- | ---------------------------- |
+| Can contain anything | Can contain anything         |
+| Can use directly     | Must check before using      |
+| Disables type safety | Preserves type safety        |
+| Avoid when possible  | Prefer when type isn't known |
+
+## Practical Example
+
+`unknown` is useful when data comes from somewhere and you cannot trust its type yet.
+
+```ts
+function printValue(value: unknown) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else if (typeof value === "number") {
+    console.log(value * 2);
+  }
+}
+
+printValue("hello"); // HELLO
+printValue(10);      // 20
+```
+
+## Error Handling Example
+
+A common use is `catch` errors:
+
+```ts
+try {
+  // some code
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(error.message);
+  }
+}
+```
+
+We check whether `error` is actually an `Error` before accessing `.message`.
+
+## One Important Rule
+
+You can assign anything to `unknown`:
+
+```ts
+let x: unknown;
+
+x = "hello";
+x = 42;
+x = true;
+```
+
+But you generally cannot assign `unknown` to a specific type without narrowing:
+
+```ts
+let x: unknown = "hello";
+
+let name: string = x; // ❌
+```
+
+After checking:
+
+```ts
+if (typeof x === "string") {
+  let name: string = x; // ✅
+}
+```
+
+### Easy Mental Model
+
+```text
+any     → "Trust me, don't check."
+unknown → "I don't know yet, check first."
+```
+
+For production TypeScript, prefer `unknown` over `any` whenever you genuinely don't know the type yet.
