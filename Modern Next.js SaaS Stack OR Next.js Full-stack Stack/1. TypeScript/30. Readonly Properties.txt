@@ -1,0 +1,412 @@
+# 30. Readonly Properties in TypeScript
+
+`readonly` means:
+
+> "You can read this property, but you cannot change it after it has been created."
+
+It's mainly used when you want an object's property to be fixed.
+
+---
+
+## 1. Basic Example
+
+```ts
+type User = {
+  readonly id: number;
+  name: string;
+};
+
+const user: User = {
+  id: 101,
+  name: "Suyash"
+};
+
+console.log(user.id); // ✅ 101
+
+user.name = "Rahul";  // ✅ Allowed
+
+user.id = 102;        // ❌ Error
+```
+
+Why?
+
+Because we declared:
+
+```ts
+readonly id: number;
+```
+
+So TypeScript says:
+
+> You can look at `id`, but you can't assign a new value to it.
+
+---
+
+# 2. Think of it like this
+
+Imagine an ID card:
+
+```text
+User
+┌──────────────────┐
+│ ID:   101 🔒     │  ← readonly
+│ Name: Suyash     │  ← can change
+└──────────────────┘
+```
+
+The user's name might change:
+
+```ts
+user.name = "Rahul";
+```
+
+But their ID should remain fixed:
+
+```ts
+user.id = 102; // ❌
+```
+
+That's the purpose of `readonly`.
+
+---
+
+# 3. `readonly` doesn't mean "constant variable"
+
+This is an important distinction.
+
+### `const`
+
+```ts
+const user = {
+  name: "Suyash"
+};
+
+user.name = "Rahul"; // ✅
+```
+
+`const` prevents you from reassigning the variable:
+
+```ts
+user = {}; // ❌
+```
+
+But it does not make the object's properties readonly.
+
+---
+
+### `readonly`
+
+```ts
+type User = {
+  readonly id: number;
+  name: string;
+};
+```
+
+Now the variable can still be changed:
+
+```ts
+const user: User = {
+  id: 101,
+  name: "Suyash"
+};
+
+user.name = "Rahul"; // ✅
+```
+
+But the specific property cannot:
+
+```ts
+user.id = 102; // ❌
+```
+
+### So:
+
+| Keyword    | Protects             |
+| ---------- | -------------------- |
+| `const`    | The variable binding |
+| `readonly` | An object's property |
+
+---
+
+# 4. `readonly` in interfaces
+
+You can use it with interfaces too:
+
+```ts
+interface Product {
+  readonly id: number;
+  name: string;
+  price: number;
+}
+
+const product: Product = {
+  id: 1,
+  name: "Laptop",
+  price: 50000
+};
+
+product.name = "MacBook"; // ✅
+product.price = 70000;    // ✅
+
+product.id = 2;          // ❌ Error
+```
+
+This is extremely common in real TypeScript code.
+
+---
+
+# 5. Why would we use it?
+
+Suppose you have:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+```
+
+Someone could accidentally do:
+
+```ts
+user.id = 999999;
+```
+
+Maybe that's dangerous because `id` is supposed to be assigned by your database.
+
+So you can communicate that rule directly in the type:
+
+```ts
+type User = {
+  readonly id: number;
+  name: string;
+};
+```
+
+Now TypeScript catches accidental changes.
+
+---
+
+# 6. Very important: `readonly` is a TypeScript rule
+
+This is one of the most important things to understand.
+
+```ts
+type User = {
+  readonly id: number;
+};
+
+const user: User = {
+  id: 101
+};
+
+user.id = 200; // ❌ TypeScript error
+```
+
+But `readonly` doesn't create some magical JavaScript lock at runtime.
+
+TypeScript eventually becomes JavaScript.
+
+The `readonly` restriction is primarily there to help you and the TypeScript compiler prevent accidental mutation during development.
+
+---
+
+# 7. `readonly` with arrays
+
+You can also make an array readonly.
+
+```ts
+const numbers: readonly number[] = [1, 2, 3];
+```
+
+You can read:
+
+```ts
+console.log(numbers[0]); // ✅
+```
+
+But you can't modify it:
+
+```ts
+numbers.push(4); // ❌
+numbers.pop();   // ❌
+numbers[0] = 10; // ❌
+```
+
+You can also write:
+
+```ts
+const numbers: ReadonlyArray<number> = [1, 2, 3];
+```
+
+Both mean roughly the same thing.
+
+---
+
+# 8. `readonly` does NOT make nested objects immutable
+
+This is a subtle but important point.
+
+```ts
+type User = {
+  readonly address: {
+    city: string;
+  };
+};
+
+const user: User = {
+  address: {
+    city: "Delhi"
+  }
+};
+```
+
+You can't replace the entire `address`:
+
+```ts
+user.address = {
+  city: "Mumbai"
+}; // ❌
+```
+
+But you can change what's inside it:
+
+```ts
+user.address.city = "Mumbai"; // ✅
+```
+
+Why?
+
+Because only `address` itself is readonly.
+
+```text
+user
+ │
+ └── address 🔒
+       │
+       └── city ← still changeable
+```
+
+To make nested data readonly, you'd need to make the nested properties readonly too (or use a deeper readonly type).
+
+---
+
+# 9. `readonly` with classes
+
+You can also use it in classes:
+
+```ts
+class User {
+  readonly id: number;
+
+  constructor(id: number) {
+    this.id = id;
+  }
+}
+
+const user = new User(101);
+
+console.log(user.id); // ✅
+
+user.id = 200; // ❌
+```
+
+A common pattern is:
+
+```ts
+class User {
+  constructor(
+    public readonly id: number,
+    public name: string
+  ) {}
+}
+```
+
+Then:
+
+```ts
+const user = new User(101, "Suyash");
+
+user.name = "Rahul"; // ✅
+user.id = 200;       // ❌
+```
+
+---
+
+# 10. The simplest mental model
+
+Whenever you see:
+
+```ts
+readonly something
+```
+
+think:
+
+> "This property is allowed to be read, but not reassigned."
+
+For example:
+
+```ts
+type Account = {
+  readonly accountNumber: string;
+  balance: number;
+};
+```
+
+Then:
+
+```ts
+account.accountNumber; // ✅ Read
+
+account.balance = 5000; // ✅ Change
+
+account.accountNumber = "999"; // ❌ Can't change
+```
+
+---
+
+## `readonly` vs `const`
+
+This is the part I would remember for your TypeScript fundamentals:
+
+```ts
+const user = {
+  name: "Suyash"
+};
+
+user.name = "Rahul"; // ✅
+```
+
+`const` says:
+
+> Don't replace `user`.
+
+Whereas:
+
+```ts
+type User = {
+  readonly id: number;
+};
+```
+
+says:
+
+> Don't replace `user.id`.
+
+So:
+
+```text
+const
+  ↓
+variable cannot be reassigned
+
+readonly
+  ↓
+property cannot be reassigned
+```
+
+### One-line definition
+
+> `readonly` is a TypeScript modifier that prevents a property from being reassigned after initialization.

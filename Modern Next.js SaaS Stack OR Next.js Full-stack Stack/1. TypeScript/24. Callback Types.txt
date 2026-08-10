@@ -1,0 +1,270 @@
+# 24. Callback Types in TypeScript
+
+A callback is a function that you pass to another function so it can be called later.
+
+In TypeScript, callback types define what parameters that callback must accept and what it should return.
+
+## 1. Basic Callback Type
+
+```ts
+function greet(name: string, callback: (message: string) => void) {
+  callback(`Hello ${name}`);
+}
+
+greet("Suyash", (message) => {
+  console.log(message);
+});
+```
+
+Here:
+
+```ts
+(message: string) => void
+```
+
+is the callback's type.
+
+It means:
+
+ callback receives a `string`
+ callback returns nothing (`void`)
+
+---
+
+## 2. Callback That Returns a Value
+
+Callbacks don't always return `void`.
+
+```ts
+function calculate(
+  a: number,
+  b: number,
+  operation: (x: number, y: number) => number
+): number {
+  return operation(a, b);
+}
+
+const result = calculate(10, 5, (x, y) => x + y);
+
+console.log(result); // 15
+```
+
+The callback type is:
+
+```ts
+(x: number, y: number) => number
+```
+
+So TypeScript requires the callback to take two numbers and return a number.
+
+This would fail:
+
+```ts
+calculate(10, 5, (x, y) => {
+  return "hello";
+});
+```
+
+```text
+Error: Type 'string' is not assignable to type 'number'
+```
+
+---
+
+## 3. Creating a Reusable Callback Type
+
+Instead of repeatedly writing:
+
+```ts
+(a: number, b: number) => number
+```
+
+you can create a type alias:
+
+```ts
+type Operation = (a: number, b: number) => number;
+
+function calculate(
+  a: number,
+  b: number,
+  operation: Operation
+): number {
+  return operation(a, b);
+}
+
+const add: Operation = (a, b) => a + b;
+const multiply: Operation = (a, b) => a  b;
+
+console.log(calculate(5, 3, add));      // 8
+console.log(calculate(5, 3, multiply)); // 15
+```
+
+This is common in real TypeScript code.
+
+---
+
+## 4. Callbacks with Objects
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+
+function getUser(callback: (user: User) => void) {
+  const user = {
+    id: 1,
+    name: "Suyash"
+  };
+
+  callback(user);
+}
+
+getUser((user) => {
+  console.log(user.name);
+});
+```
+
+TypeScript automatically knows:
+
+```ts
+user.id   // number
+user.name // string
+```
+
+This is one major benefit of typing callbacks.
+
+---
+
+## 5. Optional Callback
+
+Sometimes a callback doesn't have to be provided.
+
+```ts
+function saveData(
+  data: string,
+  callback?: () => void
+) {
+  console.log("Saving:", data);
+
+  callback?.();
+}
+
+saveData("Hello");
+
+saveData("Hello", () => {
+  console.log("Saved!");
+});
+```
+
+The `?` means the callback is optional.
+
+---
+
+## 6. Real-World Example: Array Methods
+
+You've already used callbacks constantly in JavaScript:
+
+```ts
+const numbers: number[] = [1, 2, 3, 4];
+
+const doubled = numbers.map((num) => {
+  return num  2;
+});
+```
+
+TypeScript knows `num` is a `number` because `map()` expects a callback based on the array's element type.
+
+Similarly:
+
+```ts
+const users = [
+  { name: "Aman", age: 20 },
+  { name: "Rahul", age: 17 }
+];
+
+const adults = users.filter((user) => {
+  return user.age >= 18;
+});
+```
+
+You usually don't need to explicitly type callback parameters when TypeScript can infer them.
+
+---
+
+## 7. Async Callback Types
+
+Callbacks can also return promises:
+
+```ts
+type AsyncCallback = (id: number) => Promise<string>;
+
+async function processUser(
+  id: number,
+  callback: AsyncCallback
+) {
+  const result = await callback(id);
+
+  console.log(result);
+}
+```
+
+Usage:
+
+```ts
+processUser(1, async (id) => {
+  return `User ${id}`;
+});
+```
+
+You'll see this frequently in backend TypeScript, APIs, and frameworks.
+
+---
+
+## Callback Type Syntax
+
+The main thing to remember is:
+
+```ts
+(parameter: Type) => ReturnType
+```
+
+Examples:
+
+```ts
+() => void
+
+(name: string) => void
+
+(id: number) => string
+
+(a: number, b: number) => number
+
+(user: User) => boolean
+
+(id: number) => Promise<User>
+```
+
+### Key takeaway
+
+A callback type is simply a function type used for a function passed into another function.
+
+```ts
+function doSomething(
+  callback: (value: string) => void
+) {
+  callback("Hello");
+}
+```
+
+For now, focus on being able to read:
+
+```ts
+callback: (value: string) => void
+```
+
+as:
+
+> "callback is a function that takes a string and returns nothing."
+
+That's enough to comfortably move forward with TypeScript callbacks.

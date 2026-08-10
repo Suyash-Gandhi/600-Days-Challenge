@@ -1,0 +1,233 @@
+# 23. Function Types in TypeScript
+
+In TypeScript, function types describe what arguments a function accepts and what it returns.
+
+## 1. Basic Function Type
+
+Suppose you have:
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+The type of this function can be written as:
+
+```ts
+(a: number, b: number) => number
+```
+
+Meaning:
+
+```text
+takes:   number, number
+returns: number
+```
+
+You can use this when declaring a variable that stores a function:
+
+```ts
+let calculate: (a: number, b: number) => number;
+
+calculate = (a, b) => {
+  return a + b;
+};
+
+console.log(calculate(10, 20)); // 30
+```
+
+Notice that TypeScript automatically knows `a` and `b` are numbers because of the function type.
+
+---
+
+## 2. Function Type with `void`
+
+If the function doesn't return anything useful:
+
+```ts
+let greet: (name: string) => void;
+
+greet = (name) => {
+  console.log(`Hello ${name}`);
+};
+```
+
+Function type:
+
+```ts
+(name: string) => void
+```
+
+---
+
+## 3. Function Types as Parameters
+
+This is one of the most important uses of function types.
+
+```ts
+function calculate(
+  a: number,
+  b: number,
+  operation: (x: number, y: number) => number
+): number {
+  return operation(a, b);
+}
+
+const add = (x: number, y: number) => x + y;
+const multiply = (x: number, y: number) => x  y;
+
+console.log(calculate(5, 3, add));       // 8
+console.log(calculate(5, 3, multiply));  // 15
+```
+
+Here:
+
+```ts
+operation: (x: number, y: number) => number
+```
+
+means `operation` must be a function that:
+
+```text
+accepts → two numbers
+returns → a number
+```
+
+So this would fail:
+
+```ts
+const greet = (name: string) => {
+  console.log(name);
+};
+
+calculate(5, 3, greet); // ❌ Type error
+```
+
+---
+
+## 4. Function Type with Type Alias
+
+If the same function type is used repeatedly, create a type alias:
+
+```ts
+type MathOperation = (a: number, b: number) => number;
+
+const add: MathOperation = (a, b) => {
+  return a + b;
+};
+
+const subtract: MathOperation = (a, b) => {
+  return a - b;
+};
+```
+
+This is cleaner than repeatedly writing:
+
+```ts
+(a: number, b: number) => number
+```
+
+---
+
+## 5. Callback Function Types
+
+You'll see function types constantly with callbacks.
+
+```ts
+function processUser(
+  name: string,
+  callback: (name: string) => void
+) {
+  callback(name);
+}
+
+processUser("Suyash", (name) => {
+  console.log(`Welcome ${name}`);
+});
+```
+
+TypeScript knows:
+
+```ts
+name // string
+```
+
+inside the callback because of:
+
+```ts
+callback: (name: string) => void
+```
+
+This pattern appears everywhere in JavaScript/TypeScript, including array methods, event handlers, React callbacks and Node.js code.
+
+---
+
+## 6. Function Type Syntax vs Arrow Function
+
+These look almost identical but mean different things.
+
+### Function type
+
+```ts
+let add: (a: number, b: number) => number;
+```
+
+Here:
+
+```ts
+(a: number, b: number) => number
+```
+
+describes a type.
+
+### Actual arrow function
+
+```ts
+const add = (a: number, b: number) => {
+  return a + b;
+};
+```
+
+Here the arrow represents an actual function implementation.
+
+So remember:
+
+```ts
+// TYPE
+(a: number, b: number) => number
+
+// FUNCTION
+(a: number, b: number) => a + b
+```
+
+## Key takeaway
+
+The core syntax you need to remember is:
+
+```ts
+(parameter: Type) => ReturnType
+```
+
+For example:
+
+```ts
+(name: string) => void
+
+(a: number, b: number) => number
+
+(userId: number) => string
+
+(isLoggedIn: boolean) => void
+```
+
+And for reusable function types:
+
+```ts
+type Handler = (value: string) => void;
+
+const handleInput: Handler = (value) => {
+  console.log(value);
+};
+```
+

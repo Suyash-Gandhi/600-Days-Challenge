@@ -1,0 +1,456 @@
+# 31. Nested Object Types
+
+A nested object type is simply an object type where one property is another object.
+
+You already know this:
+
+```ts
+let user: {
+  name: string;
+  age: number;
+} = {
+  name: "Suyash",
+  age: 22
+};
+```
+
+Now suppose the user also has an address.
+
+```ts
+let user: {
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    pincode: number;
+  };
+} = {
+  name: "Suyash",
+  age: 22,
+  address: {
+    city: "Delhi",
+    pincode: 110001
+  }
+};
+```
+
+The important part is:
+
+```ts
+address: {
+  city: string;
+  pincode: number;
+};
+```
+
+Here, `address` is a property whose value must itself be an object.
+
+---
+
+## 1. Think of it as a shape inside a shape
+
+Imagine the data:
+
+```ts
+user
+ ├── name
+ ├── age
+ └── address
+      ├── city
+      └── pincode
+```
+
+The TypeScript type describes exactly that structure:
+
+```ts
+{
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    pincode: number;
+  };
+}
+```
+
+So this is valid:
+
+```ts
+const user: {
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    pincode: number;
+  };
+} = {
+  name: "Suyash",
+  age: 22,
+  address: {
+    city: "Delhi",
+    pincode: 110001
+  }
+};
+```
+
+---
+
+# 2. Accessing nested properties
+
+You access them using multiple dots:
+
+```ts
+console.log(user.name);
+```
+
+```text
+Suyash
+```
+
+For the nested object:
+
+```ts
+console.log(user.address.city);
+```
+
+```text
+Delhi
+```
+
+And:
+
+```ts
+console.log(user.address.pincode);
+```
+
+```text
+110001
+```
+
+Think:
+
+```ts
+user.address.city
+```
+
+means:
+
+> Go into `user` → find `address` → go into `address` → find `city`.
+
+---
+
+# 3. TypeScript checks every level
+
+This is where nested object types become useful.
+
+You cannot do:
+
+```ts
+const user: {
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    pincode: number;
+  };
+} = {
+  name: "Suyash",
+  age: 22,
+  address: {
+    city: "Delhi",
+    pincode: "110001" // ❌ Error
+  }
+};
+```
+
+Why?
+
+Because we said:
+
+```ts
+pincode: number;
+```
+
+but provided:
+
+```ts
+pincode: "110001"
+```
+
+which is a string.
+
+TypeScript checks the nested object too.
+
+---
+
+# 4. Nested objects can go deeper
+
+There's no requirement that nesting stops at one level.
+
+For example:
+
+```ts
+const user: {
+  name: string;
+  address: {
+    city: string;
+    location: {
+      latitude: number;
+      longitude: number;
+    };
+  };
+} = {
+  name: "Suyash",
+  address: {
+    city: "Delhi",
+    location: {
+      latitude: 28.6139,
+      longitude: 77.2090
+    }
+  }
+};
+```
+
+Now the structure is:
+
+```text
+user
+ ├── name
+ └── address
+      ├── city
+      └── location
+           ├── latitude
+           └── longitude
+```
+
+You can access:
+
+```ts
+user.address.location.latitude
+```
+
+---
+
+# 5. Why would we actually need this?
+
+Because real-world data is often nested.
+
+For example, an API might give you:
+
+```ts
+const product = {
+  name: "Laptop",
+  price: 80000,
+  manufacturer: {
+    name: "Dell",
+    country: "USA"
+  }
+};
+```
+
+You could describe it with:
+
+```ts
+const product: {
+  name: string;
+  price: number;
+  manufacturer: {
+    name: string;
+    country: string;
+  };
+} = {
+  name: "Laptop",
+  price: 80000,
+  manufacturer: {
+    name: "Dell",
+    country: "USA"
+  }
+};
+```
+
+Now TypeScript knows:
+
+```ts
+product.name
+// string
+
+product.price
+// number
+
+product.manufacturer
+// { name: string; country: string }
+
+product.manufacturer.name
+// string
+
+product.manufacturer.country
+// string
+```
+
+---
+
+# 6. You can combine nested objects with optional properties
+
+For example:
+
+```ts
+const user: {
+  name: string;
+  address?: {
+    city: string;
+    pincode: number;
+  };
+} = {
+  name: "Suyash"
+};
+```
+
+Here:
+
+```ts
+address?
+```
+
+means the entire `address` property is optional.
+
+So this is valid:
+
+```ts
+{
+  name: "Suyash"
+}
+```
+
+And this is also valid:
+
+```ts
+{
+  name: "Suyash",
+  address: {
+    city: "Delhi",
+    pincode: 110001
+  }
+}
+```
+
+But there's an important consequence.
+
+This can cause a problem:
+
+```ts
+console.log(user.address.city);
+```
+
+TypeScript says essentially:
+
+> "What if `address` doesn't exist?"
+
+You would commonly use optional chaining:
+
+```ts
+console.log(user.address?.city);
+```
+
+---
+
+# 7. Nested objects with type aliases
+
+Writing large nested types directly can become ugly:
+
+```ts
+const user: {
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    pincode: number;
+  };
+} = ...
+```
+
+This is where your previous topic, Type Aliases, becomes useful.
+
+```ts
+type Address = {
+  city: string;
+  pincode: number;
+};
+
+type User = {
+  name: string;
+  age: number;
+  address: Address;
+};
+```
+
+Now:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 22,
+  address: {
+    city: "Delhi",
+    pincode: 110001
+  }
+};
+```
+
+This is much cleaner.
+
+The relationship is:
+
+```text
+User
+ │
+ ├── name
+ ├── age
+ └── address ──→ Address
+                   ├── city
+                   └── pincode
+```
+
+---
+
+# 8. The main idea
+
+Don't think of nested object types as a completely new TypeScript feature.
+
+It's just objects inside objects, and TypeScript describes the shape at every level.
+
+```ts
+type User = {
+  name: string;
+  address: {
+    city: string;
+    pincode: number;
+  };
+};
+```
+
+Read this as:
+
+> A `User` has a `name` which is a string, and an `address` which is an object containing a `city` string and a `pincode` number.
+
+### The pattern to remember
+
+```ts
+type Outer = {
+  property: {
+    nestedProperty: type;
+  };
+};
+```
+
+For example:
+
+```ts
+type User = {
+  name: string;
+  address: {
+    city: string;
+  };
+};
+```
+
+That's the entire concept of Nested Object Types.

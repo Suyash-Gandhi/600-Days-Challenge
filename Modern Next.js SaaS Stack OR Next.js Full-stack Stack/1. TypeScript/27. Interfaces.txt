@@ -1,0 +1,281 @@
+# 27. Interfaces in TypeScript
+
+An interface is a way to describe the shape of an object.
+
+Think of it as a contract:
+
+> “Any object that claims to be this type must have these properties with these types.”
+
+### 1. Basic example
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+Here:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+does not create an object.
+
+It only describes what a `User` object should look like.
+
+Then:
+
+```ts
+const user: User = ...
+```
+
+says:
+
+> “`user` must follow the `User` interface.”
+
+---
+
+## 2. Why is this useful?
+
+Without an interface:
+
+```ts
+function printUser(user: { name: string; age: number }) {
+  console.log(user.name);
+  console.log(user.age);
+}
+```
+
+This works, but imagine using that same object shape in 10 different places.
+
+You would repeatedly write:
+
+```ts
+{ name: string; age: number }
+```
+
+Instead:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+Now you can reuse it:
+
+```ts
+function printUser(user: User) {
+  console.log(user.name);
+}
+
+function saveUser(user: User) {
+  // ...
+}
+
+function deleteUser(user: User) {
+  // ...
+}
+```
+
+The interface becomes a reusable description of the object.
+
+---
+
+# 3. Interfaces can have methods
+
+You can describe functions that an object must have.
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  greet(): void;
+}
+```
+
+Now this is valid:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25,
+
+  greet() {
+    console.log("Hello!");
+  }
+};
+```
+
+But this is invalid:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+Because `greet` is missing.
+
+---
+
+# 4. Optional properties
+
+You can make a property optional using `?`.
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  email?: string;
+}
+```
+
+Now both are valid:
+
+```ts
+const user1: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+and:
+
+```ts
+const user2: User = {
+  name: "Suyash",
+  age: 25,
+  email: "suyash@example.com"
+};
+```
+
+The `?` means:
+
+> “This property may or may not exist.”
+
+---
+
+# 5. `readonly`
+
+You can prevent a property from being changed after creation:
+
+```ts
+interface User {
+  readonly id: number;
+  name: string;
+}
+
+const user: User = {
+  id: 1,
+  name: "Suyash"
+};
+```
+
+This is allowed:
+
+```ts
+user.name = "Rahul";
+```
+
+But this isn't:
+
+```ts
+user.id = 2;
+// Error
+```
+
+Because `id` is `readonly`.
+
+---
+
+# 6. Interfaces and functions
+
+Interfaces are especially useful when functions receive objects.
+
+```ts
+interface Product {
+  name: string;
+  price: number;
+}
+
+function buyProduct(product: Product): void {
+  console.log(`Buying ${product.name} for ${product.price}`);
+}
+```
+
+Now TypeScript knows exactly what `product` contains:
+
+```ts
+buyProduct({
+  name: "Laptop",
+  price: 50000
+});
+```
+
+And it catches mistakes:
+
+```ts
+buyProduct({
+  name: "Laptop",
+  price: "50000"
+});
+```
+
+❌ Error because `price` must be a `number`.
+
+---
+
+# 7. Interfaces can extend other interfaces
+
+This is one of the powerful parts.
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+interface Admin extends User {
+  permissions: string[];
+}
+```
+
+`Admin` now has everything from `User` plus `permissions`.
+
+So:
+
+```ts
+const admin: Admin = {
+  name: "Suyash",
+  age: 25,
+  permissions: ["delete", "create"]
+};
+```
+
+You can think of it like:
+
+```text
+User
+ ├── name
+ └── age
+
+Admin extends User
+ ├── name
+ ├── age
+ └── permissions
+```
+
+---

@@ -1,0 +1,343 @@
+# 29. Optional Properties in TypeScript
+
+An optional property is an object property that doesn't have to exist.
+
+You mark it with `?`.
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+```
+
+Here:
+
+ `name` → required
+ `age` → optional
+
+So both of these are valid:
+
+```ts
+const user1: User = {
+  name: "Suyash"
+};
+
+const user2: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+But this is invalid:
+
+```ts
+const user3: User = {
+  age: 25
+};
+```
+
+Because `name` is required.
+
+---
+
+## Why do we need optional properties?
+
+Imagine you're creating a user object.
+
+Not every user has a profile picture:
+
+```ts
+type User = {
+  name: string;
+  email: string;
+  profilePicture?: string;
+};
+```
+
+Now:
+
+```ts
+const user1: User = {
+  name: "Suyash",
+  email: "suyash@example.com"
+};
+```
+
+No profile picture — that's okay.
+
+And:
+
+```ts
+const user2: User = {
+  name: "Rahul",
+  email: "rahul@example.com",
+  profilePicture: "rahul.jpg"
+};
+```
+
+Also okay.
+
+So `?` basically means:
+
+> "This property may or may not be present."
+
+---
+
+# Optional Property vs Required Property
+
+Compare:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+You must provide both:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+But with:
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+```
+
+`age` can be left out:
+
+```ts
+const user: User = {
+  name: "Suyash"
+};
+```
+
+---
+
+# Important: `age?: number` does NOT mean "number or null"
+
+This is a common misunderstanding.
+
+```ts
+type User = {
+  age?: number;
+};
+```
+
+It means the property can be missing.
+
+```ts
+const user: User = {};
+```
+
+Valid.
+
+But:
+
+```ts
+const user: User = {
+  age: null
+};
+```
+
+Generally not valid under `strictNullChecks`.
+
+If you specifically want `null`, say so:
+
+```ts
+type User = {
+  age?: number | null;
+};
+```
+
+Now all three are possible:
+
+```ts
+const user1: User = {};
+
+const user2: User = {
+  age: 25
+};
+
+const user3: User = {
+  age: null
+};
+```
+
+---
+
+# What happens when you access an optional property?
+
+Consider:
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+
+const user: User = {
+  name: "Suyash"
+};
+```
+
+If you do:
+
+```ts
+console.log(user.age);
+```
+
+TypeScript treats `user.age` as:
+
+```ts
+number | undefined
+```
+
+because TypeScript knows:
+
+> "There might be a number here, but the property might not exist."
+
+So this can happen:
+
+```ts
+console.log(user.age); // undefined
+```
+
+---
+
+## Example with a function
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+
+function printUser(user: User) {
+  console.log(user.name);
+
+  if (user.age !== undefined) {
+    console.log(user.age);
+  }
+}
+```
+
+Why check?
+
+Because `age` might not exist.
+
+You can also use:
+
+```ts
+function printUser(user: User) {
+  console.log(user.age ?? "Age not provided");
+}
+```
+
+---
+
+# Optional Properties are extremely common
+
+You'll see them everywhere in real TypeScript code.
+
+For example, API data:
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  description?: string;
+  image?: string;
+};
+```
+
+A product might have:
+
+```ts
+{
+  id: 1,
+  name: "Laptop"
+}
+```
+
+or:
+
+```ts
+{
+  id: 2,
+  name: "Phone",
+  description: "A powerful smartphone",
+  image: "phone.jpg"
+}
+```
+
+Both satisfy the type.
+
+---
+
+# Optional Property vs Optional Parameter
+
+You've already seen optional parameters:
+
+```ts
+function greet(name?: string) {
+  // ...
+}
+```
+
+Here, the argument is optional:
+
+```ts
+greet();
+greet("Suyash");
+```
+
+Optional property:
+
+```ts
+type User = {
+  name?: string;
+};
+```
+
+Here, the object property is optional:
+
+```ts
+const user1: User = {};
+
+const user2: User = {
+  name: "Suyash"
+};
+```
+
+The idea is the same:
+
+> `?` = this thing doesn't have to be provided.
+
+---
+
+## One thing to remember
+
+When you see:
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+```
+
+Read it mentally as:
+
+> "A User must have a `name`, but may have an `age`."
+
+That's the entire concept of Optional Properties.

@@ -1,0 +1,594 @@
+# 28. Interface vs Type in TypeScript
+
+This is one of those TypeScript topics that feels confusing because both `interface` and `type` can describe the shape of an object.
+
+For example, both of these are valid:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+They look almost identical. So the real question is:
+
+> When should I use `interface`, and when should I use `type`?
+
+---
+
+## 1. The basic idea
+
+Think of both as creating a name for a type.
+
+### `interface`
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+Now:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+### `type`
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+Same usage:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+So for simple object shapes:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+and
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+are very similar.
+
+---
+
+# 2. The biggest difference: `type` can represent more things
+
+This is where `type` becomes more powerful.
+
+An interface is primarily designed for object shapes.
+
+A `type` can represent:
+
+### Object
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+### Union
+
+```ts
+type Status = "loading" | "success" | "error";
+```
+
+### Primitive
+
+```ts
+type ID = string;
+```
+
+### Tuple
+
+```ts
+type Coordinates = [number, number];
+```
+
+### Function
+
+```ts
+type Add = (a: number, b: number) => number;
+```
+
+So:
+
+```ts
+type Status = "loading" | "success" | "error";
+```
+
+is something you cannot directly express with an interface.
+
+That's an important reason to use `type`.
+
+---
+
+# 3. Interfaces are extendable
+
+Suppose you have:
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+You can extend it:
+
+```ts
+interface Admin extends User {
+  permissions: string[];
+}
+```
+
+Now `Admin` has both:
+
+```ts
+const admin: Admin = {
+  name: "Suyash",
+  permissions: ["delete", "edit"]
+};
+```
+
+Think:
+
+```text
+User
+ ↓ extends
+Admin
+```
+
+This is very natural with interfaces.
+
+---
+
+# 4. Types can also be combined
+
+Don't think that `type` cannot be extended.
+
+You can combine types using `&`.
+
+```ts
+type User = {
+  name: string;
+};
+
+type Admin = User & {
+  permissions: string[];
+};
+```
+
+This means:
+
+> `Admin` must have everything from `User` AND the additional properties.
+
+So:
+
+```ts
+const admin: Admin = {
+  name: "Suyash",
+  permissions: ["delete", "edit"]
+};
+```
+
+The difference is mainly the syntax:
+
+```ts
+interface Admin extends User {
+  permissions: string[];
+}
+```
+
+versus:
+
+```ts
+type Admin = User & {
+  permissions: string[];
+};
+```
+
+---
+
+# 5. A very important difference: declaration merging
+
+Interfaces have a special feature called declaration merging.
+
+You can write:
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+And later:
+
+```ts
+interface User {
+  age: number;
+}
+```
+
+TypeScript combines them.
+
+So TypeScript effectively sees:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+Therefore:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+works.
+
+---
+
+With `type`, you cannot do this:
+
+```ts
+type User = {
+  name: string;
+};
+
+type User = {
+  age: number;
+};
+```
+
+❌ Error:
+
+```text
+Duplicate identifier 'User'
+```
+
+This is one of the meaningful differences between them.
+
+---
+
+# 6. Why does declaration merging exist?
+
+It becomes particularly useful with libraries and frameworks.
+
+For example, a library might define:
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+You can sometimes add your own properties:
+
+```ts
+interface User {
+  isAdmin: boolean;
+}
+```
+
+The interface becomes:
+
+```ts
+interface User {
+  name: string;
+  isAdmin: boolean;
+}
+```
+
+This ability is sometimes called interface augmentation.
+
+You won't need this every day, but you'll encounter it in larger TypeScript projects.
+
+---
+
+# 7. Union types strongly favor `type`
+
+Suppose a user can have one of three statuses:
+
+```ts
+type Status =
+  | "loading"
+  | "success"
+  | "error";
+```
+
+Then:
+
+```ts
+let status: Status;
+
+status = "loading";  // ✅
+status = "success";  // ✅
+status = "error";    // ✅
+
+status = "random";   // ❌
+```
+
+This is extremely common in TypeScript.
+
+You can also create unions of objects:
+
+```ts
+type Response =
+  | { status: "success"; data: string }
+  | { status: "error"; message: string };
+```
+
+This is a major strength of `type`.
+
+---
+
+# 8. Interfaces are excellent for object-oriented designs
+
+Suppose you're defining entities in an application:
+
+```ts
+interface Animal {
+  name: string;
+  move(): void;
+}
+```
+
+Then:
+
+```ts
+interface Dog extends Animal {
+  bark(): void;
+}
+```
+
+This reads naturally:
+
+> Dog is an Animal and has additional behavior.
+
+Interfaces work very nicely with:
+
+ classes
+ `implements`
+ inheritance
+ object contracts
+
+For example:
+
+```ts
+interface User {
+  name: string;
+  login(): void;
+}
+
+class Admin implements User {
+  name = "Suyash";
+
+  login() {
+    console.log("Admin logged in");
+  }
+}
+```
+
+The interface says:
+
+> "Any class implementing `User` must provide these things."
+
+---
+
+# 9. `type` works with `implements` too
+
+Don't make the mistake of thinking:
+
+> "Classes use interface, therefore types cannot be used with classes."
+
+They can.
+
+```ts
+type User = {
+  name: string;
+  login(): void;
+};
+
+class Admin implements User {
+  name = "Suyash";
+
+  login() {
+    console.log("Admin logged in");
+  }
+}
+```
+
+This works.
+
+So `implements` is not exclusive to interfaces.
+
+---
+
+# 10. Practical rule
+
+Here's the rule I recommend while learning TypeScript:
+
+### Use `interface` when you're describing an object
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+Especially when you expect:
+
+ inheritance
+ `extends`
+ classes implementing the shape
+ declaration merging
+
+### Use `type` when you need something beyond a simple object shape
+
+For example:
+
+```ts
+type Status = "loading" | "success" | "error";
+```
+
+```ts
+type ID = string | number;
+```
+
+```ts
+type Coordinates = [number, number];
+```
+
+```ts
+type Handler = (event: Event) => void;
+```
+
+```ts
+type Result =
+  | { success: true; data: string }
+  | { success: false; error: string };
+```
+
+---
+
+# 11. Quick comparison
+
+| Feature             | `interface` | `type` |
+| ------------------- | ----------- | ------ |
+| Object shape        | ✅           | ✅      |
+| `extends`           | ✅           | ❌      |
+| Intersection `&`    | ❌           | ✅      |
+| Union `\|`          | ❌           | ✅      |
+| Primitive aliases   | ❌           | ✅      |
+| Tuple               | ❌           | ✅      |
+| Function type       | ❌           | ✅      |
+| Declaration merging | ✅           | ❌      |
+| `implements`        | ✅           | ✅      |
+
+---
+
+# 12. The mental model
+
+Don't memorize a giant list.
+
+Think of it like this:
+
+```text
+             TypeScript
+                 │
+        ┌────────┴────────┐
+        ↓                 ↓
+    interface            type
+        │                 │
+   object contracts    can describe
+   especially objects  almost anything
+        │                 │
+     extends          unions
+     classes          intersections
+     merging          tuples
+                       functions
+                       primitives
+                       objects
+```
+
+So if you see:
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+think:
+
+> "Here's the contract/shape of an object."
+
+If you see:
+
+```ts
+type Status = "loading" | "success" | "error";
+```
+
+think:
+
+> "I'm giving a name to some type expression."
+
+---
+
+## 13. What should you actually use?
+
+In modern TypeScript, both are good.
+
+A common convention is:
+
+```ts
+// Object shapes
+interface User {
+  name: string;
+  age: number;
+}
+
+// Unions / aliases / complex types
+type Status = "loading" | "success" | "error";
+
+type ID = string | number;
+```
+
+But don't get trapped thinking:
+
+> "Interface is for objects and type is never for objects."
+
+That's false.
+
+Both can describe objects.
+
+The more useful distinction is:
+
+> `interface` is specialized for extensible object contracts, while `type` is more general and can represent almost any type expression.
+
+### One sentence to remember
+
+`interface` = object contract.
+`type` = name for any type expression.

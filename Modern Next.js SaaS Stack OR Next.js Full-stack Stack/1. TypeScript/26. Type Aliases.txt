@@ -1,0 +1,395 @@
+# 26. Type Aliases
+
+A type alias lets you give a name to a type so you can reuse it.
+
+The syntax is:
+
+```ts
+type TypeName = someType;
+```
+
+### 1. Basic example
+
+Without a type alias:
+
+```ts
+function greet(name: string) {
+  console.log(name);
+}
+
+function printId(id: string | number) {
+  console.log(id);
+}
+```
+
+You can create a name for `string | number`:
+
+```ts
+type ID = string | number;
+
+function printId(id: ID) {
+  console.log(id);
+}
+```
+
+Now `ID` simply means:
+
+```ts
+string | number
+```
+
+So:
+
+```ts
+let userId: ID;
+
+userId = 101;       // ✅
+userId = "abc123";  // ✅
+userId = true;      // ❌
+```
+
+---
+
+## 2. Type aliases are especially useful for objects
+
+Imagine you have:
+
+```ts
+function printUser(user: {
+  name: string;
+  age: number;
+}) {
+  console.log(user.name);
+}
+```
+
+If multiple functions need the same object shape, repeating it gets annoying:
+
+```ts
+function printUser(user: {
+  name: string;
+  age: number;
+}) {}
+
+function saveUser(user: {
+  name: string;
+  age: number;
+}) {}
+
+function deleteUser(user: {
+  name: string;
+  age: number;
+}) {}
+```
+
+Instead:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+Then reuse it:
+
+```ts
+function printUser(user: User) {
+  console.log(user.name);
+}
+
+function saveUser(user: User) {
+  // ...
+}
+
+function deleteUser(user: User) {
+  // ...
+}
+```
+
+And variables can use it too:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+---
+
+# 3. Think of it as giving a nickname to a type
+
+This is probably the easiest mental model.
+
+```ts
+type Age = number;
+```
+
+Now:
+
+```ts
+let age: Age = 25;
+```
+
+It's basically saying:
+
+> "`Age` is another name for `number`."
+
+Likewise:
+
+```ts
+type Username = string;
+type IsLoggedIn = boolean;
+```
+
+Then:
+
+```ts
+let username: Username = "suyash";
+let loggedIn: IsLoggedIn = true;
+```
+
+---
+
+# 4. Type aliases can describe complicated types
+
+For example:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+};
+```
+
+Now:
+
+```ts
+const user: User = {
+  id: 1,
+  name: "Suyash",
+  email: "suyash@example.com",
+  isAdmin: false
+};
+```
+
+You could also have nested types:
+
+```ts
+type Address = {
+  city: string;
+  country: string;
+};
+
+type User = {
+  name: string;
+  age: number;
+  address: Address;
+};
+```
+
+Then:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25,
+  address: {
+    city: "Delhi",
+    country: "India"
+  }
+};
+```
+
+This makes large TypeScript programs much easier to understand.
+
+---
+
+# 5. Type aliases work with unions
+
+This is very common.
+
+```ts
+type Status = "loading" | "success" | "error";
+```
+
+Now:
+
+```ts
+let status: Status;
+
+status = "loading";  // ✅
+status = "success";  // ✅
+status = "error";    // ✅
+
+status = "pending";  // ❌
+```
+
+This is useful because you can reuse the same allowed values:
+
+```ts
+function showStatus(status: Status) {}
+
+function updateStatus(status: Status) {}
+
+const currentStatus: Status = "loading";
+```
+
+---
+
+# 6. Type aliases work with arrays
+
+```ts
+type Numbers = number[];
+
+const scores: Numbers = [10, 20, 30];
+```
+
+Or:
+
+```ts
+type Users = User[];
+
+const users: Users = [
+  {
+    name: "Suyash",
+    age: 25
+  }
+];
+```
+
+---
+
+# 7. Type aliases can describe function types
+
+You learned function types previously.
+
+Instead of repeatedly writing:
+
+```ts
+let add: (a: number, b: number) => number;
+```
+
+you can create an alias:
+
+```ts
+type MathFunction = (a: number, b: number) => number;
+```
+
+Now:
+
+```ts
+let add: MathFunction;
+
+add = (a, b) => {
+  return a + b;
+};
+```
+
+And:
+
+```ts
+let subtract: MathFunction;
+
+subtract = (a, b) => {
+  return a - b;
+};
+```
+
+---
+
+# The important idea
+
+Don't think of:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+as creating a JavaScript object.
+
+It doesn't create anything at runtime.
+
+It only tells TypeScript:
+
+> "Whenever I say `User`, I mean an object with this shape."
+
+So:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+disappears when TypeScript compiles to JavaScript.
+
+---
+
+## Type Alias vs Interface
+
+You'll soon encounter `interface`, which can look very similar:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+and:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+For basic object shapes, both can work.
+
+But type aliases can represent more than object shapes:
+
+```ts
+type ID = string | number;
+
+type Status = "loading" | "success" | "error";
+
+type Numbers = number[];
+
+type Callback = (value: string) => void;
+```
+
+That's one reason `type` is extremely useful.
+
+### Simple rule for now
+
+When you want to give a reusable name to a type, think:
+
+```ts
+type Name = Type;
+```
+
+For example:
+
+```ts
+type ID = string | number;
+
+type User = {
+  name: string;
+  age: number;
+};
+
+type Status = "loading" | "success" | "error";
+
+type Callback = (message: string) => void;
+```
+
+Type alias = a reusable name for a type.

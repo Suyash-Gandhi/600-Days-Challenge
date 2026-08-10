@@ -1,0 +1,358 @@
+# 25. Async Functions + `Promise<T>` in TypeScript
+
+Async functions in TypeScript work just like JavaScript `async/await`, but TypeScript also lets you type the value that the Promise will eventually return.
+
+## 1. Basic Async Function
+
+In JavaScript:
+
+```js
+async function getName() {
+  return "Suyash";
+}
+```
+
+An `async` function always returns a Promise.
+
+So in TypeScript:
+
+```ts
+async function getName(): Promise<string> {
+  return "Suyash";
+}
+```
+
+Here:
+
+```ts
+Promise<string>
+```
+
+means:
+
+> "This function returns a Promise that eventually resolves to a `string`."
+
+---
+
+## 2. `Promise<T>`
+
+The general syntax is:
+
+```ts
+Promise<T>
+```
+
+`T` represents the type of the resolved value.
+
+Examples:
+
+```ts
+Promise<string>
+Promise<number>
+Promise<boolean>
+Promise<User>
+Promise<string[]>
+```
+
+For example:
+
+```ts
+async function getAge(): Promise<number> {
+  return 22;
+}
+```
+
+Even though you're writing:
+
+```ts
+return 22;
+```
+
+the actual return value of calling the function is:
+
+```ts
+Promise<number>
+```
+
+---
+
+## 3. Using `await`
+
+`await` extracts the resolved value from a Promise.
+
+```ts
+async function getAge(): Promise<number> {
+  return 22;
+}
+
+async function showAge() {
+  const age = await getAge();
+
+  console.log(age);
+}
+```
+
+TypeScript knows:
+
+```ts
+getAge();       // Promise<number>
+
+await getAge(); // number
+```
+
+This distinction is very important.
+
+---
+
+## 4. Async Function Returning an Object
+
+Suppose we have:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+```
+
+We can write:
+
+```ts
+async function getUser(): Promise<User> {
+  return {
+    id: 1,
+    name: "Suyash",
+  };
+}
+```
+
+TypeScript ensures the resolved object follows `User`.
+
+This would fail:
+
+```ts
+async function getUser(): Promise<User> {
+  return {
+    id: 1,
+  };
+}
+```
+
+because `name` is missing.
+
+---
+
+## 5. Async Function Returning an Array
+
+```ts
+async function getUsers(): Promise<string[]> {
+  return ["Suyash", "Rahul", "Aman"];
+}
+```
+
+Meaning:
+
+```text
+getUsers()
+    ↓
+Promise<string[]>
+    ↓ await
+string[]
+```
+
+Usage:
+
+```ts
+async function main() {
+  const users = await getUsers();
+
+  users.forEach((user) => {
+    console.log(user);
+  });
+}
+```
+
+---
+
+## 6. `Promise<void>`
+
+Sometimes an async function doesn't return useful data.
+
+```ts
+async function saveUser(): Promise<void> {
+  console.log("User saved");
+}
+```
+
+Here:
+
+```ts
+Promise<void>
+```
+
+means the Promise resolves without a meaningful value.
+
+A common real-world example:
+
+```ts
+async function deleteUser(id: number): Promise<void> {
+  await database.delete(id);
+}
+```
+
+---
+
+## 7. Type Inference
+
+You don't always need to explicitly write `Promise<T>`.
+
+```ts
+async function getName() {
+  return "Suyash";
+}
+```
+
+TypeScript automatically infers:
+
+```ts
+Promise<string>
+```
+
+Similarly:
+
+```ts
+async function getNumber() {
+  return 100;
+}
+```
+
+TypeScript infers:
+
+```ts
+Promise<number>
+```
+
+For important/public functions, explicitly specifying the return type can make the contract clearer.
+
+---
+
+## 8. Real-World API Example
+
+A common pattern is:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+async function fetchUser(): Promise<User> {
+  const response = await fetch("/api/user");
+
+  const user: User = await response.json();
+
+  return user;
+}
+```
+
+Flow:
+
+```text
+fetch()
+   ↓
+Promise<Response>
+   ↓ await
+Response
+
+response.json()
+   ↓
+Promise<unknown/data>
+   ↓ await
+User
+```
+
+---
+
+## 9. `Promise.resolve()`
+
+You can also create Promises directly:
+
+```ts
+const promise: Promise<string> = Promise.resolve("Hello");
+```
+
+After awaiting:
+
+```ts
+async function main() {
+  const message = await promise;
+}
+```
+
+TypeScript knows:
+
+```ts
+message // string
+```
+
+---
+
+## 10. Common Mistake
+
+Don't write:
+
+```ts
+async function getName(): string {
+  return "Suyash";
+}
+```
+
+❌ Incorrect because an `async` function doesn't directly return `string`.
+
+Use:
+
+```ts
+async function getName(): Promise<string> {
+  return "Suyash";
+}
+```
+
+✅ Correct.
+
+---
+
+## Mental Model
+
+Remember this:
+
+```text
+Normal function
+
+function getName(): string
+        ↓
+      string
+
+
+Async function
+
+async function getName(): Promise<string>
+        ↓
+ Promise<string>
+        ↓ await
+      string
+```
+
+### The one rule to remember
+
+If an async function produces a value of type `T`, its return type is `Promise<T>`.
+
+```ts
+async function getString(): Promise<string>
+async function getNumber(): Promise<number>
+async function getUser(): Promise<User>
+async function getUsers(): Promise<User[]>
+async function doSomething(): Promise<void>
+```
+
+This becomes especially important in React, Next.js, NestJS, database calls, and API requests, where you'll use `Promise<T>` constantly.
