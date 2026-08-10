@@ -1,0 +1,272 @@
+# 19. Return Types in TypeScript
+
+A return type specifies the type of value that a function is allowed to return.
+
+### Basic Syntax
+
+```ts
+function functionName(): ReturnType {
+  return value;
+}
+```
+
+Example:
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+Here:
+
+```ts
+a: number
+b: number
+): number
+```
+
+The `: number` after the parentheses is the return type.
+
+So TypeScript guarantees that `add()` returns a number.
+
+---
+
+## 1. Returning Different Types
+
+### `string`
+
+```ts
+function getName(): string {
+  return "Suyash";
+}
+```
+
+### `boolean`
+
+```ts
+function isAdult(age: number): boolean {
+  return age >= 18;
+}
+```
+
+### Array
+
+```ts
+function getNumbers(): number[] {
+  return [10, 20, 30];
+}
+```
+
+### Object
+
+```ts
+function getUser(): { name: string; age: number } {
+  return {
+    name: "Suyash",
+    age: 22
+  };
+}
+```
+
+---
+
+## 2. TypeScript Checks the Return Value
+
+If the declared return type doesn't match the actual returned value, TypeScript gives an error.
+
+```ts
+function getAge(): number {
+  return "22";
+}
+```
+
+❌ Error because `"22"` is a `string`, but the function promises to return a `number`.
+
+Correct:
+
+```ts
+function getAge(): number {
+  return 22;
+}
+```
+
+---
+
+## 3. TypeScript Can Infer Return Types
+
+You don't always need to explicitly write the return type.
+
+```ts
+function multiply(a: number, b: number) {
+  return a  b;
+}
+```
+
+TypeScript automatically infers:
+
+```ts
+number
+```
+
+So this is effectively equivalent to:
+
+```ts
+function multiply(a: number, b: number): number {
+  return a  b;
+}
+```
+
+### Practical rule
+
+For small/simple functions, inference is perfectly fine:
+
+```ts
+const double = (n: number) => n  2;
+```
+
+For important functions, APIs, exported functions, or functions where you want a clear contract, explicitly specifying the return type can be useful:
+
+```ts
+function calculateTotal(price: number, tax: number): number {
+  return price + tax;
+}
+```
+
+---
+
+## 4. Functions That Return Nothing — `void`
+
+If a function performs some work but doesn't return a useful value, use `void`.
+
+```ts
+function greet(name: string): void {
+  console.log(`Hello ${name}`);
+}
+```
+
+There is no:
+
+```ts
+return someValue;
+```
+
+So the return type is `void`.
+
+You already covered `void` earlier—the important connection is that `void` is commonly used as a function return type.
+
+---
+
+## 5. Arrow Function Return Types
+
+Same concept with arrow functions:
+
+```ts
+const add = (a: number, b: number): number => {
+  return a + b;
+};
+```
+
+Short form:
+
+```ts
+const add = (a: number, b: number): number => a + b;
+```
+
+---
+
+## 6. Multiple Possible Return Types
+
+A function can return more than one type using a union type:
+
+```ts
+function getValue(success: boolean): string | null {
+  if (success) {
+    return "Success";
+  }
+
+  return null;
+}
+```
+
+The function can return either:
+
+```ts
+string
+```
+
+or:
+
+```ts
+null
+```
+
+You'll study union types in more detail separately.
+
+---
+
+## 7. `Promise` Return Types
+
+You'll frequently encounter this in React, Next.js, NestJS, and backend development.
+
+```ts
+async function getUser(): Promise<string> {
+  return "Suyash";
+}
+```
+
+Because an `async` function returns a Promise, we write:
+
+```ts
+Promise<string>
+```
+
+meaning:
+
+> "This function eventually gives me a `string`."
+
+Another example:
+
+```ts
+async function getAge(): Promise<number> {
+  return 22;
+}
+```
+
+---
+
+## Parameter Type vs Return Type
+
+This distinction is important:
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
+
+Think of it as:
+
+```text
+        PARAMETER TYPES       RETURN TYPE
+              ↓                    ↓
+function add(a: number, b: number): number
+```
+
+Parameters describe what goes into the function.
+
+Return type describes what comes out of the function.
+
+### Remember
+
+```ts
+function square(n: number): number {
+  return n  n;
+}
+```
+
+Read this as:
+
+> "`square` takes a `number` and returns a `number`."
+
+That's essentially all you need for return types right now.

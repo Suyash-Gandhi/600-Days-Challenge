@@ -1,0 +1,23 @@
+
+## Default Parameters
+
+You can provide a default value:
+
+```ts
+function greet(name: string = "Guest") {
+  console.log(`Hello ${name}`);
+}
+
+greet("Suyash"); // Hello Suyash
+greet();         // Hello Guest
+```
+
+TypeScript can usually infer the type from the default:
+
+```ts
+function greet(name = "Guest") {
+  // name is inferred as string
+}
+```
+
+So writing `name: string = "Guest"` is often unnecessary.

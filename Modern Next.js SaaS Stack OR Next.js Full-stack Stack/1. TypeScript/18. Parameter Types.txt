@@ -1,0 +1,192 @@
+# 18. Parameter Types in TypeScript
+
+In TypeScript, parameter types specify what type of values a function is allowed to receive.
+
+### Basic Syntax
+
+```ts
+function greet(name: string) {
+  console.log(`Hello ${name}`);
+}
+
+greet("Suyash"); // ✅
+greet(10);       // ❌ Error
+```
+
+Here, `name: string` means the `name` parameter must be a string.
+
+## Multiple Parameters
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+
+add(10, 20);     // ✅
+add("10", "20"); // ❌
+```
+
+Each parameter can have its own type.
+
+```ts
+function createUser(name: string, age: number, active: boolean) {
+  console.log(name, age, active);
+}
+
+createUser("Suyash", 22, true);
+```
+
+## Optional Parameters — `?`
+
+Sometimes a parameter doesn't have to be provided.
+
+```ts
+function greet(name: string, message?: string) {
+  console.log(name, message);
+}
+
+greet("Suyash");          // ✅
+greet("Suyash", "Hello"); // ✅
+```
+
+`message?: string` effectively means the value can be `string | undefined`.
+
+Important: optional parameters normally come after required parameters.
+
+```ts
+// ❌ Error
+function test(name?: string, age: number) {}
+```
+
+## Default Parameters
+
+You can provide a default value:
+
+```ts
+function greet(name: string = "Guest") {
+  console.log(`Hello ${name}`);
+}
+
+greet("Suyash"); // Hello Suyash
+greet();         // Hello Guest
+```
+
+TypeScript can usually infer the type from the default:
+
+```ts
+function greet(name = "Guest") {
+  // name is inferred as string
+}
+```
+
+So writing `name: string = "Guest"` is often unnecessary.
+
+## Array Parameters
+
+```ts
+function calculateTotal(prices: number[]) {
+  return prices.reduce((total, price) => total + price, 0);
+}
+
+calculateTotal([10, 20, 30]); // ✅
+```
+
+## Object Parameters
+
+```ts
+function printUser(user: { name: string; age: number }) {
+  console.log(user.name);
+}
+
+printUser({
+  name: "Suyash",
+  age: 22
+});
+```
+
+For larger objects, you'll usually use a `type` or `interface` later:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+function printUser(user: User) {
+  console.log(user.name);
+}
+```
+
+## Union Types in Parameters
+
+A parameter can accept multiple types:
+
+```ts
+function printId(id: string | number) {
+  console.log(id);
+}
+
+printId(101);     // ✅
+printId("U101");  // ✅
+printId(true);    // ❌
+```
+
+## Rest Parameters
+
+For an unknown number of arguments:
+
+```ts
+function sum(...numbers: number[]) {
+  return numbers.reduce((total, num) => total + num, 0);
+}
+
+sum(10, 20, 30, 40);
+```
+
+`...numbers: number[]` means all arguments must be numbers.
+
+---
+
+### JavaScript vs TypeScript
+
+JavaScript:
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+add("hello", true); // JS allows it
+```
+
+TypeScript:
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+
+add("hello", true); // ❌ TypeScript catches it
+```
+
+### What you need to remember
+
+```ts
+function example(
+  required: string,
+  optional?: number,
+  defaultValue: boolean = true
+) {}
+```
+
+The core idea is simply:
+
+Parameter types = specify what types of arguments a function is allowed to receive.
+
+Next, return types complete the other half of typing functions:
+
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+```

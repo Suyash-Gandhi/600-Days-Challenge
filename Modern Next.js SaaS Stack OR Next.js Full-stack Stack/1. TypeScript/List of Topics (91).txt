@@ -47,7 +47,7 @@ You already know JS, so don't separately study `await`, Promises, async error ha
 29. Optional Properties
 30. Readonly Properties
 31. Nested Object Types
-32. Arrays of Objects
+32. Arrays of Objects 
 33. Extending Interfaces
 34. Intersection Types
 35. Index Signatures

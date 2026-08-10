@@ -1,0 +1,22 @@
+
+## Optional Parameters — `?`
+
+Sometimes a parameter doesn't have to be provided.
+
+```ts
+function greet(name: string, message?: string) {
+  console.log(name, message);
+}
+
+greet("Suyash");          // ✅
+greet("Suyash", "Hello"); // ✅
+```
+
+`message?: string` effectively means the value can be `string | undefined`.
+
+Important: optional parameters normally come after required parameters.
+
+```ts
+// ❌ Error
+function test(name?: string, age: number) {}
+```

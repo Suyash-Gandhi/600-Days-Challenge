@@ -1,0 +1,16 @@
+
+## Rest Parameters
+
+For an unknown number of arguments:
+
+```ts
+function sum(...numbers: number[]) {
+  return numbers.reduce((total, num) => total + num, 0);
+}
+
+sum(10, 20, 30, 40);
+```
+
+`...numbers: number[]` means all arguments must be numbers.
+
+---
