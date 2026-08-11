@@ -1,0 +1,565 @@
+# 35. Index Signatures
+
+An index signature tells TypeScript:
+
+> “This object can have many properties, and I don't know their names ahead of time, but I know what type their values will have.”
+
+This is useful when you have dynamic object keys.
+
+---
+
+## 1. The problem
+
+Suppose you have an object containing scores:
+
+```ts
+const scores = {
+  math: 90,
+  english: 85,
+  science: 92,
+};
+```
+
+You know all the values are numbers.
+
+But maybe later you'll have:
+
+```ts
+const scores = {
+  math: 90,
+  english: 85,
+  science: 92,
+  history: 88,
+  geography: 95,
+  physics: 91,
+  chemistry: 89,
+};
+```
+
+You don't necessarily want to manually write every possible property.
+
+You can describe this with an index signature:
+
+```ts
+type Scores = {
+  [subject: string]: number;
+};
+```
+
+Now:
+
+```ts
+const scores: Scores = {
+  math: 90,
+  english: 85,
+  science: 92,
+  history: 88,
+};
+```
+
+---
+
+# 2. Understanding the syntax
+
+This:
+
+```ts
+[subject: string]: number;
+```
+
+looks strange at first.
+
+Break it apart:
+
+```ts
+[subject: string]: number
+```
+
+means:
+
+> Any property whose key is a `string` must have a `number` value.
+
+The name `subject` is just a label. You could write:
+
+```ts
+type Scores = {
+  [key: string]: number;
+};
+```
+
+or:
+
+```ts
+type Scores = {
+  [name: string]: number;
+};
+```
+
+They mean the same thing.
+
+---
+
+# 3. Why do we need this?
+
+Without an index signature:
+
+```ts
+type Scores = {
+  math: number;
+  english: number;
+  science: number;
+};
+```
+
+TypeScript only knows about these three properties.
+
+So:
+
+```ts
+const scores: Scores = {
+  math: 90,
+  english: 85,
+  science: 92,
+};
+```
+
+But this:
+
+```ts
+scores.history
+```
+
+is an error because `history` wasn't defined in the type.
+
+With an index signature:
+
+```ts
+type Scores = {
+  [subject: string]: number;
+};
+```
+
+you can do:
+
+```ts
+scores.math;
+scores.history;
+scores.physics;
+scores.whatever;
+```
+
+TypeScript understands that any string key is allowed, and its value must be a number.
+
+---
+
+# 4. Dynamic keys
+
+This is where index signatures become particularly useful.
+
+```ts
+type Scores = {
+  [subject: string]: number;
+};
+
+const scores: Scores = {};
+
+const subject = "math";
+
+scores[subject] = 95;
+```
+
+You can even do:
+
+```ts
+const subject = "physics";
+
+scores[subject] = 88;
+```
+
+The property name isn't known beforehand.
+
+That's the key idea:
+
+> Index signatures are for objects where the property names are dynamic but the value type follows a known rule.
+
+---
+
+# 5. Example: User scores
+
+```ts
+type UserScores = {
+  [username: string]: number;
+};
+
+const scores: UserScores = {
+  suyash: 95,
+  rahul: 87,
+  amit: 91,
+};
+```
+
+Now:
+
+```ts
+scores["suyash"]; // number
+scores["rahul"];  // number
+```
+
+And this is allowed:
+
+```ts
+scores["john"] = 80;
+```
+
+But this is not:
+
+```ts
+scores["john"] = "80";
+// ❌ Type 'string' is not assignable to type 'number'
+```
+
+Because we said:
+
+```ts
+[string]: number
+```
+
+---
+
+# 6. Another common example: dictionary
+
+Imagine you have translations:
+
+```ts
+type Translations = {
+  [key: string]: string;
+};
+
+const translations: Translations = {
+  hello: "नमस्ते",
+  goodbye: "अलविदा",
+  thanks: "धन्यवाद",
+};
+```
+
+Every key can be different, but every value must be a string.
+
+---
+
+# 7. Number index signatures
+
+You can also use numbers as keys:
+
+```ts
+type Users = {
+  [id: number]: string;
+};
+
+const users: Users = {
+  101: "Suyash",
+  102: "Rahul",
+  103: "Amit",
+};
+```
+
+Then:
+
+```ts
+users[101]; // string
+users[102]; // string
+```
+
+The rule is:
+
+```ts
+[number]: string
+```
+
+means:
+
+> Numeric keys have string values.
+
+---
+
+# 8. String vs number
+
+Most of the time you'll encounter:
+
+```ts
+[key: string]: something
+```
+
+For example:
+
+```ts
+type ProductPrices = {
+  [product: string]: number;
+};
+```
+
+or:
+
+```ts
+type Config = {
+  [key: string]: string;
+};
+```
+
+Think of these as dictionaries/maps represented by objects.
+
+---
+
+# 9. Important: index signatures don't mean “anything goes”
+
+This:
+
+```ts
+type Scores = {
+  [subject: string]: number;
+};
+```
+
+does not mean:
+
+> “I can put anything into this object.”
+
+It means:
+
+> “I can use any string as a property name, but the value must be a number.”
+
+So:
+
+```ts
+const scores: Scores = {
+  math: 90,
+  english: 85,
+};
+```
+
+✅
+
+But:
+
+```ts
+const scores: Scores = {
+  math: 90,
+  english: "excellent",
+};
+```
+
+❌
+
+Because `"excellent"` isn't a number.
+
+---
+
+# 10. Fixed properties + index signature
+
+You can combine normal properties with an index signature:
+
+```ts
+type User = {
+  name: string;
+  [key: string]: string;
+};
+```
+
+This works:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  city: "Delhi",
+  country: "India",
+};
+```
+
+Why?
+
+Because:
+
+```ts
+name: string
+city: string
+country: string
+```
+
+all satisfy:
+
+```ts
+[key: string]: string;
+```
+
+---
+
+But this causes an error:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  [key: string]: string;
+};
+```
+
+Why?
+
+Because `age` is also a string key, but its value is a `number`.
+
+The index signature says:
+
+```ts
+[key: string]: string;
+```
+
+So TypeScript expects every string-keyed property to contain a string.
+
+---
+
+# 11. Multiple value types
+
+You can use a union:
+
+```ts
+type User = {
+  [key: string]: string | number;
+};
+```
+
+Now this works:
+
+```ts
+const user: User = {
+  name: "Suyash",
+  age: 25,
+  city: "Delhi",
+};
+```
+
+Because both `string` and `number` are allowed.
+
+You could even do:
+
+```ts
+user["age"] = 26;
+user["city"] = "Mumbai";
+```
+
+---
+
+# 12. The mental model
+
+Imagine this type:
+
+```ts
+type Scores = {
+  [key: string]: number;
+};
+```
+
+Think of it as:
+
+```text
+Scores
+│
+├── any string key
+│      ↓
+│    number
+│
+├── "math"      → number
+├── "english"   → number
+├── "science"   → number
+├── "physics"   → number
+└── "whatever"  → number
+```
+
+You don't tell TypeScript the exact keys.
+
+You tell it the rule for keys and values.
+
+---
+
+# 13. Index signature vs normal object type
+
+This distinction is important.
+
+### Normal object type
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+Means:
+
+> This object should have these specific properties.
+
+### Index signature
+
+```ts
+type Scores = {
+  [key: string]: number;
+};
+```
+
+Means:
+
+> This object can have arbitrary string properties, but their values must be numbers.
+
+So:
+
+Specific known properties → normal object type
+
+Dynamic/unknown property names → index signature
+
+---
+
+# 14. A very common real-world example
+
+Suppose an API returns an object where the keys are product IDs:
+
+```ts
+type Products = {
+  [productId: string]: number;
+};
+```
+
+Data:
+
+```ts
+const products: Products = {
+  "prod_101": 499,
+  "prod_102": 799,
+  "prod_103": 1299,
+};
+```
+
+You don't know which product IDs will exist.
+
+But you know:
+
+```text
+product ID → price (number)
+```
+
+That's exactly what an index signature describes.
+
+---
+
+## The one sentence to remember
+
+> An index signature defines the type of values for dynamically named object properties.
+
+The syntax:
+
+```ts
+[key: string]: number;
+```
+
+basically says:
+
+> “Any string key is allowed, but its value must be a number.”
+
+And that's the core of index signatures.

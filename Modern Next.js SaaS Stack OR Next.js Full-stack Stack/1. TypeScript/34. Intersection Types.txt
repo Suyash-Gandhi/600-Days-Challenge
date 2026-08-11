@@ -1,0 +1,330 @@
+# 34. Intersection Types
+
+Intersection types are used when you want a value to satisfy multiple types at the same time.
+
+The symbol is `&`.
+
+### 1. Basic idea
+
+Suppose we have two types:
+
+```ts
+type Person = {
+  name: string;
+};
+
+type Employee = {
+  employeeId: number;
+};
+```
+
+A person can be an employee by combining both:
+
+```ts
+type EmployeePerson = Person & Employee;
+```
+
+Now `EmployeePerson` must have everything from both types:
+
+```ts
+const user: EmployeePerson = {
+  name: "Suyash",
+  employeeId: 101
+};
+```
+
+So:
+
+```text
+Person
+  +
+Employee
+  ↓
+EmployeePerson
+```
+
+It means:
+
+> "This type has Person AND Employee."
+
+---
+
+## 2. Why `&`?
+
+Think of:
+
+```ts
+type A = {
+  x: string;
+};
+
+type B = {
+  y: number;
+};
+
+type C = A & B;
+```
+
+`C` becomes effectively:
+
+```ts
+type C = {
+  x: string;
+  y: number;
+};
+```
+
+Therefore:
+
+```ts
+const obj: C = {
+  x: "hello",
+  y: 123
+};
+```
+
+This would be invalid:
+
+```ts
+const obj: C = {
+  x: "hello"
+};
+```
+
+because `y` is required by `B`.
+
+---
+
+## 3. Intersection vs Union
+
+This is very important.
+
+You already learned union types:
+
+```ts
+type ID = string | number;
+```
+
+`|` means:
+
+> OR
+
+```ts
+let id: ID;
+
+id = "abc"; // ✅
+id = 123;   // ✅
+```
+
+But intersection:
+
+```ts
+type Employee = Person & Worker;
+```
+
+means:
+
+> AND
+
+The value must satisfy both `Person` and `Worker`.
+
+### Easy memory trick
+
+```text
+|  → OR
+&  → AND
+```
+
+---
+
+## 4. Real-world example
+
+Imagine an application has:
+
+```ts
+type User = {
+  name: string;
+  email: string;
+};
+
+type Admin = {
+  permissions: string[];
+};
+```
+
+You can create:
+
+```ts
+type AdminUser = User & Admin;
+```
+
+Now:
+
+```ts
+const admin: AdminUser = {
+  name: "Suyash",
+  email: "suyash@example.com",
+  permissions: ["delete_users", "manage_users"]
+};
+```
+
+The object needs:
+
+ `name` and `email` from `User`
+ `permissions` from `Admin`
+
+---
+
+## 5. You can intersect more than two types
+
+```ts
+type Person = {
+  name: string;
+};
+
+type Employee = {
+  employeeId: number;
+};
+
+type Manager = {
+  teamSize: number;
+};
+
+type ManagerEmployee = Person & Employee & Manager;
+```
+
+Now:
+
+```ts
+const manager: ManagerEmployee = {
+  name: "Suyash",
+  employeeId: 101,
+  teamSize: 5
+};
+```
+
+It must contain properties from all three types.
+
+---
+
+## 6. Intersection types are especially useful with existing types
+
+Instead of repeating properties:
+
+```ts
+type User = {
+  name: string;
+  email: string;
+};
+
+type Admin = {
+  permissions: string[];
+};
+
+type AdminUser = User & Admin;
+```
+
+This is cleaner than:
+
+```ts
+type AdminUser = {
+  name: string;
+  email: string;
+  permissions: string[];
+};
+```
+
+If `User` changes later, the intersection automatically reflects that.
+
+---
+
+# One thing to watch out for
+
+Intersection means both types must be compatible.
+
+For example:
+
+```ts
+type A = {
+  value: string;
+};
+
+type B = {
+  value: number;
+};
+
+type C = A & B;
+```
+
+What would `value` need to be?
+
+It would need to be:
+
+```text
+string AND number
+```
+
+There is no normal value that satisfies both, so:
+
+```ts
+const x: C = {
+  value: "hello"
+};
+```
+
+❌ Error.
+
+And:
+
+```ts
+const x: C = {
+  value: 123
+};
+```
+
+❌ Error.
+
+This is one reason intersections are usually used to combine different properties/requirements, rather than conflicting ones.
+
+---
+
+# The main idea
+
+If you remember only this:
+
+```ts
+type A = {
+  name: string;
+};
+
+type B = {
+  age: number;
+};
+
+type Person = A & B;
+```
+
+means:
+
+```ts
+type Person = {
+  name: string;
+  age: number;
+};
+```
+
+So:
+
+> Intersection (`&`) combines types. The resulting value must satisfy every type involved.
+
+And compare:
+
+```ts
+string | number  // string OR number
+A | B            // A OR B
+
+A & B            // A AND B
+```
+
+Union = choose between types.
+Intersection = combine types.

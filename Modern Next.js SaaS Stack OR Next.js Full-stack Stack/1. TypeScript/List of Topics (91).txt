@@ -48,7 +48,7 @@ You already know JS, so don't separately study `await`, Promises, async error ha
 30. Readonly Properties
 31. Nested Object Types
 32. Arrays of Objects 
-33. Extending Interfaces
+33. Extending Interfaces - done in 28
 34. Intersection Types
 35. Index Signatures
 

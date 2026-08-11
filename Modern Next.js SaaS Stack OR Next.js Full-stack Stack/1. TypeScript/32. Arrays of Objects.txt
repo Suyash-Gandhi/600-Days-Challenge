@@ -1,0 +1,676 @@
+# 32. Arrays of Objects in TypeScript
+
+An array of objects is simply an array where every element is an object with a particular shape.
+
+You already know both concepts separately:
+
+```ts
+// Object
+let user: {
+  name: string;
+  age: number;
+} = {
+  name: "Suyash",
+  age: 22
+};
+```
+
+```ts
+// Array
+let numbers: number[] = [10, 20, 30];
+```
+
+Now combine them:
+
+```ts
+let users: {
+  name: string;
+  age: number;
+}[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+The important part is:
+
+```ts
+{
+  name: string;
+  age: number;
+}[]
+```
+
+It means:
+
+> An array where every item must be an object having `name` as a string and `age` as a number.
+
+---
+
+## 1. Why do we need this?
+
+Imagine you have multiple users:
+
+```ts
+const users = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  },
+  {
+    name: "Aman",
+    age: 30
+  }
+];
+```
+
+Conceptually:
+
+```text
+users
+  ↓
+┌─────────────────────┐
+│ { name, age }       │
+│ { name, age }       │
+│ { name, age }       │
+└─────────────────────┘
+```
+
+Each array element is an object.
+
+So:
+
+```ts
+users[0].name
+```
+
+is:
+
+```text
+"Suyash"
+```
+
+and:
+
+```ts
+users[1].age
+```
+
+is:
+
+```text
+25
+```
+
+---
+
+# 2. TypeScript checks every object
+
+You can explicitly specify the type:
+
+```ts
+let users: {
+  name: string;
+  age: number;
+}[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+Now this is an error:
+
+```ts
+users.push({
+  name: "Aman",
+  age: "30" // ❌
+});
+```
+
+Why?
+
+Because `age` must be a `number`, not a `string`.
+
+Likewise:
+
+```ts
+users.push({
+  name: "Aman"
+});
+```
+
+❌ Error because `age` is missing.
+
+And:
+
+```ts
+users.push({
+  name: "Aman",
+  age: 30,
+  city: "Delhi"
+});
+```
+
+Depending on the context, TypeScript may reject the extra property when using a fresh object literal against the declared type.
+
+---
+
+# 3. Using a Type Alias
+
+Writing this repeatedly gets ugly:
+
+```ts
+let users: {
+  name: string;
+  age: number;
+}[];
+```
+
+You learned Type Aliases earlier, so we can create a reusable type:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+Then:
+
+```ts
+let users: User[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+This is much cleaner.
+
+Think:
+
+```text
+User
+ ↓
+{name: string, age: number}
+
+User[]
+ ↓
+array of {name: string, age: number}
+```
+
+---
+
+# 4. Using an Interface
+
+You can do the same thing with an interface:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+let users: User[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+So both are valid:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+const users: User[] = [];
+```
+
+or:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+const users: User[] = [];
+```
+
+---
+
+# 5. Accessing objects inside the array
+
+Suppose:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+const users: User[] = [
+  {
+    name: "Suyash",
+    age: 22
+  },
+  {
+    name: "Rahul",
+    age: 25
+  }
+];
+```
+
+You can access an individual object:
+
+```ts
+users[0]
+```
+
+TypeScript knows:
+
+```ts
+User
+```
+
+Then:
+
+```ts
+users[0].name
+```
+
+TypeScript knows:
+
+```ts
+string
+```
+
+And:
+
+```ts
+users[0].age
+```
+
+TypeScript knows:
+
+```ts
+number
+```
+
+---
+
+# 6. Looping through an array of objects
+
+This is extremely common:
+
+```ts
+users.forEach((user) => {
+  console.log(user.name);
+  console.log(user.age);
+});
+```
+
+TypeScript automatically knows that:
+
+```ts
+user
+```
+
+is a `User`.
+
+So you get autocomplete for:
+
+```ts
+user.name
+user.age
+```
+
+You can also use `for...of`:
+
+```ts
+for (const user of users) {
+  console.log(user.name);
+}
+```
+
+---
+
+# 7. `map()` with arrays of objects
+
+Very common in real applications:
+
+```ts
+const names = users.map((user) => {
+  return user.name;
+});
+```
+
+TypeScript understands that:
+
+```ts
+names
+```
+
+is:
+
+```ts
+string[]
+```
+
+because `user.name` is a string.
+
+For example:
+
+```ts
+const users: User[] = [
+  { name: "Suyash", age: 22 },
+  { name: "Rahul", age: 25 },
+  { name: "Aman", age: 30 }
+];
+
+const names = users.map((user) => user.name);
+```
+
+Result:
+
+```ts
+["Suyash", "Rahul", "Aman"]
+```
+
+---
+
+# 8. `filter()` with arrays of objects
+
+You can filter objects:
+
+```ts
+const adults = users.filter((user) => user.age >= 18);
+```
+
+`adults` is still:
+
+```ts
+User[]
+```
+
+Example:
+
+```ts
+const users: User[] = [
+  { name: "Suyash", age: 22 },
+  { name: "Rahul", age: 17 },
+  { name: "Aman", age: 30 }
+];
+
+const adults = users.filter((user) => user.age >= 18);
+```
+
+Result:
+
+```ts
+[
+  { name: "Suyash", age: 22 },
+  { name: "Aman", age: 30 }
+]
+```
+
+---
+
+# 9. Nested objects
+
+Objects inside arrays can themselves contain objects.
+
+For example:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  address: {
+    city: string;
+    country: string;
+  };
+};
+```
+
+Now:
+
+```ts
+const users: User[] = [
+  {
+    name: "Suyash",
+    age: 22,
+    address: {
+      city: "Delhi",
+      country: "India"
+    }
+  }
+];
+```
+
+You can access:
+
+```ts
+users[0].address.city
+```
+
+TypeScript knows this is a:
+
+```ts
+string
+```
+
+This connects directly to the Nested Object Types topic you just learned.
+
+---
+
+# 10. Arrays of different object shapes?
+
+Usually, an array of objects is intended to contain objects with the same shape:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+const users: User[] = [
+  { name: "Suyash", age: 22 },
+  { name: "Rahul", age: 25 }
+];
+```
+
+If you genuinely need different shapes, TypeScript can use a union type:
+
+```ts
+type Dog = {
+  type: "dog";
+  bark(): void;
+};
+
+type Cat = {
+  type: "cat";
+  meow(): void;
+};
+
+const animals: (Dog | Cat)[] = [];
+```
+
+But don't worry about this yet. Unions and more advanced object patterns come later.
+
+---
+
+# 11. A very common real-world example
+
+Imagine an API returns products:
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+```
+
+Then:
+
+```ts
+const products: Product[] = [
+  {
+    id: 1,
+    name: "Laptop",
+    price: 50000
+  },
+  {
+    id: 2,
+    name: "Phone",
+    price: 30000
+  }
+];
+```
+
+Now TypeScript protects the structure:
+
+```ts
+products.push({
+  id: 3,
+  name: "Keyboard",
+  price: 2000
+});
+```
+
+✅ Correct.
+
+But:
+
+```ts
+products.push({
+  id: "4",
+  name: "Mouse",
+  price: 1000
+});
+```
+
+❌ `id` must be a number.
+
+And:
+
+```ts
+products.push({
+  id: 5,
+  name: "Monitor"
+});
+```
+
+❌ `price` is missing.
+
+---
+
+# The key idea
+
+Don't think of:
+
+```ts
+User[]
+```
+
+as something complicated.
+
+Just read it inside-out:
+
+```ts
+User
+```
+
+means:
+
+> one User object
+
+```ts
+User[]
+```
+
+means:
+
+> an array of User objects
+
+Similarly:
+
+```ts
+Product[]
+```
+
+means:
+
+> an array of Product objects
+
+And:
+
+```ts
+{
+  name: string;
+  age: number;
+}[]
+```
+
+means:
+
+> an array of objects where every object has a `name` string and an `age` number.
+
+### The mental model
+
+```text
+User
+  ↓
+one object
+
+User[]
+  ↓
+many User objects
+
+User[][]
+  ↓
+arrays of arrays of User objects
+```
+
+So the main pattern to remember is:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+const users: User[] = [];
+```
+
+This pattern is everywhere in TypeScript—API responses, database records, lists of products, users, messages, orders, posts, etc.

@@ -1,0 +1,452 @@
+# 36. Union Types
+
+A union type means:
+
+> A value can be one of several types.
+
+You create a union using `|`.
+
+```ts
+let id: string | number;
+
+id = "abc";
+id = 123;
+```
+
+Here, `id` can be either a `string` or a `number`.
+
+---
+
+## 1. Why do we need Union Types?
+
+Imagine an API gives you an ID.
+
+Sometimes the ID is a number:
+
+```ts
+const id = 101;
+```
+
+Sometimes it's a string:
+
+```ts
+const id = "user_101";
+```
+
+In JavaScript, you'd just accept both.
+
+In TypeScript, you can explicitly say:
+
+```ts
+let id: string | number;
+```
+
+Now TypeScript knows:
+
+> "`id` is allowed to be a string OR a number."
+
+---
+
+# 2. Basic Syntax
+
+```ts
+let value: string | number | boolean;
+```
+
+This means `value` can be:
+
+ `string`
+ `number`
+ `boolean`
+
+```ts
+value = "hello"; // ✅
+value = 100;     // ✅
+value = true;    // ✅
+```
+
+But:
+
+```ts
+value = [];      // ❌
+value = {};      // ❌
+```
+
+---
+
+# 3. Union Types with Functions
+
+You can use unions for parameters:
+
+```ts
+function printId(id: string | number) {
+    console.log(id);
+}
+```
+
+Both work:
+
+```ts
+printId(123);
+printId("abc");
+```
+
+But:
+
+```ts
+printId(true); // ❌
+```
+
+because `boolean` isn't part of the union.
+
+---
+
+# 4. The Important Part: Narrowing
+
+This is where union types become really important.
+
+Suppose:
+
+```ts
+function printId(id: string | number) {
+    console.log(id.toUpperCase());
+}
+```
+
+TypeScript complains.
+
+Why?
+
+Because `id` might be a number.
+
+Numbers don't have `.toUpperCase()`.
+
+So you need to figure out which type you actually have.
+
+That's called narrowing.
+
+```ts
+function printId(id: string | number) {
+    if (typeof id === "string") {
+        console.log(id.toUpperCase());
+    } else {
+        console.log(id.toFixed(2));
+    }
+}
+```
+
+Now TypeScript understands:
+
+```ts
+if (typeof id === "string") {
+```
+
+Inside this block:
+
+```ts
+id
+```
+
+is definitely a `string`.
+
+Inside the `else`:
+
+```ts
+id
+```
+
+is definitely a `number`.
+
+---
+
+# 5. Union ≠ "Either at the Same Time"
+
+This is a common point of confusion.
+
+```ts
+let age: string | number;
+```
+
+It does not mean:
+
+> `age` contains both a string and a number.
+
+It means:
+
+> At any given moment, `age` can contain a string or a number.
+
+For example:
+
+```ts
+let age: string | number = 25;
+
+age = "twenty five";
+```
+
+The variable changed from holding a number to holding a string.
+
+---
+
+# 6. Union Types with Literal Values
+
+Unions aren't limited to types like `string` and `number`.
+
+You can specify exact allowed values:
+
+```ts
+let direction: "up" | "down" | "left" | "right";
+```
+
+Now:
+
+```ts
+direction = "up";    // ✅
+direction = "left";  // ✅
+direction = "hello"; // ❌
+```
+
+This is extremely useful.
+
+For example:
+
+```ts
+let status: "loading" | "success" | "error";
+```
+
+Now only these three values are allowed:
+
+```ts
+status = "loading"; // ✅
+status = "success"; // ✅
+status = "error";   // ✅
+status = "pending"; // ❌
+```
+
+---
+
+# 7. Union Types with Objects
+
+You can also create unions of object shapes.
+
+```ts
+type User = {
+    name: string;
+};
+
+type Admin = {
+    name: string;
+    permissions: string[];
+};
+
+let person: User | Admin;
+```
+
+The object can be either:
+
+```ts
+person = {
+    name: "Suyash"
+};
+```
+
+or:
+
+```ts
+person = {
+    name: "Suyash",
+    permissions: ["delete", "edit"]
+};
+```
+
+But there's an important catch.
+
+You can't automatically access:
+
+```ts
+person.permissions
+```
+
+because `person` might just be a `User`.
+
+You need to narrow it first.
+
+---
+
+# 8. Narrowing Object Unions
+
+You can check whether a property exists:
+
+```ts
+function showUser(person: User | Admin) {
+    if ("permissions" in person) {
+        console.log(person.permissions);
+    } else {
+        console.log(person.name);
+    }
+}
+```
+
+TypeScript uses that check to figure out which object type you're dealing with.
+
+---
+
+# 9. Union Types vs `any`
+
+This is a very important difference.
+
+With `any`:
+
+```ts
+let value: any;
+
+value = "hello";
+value = 123;
+value = true;
+
+value.toUpperCase();
+```
+
+TypeScript basically says:
+
+> "Do whatever you want."
+
+That's dangerous.
+
+With a union:
+
+```ts
+let value: string | number;
+
+value = "hello";
+value = 123;
+```
+
+TypeScript says:
+
+> "You can use either type, but you need to handle them correctly."
+
+For example:
+
+```ts
+if (typeof value === "string") {
+    value.toUpperCase();
+}
+```
+
+So unions give you flexibility while still keeping type safety.
+
+---
+
+# 10. A Real-World Example
+
+Imagine a function that accepts a user ID.
+
+```ts
+function getUser(id: string | number) {
+    if (typeof id === "number") {
+        console.log(`Searching by numeric ID: ${id}`);
+    } else {
+        console.log(`Searching by username: ${id}`);
+    }
+}
+```
+
+You can call:
+
+```ts
+getUser(101);
+getUser("suyash");
+```
+
+But:
+
+```ts
+getUser(true); // ❌
+```
+
+This is a very common use of unions in real applications.
+
+---
+
+# 11. Union vs Intersection
+
+You just learned Intersection Types.
+
+The difference is important:
+
+### Union `|`
+
+> OR
+
+```ts
+string | number
+```
+
+Means:
+
+> string OR number
+
+### Intersection `&`
+
+> AND
+
+```ts
+User & Admin
+```
+
+Means:
+
+> Must satisfy both `User` AND `Admin`.
+
+Think:
+
+```text
+Union:
+A | B
+  ↓
+A OR B
+
+Intersection:
+A & B
+  ↓
+A AND B
+```
+
+---
+
+# 12. The Mental Model
+
+Whenever you see:
+
+```ts
+string | number
+```
+
+read it in your head as:
+
+> "This value could be a string or a number, so before I use type-specific features, I may need to check which one it is."
+
+That's essentially the whole idea.
+
+### Most important things to remember
+
+```ts
+// Basic union
+let value: string | number;
+
+// Function parameter
+function foo(value: string | number) {}
+
+// Literal union
+let status: "loading" | "success" | "error";
+
+// Narrowing
+if (typeof value === "string") {
+    // value is string here
+} else {
+    // value is number here
+}
+```
+
+Union = OR (`|`)
+Intersection = AND (`&`)
