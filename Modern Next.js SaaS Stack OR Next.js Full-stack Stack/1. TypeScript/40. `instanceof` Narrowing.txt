@@ -1,0 +1,497 @@
+# 40. `instanceof` Narrowing
+
+`instanceof` narrowing is used when you want TypeScript to figure out which class an object belongs to.
+
+The key idea:
+
+> `instanceof` checks whether a value was created from a particular class.
+
+---
+
+## 1. The basic idea
+
+Suppose we have two classes:
+
+```ts
+class Dog {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+class Cat {
+  meow() {
+    console.log("Meow!");
+  }
+}
+```
+
+Now imagine a function that can receive either:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+  // What is animal here?
+}
+```
+
+TypeScript only knows:
+
+```ts
+animal: Dog | Cat
+```
+
+So you can't directly do:
+
+```ts
+animal.bark(); // ❌
+```
+
+because `animal` could be a `Cat`.
+
+You can narrow it using `instanceof`:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+  if (animal instanceof Dog) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+Now TypeScript understands:
+
+```ts
+if (animal instanceof Dog) {
+    // animal is Dog
+}
+```
+
+and:
+
+```ts
+else {
+    // animal is Cat
+}
+```
+
+That's `instanceof` narrowing.
+
+---
+
+# 2. What does `instanceof` actually do?
+
+This:
+
+```ts
+animal instanceof Dog
+```
+
+asks JavaScript:
+
+> "Was `animal` created from the `Dog` class (or does its prototype chain come from `Dog`)?"
+
+For example:
+
+```ts
+const dog = new Dog();
+
+console.log(dog instanceof Dog); // true
+```
+
+But:
+
+```ts
+const cat = new Cat();
+
+console.log(cat instanceof Dog); // false
+```
+
+So:
+
+```ts
+if (animal instanceof Dog)
+```
+
+means:
+
+> "If this object is a `Dog`, treat it as a `Dog` inside this block."
+
+---
+
+# 3. Why is this called narrowing?
+
+Before the check:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+```
+
+TypeScript sees:
+
+```text
+Dog | Cat
+```
+
+Two possibilities.
+
+After:
+
+```ts
+if (animal instanceof Dog) {
+```
+
+TypeScript narrows it to:
+
+```text
+Dog
+```
+
+And in the `else`:
+
+```text
+Cat
+```
+
+So visually:
+
+```text
+Dog | Cat
+   ↓
+instanceof Dog
+   ↓
+┌─────────────┐
+│ true        │ → Dog
+│ false       │ → Cat
+└─────────────┘
+```
+
+---
+
+# 4. A more realistic example
+
+```ts
+class Car {
+  drive() {
+    console.log("Driving");
+  }
+}
+
+class Boat {
+  sail() {
+    console.log("Sailing");
+  }
+}
+
+function move(vehicle: Car | Boat) {
+  if (vehicle instanceof Car) {
+    vehicle.drive();
+  } else {
+    vehicle.sail();
+  }
+}
+```
+
+Usage:
+
+```ts
+const car = new Car();
+const boat = new Boat();
+
+move(car);  // Driving
+move(boat); // Sailing
+```
+
+The important part is:
+
+```ts
+vehicle instanceof Car
+```
+
+This narrows:
+
+```ts
+Car | Boat
+```
+
+to:
+
+```ts
+Car
+```
+
+inside that `if`.
+
+---
+
+# 5. `instanceof` works with classes
+
+This is the most important thing to remember.
+
+`instanceof` is primarily useful with classes / constructor functions.
+
+```ts
+class User {
+  constructor(public name: string) {}
+}
+
+const user = new User("Suyash");
+
+console.log(user instanceof User); // true
+```
+
+And:
+
+```ts
+function printUser(value: User | string) {
+  if (value instanceof User) {
+    console.log(value.name);
+  } else {
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+Here TypeScript knows:
+
+```ts
+if (value instanceof User) {
+    // User
+} else {
+    // string
+}
+```
+
+---
+
+# 6. Don't confuse `instanceof` with `typeof`
+
+You've already learned `typeof` narrowing.
+
+Use `typeof` for primitive types:
+
+```ts
+function print(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else {
+    console.log(value.toFixed(2));
+  }
+}
+```
+
+Use `instanceof` for class instances:
+
+```ts
+function print(value: User | Admin) {
+  if (value instanceof User) {
+    // User
+  } else {
+    // Admin
+  }
+}
+```
+
+Think:
+
+```text
+typeof
+  ↓
+"What kind of primitive is this?"
+
+instanceof
+  ↓
+"Is this an instance of this class?"
+```
+
+---
+
+# 7. Very important: interfaces don't work with `instanceof`
+
+This is a common beginner mistake.
+
+You might write:
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+and then try:
+
+```ts
+function print(value: User) {
+  if (value instanceof User) {
+    // ❌ Error
+  }
+}
+```
+
+Why?
+
+Because an interface exists only during TypeScript's type checking.
+
+It disappears when TypeScript compiles your code to JavaScript.
+
+There is no actual JavaScript thing called `User` to check against.
+
+---
+
+## Compare
+
+### Class
+
+```ts
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+```
+
+There is an actual JavaScript constructor:
+
+```text
+User
+ ↑
+exists at runtime
+```
+
+So:
+
+```ts
+user instanceof User
+```
+
+works.
+
+### Interface
+
+```ts
+interface User {
+  name: string;
+}
+```
+
+After compilation, the interface is gone:
+
+```text
+User
+ ↑
+doesn't exist at runtime
+```
+
+Therefore:
+
+```ts
+value instanceof User
+```
+
+doesn't work.
+
+---
+
+# 8. The big picture
+
+You've now seen several different narrowing tools.
+
+### `typeof`
+
+For primitives:
+
+```ts
+if (typeof value === "string") {
+}
+```
+
+### `instanceof`
+
+For class instances:
+
+```ts
+if (value instanceof User) {
+}
+```
+
+### `in`
+
+For checking whether an object has a property:
+
+```ts
+if ("bark" in animal) {
+}
+```
+
+### Equality checks
+
+```ts
+if (value === "admin") {
+}
+```
+
+All of these give TypeScript more information about the value.
+
+---
+
+# 9. The mental model I want you to remember
+
+Don't think:
+
+> "`instanceof` is a TypeScript feature."
+
+Instead think:
+
+> "`instanceof` is a JavaScript runtime check that TypeScript understands and uses for narrowing."
+
+For example:
+
+```ts
+class Dog {
+  bark() {}
+}
+
+class Cat {
+  meow() {}
+}
+
+function speak(animal: Dog | Cat) {
+  if (animal instanceof Dog) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+At runtime JavaScript checks:
+
+```text
+Is animal a Dog?
+       ↓
+   ┌───┴───┐
+  YES     NO
+   ↓       ↓
+ Dog      Cat
+   ↓       ↓
+ bark()  meow()
+```
+
+And TypeScript uses that information to narrow the union.
+
+---
+
+## One sentence to memorize
+
+> `instanceof` narrowing lets TypeScript narrow a union based on whether a value is an instance of a particular class.
+
+```ts
+if (value instanceof SomeClass) {
+  // value is SomeClass
+}
+```
+
+That is the whole concept.

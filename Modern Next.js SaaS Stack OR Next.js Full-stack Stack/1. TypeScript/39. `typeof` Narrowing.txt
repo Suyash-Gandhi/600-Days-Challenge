@@ -1,0 +1,392 @@
+# 39. `typeof` Narrowing
+
+`typeof` narrowing is one of the most common ways TypeScript figures out which type a value has at runtime.
+
+The key idea is:
+
+> You check a value with `typeof`, and TypeScript narrows its type inside that branch.
+
+### 1. The basic problem
+
+Suppose a function accepts either a `string` or a `number`:
+
+```ts
+function printValue(value: string | number) {
+  console.log(value);
+}
+```
+
+Inside the function, `value` could be either.
+
+So you can't safely do this:
+
+```ts
+function printValue(value: string | number) {
+  console.log(value.toUpperCase());
+  // ❌ Error
+}
+```
+
+Why?
+
+Because TypeScript says:
+
+```text
+value might be a string
+OR
+value might be a number
+```
+
+Numbers don't have `.toUpperCase()`.
+
+---
+
+## 2. Use `typeof`
+
+We can check the type first:
+
+```ts
+function printValue(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+Now TypeScript understands:
+
+```text
+if typeof value === "string"
+        ↓
+value must be a string here
+```
+
+So `.toUpperCase()` is allowed.
+
+We can handle the number case too:
+
+```ts
+function printValue(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else {
+    console.log(value.toFixed(2));
+  }
+}
+```
+
+TypeScript knows:
+
+```text
+value: string | number
+
+if string
+   ↓
+value: string
+
+else
+   ↓
+value: number
+```
+
+That's narrowing.
+
+---
+
+# 3. What does `typeof` actually return?
+
+JavaScript's `typeof` operator returns a string describing the runtime type.
+
+```ts
+typeof "hello"       // "string"
+typeof 123           // "number"
+typeof true          // "boolean"
+typeof undefined     // "undefined"
+typeof 123n          // "bigint"
+typeof Symbol()      // "symbol"
+typeof function() {} // "function"
+```
+
+For objects:
+
+```ts
+typeof {}      // "object"
+typeof []      // "object"
+typeof null    // "object"  ← weird JavaScript behavior
+```
+
+The most useful checks in TypeScript are usually:
+
+```ts
+typeof value === "string"
+typeof value === "number"
+typeof value === "boolean"
+typeof value === "undefined"
+typeof value === "function"
+```
+
+---
+
+# 4. A very common example
+
+Imagine an API function that accepts either a user ID as a number or username as a string:
+
+```ts
+function findUser(id: number | string) {
+  if (typeof id === "number") {
+    console.log(`Searching by ID: ${id}`);
+  } else {
+    console.log(`Searching by username: ${id}`);
+  }
+}
+```
+
+Calling:
+
+```ts
+findUser(123);
+```
+
+Inside the `if`:
+
+```ts
+id // number
+```
+
+Calling:
+
+```ts
+findUser("suyash");
+```
+
+Inside the `else`:
+
+```ts
+id // string
+```
+
+You didn't tell TypeScript manually.
+
+The check:
+
+```ts
+typeof id === "number"
+```
+
+gave TypeScript enough information to narrow it.
+
+---
+
+# 5. `typeof` narrowing with three types
+
+You can have more than two possibilities:
+
+```ts
+function process(value: string | number | boolean) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else if (typeof value === "number") {
+    console.log(value.toFixed(2));
+  } else {
+    console.log(value ? "Yes" : "No");
+  }
+}
+```
+
+TypeScript understands each branch:
+
+```text
+string | number | boolean
+        ↓
+typeof === "string"
+        ↓
+string
+
+otherwise
+        ↓
+number | boolean
+
+typeof === "number"
+        ↓
+number
+
+otherwise
+        ↓
+boolean
+```
+
+---
+
+# 6. Why this is useful with `unknown`
+
+This is where `typeof` narrowing becomes especially important.
+
+Remember `unknown`:
+
+```ts
+let value: unknown = "hello";
+```
+
+You can't just do:
+
+```ts
+value.toUpperCase();
+// ❌ Error
+```
+
+Because `unknown` could be anything.
+
+But you can check it:
+
+```ts
+if (typeof value === "string") {
+  console.log(value.toUpperCase());
+}
+```
+
+Now TypeScript knows:
+
+```ts
+value: unknown
+       ↓
+typeof value === "string"
+       ↓
+value: string
+```
+
+So `typeof` is one of the main ways to safely work with `unknown`.
+
+---
+
+# 7. `typeof` vs type assertion
+
+This is important because you previously looked at type assertions (`as`).
+
+These are very different:
+
+### Type assertion
+
+```ts
+const value = something as string;
+```
+
+You're basically telling TypeScript:
+
+> "Trust me, I know this is a string."
+
+TypeScript does not check it at runtime.
+
+---
+
+### `typeof` narrowing
+
+```ts
+if (typeof something === "string") {
+  // something is safely treated as string here
+}
+```
+
+You're saying:
+
+> "Let's actually check what this value is."
+
+So:
+
+```text
+as string
+   ↓
+"Trust me"
+
+typeof === "string"
+   ↓
+"Let's check"
+```
+
+That's why narrowing is generally safer.
+
+---
+
+# 8. One important limitation
+
+`typeof` is great for primitive types:
+
+```ts
+string
+number
+boolean
+bigint
+symbol
+undefined
+function
+```
+
+But it isn't enough to distinguish normal object types.
+
+For example:
+
+```ts
+type User = {
+  name: string;
+};
+
+type Product = {
+  price: number;
+};
+
+function print(value: User | Product) {
+  if (typeof value === "object") {
+    // Still User | Product
+  }
+}
+```
+
+Why?
+
+Because both `User` and `Product` are objects at runtime.
+
+You'd need another narrowing technique, such as checking a property:
+
+```ts
+function print(value: User | Product) {
+  if ("name" in value) {
+    console.log(value.name);
+  } else {
+    console.log(value.price);
+  }
+}
+```
+
+We'll get to those other narrowing techniques later.
+
+---
+
+# The mental model
+
+When you see:
+
+```ts
+function example(value: string | number) {
+  if (typeof value === "string") {
+    // ...
+  }
+}
+```
+
+Think:
+
+```text
+                  string | number
+                       |
+             typeof value === "string"
+                       |
+                 ┌─────┴─────┐
+                 ↓           ↓
+              string       number
+              (if)         (else)
+```
+
+`typeof` narrowing = check the runtime type → TypeScript narrows the union for you.
+
+And this is the big connection:
+
+> Union types create uncertainty. Narrowing removes that uncertainty. `typeof` is one tool for removing it.

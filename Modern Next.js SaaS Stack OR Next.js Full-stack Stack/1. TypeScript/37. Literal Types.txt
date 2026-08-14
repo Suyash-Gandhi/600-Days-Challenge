@@ -1,0 +1,237 @@
+# 37. Literal Types
+
+A literal type means: instead of saying a variable can contain any `string` or any `number`, you specify the exact value it is allowed to contain.
+
+### 1. Normal types
+
+```ts
+let direction: string;
+
+direction = "left";
+direction = "right";
+direction = "hello"; // ✅ allowed
+```
+
+`string` means any string.
+
+---
+
+### 2. Literal types
+
+```ts
+let direction: "left";
+
+direction = "left";  // ✅
+direction = "right"; // ❌
+```
+
+Here `"left"` is a literal type.
+
+The variable doesn't just have to be a string — it must specifically be the string `"left"`.
+
+Think:
+
+```text
+string
+ ├── "left"
+ ├── "right"
+ ├── "up"
+ ├── "down"
+ └── ...millions of other strings
+```
+
+A literal type picks one specific value.
+
+---
+
+## 3. Multiple literal values
+
+This becomes much more useful with a union:
+
+```ts
+let direction: "left" | "right" | "up" | "down";
+
+direction = "left";  // ✅
+direction = "up";    // ✅
+direction = "hello"; // ❌
+```
+
+This says:
+
+> `direction` must be exactly one of these four values.
+
+This is one of the most common uses of literal types.
+
+---
+
+## 4. Literal types aren't only strings
+
+You can use numbers:
+
+```ts
+let statusCode: 200 | 404 | 500;
+
+statusCode = 200; // ✅
+statusCode = 404; // ✅
+statusCode = 201; // ❌
+```
+
+And booleans:
+
+```ts
+let isLoading: true;
+
+isLoading = true;  // ✅
+isLoading = false; // ❌
+```
+
+---
+
+# 5. Why is this useful?
+
+Imagine a function:
+
+```ts
+function move(direction: string) {
+    // ...
+}
+```
+
+You could accidentally do:
+
+```ts
+move("left");
+move("right");
+move("banana"); // ❌ But TypeScript allows it!
+```
+
+Because `"banana"` is still a `string`.
+
+Instead:
+
+```ts
+function move(direction: "left" | "right") {
+    // ...
+}
+
+move("left");   // ✅
+move("right");  // ✅
+move("banana"); // ❌
+```
+
+Now TypeScript protects you from invalid values.
+
+---
+
+# 6. Literal types are basically "allowed values"
+
+This is the easiest way to remember them:
+
+```ts
+string
+```
+
+means:
+
+> Any string is allowed.
+
+While:
+
+```ts
+"admin" | "user" | "guest"
+```
+
+means:
+
+> Only these exact strings are allowed.
+
+For example:
+
+```ts
+function login(role: "admin" | "user") {
+    console.log(role);
+}
+
+login("admin"); // ✅
+login("user");  // ✅
+login("guest"); // ❌
+```
+
+This is especially useful for things like:
+
+```ts
+type Status = "loading" | "success" | "error";
+
+type Size = "small" | "medium" | "large";
+
+type Theme = "light" | "dark";
+
+type Method = "GET" | "POST" | "PUT" | "DELETE";
+```
+
+Then:
+
+```ts
+let status: Status;
+
+status = "loading"; // ✅
+status = "success"; // ✅
+status = "banana";  // ❌
+```
+
+---
+
+## Literal Types vs `enum`
+
+You may eventually see:
+
+```ts
+enum Direction {
+    Left,
+    Right
+}
+```
+
+But don't worry about that yet.
+
+For many situations, a simple literal union is cleaner:
+
+```ts
+type Direction = "left" | "right";
+```
+
+Then:
+
+```ts
+function move(direction: Direction) {
+    // ...
+}
+```
+
+---
+
+### 🧠 The core idea
+
+Remember this:
+
+```ts
+let name: string;
+```
+
+➡️ Any string
+
+```ts
+let name: "Suyash";
+```
+
+➡️ Only `"Suyash"`
+
+```ts
+let name: "Suyash" | "Rahul" | "Amit";
+```
+
+➡️ Only one of those exact values
+
+So literal types = restricting a type to exact values.
+
+And when you combine them with union types (which you just learned), they become extremely useful for creating a fixed set of valid choices.

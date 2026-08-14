@@ -1,0 +1,617 @@
+# 38. Type Narrowing
+
+Type narrowing means:
+
+> TypeScript starts with a broad type, and based on your code, it figures out a more specific type.
+
+This is extremely important when working with Union Types.
+
+---
+
+## 1. The problem
+
+Suppose a value can be either a `string` or a `number`:
+
+```ts
+function printValue(value: string | number) {
+  console.log(value);
+}
+```
+
+Inside the function, TypeScript only knows:
+
+```ts
+value: string | number
+```
+
+So this would be a problem:
+
+```ts
+function printValue(value: string | number) {
+  console.log(value.toUpperCase());
+}
+```
+
+Why?
+
+Because `.toUpperCase()` exists on `string`, but not on `number`.
+
+TypeScript is basically saying:
+
+> "You told me this could be a string OR a number. Prove to me that it's a string before I let you use string-only methods."
+
+That's where narrowing comes in.
+
+---
+
+# 2. Narrowing with `typeof`
+
+The most common way is `typeof`.
+
+```ts
+function printValue(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+Inside the `if`:
+
+```ts
+typeof value === "string"
+```
+
+TypeScript now knows:
+
+```ts
+value: string
+```
+
+So:
+
+```ts
+value.toUpperCase()
+```
+
+is safe.
+
+Outside the `if`, it goes back to:
+
+```ts
+value: string | number
+```
+
+### Think of it like this:
+
+```text
+string | number
+      ↓
+typeof value === "string"
+      ↓
+    string
+```
+
+That's type narrowing.
+
+---
+
+# 3. You can narrow both sides
+
+```ts
+function printValue(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  } else {
+    console.log(value.toFixed(2));
+  }
+}
+```
+
+TypeScript understands:
+
+```text
+if:
+    value → string
+
+else:
+    value → number
+```
+
+So both operations are safe.
+
+---
+
+# 4. `typeof` isn't just for strings
+
+You can check several JavaScript types:
+
+```ts
+typeof value === "string"
+typeof value === "number"
+typeof value === "boolean"
+typeof value === "bigint"
+typeof value === "symbol"
+typeof value === "function"
+typeof value === "object"
+```
+
+Example:
+
+```ts
+function process(value: string | number | boolean) {
+  if (typeof value === "string") {
+    // value is string
+  } else if (typeof value === "number") {
+    // value is number
+  } else {
+    // value is boolean
+  }
+}
+```
+
+---
+
+# 5. Narrowing with `typeof` is mainly useful for primitives
+
+For example:
+
+```ts
+function double(value: string | number) {
+  if (typeof value === "number") {
+    return value  2;
+  }
+
+  return value + value;
+}
+```
+
+TypeScript understands:
+
+```text
+number → value  2
+
+string → value + value
+```
+
+---
+
+# 6. Narrowing with `instanceof`
+
+For classes, you can use `instanceof`.
+
+```ts
+class Dog {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+class Cat {
+  meow() {
+    console.log("Meow!");
+  }
+}
+```
+
+Now:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+  if (animal instanceof Dog) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+TypeScript understands:
+
+```text
+animal: Dog | Cat
+       ↓
+instanceof Dog
+       ↓
+     Dog
+```
+
+And in the `else`:
+
+```text
+     Cat
+```
+
+---
+
+# 7. Narrowing with the `in` operator
+
+This is especially useful with object types.
+
+```ts
+type Dog = {
+  bark: () => void;
+};
+
+type Cat = {
+  meow: () => void;
+};
+```
+
+A function can accept either:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+  if ("bark" in animal) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+The important part:
+
+```ts
+"bark" in animal
+```
+
+means:
+
+> "Does this object have a `bark` property?"
+
+If yes, TypeScript narrows it to `Dog`.
+
+---
+
+# 8. Narrowing with equality checks
+
+You can also narrow using `===`.
+
+```ts
+function greet(name: string | null) {
+  if (name === null) {
+    console.log("No name");
+  } else {
+    console.log(name.toUpperCase());
+  }
+}
+```
+
+Inside `else`, TypeScript knows:
+
+```ts
+name: string
+```
+
+because the only other possibility was `null`.
+
+You can also use:
+
+```ts
+if (name !== null) {
+  console.log(name.toUpperCase());
+}
+```
+
+---
+
+# 9. Truthiness narrowing
+
+TypeScript can also narrow based on whether a value is truthy/falsy.
+
+```ts
+function greet(name: string | undefined) {
+  if (name) {
+    console.log(name.toUpperCase());
+  }
+}
+```
+
+Inside the `if`:
+
+```ts
+name: string
+```
+
+because `undefined` is falsy.
+
+This is very common in real applications.
+
+---
+
+# 10. The really important example: discriminated unions
+
+This is one of the most useful TypeScript patterns.
+
+Imagine:
+
+```ts
+type Success = {
+  status: "success";
+  data: string;
+};
+
+type Error = {
+  status: "error";
+  message: string;
+};
+```
+
+Now:
+
+```ts
+type Response = Success | Error;
+```
+
+A function can receive either:
+
+```ts
+function handleResponse(response: Response) {
+  if (response.status === "success") {
+    console.log(response.data);
+  } else {
+    console.log(response.message);
+  }
+}
+```
+
+Notice what happened.
+
+Initially:
+
+```ts
+response: Success | Error
+```
+
+Then:
+
+```ts
+response.status === "success"
+```
+
+narrows it to:
+
+```ts
+Success
+```
+
+Therefore TypeScript allows:
+
+```ts
+response.data
+```
+
+In the `else`, it knows:
+
+```ts
+Error
+```
+
+so:
+
+```ts
+response.message
+```
+
+is valid.
+
+This pattern is called a discriminated union.
+
+---
+
+# 11. Why narrowing exists
+
+Think about TypeScript's job.
+
+Suppose you write:
+
+```ts
+function format(value: string | number) {
+    // ...
+}
+```
+
+TypeScript cannot safely assume:
+
+```ts
+value.toUpperCase()
+```
+
+because `value` might be:
+
+```ts
+"hello"
+```
+
+or:
+
+```ts
+123
+```
+
+So you first give TypeScript information:
+
+```ts
+if (typeof value === "string") {
+```
+
+Now TypeScript can safely say:
+
+```text
+I know value is a string here.
+```
+
+That's narrowing.
+
+---
+
+# 12. Narrowing vs Type Assertion
+
+This is especially important because you previously learned `as`.
+
+### Type assertion:
+
+```ts
+const value = something as string;
+```
+
+You're telling TypeScript:
+
+> "Trust me. I know this is a string."
+
+### Type narrowing:
+
+```ts
+if (typeof value === "string") {
+    // TypeScript KNOWS it's a string
+}
+```
+
+You're telling TypeScript:
+
+> "Check this condition. If it's true, we know it's a string."
+
+So:
+
+```text
+Type assertion
+      ↓
+"You should trust me."
+
+Type narrowing
+      ↓
+"Here's evidence. Figure it out."
+```
+
+Narrowing is generally safer because it's based on actual runtime checks.
+
+---
+
+# 13. A very common real-world example
+
+Imagine an API can return either success or failure:
+
+```ts
+type ApiResponse =
+  | {
+      success: true;
+      data: string;
+    }
+  | {
+      success: false;
+      error: string;
+    };
+```
+
+Then:
+
+```ts
+function handleResponse(response: ApiResponse) {
+  if (response.success) {
+    console.log(response.data);
+  } else {
+    console.log(response.error);
+  }
+}
+```
+
+TypeScript automatically narrows:
+
+```text
+ApiResponse
+     │
+     ├── success === true
+     │       ↓
+     │    { success: true, data: string }
+     │
+     └── success === false
+             ↓
+          { success: false, error: string }
+```
+
+This pattern is everywhere in TypeScript applications.
+
+---
+
+# 14. The core idea to remember
+
+Don't memorize every narrowing technique yet.
+
+Remember this:
+
+> Narrowing = giving TypeScript enough information to turn a broad type into a specific type.
+
+For example:
+
+```ts
+string | number
+```
+
+becomes:
+
+```ts
+string
+```
+
+after:
+
+```ts
+typeof value === "string"
+```
+
+Or:
+
+```ts
+Dog | Cat
+```
+
+becomes:
+
+```ts
+Dog
+```
+
+after:
+
+```ts
+animal instanceof Dog
+```
+
+Or:
+
+```ts
+Success | Error
+```
+
+becomes:
+
+```ts
+Success
+```
+
+after:
+
+```ts
+response.status === "success"
+```
+
+### The mental model
+
+```text
+             BROAD TYPE
+                 │
+                 │  check something
+                 ↓
+          ┌───────────────┐
+          │   narrowing   │
+          └───────────────┘
+                 │
+          ┌──────┴──────┐
+          ↓             ↓
+       specific       specific
+         type           type
+```
+
+Union types tell TypeScript "it could be several things."
+Type narrowing tells TypeScript "which thing it is here."
