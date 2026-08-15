@@ -1,0 +1,214 @@
+## 41. `in` Narrowing
+
+The `in` operator lets TypeScript figure out which type you're dealing with by checking whether an object has a particular property.
+
+The basic idea:
+
+> “If this property exists in the object, it must be this type.”
+
+### 1. The problem
+
+Suppose we have two different object types:
+
+```ts
+type Dog = {
+  name: string;
+  bark: () => void;
+};
+
+type Cat = {
+  name: string;
+  meow: () => void;
+};
+
+function makeSound(animal: Dog | Cat) {
+  // Which one is it?
+}
+```
+
+Inside `makeSound`, TypeScript only knows:
+
+```ts
+animal: Dog | Cat
+```
+
+So this won't work:
+
+```ts
+animal.bark();
+```
+
+Because `Cat` doesn't have `bark()`.
+
+---
+
+### 2. Use `in`
+
+We can check whether the `bark` property exists:
+
+```ts
+function makeSound(animal: Dog | Cat) {
+  if ("bark" in animal) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+Now TypeScript understands:
+
+```ts
+if ("bark" in animal) {
+  // animal is Dog
+} else {
+  // animal is Cat
+}
+```
+
+That's `in` narrowing.
+
+---
+
+## 3. Think of it like this
+
+```ts
+"bark" in animal
+```
+
+means:
+
+> “Does `animal` have a property called `bark`?”
+
+If yes:
+
+```ts
+animal → Dog
+```
+
+If no:
+
+```ts
+animal → Cat
+```
+
+So the `in` operator is being used as a type guard.
+
+---
+
+## 4. Another example
+
+```ts
+type Admin = {
+  username: string;
+  permissions: string[];
+};
+
+type User = {
+  username: string;
+  email: string;
+};
+
+function showUser(person: Admin | User) {
+  if ("permissions" in person) {
+    console.log(person.permissions);
+  } else {
+    console.log(person.email);
+  }
+}
+```
+
+TypeScript narrows automatically:
+
+```ts
+if ("permissions" in person) {
+  // person: Admin
+} else {
+  // person: User
+}
+```
+
+---
+
+## 5. Why not just use `typeof`?
+
+`typeof` is great for primitive values:
+
+```ts
+if (typeof value === "string") {
+  // string
+}
+```
+
+But for objects, `in` is often more useful:
+
+```ts
+if ("email" in person) {
+  // object has email
+}
+```
+
+A useful mental model:
+
+| Narrowing         | Best for                |
+| ----------------- | ----------------------- |
+| `typeof`          | primitives              |
+| `instanceof`      | class instances         |
+| `in`              | object properties       |
+| custom type guard | your own complex checks |
+
+---
+
+## 6. Very important: it checks properties, not types
+
+This:
+
+```ts
+if ("email" in person)
+```
+
+doesn't mean:
+
+> "`person` is an `Email` type."
+
+It means:
+
+> "`person` has an `email` property."
+
+TypeScript uses that information to narrow the union.
+
+---
+
+### The one thing to remember
+
+When you see:
+
+```ts
+if ("someProperty" in value) {
+```
+
+think:
+
+> “TypeScript, if this property exists, narrow `value` to the type that has that property.”
+
+For example:
+
+```ts
+type Car = {
+  drive: () => void;
+};
+
+type Boat = {
+  sail: () => void;
+};
+
+function move(vehicle: Car | Boat) {
+  if ("drive" in vehicle) {
+    vehicle.drive();   // Car
+  } else {
+    vehicle.sail();    // Boat
+  }
+}
+```
+
+That's the entire purpose of `in` narrowing.

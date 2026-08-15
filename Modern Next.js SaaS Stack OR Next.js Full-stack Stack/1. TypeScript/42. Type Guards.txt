@@ -1,0 +1,409 @@
+## 42. Type Guards in TypeScript
+
+A type guard is a way of telling TypeScript:
+
+> “I checked this value, so inside this block, you can treat it as this more specific type.”
+
+This becomes important when you have a union type.
+
+### 1. The problem
+
+```ts
+function printValue(value: string | number) {
+  console.log(value.toUpperCase());
+}
+```
+
+TypeScript gives an error because `value` could be a `number`, and numbers don't have `.toUpperCase()`.
+
+So we need to check the type first.
+
+```ts
+function printValue(value: string | number) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+Here:
+
+```ts
+typeof value === "string"
+```
+
+is a type guard.
+
+TypeScript understands:
+
+```text
+value: string | number
+        ↓
+if (typeof value === "string")
+        ↓
+value: string
+```
+
+---
+
+## 2. Common type guards
+
+### `typeof`
+
+Used mainly for primitive types:
+
+```ts
+function double(value: string | number) {
+  if (typeof value === "number") {
+    return value  2;
+  }
+
+  return value.toUpperCase();
+}
+```
+
+Inside the `if`:
+
+```ts
+value: number
+```
+
+Outside:
+
+```ts
+value: string
+```
+
+---
+
+### `instanceof`
+
+Used with classes/objects:
+
+```ts
+function process(value: Date | string) {
+  if (value instanceof Date) {
+    console.log(value.getFullYear());
+  } else {
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+TypeScript narrows:
+
+```text
+Date | string
+     ↓
+instanceof Date
+     ↓
+Date
+```
+
+---
+
+### `in`
+
+Checks whether a property exists:
+
+```ts
+type Dog = {
+  bark(): void;
+};
+
+type Cat = {
+  meow(): void;
+};
+
+function makeSound(animal: Dog | Cat) {
+  if ("bark" in animal) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+```
+
+After:
+
+```ts
+"bark" in animal
+```
+
+TypeScript knows `animal` is a `Dog`.
+
+---
+
+## 3. Type guards are really about narrowing
+
+This is the most important idea.
+
+Suppose:
+
+```ts
+let value: string | number;
+```
+
+Initially:
+
+```text
+value
+ ├── string
+ └── number
+```
+
+Then:
+
+```ts
+if (typeof value === "string") {
+```
+
+TypeScript eliminates the impossible option:
+
+```text
+value
+ └── string
+```
+
+That's why you can safely do:
+
+```ts
+value.toUpperCase();
+```
+
+The type guard provides evidence, and TypeScript uses that evidence to narrow the type.
+
+---
+
+## 4. Type guard vs type narrowing
+
+These two terms are related but aren't exactly the same.
+
+### Type guard
+
+The actual check:
+
+```ts
+typeof value === "string"
+```
+
+### Type narrowing
+
+The result of that check:
+
+```ts
+if (typeof value === "string") {
+  // value is narrowed from string | number → string
+}
+```
+
+Think:
+
+> Guard = the check.
+> Narrowing = what TypeScript does because of the check.
+
+---
+
+## 5. You can create your own type guard
+
+This is where things get really useful.
+
+Suppose:
+
+```ts
+type User = {
+  name: string;
+};
+
+type Admin = {
+  name: string;
+  permissions: string[];
+};
+```
+
+We have:
+
+```ts
+function printUser(person: User | Admin) {
+  // How do we know whether person is an Admin?
+}
+```
+
+We can create a custom type guard:
+
+```ts
+function isAdmin(person: User | Admin): person is Admin {
+  return "permissions" in person;
+}
+```
+
+The important part is:
+
+```ts
+person is Admin
+```
+
+This tells TypeScript:
+
+> If this function returns `true`, consider `person` to be an `Admin`.
+
+Now:
+
+```ts
+function printUser(person: User | Admin) {
+  if (isAdmin(person)) {
+    console.log(person.permissions);
+  } else {
+    console.log(person.name);
+  }
+}
+```
+
+Inside the `if`:
+
+```ts
+person: Admin
+```
+
+---
+
+## 6. Why not just use `as`?
+
+You might remember type assertions:
+
+```ts
+const admin = person as Admin;
+```
+
+The problem is that you are telling TypeScript to trust you.
+
+```ts
+const admin = person as Admin;
+admin.permissions;
+```
+
+TypeScript doesn't verify that `person` actually is an `Admin`.
+
+A type guard is different:
+
+```ts
+if (isAdmin(person)) {
+  person.permissions;
+}
+```
+
+Now you have actually performed a runtime check.
+
+### Simple distinction
+
+```text
+as Admin
+   ↓
+"Trust me, TypeScript."
+
+type guard
+   ↓
+"I checked it. TypeScript, narrow it for me."
+```
+
+---
+
+## 7. A practical example
+
+Imagine an API can return either:
+
+```ts
+type Success = {
+  status: "success";
+  data: string;
+};
+
+type ErrorResponse = {
+  status: "error";
+  message: string;
+};
+
+type Response = Success | ErrorResponse;
+```
+
+You can use a type guard:
+
+```ts
+function handleResponse(response: Response) {
+  if (response.status === "success") {
+    console.log(response.data);
+  } else {
+    console.log(response.message);
+  }
+}
+```
+
+Here, the `status` check acts as a type guard.
+
+TypeScript understands:
+
+```text
+status === "success"
+        ↓
+Success
+```
+
+and:
+
+```text
+otherwise
+        ↓
+ErrorResponse
+```
+
+---
+
+## The mental model to remember
+
+When you see:
+
+```ts
+string | number
+```
+
+think:
+
+> "I don't know which one I have yet."
+
+Then use a type guard:
+
+```ts
+if (typeof value === "string") {
+```
+
+and think:
+
+> "Now I have evidence that it's a string."
+
+So the whole concept is:
+
+```text
+Union type
+    ↓
+"I don't know the exact type"
+    ↓
+Type guard
+    ↓
+"I checked something"
+    ↓
+Type narrowing
+    ↓
+"Now TypeScript knows the exact type"
+```
+
+And the most common guards you'll use are:
+
+```ts
+typeof
+instanceof
+in
+equality checks
+custom type guards
+```
+
+One sentence: A type guard is a runtime check that gives TypeScript enough information to narrow a value from a broader type to a more specific type.

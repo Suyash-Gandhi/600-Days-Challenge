@@ -1,0 +1,496 @@
+## 43. Custom Type Guards
+
+A custom type guard is a function that tells TypeScript:
+
+> “If this function returns `true`, you can safely treat this value as a specific type.”
+
+The key syntax is:
+
+```ts
+value is SomeType
+```
+
+### 1. The problem
+
+Suppose we have two types:
+
+```ts
+type User = {
+  name: string;
+  email: string;
+};
+
+type Admin = {
+  name: string;
+  permissions: string[];
+};
+```
+
+And we have:
+
+```ts
+function printInfo(person: User | Admin) {
+  console.log(person.name);
+
+  console.log(person.email); // ❌ Error
+  console.log(person.permissions); // ❌ Error
+}
+```
+
+Why?
+
+Because `person` could be either `User` or `Admin`.
+
+We could use `in`:
+
+```ts
+function printInfo(person: User | Admin) {
+  if ("email" in person) {
+    console.log(person.email);
+  } else {
+    console.log(person.permissions);
+  }
+}
+```
+
+That's good.
+
+But imagine we need this check in many places.
+
+We can create our own type guard.
+
+---
+
+## 2. Creating a custom type guard
+
+```ts
+function isUser(person: User | Admin): person is User {
+  return "email" in person;
+}
+```
+
+The important part is:
+
+```ts
+person is User
+```
+
+This means:
+
+> If `isUser(person)` returns `true`, TypeScript knows that `person` is a `User`.
+
+Now:
+
+```ts
+function printInfo(person: User | Admin) {
+  if (isUser(person)) {
+    console.log(person.email);
+  } else {
+    console.log(person.permissions);
+  }
+}
+```
+
+TypeScript understands:
+
+```text
+isUser(person) === true
+        ↓
+person is User
+```
+
+and:
+
+```text
+isUser(person) === false
+        ↓
+person is Admin
+```
+
+---
+
+# 3. Why not just return `boolean`?
+
+You might think:
+
+```ts
+function isUser(person: User | Admin): boolean {
+  return "email" in person;
+}
+```
+
+This works at runtime.
+
+But TypeScript doesn't learn anything from the function.
+
+For example:
+
+```ts
+function isUser(person: User | Admin): boolean {
+  return "email" in person;
+}
+
+function printInfo(person: User | Admin) {
+  if (isUser(person)) {
+    console.log(person.email); // ❌ Error
+  }
+}
+```
+
+TypeScript only knows:
+
+```ts
+isUser(...) → boolean
+```
+
+It doesn't know that `true` means `User`.
+
+That's exactly what the custom type predicate provides:
+
+```ts
+function isUser(person: User | Admin): person is User {
+```
+
+---
+
+# 4. Think of it as a promise to TypeScript
+
+This:
+
+```ts
+function isUser(person: User | Admin): person is User
+```
+
+basically tells TypeScript:
+
+> “Trust me. Whenever this function returns `true`, `person` is a `User`.”
+
+So the function itself performs the runtime check:
+
+```ts
+return "email" in person;
+```
+
+while the return type tells TypeScript what that check means:
+
+```ts
+person is User
+```
+
+These are two separate things:
+
+```text
+Runtime:
+"email" in person
+       ↓
+true / false
+
+TypeScript:
+person is User
+       ↓
+narrow person to User
+```
+
+---
+
+# 5. A more realistic example
+
+Suppose we have:
+
+```ts
+type Dog = {
+  name: string;
+  bark(): void;
+};
+
+type Cat = {
+  name: string;
+  meow(): void;
+};
+```
+
+We have:
+
+```ts
+function handleAnimal(animal: Dog | Cat) {
+  // How do we know whether it's a Dog or Cat?
+}
+```
+
+Create a custom guard:
+
+```ts
+function isDog(animal: Dog | Cat): animal is Dog {
+  return "bark" in animal;
+}
+```
+
+Now:
+
+```ts
+function handleAnimal(animal: Dog | Cat) {
+  if (isDog(animal)) {
+    animal.bark(); // ✅
+  } else {
+    animal.meow(); // ✅
+  }
+}
+```
+
+Notice how TypeScript narrows automatically.
+
+Before:
+
+```ts
+animal: Dog | Cat
+```
+
+Inside:
+
+```ts
+if (isDog(animal)) {
+```
+
+TypeScript knows:
+
+```ts
+animal: Dog
+```
+
+And inside `else`:
+
+```ts
+animal: Cat
+```
+
+---
+
+# 6. Custom type guards are especially useful with arrays
+
+This is where they become really useful.
+
+Suppose:
+
+```ts
+const values: (string | number)[] = [
+  "hello",
+  42,
+  "world",
+  100
+];
+```
+
+We want only strings.
+
+We can write:
+
+```ts
+function isString(value: string | number): value is string {
+  return typeof value === "string";
+}
+```
+
+Then:
+
+```ts
+const strings = values.filter(isString);
+```
+
+TypeScript understands:
+
+```ts
+strings: string[]
+```
+
+instead of:
+
+```ts
+strings: (string | number)[]
+```
+
+That's a very common use of custom type guards.
+
+---
+
+# 7. Another example
+
+```ts
+const data: unknown[] = [
+  "hello",
+  42,
+  true,
+  "world"
+];
+```
+
+Create:
+
+```ts
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+```
+
+Then:
+
+```ts
+const strings = data.filter(isString);
+```
+
+Now:
+
+```ts
+strings
+// string[]
+```
+
+Without the custom guard, TypeScript can't safely assume which values are strings.
+
+---
+
+# 8. The general pattern
+
+Memorize this pattern:
+
+```ts
+function isSomething(value: unknown): value is Something {
+  // runtime check
+}
+```
+
+For example:
+
+```ts
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+```
+
+```ts
+function isNumber(value: unknown): value is number {
+  return typeof value === "number";
+}
+```
+
+```ts
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "name" in value &&
+    "email" in value
+  );
+}
+```
+
+---
+
+# 9. Important: TypeScript does NOT verify your guard
+
+This is a very important detail.
+
+You could write:
+
+```ts
+function isUser(value: unknown): value is User {
+  return true;
+}
+```
+
+TypeScript will accept it.
+
+Then:
+
+```ts
+if (isUser(something)) {
+  // TypeScript believes something is User
+}
+```
+
+But at runtime, it might not actually be a `User`.
+
+So you are responsible for making the runtime check correct.
+
+A custom type guard is essentially a contract you give TypeScript.
+
+---
+
+# 10. Custom Type Guards vs `in` Narrowing
+
+You already learned `in` narrowing.
+
+### Without custom guard
+
+```ts
+function handle(person: User | Admin) {
+  if ("email" in person) {
+    console.log(person.email);
+  }
+}
+```
+
+### With custom guard
+
+```ts
+function isUser(person: User | Admin): person is User {
+  return "email" in person;
+}
+
+function handle(person: User | Admin) {
+  if (isUser(person)) {
+    console.log(person.email);
+  }
+}
+```
+
+The second approach is useful when the same check is needed in multiple places.
+
+---
+
+# The main idea
+
+Don't think of:
+
+```ts
+person is User
+```
+
+as a normal boolean.
+
+Think:
+
+```ts
+person is User
+```
+
+as a special instruction to TypeScript:
+
+> “When this function returns `true`, narrow `person` to `User`.”
+
+So:
+
+```ts
+function isUser(person: User | Admin): person is User {
+  return "email" in person;
+}
+```
+
+has two jobs:
+
+```ts
+return "email" in person;
+```
+
+➡️ checks at runtime
+
+and
+
+```ts
+person is User
+```
+
+➡️ teaches TypeScript how to narrow the type
+
+### One-line definition
+
+> A custom type guard is a function whose return type uses `value is Type` to tell TypeScript that a successful check narrows the value to that type.
