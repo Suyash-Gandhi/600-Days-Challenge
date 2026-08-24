@@ -1,0 +1,383 @@
+## 44. Discriminated Unions
+
+A discriminated union is a pattern where you combine:
+
+1. Union types → an object can be one of several types
+2. A common property → usually called `type`, `kind`, or `status`
+3. TypeScript uses that property to figure out which object you have
+
+The key idea:
+
+> The discriminator tells TypeScript which member of the union you're dealing with.
+
+### 1. The problem
+
+Imagine different kinds of payments:
+
+```ts
+type Payment =
+  | {
+      type: "card";
+      cardNumber: string;
+    }
+  | {
+      type: "upi";
+      upiId: string;
+    }
+  | {
+      type: "cash";
+      amount: number;
+    };
+```
+
+Here, `Payment` can be three different shapes.
+
+For example:
+
+```ts
+const payment: Payment = {
+  type: "card",
+  cardNumber: "1234-5678"
+};
+```
+
+Or:
+
+```ts
+const payment: Payment = {
+  type: "upi",
+  upiId: "suyash@upi"
+};
+```
+
+Or:
+
+```ts
+const payment: Payment = {
+  type: "cash",
+  amount: 500
+};
+```
+
+Notice the important property:
+
+```ts
+type: "card"
+type: "upi"
+type: "cash"
+```
+
+That's our discriminator.
+
+---
+
+## 2. Why is this useful?
+
+Suppose we have a function:
+
+```ts
+function processPayment(payment: Payment) {
+  if (payment.type === "card") {
+    console.log(payment.cardNumber);
+  }
+
+  if (payment.type === "upi") {
+    console.log(payment.upiId);
+  }
+
+  if (payment.type === "cash") {
+    console.log(payment.amount);
+  }
+}
+```
+
+TypeScript automatically narrows the type.
+
+When you write:
+
+```ts
+if (payment.type === "card") {
+```
+
+TypeScript thinks:
+
+> "Ah! If `type` is `"card"`, this must be the card version."
+
+So inside:
+
+```ts
+if (payment.type === "card") {
+    payment.cardNumber
+}
+```
+
+TypeScript knows that `payment` is:
+
+```ts
+{
+    type: "card";
+    cardNumber: string;
+}
+```
+
+It doesn't consider the UPI or cash versions anymore.
+
+---
+
+## 3. Think of it like a label
+
+Imagine receiving this object:
+
+```ts
+{
+  type: "upi",
+  upiId: "suyash@upi"
+}
+```
+
+The `type` property is basically a label telling you:
+
+> "I'm a UPI payment."
+
+So you can safely access:
+
+```ts
+payment.upiId
+```
+
+But you shouldn't access:
+
+```ts
+payment.cardNumber
+```
+
+because this isn't a card payment.
+
+---
+
+## 4. Another common example
+
+This pattern is extremely common with UI state.
+
+```ts
+type State =
+  | {
+      status: "loading";
+    }
+  | {
+      status: "success";
+      data: string[];
+    }
+  | {
+      status: "error";
+      message: string;
+    };
+```
+
+Now:
+
+```ts
+function render(state: State) {
+  if (state.status === "loading") {
+    console.log("Loading...");
+  }
+
+  if (state.status === "success") {
+    console.log(state.data);
+  }
+
+  if (state.status === "error") {
+    console.log(state.message);
+  }
+}
+```
+
+Again, `status` is the discriminator.
+
+When:
+
+```ts
+state.status === "success"
+```
+
+TypeScript knows:
+
+```ts
+state
+```
+
+must be:
+
+```ts
+{
+  status: "success";
+  data: string[];
+}
+```
+
+Therefore:
+
+```ts
+state.data
+```
+
+is safe.
+
+---
+
+## 5. Why not just use optional properties?
+
+You might be tempted to write:
+
+```ts
+type Payment = {
+  type: "card" | "upi" | "cash";
+  cardNumber?: string;
+  upiId?: string;
+  amount?: number;
+};
+```
+
+This is much weaker.
+
+Now TypeScript allows things like:
+
+```ts
+const payment: Payment = {
+  type: "card"
+};
+```
+
+There's nothing forcing a card payment to actually have a `cardNumber`.
+
+With a discriminated union:
+
+```ts
+type Payment =
+  | {
+      type: "card";
+      cardNumber: string;
+    }
+  | {
+      type: "upi";
+      upiId: string;
+    }
+  | {
+      type: "cash";
+      amount: number;
+    };
+```
+
+this is an error:
+
+```ts
+const payment: Payment = {
+  type: "card"
+};
+```
+
+because a `"card"` payment must contain:
+
+```ts
+cardNumber: string
+```
+
+That's one of the biggest advantages.
+
+---
+
+## 6. The mental model
+
+Think of this:
+
+```ts
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; side: number }
+  | { kind: "rectangle"; width: number; height: number };
+```
+
+as:
+
+```text
+Shape
+ │
+ ├── kind = "circle"     → radius
+ │
+ ├── kind = "square"     → side
+ │
+ └── kind = "rectangle"  → width + height
+```
+
+Then:
+
+```ts
+if (shape.kind === "circle") {
+    // TypeScript knows: Circle
+}
+
+if (shape.kind === "square") {
+    // TypeScript knows: Square
+}
+
+if (shape.kind === "rectangle") {
+    // TypeScript knows: Rectangle
+}
+```
+
+The `kind` property discriminates between the different possibilities.
+
+---
+
+## 7. One-line definition
+
+> A discriminated union is a union of object types that share a common literal property, allowing TypeScript to narrow the object based on that property.
+
+The general pattern is:
+
+```ts
+type Something =
+  | { type: "A"; / A-specific properties / }
+  | { type: "B"; / B-specific properties / }
+  | { type: "C"; / C-specific properties / };
+```
+
+Then:
+
+```ts
+if (something.type === "A") {
+    // TypeScript knows it's A
+}
+```
+
+### The connection to what you've already learned
+
+You can think of discriminated unions as combining several concepts you've already learned:
+
+Union Types
+
+```ts
+A | B | C
+```
+
+
+
+Literal Types
+
+```ts
+type: "card" | "upi" | "cash"
+```
+
+
+
+Type Narrowing
+
+```ts
+if (payment.type === "card") {
+    // narrowed to card
+}
+```
+
+= Discriminated Union.
+
+That's why this concept becomes much easier once those three ideas are clear.

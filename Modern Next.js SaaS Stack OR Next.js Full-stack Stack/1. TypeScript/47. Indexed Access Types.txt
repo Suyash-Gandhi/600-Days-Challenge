@@ -1,0 +1,310 @@
+## 47. Indexed Access Types
+
+Indexed Access Types let you get the type of a property from another type.
+
+Think of it like accessing a value from an object:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+user["name"]; // "Suyash"
+```
+
+With TypeScript types, you can do something similar:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+type NameType = User["name"];
+// string
+
+type AgeType = User["age"];
+// number
+```
+
+### The syntax
+
+```ts
+Type["property"]
+```
+
+So:
+
+```ts
+type Name = User["name"];
+```
+
+means:
+
+> "Give me the type of the `name` property inside `User`."
+
+---
+
+### Why is this useful?
+
+Suppose you have:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+```
+
+And you want another type that must always match the type of `User["email"]`.
+
+You could write:
+
+```ts
+type Email = string;
+```
+
+But now you've duplicated the information.
+
+Instead:
+
+```ts
+type Email = User["email"];
+```
+
+If you later change:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: number;
+};
+```
+
+then:
+
+```ts
+type Email = User["email"];
+```
+
+automatically becomes:
+
+```ts
+number
+```
+
+That's the main idea:
+
+> Indexed Access Types let you reuse a type that already exists somewhere else.
+
+---
+
+## It works with arrays too
+
+This is where Indexed Access Types become particularly useful.
+
+```ts
+type Users = {
+  id: number;
+  name: string;
+}[];
+```
+
+You can get the type of one array element:
+
+```ts
+type User = Users[number];
+```
+
+`User` becomes:
+
+```ts
+{
+  id: number;
+  name: string;
+}
+```
+
+Why `number`?
+
+Because array indexes are numbers:
+
+```ts
+users[0]
+users[1]
+users[2]
+```
+
+So:
+
+```ts
+Users[number]
+```
+
+means:
+
+> "Give me the type of an element at any numeric index."
+
+---
+
+### With a tuple
+
+You can even access specific tuple positions:
+
+```ts
+type Person = [string, number, boolean];
+
+type Name = Person[0];
+// string
+
+type Age = Person[1];
+// number
+
+type IsActive = Person[2];
+// boolean
+```
+
+You can also get a union of all element types:
+
+```ts
+type PersonValue = Person[number];
+// string | number | boolean
+```
+
+---
+
+## A very practical example
+
+Imagine:
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+```
+
+You want a function that accepts whatever type the product's `id` is:
+
+```ts
+function findProduct(id: Product["id"]) {
+  // ...
+}
+```
+
+This is equivalent to:
+
+```ts
+function findProduct(id: number) {
+  // ...
+}
+```
+
+But the Indexed Access version has an advantage: if you later change:
+
+```ts
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+};
+```
+
+the function automatically changes to:
+
+```ts
+function findProduct(id: string) {
+  // ...
+}
+```
+
+No duplication.
+
+---
+
+## Indexed Access + `keyof`
+
+These two concepts are often used together.
+
+Given:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  active: boolean;
+};
+```
+
+`keyof User` gives:
+
+```ts
+type UserKey = keyof User;
+// "name" | "age" | "active"
+```
+
+Then:
+
+```ts
+type UserValue = User[keyof User];
+```
+
+gives:
+
+```ts
+string | number | boolean
+```
+
+So:
+
+```ts
+User["name"]
+```
+
+→ `string`
+
+while:
+
+```ts
+User[keyof User]
+```
+
+→ `string | number | boolean`
+
+### Easy way to remember
+
+```ts
+User["name"]
+```
+
+"Give me the type of this specific property."
+
+```ts
+User[keyof User]
+```
+
+"Give me the types of all properties."
+
+---
+
+### One-line mental model
+
+If you understand JavaScript property access:
+
+```ts
+user["name"]
+```
+
+then Indexed Access Types are the type-level version:
+
+```ts
+User["name"]
+```
+
+The first gets a value.
+
+The second gets a type.

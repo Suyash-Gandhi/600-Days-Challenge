@@ -1,0 +1,329 @@
+## 46. `typeof` Type Operator in TypeScript
+
+This is different from `typeof` narrowing that you learned earlier.
+
+There are actually two uses of `typeof` in TypeScript:
+
+```ts
+// JavaScript / runtime
+typeof value
+
+// TypeScript / type system
+typeof variable
+```
+
+The type operator lets you create a type from an existing variable.
+
+### 1. Basic example
+
+```ts
+const username = "Suyash";
+
+type Username = typeof username;
+```
+
+TypeScript sees:
+
+```ts
+const username = "Suyash";
+// username: "Suyash"
+
+type Username = typeof username;
+// Username: "Suyash"
+```
+
+So now:
+
+```ts
+let name1: Username = "Suyash"; // ✅
+let name2: Username = "Rahul";  // ❌
+```
+
+The important idea:
+
+> `typeof` in a type position asks: "What is the type of this existing value?"
+
+---
+
+### 2. Why is this useful?
+
+Imagine you have a configuration object:
+
+```ts
+const config = {
+  host: "localhost",
+  port: 3000,
+  debug: true
+};
+```
+
+You could manually write:
+
+```ts
+type Config = {
+  host: string;
+  port: number;
+  debug: boolean;
+};
+```
+
+But now you have duplicated the structure.
+
+Instead:
+
+```ts
+type Config = typeof config;
+```
+
+Now `Config` automatically becomes:
+
+```ts
+type Config = {
+  host: string;
+  port: number;
+  debug: boolean;
+};
+```
+
+So:
+
+```ts
+const config2: Config = {
+  host: "example.com",
+  port: 8080,
+  debug: false
+};
+```
+
+### The big advantage
+
+If you later change the original object:
+
+```ts
+const config = {
+  host: "localhost",
+  port: 3000,
+  debug: true,
+  timeout: 5000
+};
+```
+
+`Config` automatically includes `timeout`.
+
+You don't have to update the type manually.
+
+---
+
+## 3. Very common use: arrays
+
+Suppose:
+
+```ts
+const users = [
+  { id: 1, name: "Suyash" },
+  { id: 2, name: "Rahul" }
+];
+```
+
+You can get the type of the entire array:
+
+```ts
+type Users = typeof users;
+```
+
+That gives roughly:
+
+```ts
+type Users = {
+  id: number;
+  name: string;
+}[];
+```
+
+But sometimes you want the type of one user.
+
+That's where `typeof` combines with indexed access types:
+
+```ts
+type User = typeof users[number];
+```
+
+Now:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+```
+
+So:
+
+```ts
+const user: User = {
+  id: 3,
+  name: "Amit"
+};
+```
+
+This pattern is extremely common in real TypeScript code:
+
+```ts
+const roles = ["admin", "user", "guest"] as const;
+
+type Role = typeof roles[number];
+```
+
+`Role` becomes:
+
+```ts
+"admin" | "user" | "guest"
+```
+
+---
+
+## 4. `typeof` with functions
+
+You can also extract a function's type.
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+
+type AddFunction = typeof add;
+```
+
+Now `AddFunction` represents:
+
+```ts
+(a: number, b: number) => number
+```
+
+You can use it:
+
+```ts
+const multiply: AddFunction = (a, b) => {
+  return a  b;
+};
+```
+
+This is useful when you want another function to have exactly the same function signature.
+
+---
+
+## 5. Don't confuse these two
+
+### Runtime `typeof`
+
+This is JavaScript:
+
+```ts
+const value = "hello";
+
+console.log(typeof value);
+// "string"
+```
+
+It happens while the program runs.
+
+---
+
+### TypeScript `typeof`
+
+This is used in a type position:
+
+```ts
+const value = "hello";
+
+type Value = typeof value;
+```
+
+It happens when TypeScript checks your code.
+
+Think:
+
+```text
+typeof value
+     ↓
+"What is the runtime type?"
+```
+
+versus:
+
+```text
+type Value = typeof value
+                  ↓
+"What type does TypeScript give this value?"
+```
+
+---
+
+## 6. The easiest way to remember it
+
+Think of this:
+
+```ts
+const person = {
+  name: "Suyash",
+  age: 25
+};
+
+type Person = typeof person;
+```
+
+as saying:
+
+> "TypeScript, make `Person` have the same type as `person`."
+
+So:
+
+```text
+VALUE
+  ↓
+person
+  ↓
+typeof person
+  ↓
+TYPE
+  ↓
+Person
+```
+
+### One important distinction
+
+`typeof` doesn't create a new type from nowhere.
+
+It extracts a type from an existing value.
+
+That's why this is useful:
+
+```ts
+const settings = {
+  theme: "dark",
+  fontSize: 16
+};
+
+type Settings = typeof settings;
+```
+
+Instead of writing the same structure twice.
+
+---
+
+### In one sentence
+
+TypeScript's `typeof` type operator lets you derive a type from an existing variable, constant, function, or object.
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+type User = typeof user;
+```
+
+Value → `typeof` → Type
+
+That is the core idea.

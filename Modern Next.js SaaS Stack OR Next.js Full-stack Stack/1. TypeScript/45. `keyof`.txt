@@ -1,0 +1,335 @@
+## 45. `keyof` in TypeScript
+
+`keyof` is an operator that gives you the keys of an object type as a union of literal types.
+
+Think of it as:
+
+> "What property names are allowed on this type?"
+
+### 1. Basic example
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  email: string;
+};
+
+type UserKeys = keyof User;
+```
+
+Now:
+
+```ts
+type UserKeys = "name" | "age" | "email";
+```
+
+So `keyof User` means:
+
+```ts
+"name" | "age" | "email"
+```
+
+---
+
+### 2. Why is this useful?
+
+Suppose you have:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  email: string;
+};
+```
+
+You want a function that accepts only valid User property names.
+
+Without `keyof`:
+
+```ts
+function getUserProperty(user: User, key: string) {
+  return user[key];
+}
+```
+
+`string` is too broad.
+
+Someone could do:
+
+```ts
+getUserProperty(user, "banana"); // ❌ shouldn't be allowed
+```
+
+With `keyof`:
+
+```ts
+function getUserProperty(user: User, key: keyof User) {
+  return user[key];
+}
+```
+
+Now TypeScript knows:
+
+```ts
+getUserProperty(user, "name");  // ✅
+getUserProperty(user, "age");   // ✅
+getUserProperty(user, "email"); // ✅
+
+getUserProperty(user, "banana"); // ❌
+```
+
+That's the main purpose of `keyof`:
+
+> It lets you restrict something to the actual keys of an object type.
+
+---
+
+## 3. `keyof` creates a union
+
+Given:
+
+```ts
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+```
+
+Then:
+
+```ts
+type ProductKey = keyof Product;
+```
+
+is equivalent to:
+
+```ts
+type ProductKey = "id" | "name" | "price";
+```
+
+You can think of it visually:
+
+```text
+Product
+ ├── id
+ ├── name
+ └── price
+
+       ↓ keyof
+
+"id" | "name" | "price"
+```
+
+---
+
+## 4. `keyof` + `typeof`
+
+This becomes especially useful when you have an actual object rather than a type.
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25,
+  email: "test@example.com"
+};
+```
+
+You can get its type with `typeof`:
+
+```ts
+type User = typeof user;
+```
+
+Then get its keys:
+
+```ts
+type UserKey = keyof typeof user;
+```
+
+Which becomes:
+
+```ts
+"name" | "age" | "email"
+```
+
+So:
+
+```ts
+keyof typeof user
+```
+
+basically means:
+
+> "Give me the keys of this actual object's inferred type."
+
+---
+
+## 5. A very common pattern
+
+You'll see this pattern constantly in real TypeScript:
+
+```ts
+function getValue<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+```
+
+Example:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+const name = getValue(user, "name"); // string
+const age = getValue(user, "age");   // number
+```
+
+And:
+
+```ts
+getValue(user, "email");
+// ❌ "email" is not a key of user
+```
+
+The important part is:
+
+```ts
+K extends keyof T
+```
+
+It means:
+
+> `K` must be one of the keys of `T`.
+
+---
+
+## 6. `keyof` does NOT give you the values
+
+This is important.
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+### `keyof User`
+
+gives:
+
+```ts
+"name" | "age"
+```
+
+It does not give:
+
+```ts
+string | number
+```
+
+So:
+
+```text
+keyof User
+     ↓
+property names
+
+"name" | "age"
+```
+
+If you want the types of the properties, that's where indexed access types come in:
+
+```ts
+type UserValues = User[keyof User];
+```
+
+which gives:
+
+```ts
+string | number
+```
+
+So remember:
+
+```ts
+keyof User
+```
+
+→ keys
+
+```ts
+User[keyof User]
+```
+
+→ values/property types
+
+---
+
+## 7. The easiest way to remember it
+
+Given:
+
+```ts
+type Car = {
+  brand: string;
+  model: string;
+  year: number;
+};
+```
+
+Think:
+
+```ts
+keyof Car
+```
+
+as asking:
+
+> "What can I put between `car[...]`?"
+
+Answer:
+
+```ts
+"brand" | "model" | "year"
+```
+
+That's really the core idea.
+
+### Mental model
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+```ts
+keyof User
+```
+
+↓
+
+```ts
+"name" | "age"
+```
+
+Then:
+
+```ts
+function get(user: User, key: keyof User) {
+  return user[key];
+}
+```
+
+means:
+
+> "Give me a User and a key that actually exists on User."
+
+`keyof` = "give me the valid property names of this type."
