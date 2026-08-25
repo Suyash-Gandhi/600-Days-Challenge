@@ -1,0 +1,408 @@
+# 53. Generic Types & Interfaces
+
+Generic types and interfaces let you create reusable type definitions that work with different data types while staying type-safe.
+
+## 1. Generic Type
+
+A generic type uses a type parameter such as `T`.
+
+```ts
+type Box<T> = {
+  value: T;
+};
+```
+
+Now `Box<T>` can represent different types:
+
+```ts
+const numberBox: Box<number> = {
+  value: 100
+};
+
+const stringBox: Box<string> = {
+  value: "Hello"
+};
+```
+
+TypeScript knows the exact type of `value`:
+
+```ts
+numberBox.value.toFixed();
+stringBox.value.toUpperCase();
+```
+
+---
+
+## 2. Generic Interface
+
+You can do the same thing with an interface:
+
+```ts
+interface Box<T> {
+  value: T;
+}
+```
+
+Usage:
+
+```ts
+const userBox: Box<string> = {
+  value: "Suyash"
+};
+
+const ageBox: Box<number> = {
+  value: 25
+};
+```
+
+The `T` is determined when you use the interface.
+
+```text
+Box<string>  → T = string
+Box<number>  → T = number
+```
+
+---
+
+## 3. Generic Interface with Multiple Types
+
+An interface can have multiple type parameters.
+
+```ts
+interface Pair<K, V> {
+  key: K;
+  value: V;
+}
+```
+
+Example:
+
+```ts
+const user: Pair<number, string> = {
+  key: 101,
+  value: "Suyash"
+};
+```
+
+Here:
+
+```text
+K → number
+V → string
+```
+
+So TypeScript expects:
+
+```ts
+key: number;
+value: string;
+```
+
+---
+
+## 4. Generic API Response
+
+Generics are especially useful for API response structures.
+
+```ts
+interface ApiResponse<T> {
+  data: T;
+  success: boolean;
+  message: string;
+}
+```
+
+For users:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+const response: ApiResponse<User> = {
+  data: {
+    id: 1,
+    name: "Suyash"
+  },
+  success: true,
+  message: "User fetched"
+};
+```
+
+For an array of users:
+
+```ts
+const response: ApiResponse<User[]> = {
+  data: [
+    { id: 1, name: "Suyash" },
+    { id: 2, name: "Rahul" }
+  ],
+  success: true,
+  message: "Users fetched"
+};
+```
+
+The same `ApiResponse<T>` works for both.
+
+---
+
+## 5. Generic Interface + Generic Function
+
+Generics become particularly powerful when interfaces and functions work together.
+
+```ts
+interface Container<T> {
+  value: T;
+}
+
+function getValue<T>(container: Container<T>): T {
+  return container.value;
+}
+```
+
+Usage:
+
+```ts
+const result = getValue({
+  value: 100
+});
+
+console.log(result); // 100
+```
+
+TypeScript infers:
+
+```text
+T = number
+```
+
+Therefore:
+
+```ts
+result: number
+```
+
+With a string:
+
+```ts
+const result = getValue({
+  value: "Hello"
+});
+```
+
+Now:
+
+```text
+T = string
+result: string
+```
+
+---
+
+## 6. Generic Interfaces with Constraints
+
+You can constrain a generic type using `extends`.
+
+```ts
+interface HasId {
+  id: number;
+}
+
+interface Repository<T extends HasId> {
+  getById(id: number): T;
+}
+```
+
+Now `T` must have an `id: number` property.
+
+This works:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+const userRepository: Repository<User> = {
+  getById(id) {
+    return {
+      id,
+      name: "Suyash"
+    };
+  }
+};
+```
+
+But this would not satisfy the constraint:
+
+```ts
+interface Product {
+  name: string;
+}
+```
+
+Because `Product` doesn't contain:
+
+```ts
+id: number;
+```
+
+---
+
+## 7. Generic Interface vs Normal Interface
+
+### Normal interface
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+```
+
+This describes one specific structure.
+
+### Generic interface
+
+```ts
+interface Response<T> {
+  data: T;
+  success: boolean;
+}
+```
+
+This describes a reusable structure for many types.
+
+```ts
+Response<User>
+Response<Product>
+Response<string>
+Response<User[]>
+```
+
+---
+
+## 8. Generic Type Alias vs Generic Interface
+
+Both can express generic structures.
+
+```ts
+type Box<T> = {
+  value: T;
+};
+```
+
+```ts
+interface Box<T> {
+  value: T;
+}
+```
+
+For many simple object structures, either can work.
+
+A useful distinction is:
+
+ Interface → commonly used for object contracts and extensibility.
+ Type alias → more flexible for unions, intersections, tuples, primitives, and other type compositions.
+
+For example:
+
+```ts
+type Result<T> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+```
+
+This kind of union is something a type alias handles naturally.
+
+---
+
+## 9. Real-World Example
+
+Imagine a reusable pagination response:
+
+```ts
+interface PaginatedResponse<T> {
+  items: T[];
+  page: number;
+  totalPages: number;
+}
+```
+
+For users:
+
+```ts
+const users: PaginatedResponse<User> = {
+  items: [
+    { id: 1, name: "Suyash" }
+  ],
+  page: 1,
+  totalPages: 5
+};
+```
+
+For products:
+
+```ts
+interface Product {
+  id: number;
+  price: number;
+}
+
+const products: PaginatedResponse<Product> = {
+  items: [
+    { id: 101, price: 999 }
+  ],
+  page: 1,
+  totalPages: 10
+};
+```
+
+One interface handles both cases without sacrificing type safety.
+
+---
+
+## Key Takeaway
+
+Think of:
+
+```ts
+interface Box<T> {
+  value: T;
+}
+```
+
+as saying:
+
+> "I know the structure, but I'll decide the actual data type later."
+
+Then:
+
+```ts
+Box<number>
+```
+
+means:
+
+```ts
+{
+  value: number;
+}
+```
+
+while:
+
+```ts
+Box<string>
+```
+
+means:
+
+```ts
+{
+  value: string;
+}
+```
+
+So generic interfaces = reusable object contracts with type parameters.

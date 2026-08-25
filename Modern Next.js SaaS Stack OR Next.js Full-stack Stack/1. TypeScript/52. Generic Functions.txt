@@ -1,0 +1,225 @@
+# 52. Generic Functions in TypeScript
+
+A generic function is a function that works with different types while still preserving type safety.
+
+The key idea is:
+
+> Instead of deciding the type when writing the function, let the caller provide the type.
+
+### 1. The problem without generics
+
+```ts
+function identity(value: any): any {
+  return value;
+}
+
+const result = identity("hello");
+```
+
+This works, but `any` loses type safety. TypeScript doesn't know that `result` is specifically a `string`.
+
+---
+
+### 2. Generic function
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+Here, `T` is a type parameter.
+
+```ts
+const a = identity("hello"); // string
+const b = identity(42);      // number
+const c = identity(true);    // boolean
+```
+
+TypeScript figures out `T` from the argument:
+
+```text
+identity("hello")
+       ↓
+       T = string
+       ↓
+       string returned
+```
+
+---
+
+### 3. Explicitly providing the type
+
+You can also specify the type yourself:
+
+```ts
+const name = identity<string>("Suyash");
+const age = identity<number>(25);
+```
+
+Usually, TypeScript can infer it, so this is unnecessary:
+
+```ts
+identity("Suyash");
+```
+
+---
+
+### 4. Generic function with arrays
+
+Generics become especially useful with arrays.
+
+```ts
+function getFirst<T>(items: T[]): T {
+  return items[0];
+}
+
+const firstName = getFirst(["Suyash", "Rahul"]);
+// string
+
+const firstNumber = getFirst([10, 20, 30]);
+// number
+```
+
+The function works for any array type while preserving the element type.
+
+---
+
+### 5. Generic function with multiple types
+
+A function can have multiple type parameters.
+
+```ts
+function pair<T, U>(first: T, second: U): [T, U] {
+  return [first, second];
+}
+
+const result = pair("age", 25);
+// [string, number]
+```
+
+Here:
+
+```text
+T → string
+U → number
+```
+
+---
+
+### 6. Generic constraints
+
+Sometimes you don't want to allow every type.
+
+You can constrain a generic using `extends`.
+
+```ts
+function getLength<T extends { length: number }>(value: T): number {
+  return value.length;
+}
+```
+
+Now these work:
+
+```ts
+getLength("hello");
+getLength([1, 2, 3]);
+```
+
+But this doesn't:
+
+```ts
+getLength(123); // Error
+```
+
+Because `number` doesn't have a `length` property.
+
+---
+
+### 7. Generic functions with objects
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+const name = getProperty(user, "name");
+// string
+
+const age = getProperty(user, "age");
+// number
+```
+
+This is a powerful combination of:
+
+ Generics
+ `keyof`
+ Indexed access types
+
+---
+
+## Generic function vs `any`
+
+### `any`
+
+```ts
+function identity(value: any): any {
+  return value;
+}
+
+const result = identity("hello");
+// any
+```
+
+### Generic
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+
+const result = identity("hello");
+// string
+```
+
+Generics preserve the relationship between the input and output types.
+
+---
+
+## Mental model
+
+Think of:
+
+```ts
+function identity<T>(value: T): T
+```
+
+as:
+
+> "Give me a value of some type `T`, and I'll give you back that same type `T`."
+
+So:
+
+```ts
+identity("hello")  // string → string
+identity(123)      // number → number
+identity(true)     // boolean → boolean
+```
+
+### Most important pattern to remember
+
+```ts
+function functionName<T>(value: T): T {
+  return value;
+}
+```
+
+`T` isn't a real runtime value. It's a placeholder for a type that TypeScript determines when the function is used.
