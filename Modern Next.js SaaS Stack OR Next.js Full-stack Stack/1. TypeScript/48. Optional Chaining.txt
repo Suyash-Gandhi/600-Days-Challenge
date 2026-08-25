@@ -1,0 +1,358 @@
+## 48. Optional Chaining (`?.`)
+
+Optional chaining is a way to safely access something that might be `null` or `undefined`.
+
+The main idea is:
+
+> “Try to access this. If the thing before `?.` doesn't exist, just give me `undefined` instead of throwing an error.”
+
+### 1. The problem
+
+Suppose you have:
+
+```ts
+type User = {
+  name: string;
+};
+
+let user: User | undefined;
+```
+
+Now:
+
+```ts
+console.log(user.name);
+```
+
+TypeScript complains because `user` might be `undefined`.
+
+And at runtime, if `user` actually is `undefined`, JavaScript throws:
+
+```text
+Cannot read properties of undefined
+```
+
+### 2. Optional chaining solves this
+
+```ts
+console.log(user?.name);
+```
+
+Meaning:
+
+```text
+If user exists → give me user.name
+If user is undefined → give me undefined
+```
+
+So:
+
+```ts
+let user: User | undefined;
+
+console.log(user?.name);
+// undefined
+```
+
+If:
+
+```ts
+let user: User = {
+  name: "Suyash"
+};
+
+console.log(user?.name);
+// "Suyash"
+```
+
+---
+
+## 3. Why not just use `if`?
+
+You could write:
+
+```ts
+if (user) {
+  console.log(user.name);
+}
+```
+
+But optional chaining is shorter:
+
+```ts
+console.log(user?.name);
+```
+
+So `?.` is basically a convenient way of saying:
+
+```ts
+if the thing exists, continue;
+otherwise return undefined
+```
+
+---
+
+## 4. It becomes especially useful with nested objects
+
+Consider:
+
+```ts
+type User = {
+  profile?: {
+    address?: {
+      city: string;
+    };
+  };
+};
+```
+
+You might have:
+
+```ts
+const user: User = {};
+```
+
+Without optional chaining:
+
+```ts
+user.profile.address.city;
+```
+
+This can fail because `profile` might not exist.
+
+You can safely access it:
+
+```ts
+user.profile?.address?.city;
+```
+
+The chain works like this:
+
+```text
+user
+ ↓
+profile exists?
+ ↓
+address exists?
+ ↓
+city
+```
+
+If anything along the way is `undefined`, the result becomes `undefined`.
+
+---
+
+## 5. Optional function calls
+
+You can also use `?.` when a function might not exist.
+
+```ts
+type User = {
+  greet?: () => void;
+};
+
+const user: User = {};
+```
+
+This would be a problem:
+
+```ts
+user.greet();
+```
+
+Because `greet` might be undefined.
+
+Instead:
+
+```ts
+user.greet?.();
+```
+
+Meaning:
+
+> Call `greet()` only if it exists.
+
+So:
+
+```ts
+const user: User = {
+  greet: () => console.log("Hello")
+};
+
+user.greet?.();
+// Hello
+```
+
+And:
+
+```ts
+const user: User = {};
+
+user.greet?.();
+// nothing happens
+```
+
+---
+
+## 6. Optional array access
+
+You can also use optional chaining with array indexing:
+
+```ts
+const users = ["Alice", "Bob"];
+
+console.log(users?.[0]);
+// Alice
+```
+
+More useful when the array itself might be undefined:
+
+```ts
+const users: string[] | undefined = undefined;
+
+console.log(users?.[0]);
+// undefined
+```
+
+Without `?.`:
+
+```ts
+users[0];
+```
+
+would be unsafe.
+
+---
+
+## 7. `?.` does NOT mean “if falsy”
+
+This is very important.
+
+Optional chaining checks specifically for:
+
+```ts
+null
+undefined
+```
+
+It does not stop for:
+
+```ts
+0
+false
+""
+```
+
+For example:
+
+```ts
+const user = {
+  age: 0
+};
+
+console.log(user?.age);
+// 0
+```
+
+It doesn't say:
+
+> “Age is falsy, so return undefined.”
+
+It says:
+
+> “Does `user` exist? Yes → access `age`.”
+
+---
+
+## 8. `?.` vs `&&`
+
+You may see older code like:
+
+```ts
+user && user.profile && user.profile.name;
+```
+
+Optional chaining makes this much cleaner:
+
+```ts
+user?.profile?.name;
+```
+
+So:
+
+```ts
+user && user.profile && user.profile.name
+```
+
+is conceptually similar to:
+
+```ts
+user?.profile?.name
+```
+
+but `?.` is specifically designed for this purpose.
+
+---
+
+## 9. `?.` does NOT provide a default value
+
+This is another important distinction.
+
+```ts
+const name = user?.name;
+```
+
+If `user` doesn't exist:
+
+```ts
+name === undefined
+```
+
+If you want a default:
+
+```ts
+const name = user?.name ?? "Guest";
+```
+
+Now:
+
+```text
+user exists + name exists → name
+otherwise → "Guest"
+```
+
+This is where optional chaining + nullish coalescing (`??`) become very useful together.
+
+---
+
+### The mental model
+
+Whenever you see:
+
+```ts
+something?.property
+```
+
+read it as:
+
+> “If `something` exists, access `property`; otherwise give me `undefined`.”
+
+And:
+
+```ts
+something?.property?.anotherProperty
+```
+
+means:
+
+> “Keep going only while each thing exists.”
+
+The three most common forms are:
+
+```ts
+user?.name        // property access
+user?.greet?.()   // function call
+users?.[0]        // array/index access
+```
+
+In one sentence: Optional chaining (`?.`) prevents errors when accessing properties, methods, or indexes on values that might be `null` or `undefined`.

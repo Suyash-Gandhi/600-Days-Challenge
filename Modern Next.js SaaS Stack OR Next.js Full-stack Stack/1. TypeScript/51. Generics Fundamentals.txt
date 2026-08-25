@@ -1,0 +1,772 @@
+# 51. Generics Fundamentals
+
+Generics are one of the most important TypeScript concepts because they let you write code that works with different types while still keeping type safety.
+
+The easiest way to understand them is:
+
+> Generics = "I don't know the type yet, so let the caller tell me."
+
+---
+
+## 1. The problem without Generics
+
+Imagine we want a function that returns whatever value we give it:
+
+```ts
+function identity(value: any) {
+  return value;
+}
+
+const result = identity("hello");
+```
+
+This works, but `any` is a problem.
+
+TypeScript loses information:
+
+```ts
+const result = identity("hello");
+
+result.toUpperCase(); // TypeScript can't properly protect us
+```
+
+We're basically saying:
+
+> "Don't worry about the type."
+
+That's not what we want.
+
+---
+
+# 2. A better solution: Generic
+
+We can write:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+The `T` is a generic type parameter.
+
+Now:
+
+```ts
+const result = identity("hello");
+```
+
+TypeScript figures out:
+
+```text
+T = string
+```
+
+So the function effectively becomes:
+
+```ts
+function identity(value: string): string
+```
+
+And if we do:
+
+```ts
+const result = identity(123);
+```
+
+TypeScript figures out:
+
+```text
+T = number
+```
+
+Effectively:
+
+```ts
+function identity(value: number): number
+```
+
+---
+
+# 3. What does `<T>` actually mean?
+
+Look at this:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+Break it down:
+
+```text
+<T>
+ │
+ └── Type parameter
+```
+
+Then:
+
+```ts
+(value: T)
+```
+
+means:
+
+> The parameter has whatever type `T` turns out to be.
+
+And:
+
+```ts
+: T
+```
+
+means:
+
+> The return value has that same type.
+
+So:
+
+```ts
+identity("hello")
+```
+
+means:
+
+```text
+T = string
+
+input  → string
+output → string
+```
+
+While:
+
+```ts
+identity(42)
+```
+
+means:
+
+```text
+T = number
+
+input  → number
+output → number
+```
+
+---
+
+# 4. Why not just use `any`?
+
+Compare:
+
+```ts
+function identity(value: any): any {
+  return value;
+}
+```
+
+with:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+With `any`:
+
+```ts
+const result = identity("hello");
+
+result.toFixed(); // TypeScript allows this 😬
+```
+
+Because `any` essentially disables type checking.
+
+With generics:
+
+```ts
+const result = identity("hello");
+
+result.toFixed(); // ❌ Error
+```
+
+TypeScript knows:
+
+```text
+result = string
+```
+
+So you get proper type safety.
+
+---
+
+# 5. Generic with arrays
+
+Generics become especially useful with arrays.
+
+Suppose:
+
+```ts
+function getFirst(arr: any[]) {
+  return arr[0];
+}
+```
+
+Again, we've lost type information.
+
+Instead:
+
+```ts
+function getFirst<T>(arr: T[]): T {
+  return arr[0];
+}
+```
+
+Now:
+
+```ts
+const name = getFirst(["John", "Sarah", "Mike"]);
+```
+
+TypeScript knows:
+
+```text
+T = string
+```
+
+Therefore:
+
+```ts
+name: string
+```
+
+And:
+
+```ts
+const number = getFirst([10, 20, 30]);
+```
+
+gives:
+
+```text
+T = number
+```
+
+Therefore:
+
+```ts
+number: number
+```
+
+Same function.
+
+Different types.
+
+Still type-safe.
+
+---
+
+# 6. The real purpose of Generics
+
+This is the key idea.
+
+Without generics, you might write separate functions:
+
+```ts
+function firstString(arr: string[]): string {
+  return arr[0];
+}
+
+function firstNumber(arr: number[]): number {
+  return arr[0];
+}
+```
+
+That's repetitive.
+
+Generics let you write one reusable function:
+
+```ts
+function first<T>(arr: T[]): T {
+  return arr[0];
+}
+```
+
+Now it works with:
+
+```ts
+first(["a", "b"]);
+first([1, 2]);
+first([true, false]);
+```
+
+---
+
+# 7. Generics preserve relationships between types
+
+This is actually the most important reason to use generics.
+
+Consider:
+
+```ts
+function pair(value: any, count: any) {
+  return [value, count];
+}
+```
+
+The relationship between input and output isn't understood.
+
+Generics allow us to express relationships.
+
+For example:
+
+```ts
+function wrap<T>(value: T): T[] {
+  return [value];
+}
+```
+
+If we call:
+
+```ts
+const result = wrap("hello");
+```
+
+TypeScript knows:
+
+```ts
+result: string[]
+```
+
+And:
+
+```ts
+const result = wrap(100);
+```
+
+means:
+
+```ts
+result: number[]
+```
+
+The generic connects the input type to the output type.
+
+---
+
+# 8. Multiple Generic Types
+
+You can have more than one type parameter.
+
+```ts
+function pair<T, U>(first: T, second: U): [T, U] {
+  return [first, second];
+}
+```
+
+Now:
+
+```ts
+const result = pair("hello", 123);
+```
+
+TypeScript infers:
+
+```text
+T = string
+U = number
+```
+
+So:
+
+```ts
+result
+```
+
+is:
+
+```ts
+[string, number]
+```
+
+Another example:
+
+```ts
+const result = pair(true, "hello");
+```
+
+becomes:
+
+```ts
+[boolean, string]
+```
+
+---
+
+# 9. You can name Generics something other than `T`
+
+This:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+could technically be:
+
+```ts
+function identity<Type>(value: Type): Type {
+  return value;
+}
+```
+
+Or:
+
+```ts
+function identity<Value>(value: Value): Value {
+  return value;
+}
+```
+
+`T` is simply a common convention.
+
+You'll frequently see:
+
+```text
+T = Type
+U = second Type
+K = Key
+V = Value
+```
+
+For example:
+
+```ts
+function getValue<K, V>(key: K, value: V) {
+  return value;
+}
+```
+
+---
+
+# 10. Explicitly providing the Generic
+
+Usually TypeScript can figure out the type automatically:
+
+```ts
+const result = identity("hello");
+```
+
+But you can explicitly provide it:
+
+```ts
+const result = identity<string>("hello");
+```
+
+Here you're saying:
+
+```text
+T = string
+```
+
+You can also do:
+
+```ts
+const result = identity<number>(123);
+```
+
+Usually inference is preferred:
+
+```ts
+identity("hello");
+```
+
+rather than unnecessarily writing:
+
+```ts
+identity<string>("hello");
+```
+
+---
+
+# 11. Generics with Objects
+
+Generics aren't limited to primitive values.
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+For example:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+```
+
+Then:
+
+```ts
+const name = getProperty(user, "name");
+```
+
+TypeScript knows:
+
+```ts
+name: string
+```
+
+And:
+
+```ts
+const age = getProperty(user, "age");
+```
+
+gives:
+
+```ts
+age: number
+```
+
+This is a more advanced use of generics, but you'll encounter patterns like this frequently in real TypeScript code.
+
+---
+
+# 12. Generic Interfaces
+
+Generics can also be used with interfaces.
+
+```ts
+interface Box<T> {
+  value: T;
+}
+```
+
+Now:
+
+```ts
+const stringBox: Box<string> = {
+  value: "hello"
+};
+```
+
+And:
+
+```ts
+const numberBox: Box<number> = {
+  value: 123
+};
+```
+
+The same interface can represent different types.
+
+Think:
+
+```text
+Box<string>
+    ↓
+value: string
+
+Box<number>
+    ↓
+value: number
+```
+
+---
+
+# 13. A real-world example
+
+Imagine an API response.
+
+You might have:
+
+```ts
+interface ApiResponse<T> {
+  data: T;
+  success: boolean;
+}
+```
+
+Now a user response:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+```
+
+Can be:
+
+```ts
+const response: ApiResponse<User> = {
+  data: {
+    id: 1,
+    name: "Suyash"
+  },
+  success: true
+};
+```
+
+And a product response can use the same generic:
+
+```ts
+interface Product {
+  id: number;
+  price: number;
+}
+
+const response: ApiResponse<Product> = {
+  data: {
+    id: 10,
+    price: 999
+  },
+  success: true
+};
+```
+
+That's one of the major real-world uses of generics.
+
+---
+
+# 14. The mental model
+
+Don't think:
+
+> "What does `T` mean?"
+
+Think:
+
+> "T is a placeholder for a type."
+
+For example:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+Imagine temporarily replacing `T`.
+
+When called with a string:
+
+```ts
+identity("hello");
+```
+
+think:
+
+```ts
+function identity<string>(value: string): string
+```
+
+When called with a number:
+
+```ts
+identity(123);
+```
+
+think:
+
+```ts
+function identity<number>(value: number): number
+```
+
+That's essentially the idea.
+
+---
+
+# 15. Generics vs Union Types
+
+You already learned unions:
+
+```ts
+function print(value: string | number) {
+  console.log(value);
+}
+```
+
+This means:
+
+> The function accepts a string OR a number.
+
+Generics are different.
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+This means:
+
+> Whatever type you give me, I'll preserve that type.
+
+Compare:
+
+```ts
+function example(value: string | number): string | number {
+  return value;
+}
+```
+
+The relationship is:
+
+```text
+string → string | number
+number → string | number
+```
+
+With generic:
+
+```ts
+function example<T>(value: T): T {
+  return value;
+}
+```
+
+The relationship is:
+
+```text
+string → string
+number → number
+boolean → boolean
+User → User
+```
+
+Generics preserve the specific type.
+
+---
+
+# 16. The one sentence to remember
+
+If you remember only one thing:
+
+> Generics allow you to write reusable code where the specific type is decided later, while preserving type safety.
+
+For now, focus on this basic pattern:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+Read it as:
+
+> "Give me a value of some type `T`, and I'll give you back that same type `T`."
+
+Once that clicks, generics become much less mysterious.

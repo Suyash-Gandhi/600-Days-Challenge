@@ -1,0 +1,152 @@
+## 49. Nullish Coalescing (`??`)
+
+The nullish coalescing operator `??` is used when you want to provide a fallback value only when something is `null` or `undefined`.
+
+### Basic idea
+
+```ts
+const name = null;
+
+const result = name ?? "Guest";
+
+console.log(result); // "Guest"
+```
+
+Think:
+
+> "If the value is `null` or `undefined`, use this other value."
+
+---
+
+### Why not just use `||`?
+
+This is where `??` becomes important.
+
+```ts
+const age = 0;
+
+console.log(age || 18); // 18
+console.log(age ?? 18); // 0
+```
+
+`||` considers many values as "false":
+
+```ts
+false
+0
+""
+null
+undefined
+NaN
+```
+
+But `??` only cares about:
+
+```ts
+null
+undefined
+```
+
+So:
+
+```ts
+const username = "";
+
+console.log(username || "Guest"); // "Guest"
+console.log(username ?? "Guest"); // ""
+```
+
+With `??`, an empty string is considered a valid value.
+
+---
+
+### A practical example
+
+Imagine an API response:
+
+```ts
+type User = {
+  name: string;
+  age?: number;
+};
+
+const user: User = {
+  name: "Suyash",
+  age: 0
+};
+
+const age = user.age ?? 18;
+
+console.log(age); // 0
+```
+
+If you used `||`:
+
+```ts
+const age = user.age || 18;
+
+console.log(age); // 18 ❌
+```
+
+That's potentially wrong because `0` might be a legitimate value.
+
+With `??`:
+
+```ts
+const age = user.age ?? 18;
+```
+
+You are saying:
+
+> "Use `user.age`, unless it is actually missing (`null` or `undefined`)."
+
+---
+
+### `??` vs `||`
+
+| Value | `value || "fallback"` | `value ?? "fallback"` |
+|---|---|---|
+| `null` | `"fallback"` | `"fallback"` |
+| `undefined` | `"fallback"` | `"fallback"` |
+| `0` | `"fallback"` | `0` |
+| `""` | `"fallback"` | `""` |
+| `false` | `"fallback"` | `false` |
+| `"hello"` | `"hello"` | `"hello"` |
+
+### The easiest way to remember it
+
+```ts
+value || fallback
+```
+
+means:
+
+> "If value is falsy, use fallback."
+
+```ts
+value ?? fallback
+```
+
+means:
+
+> "If value is null/undefined, use fallback."
+
+---
+
+### One more common example
+
+```ts
+function greet(name?: string) {
+  const username = name ?? "Guest";
+
+  console.log(`Hello, ${username}`);
+}
+
+greet("Suyash"); // Hello, Suyash
+greet();         // Hello, Guest
+greet("");       // Hello,
+```
+
+Notice that `""` stays `""`. That's exactly what `??` is designed for.
+
+In one sentence: `??` lets you set a default value without accidentally replacing valid values like `0`, `false`, or `""`.
