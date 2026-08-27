@@ -1,0 +1,199 @@
+## 67. `Awaited<T>`
+
+`Awaited<T>` is a built-in TypeScript utility type that extracts the type you eventually get after resolving a Promise.
+
+It is especially useful when working with `async` functions and nested Promises.
+
+### Basic example
+
+```ts
+type A = Awaited<Promise<string>>;
+// string
+
+type B = Awaited<Promise<number>>;
+// number
+
+type C = Awaited<Promise<boolean>>;
+// boolean
+```
+
+Instead of manually extracting the inner type, `Awaited<T>` does it for you.
+
+---
+
+### Why is it useful?
+
+Consider an async function:
+
+```ts
+async function getUser() {
+  return {
+    id: 1,
+    name: "Suyash"
+  };
+}
+```
+
+The return type is:
+
+```ts
+Promise<{
+  id: number;
+  name: string;
+}>
+```
+
+If you want the resolved value's type:
+
+```ts
+type User = Awaited<ReturnType<typeof getUser>>;
+```
+
+Now:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+```
+
+This combination is extremely useful:
+
+```ts
+Awaited<ReturnType<typeof someAsyncFunction>>
+```
+
+It means:
+
+> "Give me the type that this async function eventually resolves to."
+
+---
+
+### Nested Promises
+
+`Awaited<T>` recursively unwraps Promises.
+
+```ts
+type Result = Awaited<Promise<Promise<string>>>;
+// string
+```
+
+Conceptually:
+
+```text
+Promise<Promise<string>>
+        ↓
+Promise<string>
+        ↓
+string
+```
+
+---
+
+### Works with non-Promise types
+
+If you give it a type that isn't a Promise, it simply returns that type:
+
+```ts
+type A = Awaited<string>;
+// string
+
+type B = Awaited<number>;
+// number
+```
+
+This makes it convenient in generic code because you don't need to first check whether something is a Promise.
+
+---
+
+### Works with unions
+
+```ts
+type Result = Awaited<Promise<string> | Promise<number>>;
+// string | number
+```
+
+TypeScript distributes the operation across the union.
+
+---
+
+### Real-world example
+
+Suppose you have:
+
+```ts
+async function fetchProducts() {
+  return [
+    { id: 1, name: "Laptop" },
+    { id: 2, name: "Phone" }
+  ];
+}
+```
+
+You can derive the resolved type:
+
+```ts
+type Products = Awaited<ReturnType<typeof fetchProducts>>;
+```
+
+Result:
+
+```ts
+type Products = {
+  id: number;
+  name: string;
+}[];
+```
+
+And an individual product:
+
+```ts
+type Product = Products[number];
+```
+
+---
+
+### `ReturnType` vs `Awaited`
+
+These solve different problems:
+
+```ts
+async function getUser() {
+  return { id: 1 };
+}
+
+type A = ReturnType<typeof getUser>;
+// Promise<{ id: number }>
+
+type B = Awaited<ReturnType<typeof getUser>>;
+// { id: number }
+```
+
+Think of it as:
+
+```text
+ReturnType
+    ↓
+What does the function return?
+    ↓
+Promise<User>
+
+Awaited
+    ↓
+What does that Promise eventually produce?
+    ↓
+User
+```
+
+### Quick rule
+
+> `ReturnType<T>` tells you what a function returns; `Awaited<T>` unwraps the eventual result.
+
+A very common TypeScript pattern is therefore:
+
+```ts
+type Result = Awaited<ReturnType<typeof fetchData>>;
+```
+
+This is one of the most useful utility-type combinations when typing APIs, async services, and data-fetching code.

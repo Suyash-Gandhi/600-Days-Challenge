@@ -1,0 +1,154 @@
+## 61. `Pick<T>`
+
+`Pick<T>` is a utility type in TypeScript that creates a new type by selecting specific properties from an existing type.
+
+### Syntax
+
+```ts
+Pick<Type, Keys>
+```
+
+ `Type` → the original type
+ `Keys` → the properties you want to keep
+
+### Example
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+type UserPreview = Pick<User, "id" | "name">;
+```
+
+Now `UserPreview` becomes:
+
+```ts
+type UserPreview = {
+  id: number;
+  name: string;
+};
+```
+
+So:
+
+```ts
+const user: UserPreview = {
+  id: 1,
+  name: "Suyash"
+};
+```
+
+You cannot add `email`:
+
+```ts
+const user: UserPreview = {
+  id: 1,
+  name: "Suyash",
+  email: "test@example.com" // ❌ Error
+};
+```
+
+### Why is `Pick` useful?
+
+Suppose your full database model is:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+}
+```
+
+For a public API response, you might only want:
+
+```ts
+type PublicUser = Pick<User, "id" | "name" | "email">;
+```
+
+This gives:
+
+```ts
+type PublicUser = {
+  id: number;
+  name: string;
+  email: string;
+};
+```
+
+This is especially useful when you want to reuse an existing type instead of manually creating another type.
+
+### `Pick` vs `Omit`
+
+They are opposites:
+
+```ts
+type UserPreview = Pick<User, "id" | "name">;
+```
+
+means:
+
+> Keep these properties.
+
+While:
+
+```ts
+type UserWithoutPassword = Omit<User, "password">;
+```
+
+means:
+
+> Remove these properties.
+
+### How `Pick` works conceptually
+
+A simplified implementation looks like:
+
+```ts
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+```
+
+The important part is:
+
+```ts
+K extends keyof T
+```
+
+It ensures that you can only pick keys that actually exist on `T`.
+
+```ts
+type UserInfo = Pick<User, "id" | "name">; // ✅
+
+type Invalid = Pick<User, "foo">; // ❌ "foo" doesn't exist in User
+```
+
+### Key takeaway
+
+> `Pick<T, K>` creates a new type containing only the selected properties `K` from `T`.
+
+A common mental model:
+
+```text
+User
+ ├── id
+ ├── name       ← Pick
+ ├── email      ← Pick
+ ├── password
+ └── createdAt
+
+        ↓
+
+PublicUser
+ ├── id
+ └── name
+```
+
+`Pick` is particularly valuable for API responses, DTOs, component props, forms, and database models where you need a smaller view of a larger type.

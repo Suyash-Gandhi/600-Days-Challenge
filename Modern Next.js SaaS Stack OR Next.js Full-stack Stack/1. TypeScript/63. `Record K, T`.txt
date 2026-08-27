@@ -1,0 +1,195 @@
+## 63. `Record<K, T>`
+
+`Record<K, T>` is a TypeScript utility type used to create an object type where:
+
+ `K` = the allowed keys
+ `T` = the type of the values
+
+### Basic example
+
+```ts
+type UserRoles = Record<string, string>;
+
+const roles: UserRoles = {
+  alice: "admin",
+  bob: "user",
+  charlie: "editor",
+};
+```
+
+This means:
+
+```ts
+{
+  [key: string]: string;
+}
+```
+
+---
+
+### Using specific keys
+
+One of the most useful patterns is combining `Record` with a union of literal types:
+
+```ts
+type Role = "admin" | "user" | "editor";
+
+const permissions: Record<Role, boolean> = {
+  admin: true,
+  user: true,
+  editor: false,
+};
+```
+
+TypeScript now requires every key:
+
+```ts
+const permissions: Record<Role, boolean> = {
+  admin: true,
+  user: true,
+  // ❌ Property 'editor' is missing
+};
+```
+
+And prevents unknown keys:
+
+```ts
+const permissions: Record<Role, boolean> = {
+  admin: true,
+  user: true,
+  editor: false,
+  guest: true, // ❌ 'guest' is not allowed
+};
+```
+
+---
+
+### `Record` with object values
+
+`T` doesn't have to be a primitive.
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+
+type Users = Record<string, User>;
+
+const users: Users = {
+  u1: {
+    name: "Suyash",
+    age: 25,
+  },
+  u2: {
+    name: "Rahul",
+    age: 30,
+  },
+};
+```
+
+---
+
+### `Record` with numeric keys
+
+```ts
+type Scores = Record<number, number>;
+
+const scores: Scores = {
+  101: 95,
+  102: 88,
+  103: 91,
+};
+```
+
+---
+
+### `Record` vs index signature
+
+These are similar:
+
+```ts
+type Users1 = Record<string, string>;
+```
+
+and:
+
+```ts
+type Users2 = {
+  [key: string]: string;
+};
+```
+
+But `Record` becomes especially powerful when the keys are a known union:
+
+```ts
+type Status = "pending" | "success" | "error";
+
+type StatusMessages = Record<Status, string>;
+
+const messages: StatusMessages = {
+  pending: "Loading...",
+  success: "Done!",
+  error: "Something went wrong",
+};
+```
+
+Here, `Record` gives you an explicit guarantee that all three statuses have a value.
+
+---
+
+### Real-world example
+
+A common use case is configuration:
+
+```ts
+type Environment = "development" | "staging" | "production";
+
+type Config = Record<Environment, {
+  apiUrl: string;
+  debug: boolean;
+}>;
+
+const config: Config = {
+  development: {
+    apiUrl: "http://localhost:3000",
+    debug: true,
+  },
+  staging: {
+    apiUrl: "https://staging.example.com",
+    debug: true,
+  },
+  production: {
+    apiUrl: "https://example.com",
+    debug: false,
+  },
+};
+```
+
+### Easy way to remember
+
+```ts
+Record<K, T>
+```
+
+means:
+
+> "For every key in `K`, store a value of type `T`."
+
+So:
+
+```ts
+Record<"a" | "b" | "c", number>
+```
+
+is essentially:
+
+```ts
+{
+  a: number;
+  b: number;
+  c: number;
+}
+```
+
+Key takeaway: `Record` is ideal when you want to model an object/dictionary whose keys and value types are known and consistent.

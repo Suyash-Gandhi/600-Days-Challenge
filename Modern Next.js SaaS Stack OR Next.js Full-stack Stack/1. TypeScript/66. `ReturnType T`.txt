@@ -1,0 +1,242 @@
+## 66. `ReturnType<T>`
+
+`ReturnType<T>` is a built-in TypeScript utility type that extracts the return type of a function.
+
+### Basic example
+
+```ts
+function getUser() {
+  return {
+    id: 1,
+    name: "Suyash",
+  };
+}
+
+type User = ReturnType<typeof getUser>;
+// {
+//   id: number;
+//   name: string;
+// }
+```
+
+Here:
+
+```ts
+typeof getUser
+```
+
+gets the function's type, and:
+
+```ts
+ReturnType<typeof getUser>
+```
+
+extracts whatever that function returns.
+
+---
+
+### Why `typeof` is needed
+
+`ReturnType` expects a function type, not the function's value directly.
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+
+type Result = ReturnType<typeof add>;
+// number
+```
+
+Think of it as:
+
+```text
+typeof add
+     ↓
+(a: number, b: number) => number
+     ↓
+ReturnType<...>
+     ↓
+number
+```
+
+---
+
+### With different return types
+
+```ts
+function getName() {
+  return "Alice";
+}
+
+function getUserId() {
+  return 42;
+}
+
+function isAdmin() {
+  return true;
+}
+
+type Name = ReturnType<typeof getName>;     // string
+type UserId = ReturnType<typeof getUserId>; // number
+type Admin = ReturnType<typeof isAdmin>;    // boolean
+```
+
+---
+
+### Very useful with API functions
+
+Suppose you already have an API function:
+
+```ts
+async function fetchUser() {
+  return {
+    id: 1,
+    name: "Alice",
+    email: "alice@example.com",
+  };
+}
+```
+
+You can derive its result type automatically:
+
+```ts
+type UserResponse = ReturnType<typeof fetchUser>;
+```
+
+But because `fetchUser` is `async`, the result is:
+
+```ts
+// Promise<{
+//   id: number;
+//   name: string;
+//   email: string;
+// }>
+```
+
+If you want the resolved value:
+
+```ts
+type User = Awaited<ReturnType<typeof fetchUser>>;
+
+// {
+//   id: number;
+//   name: string;
+//   email: string;
+// }
+```
+
+This combination is extremely common:
+
+```ts
+type ApiResponse = Awaited<ReturnType<typeof fetchUser>>;
+```
+
+---
+
+### With arrow functions
+
+```ts
+const createUser = (name: string) => ({
+  id: 1,
+  name,
+});
+
+type User = ReturnType<typeof createUser>;
+
+// {
+//   id: number;
+//   name: string;
+// }
+```
+
+---
+
+### Why `ReturnType` is useful
+
+It prevents you from duplicating types.
+
+Instead of:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+
+function getUser(): User {
+  return {
+    id: 1,
+    name: "Alice",
+  };
+}
+```
+
+You can sometimes derive the type directly:
+
+```ts
+function getUser() {
+  return {
+    id: 1,
+    name: "Alice",
+  };
+}
+
+type User = ReturnType<typeof getUser>;
+```
+
+Now if the function's return structure changes, the derived type changes automatically.
+
+---
+
+### Important limitation
+
+`ReturnType` works with function types.
+
+```ts
+type A = ReturnType<() => string>;
+// string
+
+type B = ReturnType<(x: number) => boolean>;
+// boolean
+```
+
+But this doesn't work:
+
+```ts
+type C = ReturnType<string>; // ❌
+```
+
+because `string` isn't a function.
+
+---
+
+### `ReturnType` vs `typeof`
+
+These two are often used together, but they do different things:
+
+```ts
+function getUser() {
+  return { id: 1 };
+}
+
+type FunctionType = typeof getUser;
+// () => { id: number }
+
+type ReturnValue = ReturnType<typeof getUser>;
+// { id: number }
+```
+
+In short:
+
+> `typeof` gets the function's type; `ReturnType` extracts what that function returns.
+
+### Quick reference
+
+| Utility                          | Purpose                                           |
+| -------------------------------- | ------------------------------------------------- |
+| `typeof fn`                      | Get the type of a function                        |
+| `ReturnType<typeof fn>`          | Get the function's return type                    |
+| `Awaited<ReturnType<typeof fn>>` | Get the resolved return type of an async function |
+
+`ReturnType<T>` is especially useful when you want types to stay synchronized with existing functions instead of manually maintaining duplicate type definitions.

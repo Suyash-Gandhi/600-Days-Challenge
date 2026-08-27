@@ -1,0 +1,180 @@
+## 59. `Required<T>`
+
+`Required<T>` is a utility type in TypeScript that makes all optional properties required.
+
+### Basic example
+
+```ts
+interface User {
+  id: number;
+  name?: string;
+  email?: string;
+}
+
+const user: Required<User> = {
+  id: 1,
+  name: "Suyash",
+  email: "suyash@example.com",
+};
+```
+
+Here:
+
+```ts
+User
+```
+
+allows:
+
+```ts
+const user: User = {
+  id: 1,
+};
+```
+
+But:
+
+```ts
+Required<User>
+```
+
+requires every property:
+
+```ts
+const user: Required<User> = {
+  id: 1,
+  // ❌ Property 'name' is missing
+};
+```
+
+### How it works
+
+Conceptually, TypeScript's `Required<T>` is:
+
+```ts
+type Required<T> = {
+  [P in keyof T]-?: T[P];
+};
+```
+
+The important part is:
+
+```ts
+-?
+```
+
+It removes the optional `?` modifier from every property.
+
+So:
+
+```ts
+interface Config {
+  host?: string;
+  port?: number;
+  debug?: boolean;
+}
+```
+
+becomes:
+
+```ts
+type CompleteConfig = Required<Config>;
+```
+
+Equivalent to:
+
+```ts
+type CompleteConfig = {
+  host: string;
+  port: number;
+  debug: boolean;
+};
+```
+
+### `Partial<T>` vs `Required<T>`
+
+These are opposites:
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+`Partial<T>` makes everything optional:
+
+```ts
+type OptionalUser = Partial<User>;
+
+// {
+//   name?: string;
+//   age?: number;
+// }
+```
+
+`Required<T>` makes everything required:
+
+```ts
+type MandatoryUser = Required<User>;
+
+// {
+//   name: string;
+//   age: number;
+// }
+```
+
+### Real-world use case
+
+Suppose you allow a configuration object to be partially specified:
+
+```ts
+interface AppConfig {
+  host?: string;
+  port?: number;
+  https?: boolean;
+}
+```
+
+After applying defaults:
+
+```ts
+function createConfig(
+  options: AppConfig
+): Required<AppConfig> {
+  return {
+    host: options.host ?? "localhost",
+    port: options.port ?? 3000,
+    https: options.https ?? false,
+  };
+}
+```
+
+Now TypeScript knows the returned configuration is complete:
+
+```ts
+const config = createConfig({});
+
+console.log(config.host);  // string
+console.log(config.port);  // number
+console.log(config.https); // boolean
+```
+
+### Important distinction
+
+`Required<T>` only changes TypeScript's type checking. It does not add missing properties at runtime.
+
+```ts
+const obj = {} as Required<User>;
+
+console.log(obj.name); // undefined at runtime
+```
+
+The `as` assertion simply tells TypeScript to trust you; it doesn't create the properties.
+
+Rule to remember:
+
+> `Partial<T>` → make properties optional
+> `Required<T>` → make properties mandatory
+
+This is especially useful when an object starts as a partial configuration and becomes fully populated after validation/defaulting.

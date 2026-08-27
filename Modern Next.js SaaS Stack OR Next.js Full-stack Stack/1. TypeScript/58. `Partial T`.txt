@@ -1,0 +1,546 @@
+# 58. `Partial<T>`
+
+`Partial<T>` is a utility type in TypeScript that makes all properties of a type optional.
+
+It is extremely useful when you want to work with partial objects, especially for updates, configuration objects, or forms.
+
+---
+
+## 1. Basic Example
+
+Suppose we have:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+```
+
+Normally, all properties are required:
+
+```ts
+const user: User = {
+  id: 1,
+  name: "Suyash",
+  email: "suyash@example.com"
+};
+```
+
+But with `Partial<User>`:
+
+```ts
+const update: Partial<User> = {
+  name: "Rahul"
+};
+```
+
+This is valid because every property becomes optional.
+
+Conceptually:
+
+```ts
+Partial<User>
+```
+
+becomes:
+
+```ts
+{
+  id?: number;
+  name?: string;
+  email?: string;
+}
+```
+
+---
+
+## 2. Why `Partial<T>` Is Useful
+
+A very common use case is an update function.
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+function updateUser(id: number, updates: Partial<User>) {
+  console.log(id, updates);
+}
+```
+
+Now we can update only the fields we need:
+
+```ts
+updateUser(1, {
+  name: "Suyash"
+});
+```
+
+Or:
+
+```ts
+updateUser(1, {
+  email: "new@example.com",
+  age: 25
+});
+```
+
+We don't need to provide `id`, `name`, `email`, and `age` every time.
+
+---
+
+## 3. Without `Partial<T>`
+
+If we wrote:
+
+```ts
+function updateUser(id: number, updates: User) {
+  // ...
+}
+```
+
+Then this would cause an error:
+
+```ts
+updateUser(1, {
+  name: "Suyash"
+});
+```
+
+Because `User` requires:
+
+```ts
+id
+name
+email
+age
+```
+
+`Partial<User>` solves this by making everything optional.
+
+---
+
+## 4. How `Partial<T>` Works
+
+`Partial<T>` is essentially defined using a mapped type:
+
+```ts
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+```
+
+Let's break this down:
+
+```ts
+keyof T
+```
+
+gets all property names.
+
+For:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+```
+
+we get:
+
+```ts
+"id" | "name" | "email"
+```
+
+Then:
+
+```ts
+[P in keyof T]
+```
+
+loops over those properties.
+
+Finally:
+
+```ts
+?
+```
+
+makes each property optional.
+
+So:
+
+```ts
+Partial<User>
+```
+
+becomes approximately:
+
+```ts
+{
+  id?: number;
+  name?: string;
+  email?: string;
+}
+```
+
+---
+
+## 5. `Partial<T>` Does NOT Change Property Types
+
+Consider:
+
+```ts
+interface Product {
+  name: string;
+  price: number;
+  stock: number;
+}
+```
+
+Then:
+
+```ts
+const productUpdate: Partial<Product> = {
+  price: 500
+};
+```
+
+is valid.
+
+But:
+
+```ts
+const productUpdate: Partial<Product> = {
+  price: "500"
+};
+```
+
+is still invalid.
+
+`Partial<T>` changes:
+
+```ts
+price: number
+```
+
+into:
+
+```ts
+price?: number
+```
+
+It does not change `number` into another type.
+
+---
+
+## 6. `Partial<T>` With Functions
+
+This pattern appears frequently in real applications:
+
+```ts
+interface Settings {
+  theme: "light" | "dark";
+  language: string;
+  notifications: boolean;
+}
+
+function configure(settings: Partial<Settings>) {
+  console.log(settings);
+}
+```
+
+Now callers can provide any subset:
+
+```ts
+configure({
+  theme: "dark"
+});
+```
+
+```ts
+configure({
+  language: "en",
+  notifications: true
+});
+```
+
+```ts
+configure({});
+```
+
+All are valid.
+
+---
+
+## 7. `Partial<T>` vs Normal Type
+
+### Normal type
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+const user: User = {
+  name: "Suyash"
+};
+```
+
+❌ Error — `age` is required.
+
+### Partial
+
+```ts
+const user: Partial<User> = {
+  name: "Suyash"
+};
+```
+
+✅ Valid.
+
+---
+
+## 8. Important: `Partial<T>` Is Shallow
+
+This is an important detail.
+
+```ts
+interface User {
+  name: string;
+  address: {
+    city: string;
+    country: string;
+  };
+}
+```
+
+With:
+
+```ts
+Partial<User>
+```
+
+we get:
+
+```ts
+{
+  name?: string;
+  address?: {
+    city: string;
+    country: string;
+  };
+}
+```
+
+So this is valid:
+
+```ts
+const user: Partial<User> = {
+  address: {
+    city: "Delhi",
+    country: "India"
+  }
+};
+```
+
+But this is not valid:
+
+```ts
+const user: Partial<User> = {
+  address: {
+    city: "Delhi"
+  }
+};
+```
+
+Why?
+
+Because `Partial<User>` makes `address` optional, but it does not recursively make `city` and `country` optional.
+
+That's why `Partial<T>` is called a shallow partial.
+
+---
+
+## 9. Real-World Example: PATCH API
+
+`Partial<T>` is particularly useful for HTTP `PATCH`-style updates.
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+function patchUser(id: number, data: Partial<User>) {
+  // Send only changed fields to API
+}
+```
+
+You can now do:
+
+```ts
+patchUser(10, {
+  name: "Suyash"
+});
+```
+
+or:
+
+```ts
+patchUser(10, {
+  email: "new@example.com",
+  age: 26
+});
+```
+
+This closely models the idea:
+
+> "You don't have to send the entire object; send only the fields that changed."
+
+---
+
+## 10. `Partial<T>` With Generics
+
+You can combine it with generic functions:
+
+```ts
+function update<T>(original: T, changes: Partial<T>): T {
+  return {
+    ...original,
+    ...changes
+  };
+}
+```
+
+Example:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+const updatedUser = update(user, {
+  age: 26
+});
+```
+
+TypeScript understands that `changes` must contain properties from `user`.
+
+---
+
+## 11. `Partial<T>` vs Optional Properties
+
+You could manually write:
+
+```ts
+interface UserUpdate {
+  name?: string;
+  email?: string;
+  age?: number;
+}
+```
+
+But if you already have:
+
+```ts
+interface User {
+  name: string;
+  email: string;
+  age: number;
+}
+```
+
+you can simply write:
+
+```ts
+type UserUpdate = Partial<User>;
+```
+
+This has another advantage: if `User` changes:
+
+```ts
+interface User {
+  name: string;
+  email: string;
+  age: number;
+  phone: string;
+}
+```
+
+`Partial<User>` automatically includes:
+
+```ts
+phone?: string;
+```
+
+No duplicate type definition is required.
+
+---
+
+## 12. Key Takeaway
+
+Think of:
+
+```ts
+Partial<T>
+```
+
+as:
+
+> "Give me the same object type, but make every property optional."
+
+### Example
+
+```ts
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+type UserUpdate = Partial<User>;
+```
+
+Equivalent to:
+
+```ts
+type UserUpdate = {
+  id?: number;
+  name?: string;
+  email?: string;
+};
+```
+
+### Most common use cases
+
+ PATCH/update APIs
+ Updating objects
+ Configuration options
+ Form data
+ React state updates
+ Builder patterns
+ Generic update functions
+
+Mental model:
+
+```text
+User
+ ↓
+Partial<User>
+ ↓
+All properties become optional
+```
+
+And remember: `Partial<T>` is shallow, not recursive.

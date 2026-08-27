@@ -1,0 +1,131 @@
+## 64. `Exclude<T, U>`
+
+`Exclude<T, U>` is a built-in TypeScript utility type that removes from `T` all union members that are assignable to `U`.
+
+### Basic syntax
+
+```ts
+Exclude<T, U>
+```
+
+ `T` → the original union
+ `U` → the members you want to remove
+
+### Simple example
+
+```ts
+type Status = "pending" | "success" | "error";
+
+type NonErrorStatus = Exclude<Status, "error">;
+
+// "pending" | "success"
+```
+
+So:
+
+```ts
+let status: NonErrorStatus;
+
+status = "pending"; // ✅
+status = "success"; // ✅
+status = "error";   // ❌
+```
+
+### How it works
+
+Conceptually, `Exclude<T, U>` behaves like a distributive conditional type:
+
+```ts
+type MyExclude<T, U> = T extends U ? never : T;
+```
+
+For:
+
+```ts
+type Result = Exclude<"a" | "b" | "c", "b">;
+```
+
+TypeScript evaluates each member:
+
+```ts
+"a" extends "b" ? never : "a" // "a"
+"b" extends "b" ? never : "b" // never
+"c" extends "b" ? never : "c" // "c"
+```
+
+Result:
+
+```ts
+"a" | "c"
+```
+
+### With object unions
+
+`Exclude` becomes especially useful with discriminated unions:
+
+```ts
+type Event =
+  | { type: "click"; x: number; y: number }
+  | { type: "keypress"; key: string }
+  | { type: "scroll"; offset: number };
+
+type NonKeyboardEvent = Exclude<Event, { type: "keypress" }>;
+```
+
+Now:
+
+```ts
+type NonKeyboardEvent =
+  | { type: "click"; x: number; y: number }
+  | { type: "scroll"; offset: number };
+```
+
+### `Exclude` vs `Extract`
+
+These two are opposites:
+
+```ts
+type A = "a" | "b" | "c";
+
+type Removed = Exclude<A, "b">;
+// "a" | "c"
+
+type Kept = Extract<A, "b">;
+// "b"
+```
+
+Think:
+
+ `Exclude<T, U>` → remove matching members
+ `Extract<T, U>` → keep matching members
+
+### Real-world example
+
+Suppose an application supports several user roles:
+
+```ts
+type Role = "admin" | "editor" | "author" | "viewer";
+
+type ContentCreator = Exclude<Role, "admin" | "viewer">;
+
+// "editor" | "author"
+```
+
+Now only content-producing roles are allowed:
+
+```ts
+function publish(role: ContentCreator) {
+  // ...
+}
+
+publish("editor"); // ✅
+publish("author"); // ✅
+publish("admin");  // ❌
+publish("viewer"); // ❌
+```
+
+### Key takeaway
+
+> `Exclude<T, U>` creates a new union by removing from `T` every member that is assignable to `U`.
+
+It is particularly useful when you already have a union and want a restricted version of that union without manually rewriting it.

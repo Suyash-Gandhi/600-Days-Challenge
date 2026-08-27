@@ -1,0 +1,218 @@
+## 60. `Readonly<T>`
+
+`Readonly<T>` is a built-in TypeScript utility type that makes all properties of an object type readonly.
+
+In other words, after applying `Readonly<T>`, you can read the properties but cannot reassign them.
+
+### Basic Example
+
+```ts
+interface User {
+  name: string;
+  age: number;
+}
+
+const user: Readonly<User> = {
+  name: "Suyash",
+  age: 25
+};
+
+console.log(user.name); // ✅
+
+user.name = "Rahul";
+// ❌ Error: Cannot assign to 'name' because it is a read-only property.
+```
+
+### Without `Readonly<T>`
+
+```ts
+interface Config {
+  apiUrl: string;
+  timeout: number;
+}
+
+const config: Config = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000
+};
+
+config.timeout = 10000; // ✅ Allowed
+```
+
+### With `Readonly<T>`
+
+```ts
+const config: Readonly<Config> = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000
+};
+
+config.timeout = 10000;
+// ❌ Error
+```
+
+---
+
+### How `Readonly<T>` works
+
+Conceptually, TypeScript's `Readonly<T>` is similar to:
+
+```ts
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};
+```
+
+It uses a mapped type to add `readonly` to every property.
+
+So:
+
+```ts
+type User = {
+  name: string;
+  age: number;
+};
+```
+
+becomes approximately:
+
+```ts
+type ReadonlyUser = {
+  readonly name: string;
+  readonly age: number;
+};
+```
+
+---
+
+### Important: `Readonly<T>` is shallow
+
+This is a very important detail.
+
+```ts
+interface User {
+  name: string;
+  address: {
+    city: string;
+  };
+}
+
+const user: Readonly<User> = {
+  name: "Suyash",
+  address: {
+    city: "Delhi"
+  }
+};
+
+user.name = "Rahul";
+// ❌ Error
+
+user.address.city = "Mumbai";
+// ✅ Allowed
+```
+
+`Readonly<User>` protects the top-level properties, but it does not recursively make nested objects readonly.
+
+For deep immutability, you would need a custom `DeepReadonly` type.
+
+---
+
+### `Readonly<T>` with Arrays
+
+`Readonly<T>` can also be used with arrays.
+
+```ts
+const numbers: Readonly<number[]> = [1, 2, 3];
+
+numbers[0] = 10;
+// ❌ Error
+
+numbers.push(4);
+// ❌ Error
+```
+
+You can also use the shorter syntax:
+
+```ts
+const numbers: readonly number[] = [1, 2, 3];
+```
+
+or:
+
+```ts
+const numbers: ReadonlyArray<number> = [1, 2, 3];
+```
+
+---
+
+### `Readonly<T>` vs `readonly`
+
+`readonly` is used when defining individual properties:
+
+```ts
+interface User {
+  readonly id: number;
+  name: string;
+}
+```
+
+`Readonly<T>` applies `readonly` to every property:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+};
+
+const user: Readonly<User> = {
+  id: 1,
+  name: "Suyash"
+};
+```
+
+Now both `id` and `name` are readonly.
+
+---
+
+### Real-World Example: Configuration
+
+`Readonly<T>` is useful when a function should receive configuration without modifying it:
+
+```ts
+interface AppConfig {
+  apiUrl: string;
+  timeout: number;
+  debug: boolean;
+}
+
+function startApp(config: Readonly<AppConfig>) {
+  console.log(config.apiUrl);
+
+  // config.timeout = 10000;
+  // ❌ Don't modify the caller's configuration
+}
+
+const config: AppConfig = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+  debug: true
+};
+
+startApp(config);
+```
+
+This communicates an important contract:
+
+> "This function can read the configuration, but it cannot change it."
+
+### Key takeaway
+
+```ts
+Readonly<T>
+```
+
+means:
+
+> Take an existing type and make all of its top-level properties readonly.
+
+It's especially useful for immutable configuration, function parameters, state objects, and preventing accidental mutations.

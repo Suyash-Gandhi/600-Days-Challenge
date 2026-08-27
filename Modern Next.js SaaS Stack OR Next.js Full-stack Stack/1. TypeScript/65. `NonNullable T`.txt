@@ -1,0 +1,194 @@
+## 65. `NonNullable<T>`
+
+`NonNullable<T>` is a built-in TypeScript utility type that removes `null` and `undefined` from a type.
+
+### Syntax
+
+```ts
+NonNullable<T>
+```
+
+### Basic example
+
+```ts
+type Value = string | null | undefined;
+
+type CleanValue = NonNullable<Value>;
+// string
+```
+
+So:
+
+```ts
+type A = NonNullable<string | null>;
+// string
+
+type B = NonNullable<number | undefined>;
+// number
+
+type C = NonNullable<string | null | undefined>;
+// string
+```
+
+### Why use it?
+
+Suppose you have:
+
+```ts
+type User = {
+  id: number;
+  name: string;
+} | null;
+
+function getUser(): User {
+  // ...
+}
+```
+
+Without narrowing, the result might be `null`.
+
+You can derive a guaranteed non-null version:
+
+```ts
+type ValidUser = NonNullable<User>;
+```
+
+Now:
+
+```ts
+// ValidUser
+{
+  id: number;
+  name: string;
+}
+```
+
+### With properties
+
+It becomes especially useful with indexed access types:
+
+```ts
+type User = {
+  profile: {
+    name: string;
+  } | null;
+};
+
+type Profile = User["profile"];
+// { name: string } | null
+
+type ValidProfile = NonNullable<User["profile"]>;
+// { name: string }
+```
+
+This combines nicely with the concepts you've covered:
+
+```ts
+type User = {
+  profile?: {
+    name: string;
+  } | null;
+};
+
+type Profile = NonNullable<User["profile"]>;
+```
+
+`Profile` becomes:
+
+```ts
+{
+  name: string;
+}
+```
+
+### Function return types
+
+You can also combine it with `ReturnType<T>`:
+
+```ts
+function getUser() {
+  return Math.random() > 0.5
+    ? { id: 1, name: "Suyash" }
+    : null;
+}
+
+type User = NonNullable<ReturnType<typeof getUser>>;
+```
+
+`User` is now:
+
+```ts
+{
+  id: number;
+  name: string;
+}
+```
+
+### How it works conceptually
+
+Think of:
+
+```ts
+NonNullable<T>
+```
+
+as:
+
+```ts
+T - null - undefined
+```
+
+For example:
+
+```ts
+type Input = string | number | null | undefined;
+
+type Output = NonNullable<Input>;
+// string | number
+```
+
+### Important distinction
+
+`NonNullable<T>` only changes the type. It does not perform a runtime check.
+
+```ts
+const value: string | null = getValue();
+
+type SafeValue = NonNullable<typeof value>;
+```
+
+You still need runtime narrowing before safely using `value`:
+
+```ts
+if (value !== null) {
+  console.log(value.toUpperCase());
+}
+```
+
+### Quick comparison
+
+| Utility          | Purpose                                 |
+| ---------------- | --------------------------------------- |
+| `Partial<T>`     | Makes properties optional               |
+| `Required<T>`    | Makes properties required               |
+| `Readonly<T>`    | Makes properties readonly               |
+| `Pick<T, K>`     | Selects properties                      |
+| `Omit<T, K>`     | Removes properties                      |
+| `Record<K, T>`   | Creates keyed object types              |
+| `Exclude<T, U>`  | Removes union members assignable to `U` |
+| `NonNullable<T>` | Removes `null` and `undefined`          |
+
+A useful way to remember the last two:
+
+```ts
+Exclude<T, null | undefined>
+```
+
+is essentially what `NonNullable<T>` does.
+
+```ts
+type A = NonNullable<string | null | undefined>;
+// string
+```
+
+Interview takeaway: `NonNullable<T>` is used when you want to derive a type that is guaranteed, at the type level, to exclude `null` and `undefined`.
