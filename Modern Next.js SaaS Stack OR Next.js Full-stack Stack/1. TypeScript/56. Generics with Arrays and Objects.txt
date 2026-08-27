@@ -1,0 +1,360 @@
+# 56. Generics with Arrays/Objects in TypeScript
+
+Generics become especially useful when working with arrays and objects, because they let us preserve the exact type of the data while keeping functions reusable.
+
+## 1. Generic Arrays
+
+You can use a generic type parameter to describe the elements inside an array.
+
+```ts
+function getFirst<T>(items: T[]): T {
+  return items[0];
+}
+
+const numbers = getFirst([10, 20, 30]);
+// T = number
+// result: number
+
+const names = getFirst(["Suyash", "Rahul", "Amit"]);
+// T = string
+// result: string
+```
+
+Here:
+
+```ts
+T[]
+```
+
+means an array containing values of type `T`.
+
+So the same function works with:
+
+```ts
+number[]
+string[]
+boolean[]
+User[]
+```
+
+---
+
+## 2. Generic Array Function
+
+A common example is reversing an array:
+
+```ts
+function reverseArray<T>(items: T[]): T[] {
+  return items.reverse();
+}
+
+const nums = reverseArray([1, 2, 3]);
+// number[]
+
+const users = reverseArray([
+  { name: "Suyash", age: 25 },
+  { name: "Rahul", age: 30 }
+]);
+// { name: string; age: number }[]
+```
+
+The generic preserves the object structure automatically.
+
+---
+
+## 3. Generic Objects
+
+Generics can also represent object values.
+
+```ts
+function getValue<T>(obj: T): T {
+  return obj;
+}
+
+const user = getValue({
+  name: "Suyash",
+  age: 25
+});
+```
+
+TypeScript infers:
+
+```ts
+{
+  name: string;
+  age: number;
+}
+```
+
+So `T` represents the entire object type.
+
+---
+
+## 4. Generic Object + Array
+
+A very common pattern is an object containing an array:
+
+```ts
+function createResponse<T>(data: T[]) {
+  return {
+    data,
+    count: data.length
+  };
+}
+
+const users = createResponse([
+  { id: 1, name: "Suyash" },
+  { id: 2, name: "Rahul" }
+]);
+```
+
+TypeScript understands that `users` is approximately:
+
+```ts
+{
+  data: {
+    id: number;
+    name: string;
+  }[];
+  count: number;
+}
+```
+
+This pattern is extremely common in API responses.
+
+---
+
+## 5. Generic Interface with Arrays
+
+You can combine generics with interfaces:
+
+```ts
+interface ApiResponse<T> {
+  data: T[];
+  total: number;
+}
+
+const userResponse: ApiResponse<User> = {
+  data: [
+    { id: 1, name: "Suyash" },
+    { id: 2, name: "Rahul" }
+  ],
+  total: 2
+};
+```
+
+For example:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+```
+
+Now:
+
+```ts
+ApiResponse<User>
+```
+
+means:
+
+```ts
+{
+  data: User[];
+  total: number;
+}
+```
+
+The same interface can work for products:
+
+```ts
+interface Product {
+  id: number;
+  price: number;
+}
+
+const productResponse: ApiResponse<Product> = {
+  data: [
+    { id: 1, price: 500 },
+    { id: 2, price: 800 }
+  ],
+  total: 2
+};
+```
+
+That's the major benefit of generics: one reusable structure, many data types.
+
+---
+
+## 6. Generic Object with `keyof`
+
+Generics become even more powerful when combined with `keyof`.
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+const name = getProperty(user, "name");
+// string
+
+const age = getProperty(user, "age");
+// number
+```
+
+TypeScript knows that:
+
+```ts
+"name"
+```
+
+returns a `string`, while:
+
+```ts
+"age"
+```
+
+returns a `number`.
+
+And this would be an error:
+
+```ts
+getProperty(user, "email");
+// ❌ "email" is not a key of user
+```
+
+---
+
+## 7. Generic Arrays of Objects
+
+This is particularly useful when processing collections:
+
+```ts
+function findById<T extends { id: number }>(
+  items: T[],
+  id: number
+): T | undefined {
+  return items.find(item => item.id === id);
+}
+```
+
+Now it works with different object types:
+
+```ts
+const users = [
+  { id: 1, name: "Suyash" },
+  { id: 2, name: "Rahul" }
+];
+
+const user = findById(users, 1);
+```
+
+And also:
+
+```ts
+const products = [
+  { id: 1, price: 500 },
+  { id: 2, price: 800 }
+];
+
+const product = findById(products, 2);
+```
+
+The constraint:
+
+```ts
+T extends { id: number }
+```
+
+ensures that every object has an `id`.
+
+---
+
+## 8. Real-World Example
+
+Imagine a reusable table component:
+
+```ts
+interface TableProps<T> {
+  rows: T[];
+  selectedRow?: T;
+}
+
+interface User {
+  id: number;
+  name: string;
+}
+
+const userTable: TableProps<User> = {
+  rows: [
+    { id: 1, name: "Suyash" },
+    { id: 2, name: "Rahul" }
+  ]
+};
+```
+
+The same `TableProps<T>` can then be reused:
+
+```ts
+interface Product {
+  id: number;
+  price: number;
+}
+
+const productTable: TableProps<Product> = {
+  rows: [
+    { id: 1, price: 500 },
+    { id: 2, price: 800 }
+  ]
+};
+```
+
+No duplicate interface is needed.
+
+---
+
+## Key Idea
+
+Think of:
+
+```ts
+T[]
+```
+
+as:
+
+> "An array of whatever type T turns out to be."
+
+And:
+
+```ts
+ApiResponse<T>
+```
+
+as:
+
+> "An API response containing whatever type T turns out to be."
+
+### Quick summary
+
+| Pattern           | Meaning                           |
+| ----------------- | --------------------------------- |
+| `T[]`             | Array of `T`                      |
+| `Array<T>`        | Same as `T[]`                     |
+| `{ data: T[] }`   | Object containing an array of `T` |
+| `ApiResponse<T>`  | Generic object structure          |
+| `T extends {...}` | Restrict what `T` can be          |
+| `keyof T`         | Keys of object `T`                |
+| `T[K]`            | Type of property `K` in `T`       |
+
+Main takeaway: Generics with arrays and objects allow you to build reusable functions, interfaces, API response types, tables, collections, and utilities without losing type safety.

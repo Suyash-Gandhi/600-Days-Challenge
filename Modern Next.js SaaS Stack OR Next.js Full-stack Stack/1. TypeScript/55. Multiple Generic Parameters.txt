@@ -1,0 +1,692 @@
+# 55. Multiple Generic Parameters in TypeScript
+
+So far, we've seen generics with one type parameter:
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+
+identity<number>(10);
+identity<string>("Hello");
+```
+
+But sometimes a function needs to work with multiple related types.
+
+That's where multiple generic parameters come in.
+
+---
+
+## 1. What are Multiple Generic Parameters?
+
+You can define more than one generic type parameter:
+
+```ts
+function pair<T, U>(first: T, second: U): [T, U] {
+  return [first, second];
+}
+```
+
+Here:
+
+ `T` represents the type of `first`
+ `U` represents the type of `second`
+
+Example:
+
+```ts
+const result = pair("Suyash", 25);
+```
+
+TypeScript infers:
+
+```ts
+const result: [string, number]
+```
+
+So:
+
+```ts
+console.log(result);
+// ["Suyash", 25]
+```
+
+---
+
+# 2. Why Do We Need Multiple Generics?
+
+Imagine this function:
+
+```ts
+function combine(value1: any, value2: any) {
+  return [value1, value2];
+}
+```
+
+It works, but `any` removes type safety.
+
+Instead:
+
+```ts
+function combine<T, U>(value1: T, value2: U): [T, U] {
+  return [value1, value2];
+}
+```
+
+Now TypeScript remembers the exact types.
+
+```ts
+const result = combine("Hello", 100);
+```
+
+The type is:
+
+```ts
+[string, number]
+```
+
+Another call:
+
+```ts
+const result = combine(true, { name: "Suyash" });
+```
+
+Type:
+
+```ts
+[boolean, { name: string }]
+```
+
+---
+
+# 3. Generic Parameters Can Have Different Types
+
+They don't have to represent the same type.
+
+```ts
+function createObject<T, U>(key: T, value: U) {
+  return {
+    key,
+    value
+  };
+}
+```
+
+Usage:
+
+```ts
+const result = createObject("id", 101);
+```
+
+TypeScript infers:
+
+```ts
+{
+  key: string;
+  value: number;
+}
+```
+
+Another example:
+
+```ts
+const user = createObject(1, {
+  name: "Suyash",
+  age: 25
+});
+```
+
+Type:
+
+```ts
+{
+  key: number;
+  value: {
+    name: string;
+    age: number;
+  };
+}
+```
+
+---
+
+# 4. Explicitly Providing Multiple Types
+
+You can explicitly specify the generic arguments:
+
+```ts
+function pair<T, U>(first: T, second: U): [T, U] {
+  return [first, second];
+}
+
+const result = pair<string, number>("Suyash", 25);
+```
+
+Now:
+
+```ts
+result
+```
+
+is:
+
+```ts
+[string, number]
+```
+
+The order matters:
+
+```ts
+pair<string, number>("Suyash", 25);
+```
+
+means:
+
+```text
+T = string
+U = number
+```
+
+---
+
+# 5. Multiple Generics with Objects
+
+Multiple generics are especially useful when working with objects.
+
+```ts
+function merge<T, U>(obj1: T, obj2: U): T & U {
+  return {
+    ...obj1,
+    ...obj2
+  };
+}
+```
+
+Usage:
+
+```ts
+const result = merge(
+  { name: "Suyash" },
+  { age: 25 }
+);
+```
+
+TypeScript understands that the result contains both:
+
+```ts
+{
+  name: string;
+  age: number;
+}
+```
+
+So:
+
+```ts
+console.log(result.name);
+console.log(result.age);
+```
+
+Both are type-safe.
+
+---
+
+# 6. Multiple Generics with Arrays
+
+Consider a function that returns an entry:
+
+```ts
+function createEntry<K, V>(key: K, value: V): [K, V] {
+  return [key, value];
+}
+```
+
+Usage:
+
+```ts
+const entry = createEntry("username", "suyash");
+```
+
+Type:
+
+```ts
+[string, string]
+```
+
+Or:
+
+```ts
+const entry = createEntry(101, {
+  name: "Suyash"
+});
+```
+
+Type:
+
+```ts
+[number, { name: string }]
+```
+
+This pattern is conceptually similar to key-value structures such as:
+
+```ts
+Map<K, V>
+```
+
+---
+
+# 7. Generic Constraints with Multiple Parameters
+
+Multiple generic parameters can also have constraints.
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+Example:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25
+};
+
+const name = getProperty(user, "name");
+```
+
+TypeScript knows:
+
+```ts
+name: string
+```
+
+And:
+
+```ts
+const age = getProperty(user, "age");
+```
+
+gives:
+
+```ts
+age: number
+```
+
+But this is invalid:
+
+```ts
+getProperty(user, "email");
+```
+
+because `"email"` isn't a key of `user`.
+
+This is a very important real-world use of multiple generic parameters.
+
+---
+
+# 8. Generic Classes with Multiple Parameters
+
+Generics aren't limited to functions.
+
+A class can have multiple generic parameters:
+
+```ts
+class Pair<T, U> {
+  constructor(
+    public first: T,
+    public second: U
+  ) {}
+}
+```
+
+Usage:
+
+```ts
+const pair = new Pair("Suyash", 25);
+```
+
+Type:
+
+```ts
+Pair<string, number>
+```
+
+Another example:
+
+```ts
+const pair = new Pair(true, {
+  name: "Suyash"
+});
+```
+
+Type:
+
+```ts
+Pair<boolean, { name: string }>
+```
+
+---
+
+# 9. Generic Interfaces with Multiple Parameters
+
+Interfaces can also use multiple generics:
+
+```ts
+interface Response<T, E> {
+  data: T;
+  error: E;
+}
+```
+
+Now:
+
+```ts
+const response: Response<string, null> = {
+  data: "Success",
+  error: null
+};
+```
+
+Or:
+
+```ts
+const response: Response<User, string> = {
+  data: {
+    id: 1,
+    name: "Suyash"
+  },
+  error: ""
+};
+```
+
+Here:
+
+```text
+T → data type
+E → error type
+```
+
+---
+
+# 10. Default Generic Parameters
+
+You can give a generic parameter a default type.
+
+```ts
+interface Response<T, E = string> {
+  data: T;
+  error: E;
+}
+```
+
+Now you don't have to specify `E`:
+
+```ts
+const response: Response<number> = {
+  data: 100,
+  error: "Something went wrong"
+};
+```
+
+TypeScript uses:
+
+```ts
+T = number
+E = string
+```
+
+You can still override it:
+
+```ts
+const response: Response<number, null> = {
+  data: 100,
+  error: null
+};
+```
+
+---
+
+# 11. Generic Parameter Naming
+
+Common conventions are:
+
+```ts
+<T, U>
+```
+
+For more descriptive situations:
+
+```ts
+<K, V>
+```
+
+where:
+
+ `K` = Key
+ `V` = Value
+
+For example:
+
+```ts
+function getValue<K, V>(key: K, value: V) {
+  return { key, value };
+}
+```
+
+You can also use descriptive names:
+
+```ts
+function process<TInput, TOutput>(
+  input: TInput
+): TOutput {
+  // ...
+}
+```
+
+The names themselves don't matter to TypeScript.
+
+---
+
+# 12. Type Inference
+
+Usually, you don't need to manually provide the generic arguments.
+
+```ts
+function pair<T, U>(a: T, b: U): [T, U] {
+  return [a, b];
+}
+
+const result = pair("Hello", 42);
+```
+
+TypeScript automatically determines:
+
+```text
+T = string
+U = number
+```
+
+So prefer:
+
+```ts
+pair("Hello", 42);
+```
+
+over:
+
+```ts
+pair<string, number>("Hello", 42);
+```
+
+unless you specifically need to control the types.
+
+---
+
+# 13. A Real-World Example
+
+Suppose we have an API response:
+
+```ts
+interface ApiResponse<T, M> {
+  data: T;
+  meta: M;
+}
+```
+
+We can use it with different data and metadata types.
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+interface Pagination {
+  page: number;
+  total: number;
+}
+```
+
+Then:
+
+```ts
+const response: ApiResponse<User[], Pagination> = {
+  data: [
+    { id: 1, name: "Suyash" },
+    { id: 2, name: "Rahul" }
+  ],
+  meta: {
+    page: 1,
+    total: 2
+  }
+};
+```
+
+Here:
+
+```text
+T = User[]
+M = Pagination
+```
+
+This allows the same `ApiResponse` interface to work with many different API responses.
+
+---
+
+# 14. One Generic vs Multiple Generics
+
+### One generic
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+Use when there is one type relationship.
+
+### Multiple generics
+
+```ts
+function pair<T, U>(a: T, b: U): [T, U] {
+  return [a, b];
+}
+```
+
+Use when there are multiple independent or related type relationships.
+
+---
+
+# 15. Important Example to Remember
+
+This is one of the most useful patterns:
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+Given:
+
+```ts
+const user = {
+  name: "Suyash",
+  age: 25,
+  active: true
+};
+```
+
+We can safely do:
+
+```ts
+const name = getProperty(user, "name");
+// string
+
+const age = getProperty(user, "age");
+// number
+
+const active = getProperty(user, "active");
+// boolean
+```
+
+But:
+
+```ts
+getProperty(user, "email");
+```
+
+is rejected because `"email"` isn't a valid key.
+
+This combines several concepts you've learned:
+
+```text
+Generics
+   ↓
+Multiple Generic Parameters
+   ↓
+keyof
+   ↓
+Generic Constraints
+   ↓
+Indexed Access Types
+```
+
+---
+
+## Quick Summary
+
+| Syntax              | Meaning                   |
+| ------------------- | ------------------------- |
+| `<T>`               | One generic parameter     |
+| `<T, U>`            | Two generic parameters    |
+| `<K, V>`            | Common key/value generics |
+| `<T, U, V>`         | Three generic parameters  |
+| `K extends keyof T` | Constrain K to keys of T  |
+| `T[K]`              | Type of property K in T   |
+| `T = string`        | Default generic type      |
+
+### Core idea
+
+```ts
+function pair<T, U>(a: T, b: U): [T, U] {
+  return [a, b];
+}
+```
+
+Think of it as:
+
+```text
+T → type of first value
+U → type of second value
+```
+
+Multiple generic parameters let one function, class, or interface maintain type-safe relationships between multiple different types.

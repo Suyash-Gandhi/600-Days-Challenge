@@ -1,0 +1,544 @@
+# 54. Generic Constraints in TypeScript
+
+Generic constraints let you restrict what types can be passed to a generic function, interface, or type.
+
+Instead of saying:
+
+> “Give me any type.”
+
+you can say:
+
+> “Give me any type that has these required properties.”
+
+---
+
+## 1. The Problem with Unconstrained Generics
+
+Suppose we have:
+
+```ts
+function printLength<T>(value: T) {
+  console.log(value.length);
+}
+```
+
+TypeScript gives an error because `T` could be anything:
+
+```ts
+printLength("hello"); // okay at runtime
+printLength([1, 2, 3]); // okay at runtime
+printLength(123); // number has no length
+```
+
+TypeScript doesn't know that `T` has a `length` property.
+
+---
+
+## 2. Using `extends` as a Constraint
+
+We can tell TypeScript:
+
+```ts
+function printLength<T extends { length: number }>(value: T) {
+  console.log(value.length);
+}
+```
+
+Now `T` must have a `length: number` property.
+
+```ts
+printLength("hello");      // ✅
+printLength([1, 2, 3]);    // ✅
+printLength({ length: 10 }); // ✅
+
+printLength(123);          // ❌
+```
+
+The important syntax is:
+
+```ts
+<T extends Constraint>
+```
+
+Here `extends` doesn't mean class inheritance. It means:
+
+> T must be assignable to this constraint.
+
+---
+
+# 3. Constraint with an Interface
+
+You can use an interface as a constraint:
+
+```ts
+interface HasId {
+  id: number;
+}
+
+function getId<T extends HasId>(item: T): number {
+  return item.id;
+}
+```
+
+Now:
+
+```ts
+const user = {
+  id: 101,
+  name: "Suyash"
+};
+
+const product = {
+  id: 202,
+  price: 500
+};
+
+getId(user);    // 101
+getId(product); // 202
+```
+
+But:
+
+```ts
+getId("hello"); // ❌
+```
+
+because a string doesn't have the required `id: number`.
+
+---
+
+# 4. `extends` Doesn't Mean Exact Type
+
+This is important.
+
+With:
+
+```ts
+interface HasId {
+  id: number;
+}
+
+function getId<T extends HasId>(item: T) {
+  return item.id;
+}
+```
+
+`T` doesn't have to be exactly `HasId`.
+
+It can contain additional properties:
+
+```ts
+const user = {
+  id: 1,
+  name: "Alice",
+  age: 25
+};
+
+getId(user); // ✅
+```
+
+The only requirement is that the type satisfies the constraint.
+
+Conceptually:
+
+```text
+T
+│
+├── must have id: number
+│
+└── may have other properties
+```
+
+---
+
+# 5. Generic Constraint with `keyof`
+
+One of the most useful patterns combines constraints with `keyof`.
+
+Suppose:
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+Usage:
+
+```ts
+const user = {
+  name: "Alice",
+  age: 25,
+  active: true
+};
+
+const name = getProperty(user, "name"); // string
+const age = getProperty(user, "age");   // number
+const active = getProperty(user, "active"); // boolean
+```
+
+But:
+
+```ts
+getProperty(user, "email");
+// ❌ "email" is not a key of user
+```
+
+Here:
+
+```ts
+K extends keyof T
+```
+
+means:
+
+> `K` must be one of the keys of `T`.
+
+For our object:
+
+```ts
+keyof typeof user
+```
+
+is effectively:
+
+```ts
+"name" | "age" | "active"
+```
+
+So:
+
+```ts
+K extends "name" | "age" | "active"
+```
+
+---
+
+# 6. Why Constraints Are Useful
+
+Constraints allow TypeScript to safely use properties and methods.
+
+Without a constraint:
+
+```ts
+function process<T>(value: T) {
+  // value.id ❌
+}
+```
+
+With a constraint:
+
+```ts
+function process<T extends { id: number }>(value: T) {
+  console.log(value.id); // ✅
+}
+```
+
+The constraint gives TypeScript information about `T`.
+
+---
+
+# 7. Constraint with Multiple Properties
+
+You can require multiple properties:
+
+```ts
+function displayUser<T extends { id: number; name: string }>(
+  user: T
+) {
+  console.log(user.id);
+  console.log(user.name);
+}
+```
+
+Valid:
+
+```ts
+displayUser({
+  id: 1,
+  name: "Alice",
+  age: 25
+});
+```
+
+Invalid:
+
+```ts
+displayUser({
+  id: 1
+});
+```
+
+because `name` is missing.
+
+---
+
+# 8. Constraint to Primitive Types
+
+You can also constrain generics to primitive types:
+
+```ts
+function double<T extends number>(value: T): number {
+  return value  2;
+}
+```
+
+```ts
+double(10); // ✅
+```
+
+But:
+
+```ts
+double("10"); // ❌
+```
+
+You can also use unions:
+
+```ts
+function format<T extends string | number>(value: T) {
+  console.log(value);
+}
+```
+
+Now only `string` or `number` is allowed.
+
+```ts
+format("hello"); // ✅
+format(123);     // ✅
+format(true);    // ❌
+```
+
+---
+
+# 9. Constraint with Arrays
+
+You can require an array:
+
+```ts
+function first<T extends unknown[]>(items: T) {
+  return items[0];
+}
+```
+
+```ts
+first([10, 20, 30]);
+first(["a", "b", "c"]);
+```
+
+Another common approach:
+
+```ts
+function first<T>(items: T[]): T {
+  return items[0];
+}
+```
+
+This is often simpler when you don't specifically need the entire array type `T`.
+
+---
+
+# 10. Constraint with `object`
+
+You can restrict a generic to objects:
+
+```ts
+function logObject<T extends object>(value: T) {
+  console.log(value);
+}
+```
+
+```ts
+logObject({ name: "Alice" }); // ✅
+logObject([1, 2, 3]);         // ✅
+```
+
+But:
+
+```ts
+logObject(123); // ❌
+logObject("hello"); // ❌
+```
+
+Be aware that in TypeScript, arrays and functions are also objects in this type-system sense.
+
+---
+
+# 11. Generic Constraint + Return Type
+
+Constraints become especially useful when the return value depends on the input.
+
+```ts
+function getId<T extends { id: number }>(item: T): T["id"] {
+  return item.id;
+}
+```
+
+Since `id` is constrained to `number`, the result is known to be a number.
+
+---
+
+# 12. Real-World Example
+
+Imagine a function that sorts products by price:
+
+```ts
+function getPrice<T extends { price: number }>(item: T): number {
+  return item.price;
+}
+```
+
+Now any object containing a numeric `price` works:
+
+```ts
+const product = {
+  name: "Laptop",
+  price: 80000
+};
+
+const service = {
+  name: "Consulting",
+  price: 5000,
+  hours: 10
+};
+
+getPrice(product); // 80000
+getPrice(service); // 5000
+```
+
+But:
+
+```ts
+getPrice({
+  name: "Laptop"
+});
+```
+
+fails because there is no `price`.
+
+---
+
+# 13. Generic Constraint vs Normal Generic
+
+### Unconstrained
+
+```ts
+function identity<T>(value: T): T {
+  return value;
+}
+```
+
+`T` can be anything.
+
+### Constrained
+
+```ts
+function getId<T extends { id: number }>(value: T): number {
+  return value.id;
+}
+```
+
+`T` must contain:
+
+```ts
+id: number
+```
+
+Think of it like:
+
+```text
+Generic:
+T = anything
+
+Constrained Generic:
+T = anything that satisfies Constraint
+```
+
+---
+
+# 14. Important: `extends` Here Is a Constraint
+
+Compare these:
+
+```ts
+interface Animal {
+  name: string;
+}
+
+interface Dog extends Animal {
+  breed: string;
+}
+```
+
+Here `extends` describes inheritance.
+
+But:
+
+```ts
+function printName<T extends Animal>(animal: T) {
+  console.log(animal.name);
+}
+```
+
+Here `extends` describes a generic constraint.
+
+The idea is related—`T` must satisfy `Animal`—but it's not saying that `T` must literally inherit from the interface.
+
+---
+
+# 15. Key Pattern to Remember
+
+You'll see this pattern constantly:
+
+```ts
+function something<T extends SomeConstraint>(value: T) {
+  // safely use properties from SomeConstraint
+}
+```
+
+For example:
+
+```ts
+function printName<T extends { name: string }>(value: T) {
+  console.log(value.name);
+}
+```
+
+And this extremely useful pattern:
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+---
+
+## Quick Summary
+
+| Syntax                       | Meaning                  |
+| ---------------------------- | ------------------------ |
+| `<T>`                        | Any type                 |
+| `<T extends X>`              | T must satisfy X         |
+| `<T extends object>`         | T must be an object      |
+| `<T extends string>`         | T must be a string       |
+| `<T extends { id: number }>` | T must have `id: number` |
+| `<K extends keyof T>`        | K must be a key of T     |
+
+### The main idea
+
+```ts
+<T extends Constraint>
+```
+
+means:
+
+> "T can be any type, as long as it satisfies this requirement."
+
+This lets generics stay flexible while still giving TypeScript enough information to safely work with the value.

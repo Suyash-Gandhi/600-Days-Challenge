@@ -1,0 +1,438 @@
+## 57. Real-World Generic Patterns
+
+Generics become really powerful when you use them to build reusable functions, APIs, utilities, and data structures without losing TypeScript's type safety.
+
+### 1. Generic API Response
+
+A very common pattern is an API response that can contain different kinds of data.
+
+```ts
+interface ApiResponse<T> {
+  data: T;
+  success: boolean;
+  message: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+}
+
+interface Product {
+  id: number;
+  title: string;
+}
+
+const userResponse: ApiResponse<User> = {
+  data: {
+    id: 1,
+    name: "Suyash"
+  },
+  success: true,
+  message: "User fetched"
+};
+
+const productResponse: ApiResponse<Product> = {
+  data: {
+    id: 101,
+    title: "Laptop"
+  },
+  success: true,
+  message: "Product fetched"
+};
+```
+
+The structure stays the same while `T` changes.
+
+---
+
+### 2. Generic API Function
+
+You can combine generics with functions:
+
+```ts
+async function fetchData<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+  return response.json();
+}
+```
+
+Now the caller specifies what type of data is expected:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+const user = await fetchData<User>("/api/user");
+
+console.log(user.name);
+```
+
+This is much better than returning `any` because TypeScript knows that `user` is a `User`.
+
+---
+
+### 3. Generic Repository Pattern
+
+Generics are frequently used in data-access layers.
+
+```ts
+class Repository<T> {
+  private items: T[] = [];
+
+  add(item: T): void {
+    this.items.push(item);
+  }
+
+  getAll(): T[] {
+    return this.items;
+  }
+}
+```
+
+Use it with different types:
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+const userRepository = new Repository<User>();
+
+userRepository.add({
+  id: 1,
+  name: "Suyash"
+});
+
+const users = userRepository.getAll();
+```
+
+The same repository works for products too:
+
+```ts
+const productRepository = new Repository<Product>();
+
+productRepository.add({
+  id: 1,
+  title: "Laptop"
+});
+```
+
+---
+
+### 4. Generic Utility Functions
+
+Suppose you want a function that returns the first element of an array:
+
+```ts
+function first<T>(items: T[]): T | undefined {
+  return items[0];
+}
+```
+
+It works with any type:
+
+```ts
+const number = first([10, 20, 30]);
+// number: number | undefined
+
+const name = first(["Alice", "Bob"]);
+// name: string | undefined
+```
+
+No duplication is necessary.
+
+---
+
+### 5. Generic `Result` Pattern
+
+A useful pattern for handling success/failure is:
+
+```ts
+type Result<T> =
+  | {
+      success: true;
+      data: T;
+    }
+  | {
+      success: false;
+      error: string;
+    };
+```
+
+Now functions can return either a successful result or an error:
+
+```ts
+function getUser(): Result<User> {
+  return {
+    success: true,
+    data: {
+      id: 1,
+      name: "Suyash"
+    }
+  };
+}
+```
+
+And TypeScript narrows the type:
+
+```ts
+const result = getUser();
+
+if (result.success) {
+  console.log(result.data.name);
+} else {
+  console.log(result.error);
+}
+```
+
+This pattern is especially useful in larger applications.
+
+---
+
+### 6. Generic Pagination
+
+Pagination is another real-world example.
+
+```ts
+interface PaginatedResponse<T> {
+  items: T[];
+  page: number;
+  totalPages: number;
+  totalItems: number;
+}
+```
+
+For users:
+
+```ts
+const usersPage: PaginatedResponse<User> = {
+  items: [
+    { id: 1, name: "Suyash" },
+    { id: 2, name: "Rahul" }
+  ],
+  page: 1,
+  totalPages: 5,
+  totalItems: 50
+};
+```
+
+For products:
+
+```ts
+const productsPage: PaginatedResponse<Product> = {
+  items: [
+    { id: 1, title: "Laptop" }
+  ],
+  page: 1,
+  totalPages: 3,
+  totalItems: 30
+};
+```
+
+---
+
+### 7. Generic Key-Based Functions
+
+Generics can work together with `keyof`:
+
+```ts
+function getProperty<T, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] {
+  return obj[key];
+}
+```
+
+Usage:
+
+```ts
+const user = {
+  id: 1,
+  name: "Suyash",
+  age: 25
+};
+
+const name = getProperty(user, "name");
+// string
+
+const age = getProperty(user, "age");
+// number
+```
+
+But this is invalid:
+
+```ts
+getProperty(user, "email");
+```
+
+because `"email"` isn't a key of `user`.
+
+This pattern is extremely useful for reusable utilities.
+
+---
+
+### 8. Generic Event Handler
+
+Generics can also model event systems:
+
+```ts
+interface EventMap {
+  login: {
+    userId: number;
+  };
+
+  logout: {
+    userId: number;
+  };
+
+  message: {
+    text: string;
+  };
+}
+```
+
+A generic event handler can use the event name to determine its payload:
+
+```ts
+function emit<K extends keyof EventMap>(
+  event: K,
+  data: EventMap[K]
+) {
+  console.log(event, data);
+}
+```
+
+Now:
+
+```ts
+emit("login", {
+  userId: 10
+});
+
+emit("message", {
+  text: "Hello"
+});
+```
+
+But:
+
+```ts
+emit("login", {
+  text: "Hello"
+});
+```
+
+produces an error because the `login` event expects `{ userId: number }`.
+
+---
+
+## 9. Generic Factory Pattern
+
+Generics are useful when creating objects:
+
+```ts
+function createBox<T>(value: T) {
+  return {
+    value
+  };
+}
+```
+
+```ts
+const numberBox = createBox(100);
+// { value: number }
+
+const userBox = createBox({
+  id: 1,
+  name: "Suyash"
+});
+// { value: { id: number; name: string } }
+```
+
+TypeScript automatically infers `T`.
+
+---
+
+## 10. Generic Constraints in Real Applications
+
+Sometimes you don't want to accept absolutely any type.
+
+For example, a function that needs an `id`:
+
+```ts
+function findById<T extends { id: number }>(
+  items: T[],
+  id: number
+): T | undefined {
+  return items.find(item => item.id === id);
+}
+```
+
+Now both users and products can be searched:
+
+```ts
+const user = findById(users, 1);
+const product = findById(products, 101);
+```
+
+But this won't work:
+
+```ts
+const names = ["Alice", "Bob"];
+
+findById(names, 1);
+```
+
+because strings don't have an `id: number`.
+
+---
+
+## ⭐ Important Real-World Patterns
+
+You should recognize these generic patterns in professional TypeScript code:
+
+| Pattern                | Typical use            |
+| ---------------------- | ---------------------- |
+| `ApiResponse<T>`       | API responses          |
+| `PaginatedResponse<T>` | Pagination             |
+| `Repository<T>`        | Data access            |
+| `Result<T>`            | Success/error handling |
+| `fetchData<T>()`       | Typed API calls        |
+| `getProperty<T, K>()`  | Generic utilities      |
+| `EventMap` + generics  | Event systems          |
+| `T extends {...}`      | Constrained data       |
+| `T[]`                  | Reusable collections   |
+| Generic factory        | Object creation        |
+
+### The big idea
+
+Instead of writing:
+
+```ts
+function getUser(): User
+function getProduct(): Product
+function getOrder(): Order
+```
+
+you can often create one reusable abstraction:
+
+```ts
+function getData<T>(): T {
+  // ...
+}
+```
+
+Then:
+
+```ts
+getData<User>();
+getData<Product>();
+getData<Order>();
+```
+
+Generics let you write the logic once while preserving the specific type information everywhere it's used.
