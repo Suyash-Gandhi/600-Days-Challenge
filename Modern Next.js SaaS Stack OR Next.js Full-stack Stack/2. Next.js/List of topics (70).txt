@@ -1,0 +1,195 @@
+# Next.js — 70 High-ROI Topics
+
+## Phase 1 — Foundation
+
+1. What Next.js Is
+2. Next.js vs React
+3. App Router
+4. Project Structure & File Conventions
+5. File-Based Routing & Pages
+6. Layouts & Nested Layouts
+7. Route Groups
+8. Metadata & `generateMetadata()`
+9. Environment Variables
+10. Static Assets & `public`
+
+---
+
+## Phase 2 — Routing
+
+11. Static Routes
+12. Dynamic & Nested Dynamic Routes
+13. Catch-All & Optional Catch-All Routes
+14. Route Parameters
+15. Search Parameters
+16. `Link` & Client-Side Navigation
+17. Programmatic Navigation
+18. `useRouter()`
+19. `usePathname()` & `useSearchParams()`
+20. Redirects
+21. Not Found Handling
+
+---
+
+## Phase 3 — Server & Client Components
+
+22. React Server Components
+23. Client Components
+24. `"use client"`
+25. Server-First Architecture
+26. Server/Client Component Boundaries
+27. Server Component Composition
+28. Passing Data Server → Client
+29. Serializable Props & Component Restrictions
+30. Common Server/Client Mistakes
+
+---
+
+## Phase 4 — Rendering
+
+31. Rendering Fundamentals
+32. Static Rendering
+33. Dynamic Rendering
+34. SSR
+35. SSG
+36. ISR & Revalidation
+37. CSR
+38. Hydration
+39. Streaming & Suspense
+40. Choosing the Right Rendering Strategy
+
+---
+
+## Phase 5 — Data Fetching
+
+41. Data Fetching with `fetch()`
+42. Async Server Components
+43. Data Fetching in Server Components
+44. Data Fetching in Client Components
+45. Next.js Data Caching
+46. Revalidation & Cache Freshness
+47. `force-cache` vs `no-store`
+48. Parallel vs Sequential Data Fetching
+49. Loading UI
+50. Error Handling & Error Boundaries
+
+---
+
+## Phase 6 — Server Actions & Mutations
+
+51. Server Actions
+52. Forms & Server Actions
+53. Data Mutations
+54. CRUD Architecture
+55. `useActionState()`
+56. `useFormStatus()`
+57. Server-Side Validation with Zod
+58. Mutation Error & Success Handling
+59. Redirects After Mutations
+60. Mutation Security & Authorization
+
+---
+
+## Phase 7 — APIs & Backend
+
+61. Route Handlers
+62. HTTP Methods & REST APIs
+63. Request & Response Handling
+64. Cookies
+65. Headers
+66. API Validation with Zod
+67. API Error Handling
+68. Server-Side Database Access
+69. API vs Server Actions
+70. Authentication vs Authorization Boundaries
+
+---
+
+71+ — Production Next.js
+
+Authentication
+
+ Auth.js / appropriate auth solution
+ Sessions
+ Protected routes
+ RBAC
+ Authorization patterns
+
+Security
+
+ Secure cookies
+ HttpOnly cookies
+ XSS prevention
+ CSRF concepts
+ Rate limiting
+ Input validation
+ Authorization security
+
+Performance
+
+ `next/image`
+ Image optimization
+ Dynamic imports
+ Lazy loading
+ Font optimization
+ Core Web Vitals
+ Lighthouse
+
+SEO
+
+ Dynamic metadata
+ Open Graph
+ Sitemap
+ Robots
+ JSON-LD
+
+Deployment
+
+ Production builds
+ Production environment variables
+ Deployment
+ Logging/monitoring
+
+Advanced Next.js — Only when needed
+
+Then learn:
+
+ Cache Components / advanced caching
+ Cache tags
+ `revalidatePath`
+ `revalidateTag`
+ Router Cache
+ Parallel Routes
+ Intercepting Routes
+ PPR
+ `global-error.js`
+
+---
+
+One important point
+
+I would not think of the 70 as "70 APIs to memorize."
+
+Think of them as 70 questions you should be able to answer.
+
+For example, after Topic 26, you should be able to answer:
+
+> "Where should I put the Client Component?"
+
+After Topic 40:
+
+> "Should this page be static or dynamic?"
+
+After Topic 48:
+
+> "Why is my page making database requests one after another?"
+
+After Topic 60:
+
+> "Can a malicious user bypass my UI and call this mutation directly?"
+
+After Topic 69:
+
+> "Should this operation be a Server Action or an API endpoint?"
+
+That is a much better definition of Next.js proficiency than simply knowing 70 features.
