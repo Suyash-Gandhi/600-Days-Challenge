@@ -1,0 +1,305 @@
+## 5. File-Based Routing & Pages
+
+In Next.js App Router, your URL structure is largely determined by the folders and files you create inside the `app` directory.
+
+The key idea is:
+
+> Folders represent URL segments, and `page.tsx` represents an actual page at that URL.
+
+### 1. Basic page
+
+Suppose you have:
+
+```text
+app/
+├── page.tsx
+└── about/
+    └── page.tsx
+```
+
+This creates:
+
+```text
+/        → app/page.tsx
+/about   → app/about/page.tsx
+```
+
+So:
+
+```text
+app/about/page.tsx
+```
+
+becomes the `/about` page.
+
+---
+
+### 2. Pages are created with `page.tsx`
+
+A route segment doesn't become a publicly accessible page merely because its folder exists.
+
+For example:
+
+```text
+app/
+└── dashboard/
+```
+
+does not create `/dashboard`.
+
+You need:
+
+```text
+app/
+└── dashboard/
+    └── page.tsx
+```
+
+Now `/dashboard` exists.
+
+Example:
+
+```tsx
+export default function DashboardPage() {
+  return <h1>Dashboard</h1>;
+}
+```
+
+Visiting:
+
+```text
+http://localhost:3000/dashboard
+```
+
+renders that component.
+
+---
+
+### 3. Nested routes
+
+Folders can be nested to create nested URLs:
+
+```text
+app/
+└── dashboard/
+    ├── page.tsx
+    └── settings/
+        └── page.tsx
+```
+
+This creates:
+
+```text
+/dashboard
+/dashboard/settings
+```
+
+The mapping is:
+
+```text
+app/dashboard/page.tsx
+              ↓
+        /dashboard
+
+app/dashboard/settings/page.tsx
+              ↓
+        /dashboard/settings
+```
+
+You can keep nesting as needed:
+
+```text
+app/
+└── dashboard/
+    └── settings/
+        └── security/
+            └── page.tsx
+```
+
+→ `/dashboard/settings/security`
+
+---
+
+### 4. `page.tsx` is special
+
+Next.js gives certain filenames special meanings.
+
+For this topic, the most important one is:
+
+```text
+page.tsx
+```
+
+A `page.tsx` file makes its route segment accessible to users.
+
+For example:
+
+```text
+app/
+├── page.tsx
+├── about/
+│   └── page.tsx
+└── products/
+    ├── page.tsx
+    └── pricing/
+        └── page.tsx
+```
+
+creates:
+
+| File                            | URL                 |
+| ------------------------------- | ------------------- |
+| `app/page.tsx`                  | `/`                 |
+| `app/about/page.tsx`            | `/about`            |
+| `app/products/page.tsx`         | `/products`         |
+| `app/products/pricing/page.tsx` | `/products/pricing` |
+
+---
+
+### 5. A folder doesn't automatically create a page
+
+This distinction is important.
+
+```text
+app/
+└── components/
+    └── Button.tsx
+```
+
+does not create:
+
+```text
+/components
+```
+
+because there is no:
+
+```text
+app/components/page.tsx
+```
+
+This is one reason you can organize your application into folders without accidentally creating routes.
+
+---
+
+### 6. Pages are React components
+
+A `page.tsx` file exports a React component:
+
+```tsx
+export default function AboutPage() {
+  return (
+    <main>
+      <h1>About Us</h1>
+      <p>Welcome to our website.</p>
+    </main>
+  );
+}
+```
+
+Next.js uses that component as the UI for that route.
+
+Conceptually:
+
+```text
+URL
+ ↓
+Next.js Router
+ ↓
+Find matching folder structure
+ ↓
+Find page.tsx
+ ↓
+Render exported component
+```
+
+---
+
+### 7. The root page
+
+This:
+
+```text
+app/page.tsx
+```
+
+is special because it represents the root route:
+
+```text
+/
+```
+
+For example:
+
+```tsx
+export default function HomePage() {
+  return <h1>Welcome</h1>;
+}
+```
+
+When someone visits:
+
+```text
+example.com/
+```
+
+this page is rendered.
+
+---
+
+### 8. Multiple pages
+
+A realistic application might look like:
+
+```text
+app/
+├── page.tsx
+├── about/
+│   └── page.tsx
+├── contact/
+│   └── page.tsx
+├── products/
+│   └── page.tsx
+└── dashboard/
+    ├── page.tsx
+    ├── settings/
+    │   └── page.tsx
+    └── profile/
+        └── page.tsx
+```
+
+The resulting routes are:
+
+```text
+/                       → Home
+/about                  → About
+/contact                → Contact
+/products               → Products
+/dashboard              → Dashboard
+/dashboard/settings     → Settings
+/dashboard/profile      → Profile
+```
+
+### The rule to remember
+
+```text
+Folder = URL segment
+page.tsx = page at that URL
+```
+
+So:
+
+```text
+app/
+└── users/
+    └── profile/
+        └── page.tsx
+```
+
+means:
+
+```text
+/users/profile
+```
+
+This is the foundation for understanding the more advanced routing features that come next, such as dynamic routes, route groups, layouts, and parallel/intercepting routes.

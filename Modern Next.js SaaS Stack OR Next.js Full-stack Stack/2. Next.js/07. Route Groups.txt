@@ -1,0 +1,332 @@
+# 7. Route Groups
+
+Route Groups in Next.js let you organize routes into folders without adding that folder’s name to the URL.
+
+They are created by wrapping the folder name in parentheses:
+
+```text
+app/
+├── (marketing)/
+│   ├── about/
+│   │   └── page.tsx
+│   └── pricing/
+│       └── page.tsx
+│
+└── (dashboard)/
+    ├── dashboard/
+    │   └── page.tsx
+    └── settings/
+        └── page.tsx
+```
+
+The parentheses tell Next.js:
+
+> "Use this folder for organization, but don't include its name in the URL."
+
+### Example
+
+```text
+app/
+└── (marketing)/
+    └── about/
+        └── page.tsx
+```
+
+The page is accessed at:
+
+```text
+/about
+```
+
+Not:
+
+```text
+/(marketing)/about
+```
+
+The `(marketing)` folder does not become part of the URL.
+
+---
+
+## Why use Route Groups?
+
+The biggest reason is to organize related routes without affecting routing.
+
+For example, imagine:
+
+```text
+app/
+├── (marketing)/
+│   ├── about/
+│   ├── pricing/
+│   └── contact/
+│
+└── (dashboard)/
+    ├── dashboard/
+    ├── users/
+    └── settings/
+```
+
+You get:
+
+```text
+/about
+/pricing
+/contact
+
+/dashboard
+/users
+/settings
+```
+
+while your filesystem is much better organized.
+
+---
+
+## Route Groups are especially useful with layouts
+
+This is where Route Groups become very powerful.
+
+Suppose your application has:
+
+ Marketing pages → navbar + footer
+ Dashboard pages → sidebar + dashboard navigation
+
+You can do:
+
+```text
+app/
+├── (marketing)/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── about/
+│   │   └── page.tsx
+│   └── pricing/
+│       └── page.tsx
+│
+└── (dashboard)/
+    ├── layout.tsx
+    ├── dashboard/
+    │   └── page.tsx
+    └── settings/
+        └── page.tsx
+```
+
+Now:
+
+```text
+/about
+/pricing
+```
+
+use the marketing layout.
+
+And:
+
+```text
+/dashboard
+/settings
+```
+
+use the dashboard layout.
+
+Yet neither `(marketing)` nor `(dashboard)` appears in the URL.
+
+---
+
+## Route Groups vs normal folders
+
+### Normal folder
+
+```text
+app/
+└── dashboard/
+    └── settings/
+        └── page.tsx
+```
+
+URL:
+
+```text
+/dashboard/settings
+```
+
+The `dashboard` folder contributes to the URL.
+
+### Route Group
+
+```text
+app/
+└── (dashboard)/
+    └── settings/
+        └── page.tsx
+```
+
+URL:
+
+```text
+/settings
+```
+
+The `(dashboard)` folder does not contribute to the URL.
+
+---
+
+## Important: Route Groups don't create routes by themselves
+
+This:
+
+```text
+app/
+└── (dashboard)/
+```
+
+doesn't create a `/dashboard` URL.
+
+You still need a route inside it:
+
+```text
+app/
+└── (dashboard)/
+    └── settings/
+        └── page.tsx
+```
+
+which creates:
+
+```text
+/settings
+```
+
+---
+
+## Route Groups can separate different sections of an app
+
+A realistic application might look like:
+
+```text
+app/
+├── (auth)/
+│   ├── login/
+│   │   └── page.tsx
+│   └── register/
+│       └── page.tsx
+│
+├── (marketing)/
+│   ├── about/
+│   │   └── page.tsx
+│   └── pricing/
+│       └── page.tsx
+│
+└── (dashboard)/
+    ├── dashboard/
+    │   └── page.tsx
+    ├── users/
+    │   └── page.tsx
+    └── settings/
+        └── page.tsx
+```
+
+URLs:
+
+```text
+/login
+/register
+/about
+/pricing
+/dashboard
+/users
+/settings
+```
+
+The groups `(auth)`, `(marketing)`, and `(dashboard)` are purely organizational.
+
+---
+
+## A very important use: different root layouts
+
+Route Groups can also be used to create different root layouts for different parts of an application.
+
+For example:
+
+```text
+app/
+├── (marketing)/
+│   ├── layout.tsx
+│   └── page.tsx
+│
+└── (app)/
+    ├── layout.tsx
+    └── dashboard/
+        └── page.tsx
+```
+
+This can allow different sections to have substantially different overall layouts.
+
+However, this is an advanced use case because multiple root layouts can affect navigation behavior and cause full page reloads when navigating between them.
+
+---
+
+## Route Group naming
+
+You can choose essentially any meaningful name:
+
+```text
+(auth)
+(marketing)
+(dashboard)
+(admin)
+(shop)
+(account)
+```
+
+The parentheses are what matter:
+
+```text
+(folder)
+```
+
+is a normal route folder.
+
+```text
+(folder)
+```
+
+Actually, visually it's important to distinguish:
+
+```text
+dashboard/
+```
+
+from:
+
+```text
+(dashboard)/
+```
+
+The second is the Route Group.
+
+---
+
+# The key idea
+
+Think of Route Groups as invisible folders in the URL.
+
+```text
+Filesystem                  URL
+
+app/
+└── (marketing)/
+    └── about/
+        └── page.tsx    →   /about
+```
+
+The folder exists for organization and layout structure, but Next.js doesn't put its name into the URL.
+
+### What you should remember
+
+> `(folder)` = Route Group → organizes routes without affecting the URL.
+
+And the most important practical reason to use them is:
+
+> Group related routes so they can share layouts and organization without adding an unwanted URL segment.

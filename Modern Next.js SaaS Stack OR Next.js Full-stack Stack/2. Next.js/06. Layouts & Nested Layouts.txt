@@ -1,0 +1,692 @@
+# 6. Layouts & Nested Layouts
+
+In Next.js App Router, layouts are a way to define UI that is shared across multiple pages.
+
+The important idea is:
+
+> A layout stays on the screen while the page inside it changes.
+
+This is especially useful for things like:
+
+ Navigation bars
+ Sidebars
+ Headers
+ Footers
+ Dashboard shells
+ Authentication layouts
+
+---
+
+## 1. What is a Layout?
+
+A layout is a special file named:
+
+```text
+layout.tsx
+```
+
+For example:
+
+```text
+app/
+├── layout.tsx
+├── page.tsx
+├── about/
+│   └── page.tsx
+└── contact/
+    └── page.tsx
+```
+
+The root `layout.tsx` wraps all the routes underneath it.
+
+A simple layout:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <nav>Navbar</nav>
+
+        {children}
+
+        <footer>Footer</footer>
+      </body>
+    </html>
+  );
+}
+```
+
+Here:
+
+```tsx
+{children}
+```
+
+represents the current page.
+
+So when you visit `/about`, Next.js effectively renders:
+
+```text
+RootLayout
+ ├── Navbar
+ ├── About Page
+ └── Footer
+```
+
+When you visit `/contact`:
+
+```text
+RootLayout
+ ├── Navbar
+ ├── Contact Page
+ └── Footer
+```
+
+The layout remains the same; only the page content changes.
+
+---
+
+# 2. Why Do We Need Layouts?
+
+Without layouts, you might repeatedly write:
+
+```tsx
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+      <main>Home</main>
+      <Footer />
+    </>
+  );
+}
+```
+
+Then:
+
+```tsx
+export default function About() {
+  return (
+    <>
+      <Navbar />
+      <main>About</main>
+      <Footer />
+    </>
+  );
+}
+```
+
+And again for every page.
+
+That's unnecessary duplication.
+
+Instead:
+
+```text
+layout.tsx
+    ↓
+Navbar
+    ↓
+{children}
+    ↓
+Current Page
+    ↓
+Footer
+```
+
+Now every page automatically gets the shared UI.
+
+---
+
+# 3. Root Layout
+
+The most important layout is the root layout.
+
+Usually:
+
+```text
+app/
+└── layout.tsx
+```
+
+It wraps the entire application.
+
+Example:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+It is where you commonly put things such as:
+
+ `<html>`
+ `<body>`
+ Global providers
+ Global navigation
+ Global footer
+ Application-wide UI
+
+For example:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+---
+
+# 4. Nested Layouts
+
+This is where layouts become particularly powerful.
+
+Suppose you have:
+
+```text
+app/
+├── layout.tsx
+├── page.tsx
+│
+├── dashboard/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── users/
+│   │   └── page.tsx
+│   └── settings/
+│       └── page.tsx
+│
+└── about/
+    └── page.tsx
+```
+
+You have:
+
+```text
+Root Layout
+     ↓
+Dashboard Layout
+     ↓
+Dashboard Page
+```
+
+The `dashboard/layout.tsx` only applies to routes inside `/dashboard`.
+
+For example:
+
+```tsx
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <aside>
+        Dashboard Sidebar
+      </aside>
+
+      <main>
+        {children}
+      </main>
+    </div>
+  );
+}
+```
+
+Now `/dashboard`, `/dashboard/users`, and `/dashboard/settings` can all share this dashboard layout.
+
+---
+
+# 5. How Nested Layouts Combine
+
+Suppose your root layout is:
+
+```tsx
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+And your dashboard layout is:
+
+```tsx
+export default function DashboardLayout({ children }) {
+  return (
+    <div>
+      <Sidebar />
+      {children}
+    </div>
+  );
+}
+```
+
+And your dashboard page is:
+
+```tsx
+export default function DashboardPage() {
+  return <h1>Dashboard</h1>;
+}
+```
+
+Visiting:
+
+```text
+/dashboard
+```
+
+produces a structure conceptually like:
+
+```text
+RootLayout
+│
+├── Navbar
+│
+└── DashboardLayout
+    │
+    ├── Sidebar
+    │
+    └── DashboardPage
+        │
+        └── Dashboard
+```
+
+So the final UI is roughly:
+
+```text
+Navbar
+--------------------------------
+Sidebar | Dashboard
+         |
+         |
+```
+
+---
+
+# 6. Multiple Levels of Nested Layouts
+
+Layouts can be nested multiple levels deep.
+
+For example:
+
+```text
+app/
+├── layout.tsx
+│
+└── dashboard/
+    ├── layout.tsx
+    │
+    └── admin/
+        ├── layout.tsx
+        └── page.tsx
+```
+
+The page at:
+
+```text
+/dashboard/admin
+```
+
+can be wrapped like:
+
+```text
+Root Layout
+    ↓
+Dashboard Layout
+    ↓
+Admin Layout
+    ↓
+Admin Page
+```
+
+So you can build complex applications by composing layouts.
+
+---
+
+# 7. A Real-World Example
+
+Imagine an admin application.
+
+You might structure it like:
+
+```text
+app/
+├── layout.tsx
+│
+├── login/
+│   └── page.tsx
+│
+└── dashboard/
+    ├── layout.tsx
+    ├── page.tsx
+    │
+    ├── users/
+    │   └── page.tsx
+    │
+    ├── orders/
+    │   └── page.tsx
+    │
+    └── settings/
+        └── page.tsx
+```
+
+Root layout:
+
+```tsx
+<html>
+  <body>
+    {children}
+  </body>
+</html>
+```
+
+Dashboard layout:
+
+```tsx
+<div className="dashboard">
+  <Sidebar />
+
+  <section>
+    {children}
+  </section>
+</div>
+```
+
+Then:
+
+```text
+/login
+```
+
+gets:
+
+```text
+Root Layout
+    ↓
+Login Page
+```
+
+while:
+
+```text
+/dashboard
+```
+
+gets:
+
+```text
+Root Layout
+    ↓
+Dashboard Layout
+    ↓
+Dashboard Page
+```
+
+And:
+
+```text
+/dashboard/users
+```
+
+gets:
+
+```text
+Root Layout
+    ↓
+Dashboard Layout
+    ↓
+Users Page
+```
+
+This lets the login page not have the dashboard sidebar, while every dashboard page gets it automatically.
+
+---
+
+# 8. Layouts Persist Between Navigation
+
+One of the major benefits of layouts is that they can persist across navigation.
+
+Imagine:
+
+```text
+/dashboard
+```
+
+and then navigating to:
+
+```text
+/dashboard/users
+```
+
+The dashboard layout doesn't need to be recreated conceptually as ordinary page content every time.
+
+The shared layout remains while the relevant page changes.
+
+This makes layouts ideal for persistent UI such as:
+
+```text
+┌─────────────────────────────┐
+│ Navbar                      │
+├──────────┬──────────────────┤
+│          │                  │
+│ Sidebar  │ Page Content     │
+│          │                  │
+│          │                  │
+└──────────┴──────────────────┘
+```
+
+The sidebar can remain while the content changes from:
+
+```text
+Dashboard
+```
+
+to:
+
+```text
+Users
+```
+
+to:
+
+```text
+Settings
+```
+
+---
+
+# 9. `children` Is the Key Concept
+
+If you're learning layouts, make sure you understand this:
+
+```tsx
+function Layout({ children }) {
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  );
+}
+```
+
+`children` is simply the React content that gets inserted into the layout.
+
+For example:
+
+```tsx
+<Layout>
+  <HomePage />
+</Layout>
+```
+
+means:
+
+```tsx
+children = <HomePage />
+```
+
+So:
+
+```tsx
+<Navbar />
+{children}
+```
+
+becomes:
+
+```tsx
+<Navbar />
+<HomePage />
+```
+
+Next.js uses this concept to compose layouts and pages according to your folder structure.
+
+---
+
+# 10. Layout vs Page
+
+This distinction is extremely important.
+
+### `page.tsx`
+
+Represents a route's actual page content.
+
+```text
+app/about/page.tsx
+```
+
+→ `/about`
+
+### `layout.tsx`
+
+Represents shared UI surrounding that route and its descendants.
+
+```text
+app/layout.tsx
+```
+
+→ wraps the application.
+
+```text
+app/dashboard/layout.tsx
+```
+
+→ wraps `/dashboard` and routes underneath it.
+
+Think:
+
+```text
+layout
+   ↓
+   page
+```
+
+rather than:
+
+```text
+layout = another page
+```
+
+---
+
+# 11. The Mental Model You Should Remember
+
+The simplest way to understand nested layouts is:
+
+```text
+Folder
+  ↓
+Layout
+  ↓
+More specific folder
+  ↓
+Another layout
+  ↓
+Page
+```
+
+For:
+
+```text
+app/
+├── layout.tsx
+└── dashboard/
+    ├── layout.tsx
+    └── users/
+        └── page.tsx
+```
+
+Think:
+
+```text
+RootLayout
+    ↓
+DashboardLayout
+    ↓
+UsersPage
+```
+
+Or visually:
+
+```text
+┌───────────────────────────────┐
+│       Root Layout             │
+│                               │
+│  Navbar                       │
+│  ┌─────────────────────────┐  │
+│  │ Dashboard Layout        │  │
+│  │                         │  │
+│  │ Sidebar | Users Page    │  │
+│  │                         │  │
+│  └─────────────────────────┘  │
+└───────────────────────────────┘
+```
+
+## The key takeaway
+
+Layouts are persistent shared UI, and nested layouts allow different sections of your application to have their own shared UI.
+
+For your Next.js learning roadmap, the important things to master here are:
+
+1. `layout.tsx`
+2. `children`
+3. Root layouts
+4. Nested layouts
+5. How layouts correspond to route segments
+6. How multiple layouts compose together
+7. Why layouts are useful for persistent UI
+
+You don't need to go deep into advanced layout behavior yet. That can come later when you study things like Route Groups, Parallel Routes, Intercepting Routes, and Server/Client Components.
