@@ -1,0 +1,505 @@
+# 8. Metadata & `generateMetadata()`
+
+Metadata is information about your webpage that is not part of the visible page content. It helps search engines and browsers understand your page and controls things like the browser tab title, description, Open Graph preview, and icons.
+
+In Next.js App Router, metadata is mainly handled through:
+
+1. The static `metadata` object
+2. The dynamic `generateMetadata()` function
+
+---
+
+## 1. Static Metadata
+
+If the metadata doesn't change based on the URL or request, use the `metadata` object.
+
+```tsx
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Learn more about our company",
+};
+
+export default function AboutPage() {
+  return <h1>About Us</h1>;
+}
+```
+
+This produces roughly:
+
+```html
+<title>About Us</title>
+<meta
+  name="description"
+  content="Learn more about our company"
+/>
+```
+
+### When to use it
+
+Use static `metadata` when every visitor gets the same metadata.
+
+Examples:
+
+ About page
+ Contact page
+ Pricing page
+ Homepage
+ Terms and conditions
+
+---
+
+# 2. `generateMetadata()`
+
+Sometimes metadata needs to be dynamic.
+
+For example:
+
+```text
+/products/iphone-17
+/products/macbook-pro
+/products/airpods
+```
+
+Each page should have a different title and description.
+
+That's where `generateMetadata()` comes in.
+
+```tsx
+import type { Metadata } from "next";
+
+type Props = {
+  params: Promise<{ productId: string }>;
+};
+
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { productId } = await params;
+
+  const product = await getProduct(productId);
+
+  return {
+    title: product.name,
+    description: product.description,
+  };
+}
+
+export default async function ProductPage({ params }: Props) {
+  const { productId } = await params;
+
+  const product = await getProduct(productId);
+
+  return <h1>{product.name}</h1>;
+}
+```
+
+Now:
+
+```text
+/products/iphone
+```
+
+could have:
+
+```html
+<title>iPhone 17</title>
+<meta name="description" content="The latest iPhone..." />
+```
+
+while:
+
+```text
+/products/macbook
+```
+
+could have:
+
+```html
+<title>MacBook Pro</title>
+<meta name="description" content="Powerful laptop..." />
+```
+
+---
+
+# 3. Why `generateMetadata()` is useful
+
+The important distinction is:
+
+```text
+metadata
+    ↓
+same metadata for the route
+```
+
+versus
+
+```text
+generateMetadata()
+    ↓
+metadata calculated dynamically
+```
+
+For example:
+
+```tsx
+export const metadata: Metadata = {
+  title: "Products",
+};
+```
+
+is static.
+
+But:
+
+```tsx
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.productId);
+
+  return {
+    title: product.name,
+  };
+}
+```
+
+is dynamic.
+
+---
+
+# 4. Metadata from Dynamic Routes
+
+This is one of the most important use cases.
+
+Suppose you have:
+
+```text
+app/
+└── blog/
+    └── [slug]/
+        └── page.tsx
+```
+
+A URL could be:
+
+```text
+/blog/nextjs-metadata
+```
+
+You can use the `slug` to generate metadata.
+
+```tsx
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const post = await getPost(slug);
+
+  return {
+    title: post.title,
+    description: post.description,
+  };
+}
+```
+
+So different blog posts get different metadata.
+
+---
+
+# 5. Open Graph Metadata
+
+Metadata isn't limited to SEO.
+
+You can control how your page appears when someone shares it on platforms that use Open Graph metadata.
+
+```tsx
+export const metadata: Metadata = {
+  title: "Next.js Course",
+  description: "Learn Next.js from scratch",
+
+  openGraph: {
+    title: "Next.js Course",
+    description: "Learn Next.js from scratch",
+    images: ["/course-image.png"],
+  },
+};
+```
+
+This can generate metadata such as:
+
+```html
+<meta property="og:title" ... />
+<meta property="og:description" ... />
+<meta property="og:image" ... />
+```
+
+The result is useful for link previews.
+
+---
+
+# 6. Twitter/X Metadata
+
+You can also configure Twitter/X cards:
+
+```tsx
+export const metadata: Metadata = {
+  title: "Next.js Course",
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Next.js Course",
+    description: "Learn Next.js from scratch",
+    images: ["/course-image.png"],
+  },
+};
+```
+
+---
+
+# 7. Favicons and Icons
+
+Metadata can also define icons.
+
+```tsx
+export const metadata: Metadata = {
+  title: "My App",
+
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+```
+
+However, Next.js also has special file conventions such as:
+
+```text
+app/
+├── favicon.ico
+├── icon.png
+└── apple-icon.png
+```
+
+Next.js can automatically use these files.
+
+---
+
+# 8. Metadata in Layouts
+
+Metadata can be defined in a `layout.tsx`.
+
+For example:
+
+```text
+app/
+├── layout.tsx
+├── page.tsx
+└── dashboard/
+    ├── layout.tsx
+    └── page.tsx
+```
+
+Root layout:
+
+```tsx
+export const metadata: Metadata = {
+  title: "My App",
+  description: "My application",
+};
+```
+
+Then the dashboard layout can define additional metadata:
+
+```tsx
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
+```
+
+Next.js handles metadata from the layout/page hierarchy and resolves it for the current route.
+
+---
+
+# 9. Metadata Templates
+
+This becomes particularly useful for larger applications.
+
+You might want:
+
+```text
+Home | MyApp
+Dashboard | MyApp
+Settings | MyApp
+Profile | MyApp
+```
+
+Instead of repeating `" | MyApp"` everywhere:
+
+```tsx
+export const metadata: Metadata = {
+  title: {
+    default: "MyApp",
+    template: "%s | MyApp",
+  },
+};
+```
+
+Then:
+
+```tsx
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
+```
+
+results in:
+
+```text
+Dashboard | MyApp
+```
+
+This is a very useful real-world pattern.
+
+---
+
+# 10. Static vs Dynamic Metadata
+
+Think of it like this:
+
+| Situation                         | Use                               |
+| --------------------------------- | --------------------------------- |
+| Same title everywhere             | `metadata`                        |
+| Fixed page title                  | `metadata`                        |
+| Product title comes from database | `generateMetadata()`              |
+| Blog title comes from database    | `generateMetadata()`              |
+| Metadata depends on `[slug]`      | `generateMetadata()`              |
+| Metadata depends on `[id]`        | `generateMetadata()`              |
+| Open Graph information            | `metadata` / `generateMetadata()` |
+| Site-wide title template          | `metadata` in layout              |
+
+---
+
+# 11. Important: Metadata Is Server-Side
+
+Metadata APIs belong to the Server Component side of Next.js.
+
+You generally shouldn't do this:
+
+```tsx
+"use client";
+
+export const metadata = {
+  title: "Dashboard",
+};
+```
+
+Metadata exports aren't supported from Client Components.
+
+Instead, keep metadata in a Server Component such as:
+
+```text
+page.tsx
+layout.tsx
+```
+
+without `"use client"`.
+
+If you need interactive UI, you can keep the page/layout server-side and render a separate Client Component inside it.
+
+---
+
+# 12. A Real Example
+
+Imagine an ecommerce application:
+
+```text
+app/
+└── products/
+    └── [id]/
+        └── page.tsx
+```
+
+You could have:
+
+```tsx
+import type { Metadata } from "next";
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+async function getProduct(id: string) {
+  const res = await fetch(
+    `https://api.example.com/products/${id}`
+  );
+
+  return res.json();
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+
+  return {
+    title: product.name,
+    description: product.description,
+
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: [product.image],
+    },
+  };
+}
+
+export default async function ProductPage({ params }: Props) {
+  const { id } = await params;
+  const product = await getProduct(id);
+
+  return (
+    <main>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+    </main>
+  );
+}
+```
+
+Now the page content and metadata are both generated from the product data.
+
+---
+
+## The key thing to remember
+
+Don't think of metadata as an SEO-only feature.
+
+Think of it as:
+
+```text
+Next.js Metadata API
+        │
+        ├── Browser title
+        ├── SEO description
+        ├── Open Graph previews
+        ├── Twitter/X cards
+        ├── Icons
+        └── Other document metadata
+```
+
+And the fundamental distinction is:
+
+```text
+Static information
+      ↓
+export const metadata
+
+Dynamic information
+      ↓
+generateMetadata()
+```
+
+For your Next.js learning roadmap, you do need this topic, but you don't need to memorize every metadata field. Focus on `metadata`, `generateMetadata()`, dynamic routes, metadata inheritance/templates, and Open Graph.
