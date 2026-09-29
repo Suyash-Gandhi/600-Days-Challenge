@@ -1,0 +1,1929 @@
+# CPU Registers — DEEP
+
+Registers are one of the most important CPU concepts for cybersecurity because they sit directly at the boundary between CPU execution, memory, operating systems, assembly, debugging, reverse engineering, and exploitation.
+
+For your cybersecurity path, the goal is not to memorize every register of every architecture. The goal is to understand what registers represent, how instructions manipulate them, how functions use them, and how attackers and defenders interact with them during program execution.
+
+I'll use x86-64 as the main example because it is extremely common in Linux, Windows, CTFs, reverse engineering, and vulnerability research. I'll point out architecture-specific details where necessary.
+
+---
+
+# 1. What is it?
+
+## Simple definition
+
+A CPU register is a very small, extremely fast storage location inside the CPU that holds information needed during instruction execution.
+
+Think of registers as the CPU's immediate workspace.
+
+For example:
+
+```asm
+MOV RAX, 10
+MOV RBX, 20
+ADD RAX, RBX
+```
+
+The CPU can work with:
+
+```text
+RAX = 10
+RBX = 20
+```
+
+and then:
+
+```text
+RAX = 30
+```
+
+without having to store every intermediate value in RAM.
+
+---
+
+## Why not just use RAM?
+
+Because the CPU needs extremely fast access to values it is actively processing.
+
+A simplified hierarchy is:
+
+```text
+                Fastest
+                  ↑
+             Registers
+                  │
+               L1 Cache
+                  │
+               L2 Cache
+                  │
+               L3 Cache
+                  │
+                 RAM
+                  │
+               Storage
+                  ↓
+                Slowest
+```
+
+Registers are extremely limited in number and size, but they are directly available to the CPU's instruction-execution machinery.
+
+---
+
+# The important mental model
+
+Think of a running program like this:
+
+```text
+                 CPU
+        ┌─────────────────────┐
+        │      Registers      │
+        │                     │
+        │ RAX = value         │
+        │ RBX = value         │
+        │ RSP = stack pointer │
+        │ RIP = next code     │
+        │ FLAGS = conditions  │
+        └──────────┬──────────┘
+                   │
+                   │ memory access
+                   ↓
+              Virtual Memory
+                   │
+          ┌────────┼────────┐
+          ↓        ↓        ↓
+        Code      Heap     Stack
+```
+
+The registers contain the current CPU state.
+
+This idea is extremely important.
+
+When a debugger shows:
+
+```text
+RAX = 0x1234
+RSP = 0x7fffffffe000
+RIP = 0x401156
+```
+
+it is essentially showing you part of the CPU's state at that moment.
+
+---
+
+# 2. Why does it exist?
+
+The CPU needs somewhere to keep:
+
+ values it is calculating
+ addresses it needs to access
+ the location of the next instruction
+ stack information
+ function arguments/return values
+ comparison results
+ control information
+
+Registers provide this extremely fast workspace.
+
+Without registers, the CPU would have to repeatedly interact with memory for many intermediate operations.
+
+---
+
+## Registers also provide architectural state
+
+Consider:
+
+```asm
+MOV RAX, 10
+ADD RAX, 5
+```
+
+After execution:
+
+```text
+RAX = 15
+```
+
+The register's value is now part of the CPU's architectural state.
+
+If a debugger pauses execution at this point, it can inspect `RAX` and see:
+
+```text
+15
+```
+
+This is one reason registers are so important in debugging and reverse engineering.
+
+---
+
+# 3. How does it work?
+
+Let's build the model progressively.
+
+---
+
+## Step 1 — Registers hold values
+
+Suppose:
+
+```asm
+MOV RAX, 42
+```
+
+After the instruction:
+
+```text
+RAX
+┌──────────────┐
+│      42      │
+└──────────────┘
+```
+
+Now:
+
+```asm
+ADD RAX, 8
+```
+
+Conceptually:
+
+```text
+RAX = RAX + 8
+```
+
+so:
+
+```text
+RAX = 50
+```
+
+---
+
+# Step 2 — Registers can hold addresses
+
+A register doesn't only contain numbers in the everyday sense.
+
+It can contain a memory address.
+
+For example:
+
+```asm
+MOV RAX, 0x7fffffffe000
+```
+
+Now:
+
+```text
+RAX = 0x7fffffffe000
+```
+
+This value can represent an address.
+
+Then:
+
+```asm
+MOV RBX, [RAX]
+```
+
+means approximately:
+
+```text
+RBX = memory[RAX]
+```
+
+So if:
+
+```text
+memory[0x7fffffffe000] = 0x42
+```
+
+then:
+
+```text
+RBX = 0x42
+```
+
+This distinction is fundamental:
+
+```text
+RAX = 0x7fffffffe000
+```
+
+means the register contains an address-like value.
+
+But:
+
+```asm
+MOV RBX, [RAX]
+```
+
+uses that value as an address and retrieves the memory contents.
+
+---
+
+# Step 3 — Some registers have specialized architectural roles
+
+Not all registers are simply interchangeable.
+
+x86-64 has several important categories.
+
+---
+
+# 4. Important concepts
+
+## MUST KNOW — x86-64 General-Purpose Registers
+
+The main general-purpose registers are:
+
+```text
+RAX
+RBX
+RCX
+RDX
+RSI
+RDI
+RBP
+RSP
+```
+
+There are also:
+
+```text
+R8
+R9
+R10
+R11
+R12
+R13
+R14
+R15
+```
+
+These registers can generally hold integer values, addresses, pointers, etc., although conventions assign particular roles in particular situations.
+
+---
+
+## 4.1 RAX
+
+`RAX` is the accumulator register historically, but in modern x86-64 it is a general-purpose register with several conventional uses.
+
+It is commonly used for:
+
+ arithmetic
+ temporary values
+ function return values
+ system-call numbers in Linux x86-64
+
+Example:
+
+```asm
+MOV RAX, 10
+ADD RAX, 20
+```
+
+Result:
+
+```text
+RAX = 30
+```
+
+### Function return value
+
+A common x86-64 calling convention uses `RAX` for a function's integer/pointer return value.
+
+For example:
+
+```c
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+A caller may find the returned result in:
+
+```text
+RAX
+```
+
+This is extremely useful when reverse engineering functions.
+
+---
+
+# 4.2 RBX
+
+`RBX` is a general-purpose register.
+
+Example:
+
+```asm
+MOV RBX, 100
+```
+
+For cybersecurity, the important thing isn't a special mathematical purpose.
+
+Instead, understand that `RBX` can contain:
+
+ data
+ pointers
+ intermediate values
+ values preserved across function calls according to the calling convention
+
+---
+
+# 4.3 RCX
+
+`RCX` is a general-purpose register.
+
+Its exact conventional role depends on the ABI/calling convention.
+
+On Windows x64, for example, it is commonly the first integer/pointer argument to a function.
+
+On System V AMD64 (common on Linux), it is instead the fourth integer/pointer argument.
+
+This is an important lesson:
+
+> A register's practical role depends not only on the CPU architecture, but also on the operating system/platform's ABI.
+
+---
+
+# 4.4 RDX
+
+`RDX` is another general-purpose register.
+
+Under the Linux/System V AMD64 calling convention, it commonly carries the third integer/pointer function argument.
+
+Example:
+
+```c
+foo(a, b, c);
+```
+
+Conceptually:
+
+```text
+RDI → a
+RSI → b
+RDX → c
+```
+
+We'll examine calling conventions shortly.
+
+---
+
+# 4.5 RSI and RDI
+
+These are extremely important when analyzing Linux x86-64 programs.
+
+Under the System V AMD64 ABI:
+
+```text
+RDI → 1st integer/pointer argument
+RSI → 2nd
+RDX → 3rd
+RCX → 4th
+R8  → 5th
+R9  → 6th
+```
+
+For example:
+
+```c
+foo(10, 20, 30);
+```
+
+might conceptually enter:
+
+```text
+RDI = 10
+RSI = 20
+RDX = 30
+```
+
+This is extremely useful in reverse engineering.
+
+---
+
+# 4.6 RBP — Base/Frame Pointer
+
+`RBP` is commonly associated with the current function's stack frame.
+
+A traditional function may look conceptually like:
+
+```asm
+push rbp
+mov  rbp, rsp
+```
+
+This creates a frame reference.
+
+Conceptually:
+
+```text
+             Stack
+
+Higher addresses
+┌─────────────────────┐
+│ function arguments  │
+├─────────────────────┤
+│ return address      │
+├─────────────────────┤ ← RBP
+│ saved RBP           │
+├─────────────────────┤
+│ local variables     │
+├─────────────────────┤ ← RSP
+└─────────────────────┘
+Lower addresses
+```
+
+However, modern compilers frequently omit the traditional frame pointer, freeing `RBP` for general use.
+
+Therefore:
+
+> Don't assume `RBP` always points to a stack frame.
+
+That's an important reverse-engineering misconception.
+
+---
+
+# 4.7 RSP — Stack Pointer
+
+`RSP` is one of the most important registers in exploitation.
+
+It points to the current top of the stack.
+
+For example:
+
+```text
+Stack
+┌────────────────┐
+│ data           │
+├────────────────┤
+│ return address │
+├────────────────┤ ← RSP
+│                │
+└────────────────┘
+```
+
+Instructions such as:
+
+```asm
+PUSH
+POP
+CALL
+RET
+```
+
+interact heavily with the stack and therefore affect `RSP`.
+
+For example:
+
+```asm
+PUSH RAX
+```
+
+conceptually:
+
+```text
+RSP decreases
+value of RAX is stored at [RSP]
+```
+
+And:
+
+```asm
+POP RBX
+```
+
+conceptually:
+
+```text
+RBX = [RSP]
+RSP increases
+```
+
+The exact byte amount depends on the operand size.
+
+---
+
+# 4.8 RIP — Instruction Pointer
+
+`RIP` tells the CPU where instruction execution is occurring/continues.
+
+Example:
+
+```text
+RIP = 0x401156
+```
+
+means execution is associated with that code address.
+
+Conceptually:
+
+```text
+Code:
+
+0x401150   MOV RAX, 1
+0x401153   ADD RAX, 2
+0x401156   RET
+             ↑
+            RIP
+```
+
+If control flow changes:
+
+```asm
+JMP 0x401200
+```
+
+the instruction pointer changes to the target.
+
+### Why security researchers care
+
+Control-flow attacks often ultimately involve manipulating where execution goes.
+
+If an attacker can influence a return address or an indirect branch target, they may influence the resulting instruction pointer.
+
+That is why `RIP` appears constantly in:
+
+ crash analysis
+ exploit development
+ debugger output
+ ROP
+ control-flow integrity research
+
+---
+
+# 4.9 RFLAGS
+
+`RFLAGS` contains status/control flags.
+
+Important flags include:
+
+| Flag | Meaning       |
+| ---- | ------------- |
+| `ZF` | Zero Flag     |
+| `CF` | Carry Flag    |
+| `SF` | Sign Flag     |
+| `OF` | Overflow Flag |
+
+Consider:
+
+```asm
+CMP RAX, RBX
+JE  equal
+```
+
+`CMP` affects flags.
+
+If:
+
+```text
+RAX == RBX
+```
+
+the Zero Flag is set.
+
+Then:
+
+```asm
+JE equal
+```
+
+checks the relevant condition and jumps.
+
+Conceptually:
+
+```text
+CMP
+ ↓
+Update RFLAGS
+ ↓
+JE checks condition
+ ↓
+Branch or don't branch
+```
+
+This is fundamental for understanding disassembly.
+
+---
+
+# 4.10 Register sizes
+
+x86-64 registers have multiple accessible portions.
+
+For example:
+
+```text
+64-bit:
+RAX
+│
+├── lower 32 bits → EAX
+│
+├── lower 16 bits → AX
+│
+├── high 8 bits of AX → AH
+└── low 8 bits of AX → AL
+```
+
+Diagram:
+
+```text
+RAX (64 bits)
+┌────────────────────────────────────────────────────────┐
+│                         RAX                            │
+└────────────────────────────────────────────────────────┘
+                         │
+                         ↓
+              EAX (lower 32 bits)
+              ┌────────────────────┐
+              │        EAX         │
+              └────────────────────┘
+                         │
+                         ↓
+                   AX (16 bits)
+                   ┌────────────┐
+                   │     AX     │
+                   └────────────┘
+                    ┌──────┬────┐
+                    │  AH  │ AL │
+                    └──────┴────┘
+```
+
+This matters when analyzing assembly.
+
+For example:
+
+```asm
+MOV EAX, 1
+```
+
+does more than simply modify the lower 32 bits: on x86-64, writing to a 32-bit general-purpose register zero-extends into the corresponding 64-bit register.
+
+So:
+
+```text
+Before:
+RAX = 0xFFFFFFFFFFFFFFFF
+
+MOV EAX, 1
+
+After:
+RAX = 0x0000000000000001
+```
+
+This is an important x86-64 detail for reverse engineering.
+
+---
+
+# 4.11 Register naming is architecture-specific
+
+Don't assume registers are universal.
+
+### x86-64
+
+```text
+RAX
+RBX
+RCX
+RDX
+RSP
+RBP
+RIP
+```
+
+### ARM64
+
+```text
+X0
+X1
+X2
+...
+X30
+SP
+PC
+```
+
+Therefore:
+
+```text
+x86-64 reverse engineering
+        ≠
+ARM64 reverse engineering
+```
+
+The fundamental ideas are similar, but the registers, instructions, ABI, and conventions differ.
+
+---
+
+# MUST KNOW — Calling conventions
+
+This is one of the most important register concepts for reverse engineering.
+
+A calling convention defines how functions exchange information.
+
+It determines things such as:
+
+ Where arguments are placed
+ Where return values go
+ Which registers a function must preserve
+ How the stack is used
+ Who handles certain cleanup responsibilities
+
+---
+
+## Linux x86-64 — System V AMD64
+
+For integer/pointer arguments, the first six are commonly passed in:
+
+```text
+1 → RDI
+2 → RSI
+3 → RDX
+4 → RCX
+5 → R8
+6 → R9
+```
+
+Return value:
+
+```text
+RAX
+```
+
+Example:
+
+```c
+long multiply(long a, long b) {
+    return a  b;
+}
+```
+
+Conceptually:
+
+```text
+Caller:
+
+RDI = a
+RSI = b
+
+CALL multiply
+
+Inside function:
+RDI → a
+RSI → b
+
+Result:
+RAX → ab
+```
+
+This lets you look at assembly and infer:
+
+> "This function is probably receiving these two values as arguments."
+
+That is a fundamental reverse-engineering skill.
+
+---
+
+# Windows x64 calling convention
+
+Windows x64 uses a different convention.
+
+The first four integer/pointer arguments commonly use:
+
+```text
+RCX
+RDX
+R8
+R9
+```
+
+Return value:
+
+```text
+RAX
+```
+
+So:
+
+```text
+Linux/System V:
+
+RDI
+RSI
+RDX
+RCX
+R8
+R9
+
+Windows x64:
+
+RCX
+RDX
+R8
+R9
+```
+
+This difference matters enormously when analyzing Windows malware versus Linux binaries.
+
+---
+
+# Register preservation
+
+Calling conventions also classify registers based on whether a function is expected to preserve their values.
+
+Conceptually:
+
+```text
+Caller-saved
+    ↓
+Function may overwrite them
+
+Callee-saved
+    ↓
+Function must preserve their values
+```
+
+For example, under System V AMD64:
+
+### Caller-saved
+
+Commonly:
+
+```text
+RAX
+RCX
+RDX
+RSI
+RDI
+R8-R11
+```
+
+A caller cannot assume these survive a function call.
+
+### Callee-saved
+
+Commonly:
+
+```text
+RBX
+RBP
+R12-R15
+```
+
+A function that modifies these must restore them before returning.
+
+This helps explain assembly such as:
+
+```asm
+push rbx
+...
+pop rbx
+```
+
+The function is preserving `RBX`.
+
+---
+
+# MUST KNOW — Registers and function execution
+
+Consider:
+
+```asm
+push rbp
+mov  rbp, rsp
+sub  rsp, 0x20
+```
+
+Conceptually:
+
+```text
+1. Save old RBP
+2. Make RBP reference current stack frame
+3. Reserve 32 bytes for local stack data
+```
+
+Then:
+
+```asm
+mov eax, 5
+```
+
+puts `5` into `EAX`.
+
+And:
+
+```asm
+leave
+ret
+```
+
+tears down the frame and returns.
+
+You should recognize the relationship:
+
+```text
+Function
+  │
+  ├── RSP → current stack position
+  ├── RBP → often stack-frame reference
+  ├── registers → arguments / temporaries
+  └── RIP → execution flow
+```
+
+---
+
+# GOOD TO KNOW — Special-purpose register categories
+
+There are more architectural registers than the ones discussed above.
+
+For example:
+
+ Segment registers
+ Control registers
+ Debug registers
+ Model-specific registers
+ SIMD/vector registers
+ Floating-point registers
+
+You should recognize these categories, but not memorize all of them yet.
+
+---
+
+# GOOD TO KNOW — SIMD registers
+
+x86-64 processors also have vector registers such as:
+
+```text
+XMM0–XMM15
+```
+
+and on systems supporting newer extensions:
+
+```text
+YMM
+ZMM
+```
+
+These can process multiple values simultaneously.
+
+They matter in:
+
+ cryptographic implementations
+ optimized code
+ malware
+ reverse engineering
+ compiler-generated code
+
+But they aren't necessary for understanding basic program control flow.
+
+---
+
+# OPTIONAL / ADVANCED — Control registers
+
+x86 CPUs have control registers such as:
+
+```text
+CR0
+CR2
+CR3
+CR4
+```
+
+These are primarily relevant to OS/kernel-level operation.
+
+For example, `CR3` is closely associated with the page-table root used for virtual memory translation.
+
+This becomes relevant to:
+
+ kernel exploitation
+ hypervisors
+ memory forensics
+ OS internals
+
+At your current stage, recognize these names but don't memorize their bit-level layouts.
+
+---
+
+# OPTIONAL / ADVANCED — Debug registers
+
+x86 also has debug registers such as:
+
+```text
+DR0
+DR1
+DR2
+DR3
+DR6
+DR7
+```
+
+They support hardware-assisted debugging mechanisms such as hardware breakpoints.
+
+These can become relevant to:
+
+ malware anti-debugging
+ kernel debugging
+ exploit research
+ debugger internals
+
+Not required for normal reverse engineering yet.
+
+---
+
+# 5. Practical example
+
+Let's examine a real-looking Linux x86-64 function.
+
+Suppose C code is:
+
+```c
+long add(long a, long b)
+{
+    return a + b;
+}
+```
+
+A compiler might produce something similar to:
+
+```asm
+add:
+    lea    rax, [rdi + rsi]
+    ret
+```
+
+Let's understand it.
+
+---
+
+## Line 1
+
+```asm
+lea rax, [rdi + rsi]
+```
+
+Under System V AMD64:
+
+```text
+RDI = first argument
+RSI = second argument
+```
+
+Therefore:
+
+```text
+RDI = a
+RSI = b
+```
+
+The instruction calculates:
+
+```text
+RDI + RSI
+```
+
+and places the result in:
+
+```text
+RAX
+```
+
+So:
+
+```text
+RAX = a + b
+```
+
+---
+
+## Line 2
+
+```asm
+ret
+```
+
+The function returns.
+
+The caller expects the result in:
+
+```text
+RAX
+```
+
+So the function has effectively implemented:
+
+```c
+return a + b;
+```
+
+### Reverse-engineering interpretation
+
+Seeing:
+
+```asm
+lea rax, [rdi + rsi]
+ret
+```
+
+you can infer:
+
+```text
+2 arguments
+    ↓
+RDI, RSI
+
+result
+    ↓
+RAX
+```
+
+This is exactly the kind of reasoning you will perform when reverse engineering binaries.
+
+---
+
+# Practical example 2 — Stack and RSP
+
+Consider:
+
+```asm
+push rbx
+sub  rsp, 0x20
+```
+
+### `push rbx`
+
+Conceptually:
+
+```text
+RSP decreases
+RBX value → [RSP]
+```
+
+So:
+
+```text
+Before:
+
+RSP → existing stack
+
+After:
+
+RSP → saved RBX
+```
+
+### `sub rsp, 0x20`
+
+This reserves additional stack space.
+
+```text
+RSP = RSP - 0x20
+```
+
+The function now has room for local data.
+
+Simplified:
+
+```text
+Higher addresses
+┌─────────────────┐
+│ saved data      │
+├─────────────────┤
+│ saved RBX       │
+├─────────────────┤
+│ local storage   │
+│                 │
+│ 0x20 bytes      │
+└─────────────────┘ ← RSP
+Lower addresses
+```
+
+This relationship between `RSP` and stack memory is essential when analyzing stack corruption.
+
+---
+
+# Practical example 3 — Debugging
+
+Suppose GDB stops at:
+
+```text
+RIP = 0x40117a
+RSP = 0x7fffffffe120
+RBP = 0x7fffffffe150
+RAX = 0x0
+RDI = 0x7fffffffe180
+```
+
+You can immediately form hypotheses:
+
+```text
+RIP → current code location
+RSP → current stack position
+RBP → possible frame reference
+RAX → currently zero
+RDI → likely first function argument under System V ABI
+```
+
+This is much more useful than simply memorizing register names.
+
+---
+
+# 6. Cybersecurity connection
+
+This is where registers become extremely important.
+
+---
+
+## 6.1 Operating systems
+
+The OS needs to save and restore register state when switching between processes or threads.
+
+Imagine:
+
+```text
+Process A
+RAX = 100
+RIP = 0x401000
+RSP = 0x7fff...
+```
+
+The OS switches to Process B.
+
+It must preserve enough CPU state so Process A can later continue as if it was never interrupted.
+
+Conceptually:
+
+```text
+Process A
+   ↓
+save CPU state
+   ↓
+Process B
+   ↓
+run
+   ↓
+restore Process A state
+   ↓
+continue
+```
+
+This is part of context switching.
+
+---
+
+# 6.2 Linux
+
+When working with Linux debuggers, you'll frequently inspect registers.
+
+For example, in GDB:
+
+```bash
+info registers
+```
+
+may show:
+
+```text
+rax
+rbx
+rcx
+rdx
+rsi
+rdi
+rbp
+rsp
+rip
+eflags
+```
+
+This gives you a snapshot of the CPU state.
+
+For reverse engineering and exploit development, this is extremely useful.
+
+---
+
+# 6.3 Processes and memory
+
+Registers connect CPU execution with process memory.
+
+For example:
+
+```text
+RIP
+ ↓
+code address
+ ↓
+instruction
+
+RSP
+ ↓
+stack address
+ ↓
+stack data
+
+RDI
+ ↓
+pointer/value
+ ↓
+function argument
+```
+
+This lets you move between:
+
+```text
+register state
+      ↕
+memory state
+      ↕
+program behavior
+```
+
+That is one of the fundamental skills of debugging.
+
+---
+
+# 6.4 System calls
+
+Registers are heavily involved in low-level system-call interfaces.
+
+For Linux x86-64, the system-call number is conventionally placed in:
+
+```text
+RAX
+```
+
+and arguments are passed using registers such as:
+
+```text
+RDI
+RSI
+RDX
+R10
+R8
+R9
+```
+
+Then the `syscall` instruction transfers control to the kernel.
+
+Conceptually:
+
+```text
+User program
+
+RAX = syscall number
+RDI = argument 1
+RSI = argument 2
+RDX = argument 3
+...
+
+       ↓
+
+syscall
+
+       ↓
+
+Kernel
+```
+
+This is highly relevant to:
+
+ shellcode analysis
+ malware analysis
+ syscall tracing
+ exploit development
+ Linux internals
+
+---
+
+# 6.5 Vulnerabilities and exploitation
+
+Registers are directly involved in many memory-corruption vulnerabilities.
+
+Consider a stack overflow.
+
+An attacker may corrupt:
+
+```text
+local buffer
+     ↓
+saved stack data
+     ↓
+return address
+```
+
+When:
+
+```asm
+RET
+```
+
+executes, the CPU retrieves a return address from the stack and changes control flow.
+
+The resulting execution location is reflected through:
+
+```text
+RIP
+```
+
+So a simplified exploitation chain is:
+
+```text
+Memory corruption
+       ↓
+Control data overwritten
+       ↓
+RET / indirect branch
+       ↓
+RIP influenced
+       ↓
+Control-flow redirection
+```
+
+This is one reason understanding `RSP` and `RIP` is fundamental to vulnerability research.
+
+---
+
+# 6.6 ROP
+
+Return-Oriented Programming (ROP) is particularly register-oriented.
+
+An attacker can chain short instruction sequences called gadgets.
+
+For example, a gadget might conceptually be:
+
+```asm
+pop rdi
+ret
+```
+
+This allows a value from the stack to be loaded into:
+
+```text
+RDI
+```
+
+followed by another return.
+
+A chain can therefore manipulate registers and control flow:
+
+```text
+Stack
+ │
+ ├── gadget address
+ ├── value for RDI
+ ├── next gadget
+ ├── another value
+ └── ...
+```
+
+Understanding:
+
+```text
+RSP
+RIP
+RDI
+RSI
+RDX
+RAX
+```
+
+becomes essential for understanding ROP.
+
+---
+
+# 6.7 Reverse engineering
+
+Registers are one of the main clues used to reconstruct program behavior.
+
+Suppose you see:
+
+```asm
+mov rdi, rax
+call 0x401050
+```
+
+You can reason:
+
+```text
+RAX's value
+     ↓
+moved into RDI
+     ↓
+passed as first argument
+     ↓
+function called
+```
+
+You can therefore trace data through the program.
+
+This is called data-flow analysis at a conceptual level.
+
+---
+
+# 6.8 Malware analysis
+
+Malware frequently performs operations such as:
+
+```text
+load address
+modify memory
+call function
+check result
+branch
+```
+
+These operations are reflected through registers.
+
+For example:
+
+```asm
+mov rax, [rbx]
+test rax, rax
+je   ...
+```
+
+An analyst can reason:
+
+```text
+Load memory referenced by RBX
+        ↓
+Put result in RAX
+        ↓
+Check whether result is zero
+        ↓
+Branch
+```
+
+This helps reconstruct malware behavior.
+
+---
+
+# 6.9 Privilege escalation
+
+Registers participate in the transition between user and kernel execution.
+
+At a high level:
+
+```text
+User process
+     ↓
+system call / exception
+     ↓
+kernel execution
+```
+
+The kernel must preserve and manage CPU state appropriately when handling these transitions.
+
+In kernel exploitation, manipulating CPU state can become a direct part of exploiting vulnerabilities.
+
+---
+
+# 6.10 Defensive security
+
+Registers also matter for defenses.
+
+Security tools can inspect:
+
+ instruction pointer
+ stack pointer
+ control flow
+ register state
+ exception state
+
+Debuggers, crash handlers, EDR systems, and forensic tools may use CPU state when investigating suspicious behavior or crashes.
+
+For example, a crash report might tell an analyst:
+
+```text
+RIP = 0x4141414141414141
+```
+
+That is immediately suspicious because `RIP` contains a recognizable attacker-controlled pattern rather than a normal code address.
+
+---
+
+# 7. Common mistakes and misconceptions
+
+## 1. "Every register has one fixed purpose."
+
+Not exactly.
+
+General-purpose registers can perform many roles.
+
+Their conventional purpose often comes from:
+
+ CPU architecture
+ ABI
+ calling convention
+ compiler behavior
+
+For example, `RDI` is not physically "the first argument register." The calling convention gives it that role.
+
+---
+
+## 2. "RBP always points to the stack frame."
+
+No.
+
+Modern compilers can omit frame pointers.
+
+Therefore:
+
+```text
+RBP ≠ guaranteed frame pointer
+```
+
+It can be used as a general-purpose register.
+
+---
+
+## 3. "RSP contains the stack."
+
+No.
+
+`RSP` contains an address associated with the current stack position.
+
+The actual stack data is in memory.
+
+```text
+RSP
+ ↓
+address
+ ↓
+stack memory
+```
+
+---
+
+## 4. "RIP contains the instruction itself."
+
+No.
+
+`RIP` contains an address associated with the instruction being executed/next instruction location, not the instruction bytes themselves.
+
+---
+
+## 5. "Registers are just very small RAM."
+
+This is a useful beginner analogy, but technically they are part of the CPU's architectural state and have specific architectural semantics.
+
+Don't treat registers as an interchangeable memory array.
+
+---
+
+## 6. "RAX always contains the return value."
+
+Not always.
+
+That's true for many integer/pointer return values under common x86-64 ABIs.
+
+Floating-point/vector returns may use other registers.
+
+Architecture and calling convention matter.
+
+---
+
+## 7. "The same register means the same thing on every OS."
+
+Not necessarily.
+
+For example:
+
+```text
+Linux x86-64:
+RDI → first integer/pointer argument
+
+Windows x64:
+RCX → first integer/pointer argument
+```
+
+The CPU architecture is the same, but the ABI differs.
+
+---
+
+## 8. "64-bit means every value is 64 bits."
+
+No.
+
+A 64-bit CPU can manipulate:
+
+```text
+8-bit
+16-bit
+32-bit
+64-bit
+```
+
+values depending on the instruction.
+
+Pointers are commonly 64-bit in x86-64 software, but the architecture has many different operand sizes.
+
+---
+
+# 8. What I should be able to do after learning this
+
+At DEEP cybersecurity depth, you should be able to:
+
+### Core understanding
+
+ [ ] Explain what CPU registers are.
+ [ ] Explain why registers exist.
+ [ ] Explain registers as part of CPU architectural state.
+ [ ] Distinguish registers from RAM/cache.
+ [ ] Explain how registers hold both values and addresses.
+
+### x86-64
+
+ [ ] Identify `RAX`, `RBX`, `RCX`, `RDX`.
+ [ ] Identify `RSI`, `RDI`.
+ [ ] Identify `RSP`, `RBP`, `RIP`.
+ [ ] Explain `RFLAGS`.
+ [ ] Understand `ZF`, `CF`, `SF`, and `OF` at a practical level.
+ [ ] Understand 64/32/16/8-bit register portions such as `RAX/EAX/AX/AL`.
+ [ ] Understand the effect of writing to a 32-bit register such as `EAX`.
+
+### Functions
+
+ [ ] Explain what a calling convention is.
+ [ ] Know the Linux/System V AMD64 argument registers.
+ [ ] Know the Windows x64 argument registers.
+ [ ] Understand where common integer/pointer return values are placed.
+ [ ] Understand caller-saved vs callee-saved registers.
+ [ ] Recognize common function prologues and epilogues.
+ [ ] Understand the relationship between `RSP`, `RBP`, and stack frames.
+
+### Debugging/reverse engineering
+
+ [ ] Read a debugger register dump.
+ [ ] Use register values to infer program behavior.
+ [ ] Follow values between registers and memory.
+ [ ] Recognize registers being used for function arguments.
+ [ ] Identify likely return values.
+ [ ] Understand how `CMP`/`TEST` affect conditional branches.
+ [ ] Understand how `RIP` represents control flow.
+
+### Security
+
+ [ ] Explain why `RIP` matters in control-flow attacks.
+ [ ] Explain why `RSP` matters in stack corruption.
+ [ ] Understand the register component of ROP.
+ [ ] Understand registers' role in Linux system calls.
+ [ ] Understand why register state is useful during crash analysis.
+ [ ] Understand why architecture and ABI must be considered during binary analysis.
+ [ ] Recognize how registers help reconstruct malware behavior.
+
+If you can do these things, you have a strong register foundation for reverse engineering and vulnerability research.
+
+---
+
+# 9. Short recap
+
+1. Registers are extremely fast storage locations inside the CPU.
+2. They form an important part of the CPU's architectural state.
+3. Registers can contain values, addresses, pointers, and execution state.
+4. `RAX` is commonly used for calculations and return values.
+5. `RDI`, `RSI`, `RDX`, etc. are commonly used for function arguments according to the ABI.
+6. `RSP` tracks the stack; `RBP` may reference a stack frame; `RIP` controls instruction flow.
+7. `RFLAGS` stores condition/status information used by instructions such as `CMP` and `TEST`.
+8. Calling conventions determine how registers are used when functions communicate.
+9. Register state is fundamental to debugging, reverse engineering, malware analysis, system calls, and exploitation.
+10. In exploitation, RSP + RIP + argument registers are especially important because they connect memory corruption to control-flow manipulation.
+
+---
+
+# 10. Knowledge check
+
+Try answering these without looking back.
+
+### Conceptual
+
+1. Why does a CPU need registers when it already has RAM?
+
+2. What is the difference between the value:
+
+```text
+RAX = 0x7fffffffe000
+```
+
+and:
+
+```asm
+MOV RBX, [RAX]
+```
+
+?
+
+3. What is the difference between `RSP`, `RBP`, and `RIP`?
+
+---
+
+### Assembly
+
+4. After executing:
+
+```asm
+MOV RAX, 50
+MOV RBX, 20
+SUB RAX, RBX
+```
+
+what are the values of `RAX` and `RBX`?
+
+5. Under the Linux System V AMD64 calling convention, where would the first three integer arguments of:
+
+```c
+foo(a, b, c);
+```
+
+normally be placed?
+
+6. What is the purpose of:
+
+```asm
+CMP RAX, RBX
+JE somewhere
+```
+
+?
+
+---
+
+### Reverse engineering
+
+7. You see:
+
+```asm
+MOV RDI, RAX
+CALL 0x401050
+```
+
+What can you infer about the relationship between `RAX`, `RDI`, and the called function?
+
+8. A debugger reports:
+
+```text
+RIP = 0x4141414141414141
+RSP = 0x7fffffffe000
+```
+
+Why might the `RIP` value be particularly interesting when investigating a memory-corruption vulnerability?
+
+---
+
+### Security
+
+9. Explain the simplified chain:
+
+```text
+buffer overflow
+      ↓
+return address corruption
+      ↓
+RET
+      ↓
+RIP
+      ↓
+control-flow change
+```
+
+10. Why might the same compiled function use different argument registers when compiled for Linux x86-64 versus Windows x64?
+
+---
+

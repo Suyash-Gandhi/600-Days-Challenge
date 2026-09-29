@@ -1,0 +1,1672 @@
+# CPU Basics — Medium Depth for Cybersecurity
+
+CPU fundamentals are one of the foundations underneath operating systems, processes, memory, assembly, reverse engineering, malware analysis, and exploitation.
+
+You do not need to become a CPU designer. For cybersecurity, you mainly need to understand how a CPU executes instructions, uses registers, accesses memory, changes privilege levels, and interacts with the OS.
+
+---
+
+# 1. What is it?
+
+## Simple definition
+
+A CPU (Central Processing Unit) is the part of a computer that executes machine instructions.
+
+For example, when a program says:
+
+```c
+x = a + b;
+```
+
+the CPU eventually performs operations roughly equivalent to:
+
+```asm
+MOV  RAX, [a]
+ADD  RAX, [b]
+MOV  [x], RAX
+```
+
+The CPU does not understand C, Python, JavaScript, or even assembly directly.
+
+It ultimately executes machine-code instructions represented as binary data.
+
+### Core idea
+
+A simplified view is:
+
+```text
+Program
+   ↓
+Machine instructions
+   ↓
+CPU
+   ↓
+Registers ↔ Memory
+   ↓
+Result
+```
+
+The CPU repeatedly:
+
+1. Gets an instruction.
+2. Determines what the instruction means.
+3. Gets the required data.
+4. Performs the operation.
+5. Stores the result.
+6. Moves to the next instruction.
+
+This is commonly called the fetch → decode → execute cycle.
+
+---
+
+## Where CPU fits in computer architecture
+
+A simplified computer looks like:
+
+```text
+                  Computer
+                     │
+       ┌─────────────┼─────────────┐
+       ↓             ↓             ↓
+     CPU           RAM           Storage
+       │
+ ┌─────┼─────┐
+ ↓     ↓     ↓
+ALU  Registers Control
+```
+
+For cybersecurity, the most important relationships are:
+
+```text
+CPU
+ │
+ ├── Registers
+ │
+ ├── Instructions
+ │
+ ├── Memory access
+ │
+ ├── Privilege levels
+ │
+ └── Exceptions / system calls
+          │
+          ↓
+    Operating System
+          │
+          ↓
+      Applications
+```
+
+---
+
+# 2. Why does it exist?
+
+A computer needs something capable of executing instructions.
+
+Suppose you have:
+
+```c
+int a = 10;
+int b = 20;
+int c = a + b;
+```
+
+Something must actually perform:
+
+```text
+10 + 20
+```
+
+and place the result somewhere.
+
+That's the CPU's job.
+
+Without a CPU capable of executing instructions, RAM would simply contain data and instructions without anything actively processing them.
+
+---
+
+## Why does the OS care about the CPU?
+
+The operating system needs to control:
+
+ which program is currently running
+ where that program can access memory
+ which instructions it can execute
+ whether it is allowed to perform privileged operations
+ when another process gets CPU time
+
+Therefore, understanding the CPU helps you understand:
+
+```text
+Applications
+     ↓
+Processes
+     ↓
+CPU execution
+     ↓
+Memory
+     ↓
+Operating System
+```
+
+This becomes particularly important when studying:
+
+ process isolation
+ system calls
+ privilege escalation
+ buffer overflows
+ shellcode
+ debugging
+ reverse engineering
+ malware behavior
+
+---
+
+# 3. How does it work?
+
+Let's build the model from simple to technical.
+
+---
+
+## Step 1 — A program becomes machine instructions
+
+Consider:
+
+```c
+int x = 5;
+int y = 10;
+int z = x + y;
+```
+
+A compiler converts this into machine instructions.
+
+On an x86-64 system, you might encounter instructions conceptually like:
+
+```asm
+MOV EAX, 5
+ADD EAX, 10
+```
+
+The actual machine code is binary bytes.
+
+For example, a CPU may see something like:
+
+```text
+10111000 00000101 ...
+```
+
+The CPU doesn't see:
+
+```text
+MOV EAX, 5
+```
+
+That's assembly notation that humans use to represent machine instructions.
+
+---
+
+# Step 2 — Fetch
+
+The CPU needs to know:
+
+> "Where is the next instruction?"
+
+A special register called the instruction pointer stores the address of the next instruction to execute.
+
+On x86-64 this is called:
+
+```text
+RIP
+```
+
+So conceptually:
+
+```text
+RIP → address of next instruction
+```
+
+Example:
+
+```text
+Memory
+
+0x401000    MOV EAX, 5
+0x401005    ADD EAX, 10
+0x401008    RET
+             ↑
+            RIP
+```
+
+The CPU fetches the instruction located at the address in `RIP`.
+
+---
+
+# Step 3 — Decode
+
+The CPU determines what the instruction means.
+
+For example:
+
+```asm
+ADD RAX, RBX
+```
+
+means approximately:
+
+```text
+Take the value in RAX
++
+Take the value in RBX
+↓
+Put result into RAX
+```
+
+The CPU determines:
+
+ operation type
+ source operands
+ destination
+ addressing mode
+ required resources
+
+---
+
+# Step 4 — Execute
+
+The CPU performs the operation.
+
+For example:
+
+```asm
+MOV RAX, 10
+MOV RBX, 20
+ADD RAX, RBX
+```
+
+Conceptually:
+
+```text
+RAX = 10
+
+RBX = 20
+
+RAX = RAX + RBX
+
+RAX = 30
+```
+
+---
+
+# Step 5 — Update instruction pointer
+
+After executing the instruction, the CPU normally moves to the next instruction.
+
+Conceptually:
+
+```text
+RIP
+ ↓
+instruction 1
+ ↓
+instruction 2
+ ↓
+instruction 3
+ ↓
+...
+```
+
+However, instructions such as:
+
+```asm
+JMP
+CALL
+RET
+JE
+JNE
+```
+
+can change where execution continues.
+
+This is extremely important in reverse engineering.
+
+---
+
+# The basic execution model
+
+```text
+              ┌──────────────┐
+              │ Instruction  │
+              │    memory    │
+              └──────┬───────┘
+                     │
+                     ↓
+                  FETCH
+                     │
+                     ↓
+                  DECODE
+                     │
+                     ↓
+                  EXECUTE
+                     │
+                     ↓
+              Update registers
+              / memory / flags
+                     │
+                     ↓
+                Next instruction
+```
+
+Real modern CPUs are much more sophisticated than this simple sequential model, but this is the correct foundation.
+
+---
+
+# 4. Important concepts
+
+## MUST KNOW
+
+For your cybersecurity roadmap, these are essential.
+
+---
+
+## 4.1 CPU Registers
+
+Registers are small, extremely fast storage locations inside the CPU.
+
+They hold values the CPU is actively working with.
+
+On x86-64, important registers include:
+
+| Register | Purpose                                                   |
+| -------- | --------------------------------------------------------- |
+| `RAX`    | General-purpose register; commonly used for return values |
+| `RBX`    | General-purpose                                           |
+| `RCX`    | General-purpose; also used in various conventions         |
+| `RDX`    | General-purpose                                           |
+| `RSI`    | Often used for source/passed argument                     |
+| `RDI`    | Often used for destination/passed argument                |
+| `RSP`    | Stack pointer                                             |
+| `RBP`    | Base/frame pointer                                        |
+| `RIP`    | Instruction pointer                                       |
+| `RFLAGS` | CPU status/control flags                                  |
+
+Don't memorize every possible use yet.
+
+The most important ones for cybersecurity are:
+
+```text
+RIP     → where execution is going
+RSP     → top of the stack
+RBP     → stack frame reference
+RAX     → commonly used for values/results
+RDI/RSI/RDX/RCX → commonly involved in function arguments
+RFLAGS  → results of comparisons and other CPU conditions
+```
+
+---
+
+# 4.2 ALU
+
+ALU = Arithmetic Logic Unit
+
+It performs operations such as:
+
+```text
+Addition
+Subtraction
+AND
+OR
+XOR
+Comparison-related operations
+```
+
+For example:
+
+```asm
+ADD RAX, RBX
+```
+
+uses CPU arithmetic hardware to calculate the result.
+
+You don't need to study the transistor-level implementation.
+
+---
+
+# 4.3 Control Unit
+
+The CPU needs to coordinate execution.
+
+Conceptually, the control portion of the CPU determines:
+
+```text
+What instruction is this?
+What operation should happen?
+Which registers/memory locations are involved?
+```
+
+At your depth, you only need the conceptual role.
+
+---
+
+# 4.4 Instruction Set Architecture (ISA)
+
+This is very important.
+
+An ISA defines the interface between software and the CPU.
+
+It specifies things such as:
+
+ available instructions
+ registers
+ instruction formats
+ memory-access mechanisms
+ privilege-related behavior
+ exceptions
+
+Common ISAs include:
+
+```text
+x86-64
+ARM64 / AArch64
+RISC-V
+```
+
+For cybersecurity, you'll encounter:
+
+```text
+x86-64
+```
+
+very frequently on desktops and servers.
+
+ARM64 is increasingly important for:
+
+ smartphones
+ embedded devices
+ cloud systems
+ Apple systems
+ IoT
+
+---
+
+# 4.5 Instructions
+
+Instructions tell the CPU what to do.
+
+Examples:
+
+```asm
+MOV
+ADD
+SUB
+CMP
+TEST
+JMP
+CALL
+RET
+PUSH
+POP
+```
+
+You don't need to memorize hundreds of instructions immediately.
+
+Understand the major categories:
+
+| Category      | Examples                 | Purpose                |
+| ------------- | ------------------------ | ---------------------- |
+| Data movement | `MOV`, `PUSH`, `POP`     | Move data              |
+| Arithmetic    | `ADD`, `SUB`, `INC`      | Calculate              |
+| Logic         | `AND`, `OR`, `XOR`       | Bit operations         |
+| Comparison    | `CMP`, `TEST`            | Set condition flags    |
+| Control flow  | `JMP`, `JE`, `JNE`, `JG` | Change execution       |
+| Functions     | `CALL`, `RET`            | Function calls/returns |
+
+These become fundamental in reverse engineering.
+
+---
+
+# 4.6 Flags
+
+The CPU maintains status information in flags.
+
+For example:
+
+```asm
+CMP RAX, RBX
+JE  equal
+```
+
+`CMP` effectively performs a subtraction for comparison purposes and updates flags.
+
+Then:
+
+```asm
+JE
+```
+
+checks whether the values were equal.
+
+Conceptually:
+
+```text
+CMP RAX, RBX
+       ↓
+Update flags
+       ↓
+JE checks relevant flag
+       ↓
+Jump if equal
+```
+
+Important flags include:
+
+ Zero Flag (`ZF`)
+ Carry Flag (`CF`)
+ Sign Flag (`SF`)
+ Overflow Flag (`OF`)
+
+You don't need to memorize the electrical implementation.
+
+---
+
+# 4.7 Instruction Pointer
+
+The instruction pointer tells the CPU where execution continues.
+
+On x86-64:
+
+```text
+RIP
+```
+
+Example:
+
+```text
+0x401000: MOV EAX, 10
+0x401005: ADD EAX, 20
+0x401008: RET
+```
+
+If:
+
+```text
+RIP = 0x401005
+```
+
+the CPU executes:
+
+```asm
+ADD EAX, 20
+```
+
+This becomes extremely important for:
+
+ debugging
+ crashes
+ buffer overflows
+ control-flow hijacking
+ reverse engineering
+
+If an exploit changes the instruction pointer, it can potentially change what code the CPU executes next.
+
+---
+
+# 4.8 Stack Pointer
+
+`RSP` points to the current top of the stack.
+
+Simplified:
+
+```text
+Higher addresses
+┌──────────────┐
+│ stack data   │
+├──────────────┤
+│ return addr  │
+├──────────────┤ ← RSP
+│ local data   │
+└──────────────┘
+Lower addresses
+```
+
+The stack is heavily used for:
+
+ function calls
+ return addresses
+ local variables
+ saved registers
+
+This is why CPU fundamentals are directly connected to stack-based vulnerabilities.
+
+---
+
+# 4.9 Memory addressing
+
+The CPU needs to access RAM.
+
+An instruction can operate on:
+
+```asm
+MOV RAX, [0x401000]
+```
+
+The brackets mean:
+
+> Access the memory located at this address.
+
+Compare:
+
+```asm
+MOV RAX, 0x401000
+```
+
+with:
+
+```asm
+MOV RAX, [0x401000]
+```
+
+Conceptually:
+
+```text
+Without []:
+
+RAX = 0x401000
+
+With []:
+
+RAX = value stored at memory address 0x401000
+```
+
+This distinction is very important in assembly and reverse engineering.
+
+---
+
+# 4.10 CPU privilege levels
+
+This is one of the most important CPU concepts for cybersecurity.
+
+Modern CPUs provide mechanisms that allow software to execute with different privilege levels.
+
+Simplified:
+
+```text
+        HIGH PRIVILEGE
+        ┌─────────────┐
+        │     Kernel  │
+        └─────────────┘
+              ↑
+        privileged
+        operations
+              ↑
+        ┌─────────────┐
+        │ User Apps   │
+        └─────────────┘
+        LOW PRIVILEGE
+```
+
+On x86 systems, this is commonly discussed using rings.
+
+Typically:
+
+```text
+Ring 0 → Kernel
+Ring 3 → User applications
+```
+
+The OS runs important privileged code in a higher privilege level.
+
+Applications normally run with restricted privileges.
+
+This helps prevent:
+
+```text
+Browser
+   ↓
+directly controlling hardware
+   ↓
+destroying kernel memory
+   ↓
+compromising entire system
+```
+
+---
+
+# GOOD TO KNOW
+
+## 4.11 CPU cache
+
+CPU registers are extremely fast, but RAM is slower.
+
+Modern CPUs therefore use caches:
+
+```text
+Registers
+   ↓
+L1 Cache
+   ↓
+L2 Cache
+   ↓
+L3 Cache
+   ↓
+RAM
+```
+
+Caches store frequently accessed data closer to the CPU.
+
+For basic cybersecurity work, understand the hierarchy rather than its hardware implementation.
+
+### Security relevance
+
+CPU caches can sometimes leak information through side-channel attacks.
+
+Examples include attacks involving:
+
+ timing differences
+ cache state
+ speculative execution
+
+These are advanced topics, but understanding that CPU caches exist is useful.
+
+---
+
+# 4.12 CPU cores
+
+A modern CPU can contain multiple cores.
+
+For example:
+
+```text
+CPU
+├── Core 0
+├── Core 1
+├── Core 2
+└── Core 3
+```
+
+Each core can execute instructions independently.
+
+This is important for understanding:
+
+ processes
+ threads
+ concurrency
+ scheduling
+ race conditions
+
+Don't confuse:
+
+```text
+CPU
+```
+
+with:
+
+```text
+CPU core
+```
+
+A CPU may contain multiple cores.
+
+---
+
+# 4.13 Interrupts and exceptions
+
+The CPU sometimes needs to stop its current execution and handle an event.
+
+Examples:
+
+```text
+Hardware interrupt
+Software interrupt
+CPU exception
+```
+
+An exception could occur because of something such as:
+
+```text
+Divide by zero
+Invalid instruction
+Page fault
+```
+
+The OS provides handlers for many such events.
+
+This creates an important relationship:
+
+```text
+CPU event
+   ↓
+Exception/interrupt
+   ↓
+CPU transfers control
+   ↓
+OS handler
+   ↓
+OS decides what happens
+```
+
+This becomes important when studying:
+
+ operating systems
+ system calls
+ memory protection
+ debugging
+ exploitation
+
+---
+
+# OPTIONAL / ADVANCED
+
+You should recognize these terms now, but do not spend significant time on them yet.
+
+### CPU pipelining
+
+Multiple instruction stages can overlap.
+
+### Out-of-order execution
+
+The CPU may execute instructions internally in an order different from the program's apparent order, while maintaining the required architectural behavior.
+
+### Speculative execution
+
+The CPU may execute predicted paths before knowing whether they are actually needed.
+
+These concepts matter for advanced attacks such as:
+
+```text
+Spectre
+Meltdown
+```
+
+but are not required for basic reverse engineering or penetration testing.
+
+---
+
+# 5. Practical example
+
+Let's examine a tiny assembly sequence:
+
+```asm
+MOV RAX, 10
+MOV RBX, 20
+ADD RAX, RBX
+CMP RAX, 30
+JE  equal
+```
+
+---
+
+## Line 1
+
+```asm
+MOV RAX, 10
+```
+
+Put:
+
+```text
+10
+```
+
+into `RAX`.
+
+```text
+RAX = 10
+```
+
+---
+
+## Line 2
+
+```asm
+MOV RBX, 20
+```
+
+Now:
+
+```text
+RAX = 10
+RBX = 20
+```
+
+---
+
+## Line 3
+
+```asm
+ADD RAX, RBX
+```
+
+Equivalent conceptually to:
+
+```text
+RAX = RAX + RBX
+```
+
+Therefore:
+
+```text
+RAX = 30
+```
+
+---
+
+## Line 4
+
+```asm
+CMP RAX, 30
+```
+
+The CPU compares:
+
+```text
+30
+30
+```
+
+The comparison updates CPU flags.
+
+Because they are equal, the Zero Flag becomes set.
+
+---
+
+## Line 5
+
+```asm
+JE equal
+```
+
+`JE` means Jump if Equal.
+
+Because the comparison produced equality:
+
+```text
+execution → equal
+```
+
+---
+
+## Why this matters for reverse engineering
+
+Suppose you encounter:
+
+```asm
+CMP EAX, 0
+JE  success
+```
+
+while analyzing malware.
+
+You can interpret this as approximately:
+
+```c
+if (eax == 0) {
+    goto success;
+}
+```
+
+This ability to translate:
+
+```text
+assembly
+   ↓
+program logic
+```
+
+is fundamental to reverse engineering.
+
+---
+
+# A CPU + memory example
+
+Suppose:
+
+```text
+RAX = 0x1000
+```
+
+and memory contains:
+
+```text
+Address       Value
+
+0x1000        0x42
+0x1008        0x99
+```
+
+Then:
+
+```asm
+MOV RBX, RAX
+```
+
+produces:
+
+```text
+RBX = 0x1000
+```
+
+But:
+
+```asm
+MOV RBX, [RAX]
+```
+
+means:
+
+```text
+RBX = memory[RAX]
+```
+
+so:
+
+```text
+RBX = memory[0x1000]
+
+RBX = 0x42
+```
+
+This distinction between a value and an address containing a value is critical when analyzing memory corruption and binaries.
+
+---
+
+# 6. Cybersecurity connection
+
+This is where CPU basics become particularly valuable.
+
+---
+
+## 6.1 Operating systems
+
+The OS controls how applications use CPU resources.
+
+For example:
+
+```text
+Application
+    ↓
+CPU instructions
+    ↓
+Operating system
+    ↓
+Hardware
+```
+
+The OS schedules processes and threads onto CPU cores.
+
+It also manages transitions between user code and kernel code.
+
+---
+
+# 6.2 Linux
+
+When you execute:
+
+```bash
+./program
+```
+
+Linux creates a process and arranges for the CPU to execute that program's instructions.
+
+Conceptually:
+
+```text
+ELF executable
+     ↓
+Linux loader
+     ↓
+Virtual memory setup
+     ↓
+CPU begins execution
+     ↓
+RIP → program entry point
+```
+
+This connects CPU fundamentals directly to Linux process internals.
+
+---
+
+# 6.3 System calls
+
+An application sometimes needs the kernel to perform privileged operations.
+
+For example:
+
+```c
+read(fd, buffer, size);
+```
+
+The program eventually needs to transition from:
+
+```text
+User mode
+```
+
+to:
+
+```text
+Kernel mode
+```
+
+Conceptually:
+
+```text
+User program
+     │
+     │ system call
+     ↓
+CPU privilege transition
+     ↓
+Kernel
+     ↓
+Hardware/resource
+```
+
+Understanding CPU privilege levels makes system calls much easier to understand.
+
+---
+
+# 6.4 Processes and memory
+
+A process contains things such as:
+
+```text
+Code
+Data
+Heap
+Stack
+Shared libraries
+Virtual memory mappings
+```
+
+The CPU executes instructions from the process's code and accesses its memory.
+
+Simplified:
+
+```text
+Process virtual address space
+
+High addresses
+┌──────────────┐
+│    Stack     │
+├──────────────┤
+│              │
+│     ...      │
+│              │
+├──────────────┤
+│    Heap      │
+├──────────────┤
+│ Data         │
+├──────────────┤
+│ Code         │
+└──────────────┘
+Low addresses
+```
+
+CPU registers such as:
+
+```text
+RIP
+RSP
+RBP
+```
+
+help determine where execution and stack operations occur.
+
+---
+
+# 6.5 Vulnerabilities and exploitation
+
+This is one of the biggest reasons cybersecurity students need CPU fundamentals.
+
+Consider a buffer overflow.
+
+Conceptually:
+
+```text
+Before:
+
+Buffer
+┌───────────────┐
+│ user data     │
+└───────────────┘
+
+Return address
+┌───────────────┐
+│ legitimate    │
+└───────────────┘
+```
+
+If excessive input overwrites the return address:
+
+```text
+Buffer
+┌───────────────┐
+│ attacker data │
+└───────────────┘
+
+Return address
+┌───────────────┐
+│ modified      │
+└───────────────┘
+```
+
+When the function executes:
+
+```asm
+RET
+```
+
+the CPU obtains the return address from the stack.
+
+If that address has been corrupted, execution may be redirected.
+
+Therefore:
+
+```text
+Memory corruption
+       ↓
+Corrupt control data
+       ↓
+RET / indirect branch
+       ↓
+RIP changes
+       ↓
+Different code executes
+```
+
+That is why understanding `RIP`, `RSP`, stack memory, `CALL`, and `RET` is important for vulnerability research.
+
+---
+
+# 6.6 Reverse engineering
+
+When looking at a binary in tools such as:
+
+ Ghidra
+ IDA
+ x64dbg
+ GDB
+
+you will frequently see:
+
+```asm
+MOV
+CMP
+TEST
+JMP
+JE
+JNE
+CALL
+RET
+```
+
+You need to understand what these instructions cause the CPU to do.
+
+For example:
+
+```asm
+TEST EAX, EAX
+JNE  0x401200
+```
+
+can often correspond roughly to:
+
+```c
+if (EAX != 0) {
+    goto 0x401200;
+}
+```
+
+The goal of reverse engineering is often to reconstruct higher-level program behavior from these CPU instructions.
+
+---
+
+# 6.7 Malware analysis
+
+Malware is ultimately executed by a CPU.
+
+A malware analyst may investigate:
+
+```text
+What instructions execute?
+What functions are called?
+What memory is accessed?
+Where does control flow go?
+What APIs/system calls are invoked?
+Does the program modify executable memory?
+Does it inject code into another process?
+```
+
+Understanding CPU instructions and control flow therefore provides the foundation for understanding malicious binaries.
+
+---
+
+# 6.8 Binary analysis
+
+Executable files contain machine instructions.
+
+For example:
+
+```text
+ELF       → Linux
+PE        → Windows
+Mach-O    → macOS
+```
+
+The CPU architecture determines which instructions can be executed.
+
+A binary compiled for:
+
+```text
+x86-64
+```
+
+cannot simply be interpreted as an:
+
+```text
+ARM64
+```
+
+binary.
+
+This is why reverse engineers need to identify:
+
+```text
+OS
++
+architecture
++
+binary format
+```
+
+before analyzing an executable.
+
+---
+
+# 6.9 Privilege escalation
+
+Suppose an attacker compromises a user-level process.
+
+Initially:
+
+```text
+Attacker
+   ↓
+User process
+   ↓
+User privileges
+```
+
+They may attempt to exploit a vulnerability that crosses a security boundary:
+
+```text
+User mode
+   ↓
+vulnerability
+   ↓
+kernel/privileged component
+   ↓
+higher privileges
+```
+
+CPU privilege mechanisms are part of the technical foundation behind this boundary.
+
+---
+
+# 6.10 Defensive security
+
+CPU knowledge also helps defenders understand:
+
+ exploit mitigations
+ DEP/NX
+ ASLR
+ control-flow protection
+ stack canaries
+ memory permissions
+ sandboxing
+ CPU side channels
+
+For example, NX (No-eXecute) can prevent certain memory regions from being executed as code.
+
+This directly involves the relationship between:
+
+```text
+CPU
++
+virtual memory
++
+memory permissions
+```
+
+---
+
+# 7. Common mistakes and misconceptions
+
+## Mistake 1: CPU = RAM
+
+No.
+
+```text
+CPU → executes instructions
+RAM → stores currently needed instructions/data
+```
+
+They work together.
+
+---
+
+## Mistake 2: Registers are the same as RAM
+
+No.
+
+Registers are located inside the CPU and are much smaller and faster.
+
+```text
+CPU
+├── Registers
+└── execution hardware
+
+RAM
+└── much larger memory
+```
+
+---
+
+## Mistake 3: Assembly is what the CPU executes
+
+Strictly speaking, no.
+
+Assembly is a human-readable representation of machine instructions.
+
+```text
+Assembly
+   ↓ assembler
+Machine code
+   ↓
+CPU
+```
+
+---
+
+## Mistake 4: `MOV RAX, 0x1000` reads memory
+
+Not necessarily.
+
+It places the value:
+
+```text
+0x1000
+```
+
+into `RAX`.
+
+Whereas:
+
+```asm
+MOV RAX, [0x1000]
+```
+
+means to read memory at that address.
+
+---
+
+## Mistake 5: `RIP` contains the current instruction forever
+
+No.
+
+It represents the instruction address used for execution flow and changes as execution proceeds.
+
+Branches, calls, returns, exceptions, etc. can change it.
+
+---
+
+## Mistake 6: CPU executes an entire program at once
+
+No.
+
+It executes instructions as part of a continuous execution process.
+
+The simplified mental model is:
+
+```text
+fetch
+ ↓
+decode
+ ↓
+execute
+ ↓
+next instruction
+```
+
+Real CPUs internally perform much more sophisticated processing.
+
+---
+
+## Mistake 7: More CPU cores means one program automatically runs faster
+
+Not necessarily.
+
+A program must be capable of benefiting from parallel execution.
+
+Some workloads are largely sequential.
+
+---
+
+# 8. What I should be able to do after learning this
+
+At medium cybersecurity depth, you should be able to:
+
+### CPU fundamentals
+
+ [ ] Explain what a CPU does.
+ [ ] Explain the fetch/decode/execute model.
+ [ ] Explain what registers are.
+ [ ] Explain what the ALU does.
+ [ ] Explain what an ISA is.
+ [ ] Recognize x86-64 and ARM64 as CPU architectures.
+ [ ] Explain what an instruction is.
+
+### Registers
+
+ [ ] Explain `RAX`.
+ [ ] Explain `RSP`.
+ [ ] Explain `RBP`.
+ [ ] Explain `RIP`.
+ [ ] Explain `RFLAGS`.
+ [ ] Understand the general purpose of `RDI`, `RSI`, `RDX`, and `RCX`.
+
+### Assembly
+
+ [ ] Understand `MOV`.
+ [ ] Understand `ADD` and `SUB`.
+ [ ] Understand `CMP` and `TEST`.
+ [ ] Understand `JMP`, `JE`, `JNE`.
+ [ ] Understand `CALL` and `RET`.
+ [ ] Understand `PUSH` and `POP`.
+ [ ] Distinguish values from memory addresses.
+ [ ] Understand basic control flow.
+
+### Security
+
+ [ ] Explain the relationship between CPU, OS, and processes.
+ [ ] Explain user mode vs kernel mode conceptually.
+ [ ] Explain why `RIP` matters in exploitation.
+ [ ] Explain why `RSP` matters for stack-based vulnerabilities.
+ [ ] Understand why CPU knowledge is required for reverse engineering.
+ [ ] Understand why CPU architecture matters when analyzing binaries.
+ [ ] Understand the basic relationship between CPU privilege levels and privilege escalation.
+ [ ] Understand why CPU/memory behavior matters in malware analysis.
+
+You do not yet need to understand transistor-level CPU design, microcode implementation, branch predictor internals, or cache-coherence protocols.
+
+---
+
+# 9. Short recap
+
+1. CPU = component that executes machine instructions.
+2. Programs ultimately become machine instructions that the CPU executes.
+3. The simplified execution model is fetch → decode → execute.
+4. Registers are fast storage locations inside the CPU.
+5. `RIP` controls instruction execution flow; `RSP` points to the stack.
+6. Instructions such as `MOV`, `CMP`, `JMP`, `CALL`, and `RET` are fundamental for binary analysis.
+7. The ISA defines the instructions and architectural interface exposed to software.
+8. CPUs provide mechanisms for privilege separation, such as user and kernel execution.
+9. CPU + memory + OS knowledge forms the foundation for reverse engineering and exploitation.
+10. Advanced topics such as pipelining, speculative execution, and CPU side channels can be learned later.
+
+---
+
+# 10. Knowledge check
+
+Don't look for the answers yet—try these yourself.
+
+### Conceptual
+
+1. What is the fundamental job of a CPU?
+
+2. Explain the fetch → decode → execute cycle in your own words.
+
+3. What is the difference between a CPU register and RAM?
+
+4. What is the purpose of the instruction pointer (`RIP`)?
+
+5. Why is `RSP` particularly important when studying stack-based vulnerabilities?
+
+### Assembly
+
+6. What is the difference between:
+
+```asm
+MOV RAX, 0x1000
+```
+
+and:
+
+```asm
+MOV RAX, [0x1000]
+```
+
+7. What does this sequence approximately accomplish?
+
+```asm
+CMP RAX, RBX
+JE  equal
+```
+
+8. If a program executes:
+
+```asm
+MOV RAX, 10
+MOV RBX, 20
+ADD RAX, RBX
+```
+
+what is the final value of `RAX`?
+
+### Cybersecurity
+
+9. Why can corrupting a return address potentially affect `RIP` and therefore program control flow?
+
+10. Explain why understanding CPU instructions is necessary for reverse engineering a compiled binary.
+
