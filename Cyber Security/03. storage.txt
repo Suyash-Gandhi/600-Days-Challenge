@@ -1,0 +1,1543 @@
+# Storage — Cybersecurity Fundamentals
+Depth: Medium
+
+Before starting, place this topic in the bigger picture:
+
+```text
+Computer
+│
+├── CPU ─────────── Executes instructions
+├── RAM ─────────── Temporary working data
+├── Storage ─────── Persistent data
+│                   ├── SSD
+│                   ├── HDD
+│                   └── USB / external drives
+│
+└── Network ─────── Communication with other systems
+```
+
+A useful mental model is:
+
+> RAM is where the computer works right now. Storage is where the computer keeps things for later.
+
+---
+
+# 1. What is Storage?
+
+### Simple definition
+
+Storage is persistent hardware used to save data even when the computer is powered off.
+
+Examples:
+
+- SSD
+- HDD
+- USB flash drive
+- SD card
+- External hard drive
+
+When you save:
+
+```text
+document.pdf
+photo.jpg
+malware.exe
+/etc/passwd
+database.db
+```
+
+the data ultimately has to be stored somewhere persistently.
+
+### RAM vs Storage
+
+This distinction is extremely important.
+
+```text
+                 CPU
+                  │
+                  ▼
+                RAM
+          Temporary workspace
+                  │
+                  │ read/write
+                  ▼
+              Storage
+          Persistent data
+```
+
+For example, suppose you open:
+
+```text
+malware.exe
+```
+
+The file exists on storage.
+
+When you execute it, the operating system loads relevant parts into RAM, where the CPU can work with them.
+
+So:
+
+```text
+Storage
+   │
+   │ load
+   ▼
+ RAM
+   │
+   │ execute
+   ▼
+ CPU
+```
+
+When you shut down the computer:
+
+- RAM loses its normal contents.
+- Storage retains the files.
+
+---
+
+# 2. Why does Storage exist?
+
+Imagine a computer had only RAM.
+
+You could:
+
+```text
+create file
+      ↓
+keep it in RAM
+      ↓
+turn computer off
+      ↓
+everything disappears
+```
+
+That would make a computer practically useless for persistent work.
+
+Storage solves this problem.
+
+It allows the operating system to retain:
+
+- Operating-system files
+- Applications
+- Documents
+- Photos
+- Databases
+- Logs
+- Configuration files
+- User accounts
+- Executables
+- Malware
+- Forensic evidence
+
+even after shutdown.
+
+### Storage provides persistence
+
+This is the key concept:
+
+> Persistence means data survives beyond the lifetime of a running process or system session.
+
+This becomes particularly important in cybersecurity.
+
+For example, malware might write:
+
+```text
+malware.exe
+```
+
+to disk and configure the system so that it starts again after reboot.
+
+That is a persistence mechanism.
+
+---
+
+# 3. How does Storage work?
+
+We need to move through several layers.
+
+## Step 1 — Physical storage
+
+At the bottom is the physical device.
+
+For example:
+
+```text
+SSD
+│
+├── NAND flash memory
+│
+└── Controller
+```
+
+or:
+
+```text
+HDD
+│
+├── Magnetic platters
+├── Read/write heads
+└── Controller
+```
+
+You don't need to understand the electronics deeply at this level.
+
+The important point is:
+
+> Storage hardware ultimately stores bits.
+
+---
+
+# Step 2 — Storage is divided into blocks
+
+The operating system doesn't normally think:
+
+> "Give me this particular physical transistor."
+
+Instead, storage devices expose logical units of storage.
+
+Conceptually:
+
+```text
+Storage device
+
++--------+--------+--------+--------+
+| Block  | Block  | Block  | Block  |
+|   0    |   1    |   2    |   3    |
++--------+--------+--------+--------+
+| Block  | Block  | Block  | Block  |
+|   4    |   5    |   6    |   7    |
++--------+--------+--------+--------+
+```
+
+The operating system and filesystem work with these blocks.
+
+---
+
+# Step 3 — Partitioning
+
+A physical storage device can be divided into partitions.
+
+For example:
+
+```text
+1 TB SSD
+│
+├── EFI System Partition
+├── Windows/Linux system partition
+├── Recovery partition
+└── Other partition
+```
+
+On Linux you might see something like:
+
+```text
+/dev/nvme0n1
+├── /dev/nvme0n1p1
+├── /dev/nvme0n1p2
+└── /dev/nvme0n1p3
+```
+
+Here:
+
+```text
+/dev/nvme0n1
+```
+
+represents the storage device.
+
+The `p1`, `p2`, `p3` portions represent partitions.
+
+---
+
+# Step 4 — Filesystem
+
+Now comes a very important concept.
+
+The operating system needs a way to organize raw storage into files and directories.
+
+That's the job of a filesystem.
+
+Common filesystems include:
+
+### Linux
+
+```text
+ext4
+XFS
+Btrfs
+```
+
+### Windows
+
+```text
+NTFS
+FAT32
+exFAT
+```
+
+A filesystem provides a structure for:
+
+```text
+Files
+Directories
+File metadata
+Permissions
+Locations of file data
+Free space
+```
+
+Without a filesystem, storage would basically be a huge collection of raw blocks.
+
+---
+
+# Step 5 — Files and directories
+
+Suppose Linux has:
+
+```text
+/home/suyash/report.txt
+```
+
+Conceptually:
+
+```text
+Storage
+   │
+   └── Filesystem
+          │
+          └── home
+               │
+               └── suyash
+                    │
+                    └── report.txt
+```
+
+The filesystem maintains information that allows the OS to find the actual data belonging to `report.txt`.
+
+---
+
+# Step 6 — The OS interacts with storage
+
+Applications normally don't directly manipulate SSD hardware.
+
+Instead:
+
+```text
+Application
+     │
+     ▼
+System call
+     │
+     ▼
+Operating System
+     │
+     ▼
+Filesystem
+     │
+     ▼
+Storage driver
+     │
+     ▼
+Storage device
+```
+
+For example, a program might request:
+
+```text
+open("secret.txt")
+read(...)
+write(...)
+close(...)
+```
+
+The OS handles the underlying storage operations.
+
+This is where system calls become relevant to cybersecurity.
+
+---
+
+# 4. Important Concepts
+
+## MUST KNOW
+
+---
+
+## 4.1 HDD vs SSD
+
+### HDD
+
+Hard Disk Drive.
+
+Uses:
+
+```text
+magnetic platters
+```
+
+Data is stored magnetically.
+
+Simplified:
+
+```text
+       Read/write head
+             ↓
+    ┌──────────────────┐
+    │    platter       │
+    │   magnetic data  │
+    └──────────────────┘
+```
+
+Characteristics:
+
+- Mechanical
+- Generally slower
+- More sensitive to physical shock
+- Relatively inexpensive per GB
+
+---
+
+### SSD
+
+Solid State Drive.
+
+Uses flash memory rather than spinning magnetic platters.
+
+```text
+SSD
+│
+└── NAND flash
+```
+
+Characteristics:
+
+- No moving mechanical parts
+- Faster access
+- Lower latency
+- Generally more resistant to physical shock
+
+For cybersecurity, the important thing isn't memorizing hardware details.
+
+Understand that storage devices behave differently internally, which can affect things like:
+
+- forensic recovery
+- data deletion
+- performance
+- wear
+- evidence acquisition
+
+---
+
+# 4.2 Filesystem
+
+A filesystem organizes persistent data.
+
+For example:
+
+```text
+/
+├── bin
+├── etc
+├── home
+│   └── user
+│       ├── notes.txt
+│       └── malware
+├── tmp
+├── usr
+└── var
+```
+
+This is a Linux filesystem hierarchy.
+
+The filesystem handles things such as:
+
+- file names
+- directories
+- permissions
+- metadata
+- file locations
+- free space
+
+---
+
+# 4.3 File metadata
+
+A file isn't just its contents.
+
+For example:
+
+```text
+malware.exe
+```
+
+may have metadata such as:
+
+```text
+Name
+Size
+Owner
+Permissions
+Creation-related timestamps
+Modification time
+Access time
+Location
+```
+
+Linux:
+
+```bash
+ls -l malware.exe
+```
+
+might produce something conceptually like:
+
+```text
+-rwxr-xr--  user  user  15360  Oct 6 12:30 malware.exe
+```
+
+The metadata tells you things about the file beyond its contents.
+
+### Why cybersecurity cares
+
+During an investigation, metadata can help answer:
+
+> Who owns this file?
+
+> When was it modified?
+
+> What permissions does it have?
+
+> Where is it located?
+
+> Is it executable?
+
+---
+
+# 4.4 File permissions
+
+Linux files have permissions such as:
+
+```text
+r = read
+w = write
+x = execute
+```
+
+For example:
+
+```text
+-rwxr-xr--
+```
+
+Conceptually:
+
+```text
+Owner       Group       Others
+rwx         r-x         r--
+│           │           │
+│           │           └── read
+│           └────────────── read + execute
+└───────────────────────── read + write + execute
+```
+
+This is extremely important for cybersecurity.
+
+Example:
+
+```text
+-rwxr-xr-x
+```
+
+means the owner can:
+
+```text
+read
+write
+execute
+```
+
+while others can:
+
+```text
+read
+execute
+```
+
+Incorrect permissions can create security vulnerabilities.
+
+---
+
+# 4.5 Mounting
+
+A storage filesystem doesn't automatically become part of the Linux directory tree simply because the device exists.
+
+It can be mounted.
+
+For example:
+
+```bash
+mount /dev/sdb1 /mnt/usb
+```
+
+Conceptually:
+
+```text
+/dev/sdb1
+     │
+     ▼
+   mount
+     │
+     ▼
+   /mnt/usb
+```
+
+Now files on that filesystem become accessible through:
+
+```text
+/mnt/usb
+```
+
+This is a very important Linux concept.
+
+---
+
+# 4.6 Disk vs partition vs filesystem vs file
+
+These are easy to confuse.
+
+Think of them like this:
+
+```text
+Physical disk
+│
+├── Partition 1
+│      │
+│      └── Filesystem
+│             │
+│             ├── file A
+│             ├── file B
+│             └── directory
+│
+└── Partition 2
+       │
+       └── Filesystem
+```
+
+### Disk
+
+Physical storage device.
+
+### Partition
+
+A logical region of the disk.
+
+### Filesystem
+
+Structure used to organize data within a partition/storage area.
+
+### File
+
+Actual user/application data managed by the filesystem.
+
+---
+
+# 4.7 Disk space vs memory
+
+People often say:
+
+> "My computer has 16 GB memory."
+
+Technically, they may mean RAM.
+
+Storage might be:
+
+```text
+16 GB RAM
+512 GB SSD
+```
+
+These are completely different resources.
+
+```text
+RAM
+→ temporary working data
+
+Storage
+→ persistent data
+```
+
+---
+
+# 4.8 Storage I/O
+
+I/O means Input/Output.
+
+For storage:
+
+```text
+Read  → storage → RAM
+Write → RAM → storage
+```
+
+Example:
+
+```text
+Program
+   │
+   │ read file
+   ▼
+OS
+   │
+   ▼
+Filesystem
+   │
+   ▼
+Storage
+   │
+   ▼
+RAM
+   │
+   ▼
+Program
+```
+
+Storage I/O performance matters because storage is generally much slower than CPU operations and RAM access.
+
+---
+
+# 4.9 Caching and buffering
+
+The OS often doesn't immediately perform every operation directly against the physical storage device.
+
+It can use RAM to cache data.
+
+Example:
+
+```text
+Application
+     ↓
+OS
+     ↓
+RAM cache
+     ↓
+Storage
+```
+
+This improves performance.
+
+From a cybersecurity perspective, this also helps explain why:
+
+> Data being written to disk and data currently existing in memory are not necessarily identical at every moment.
+
+This becomes relevant during incident response and forensic analysis.
+
+---
+
+# 4.10 Encryption at rest
+
+Storage can be encrypted.
+
+For example:
+
+```text
+Normal storage:
+
+file → plaintext data → disk
+
+
+Encrypted storage:
+
+file → encryption → ciphertext → disk
+```
+
+If an attacker physically steals an encrypted drive, they ideally cannot simply read the stored files.
+
+Examples include:
+
+- BitLocker
+- LUKS
+- FileVault
+
+This is called encryption at rest.
+
+---
+
+# GOOD TO KNOW
+
+## 4.11 Journaling
+
+Some filesystems use journaling.
+
+Instead of immediately modifying filesystem structures without a record, the filesystem can maintain a journal describing intended changes.
+
+Simplified:
+
+```text
+Change requested
+      ↓
+Journal entry
+      ↓
+Filesystem update
+```
+
+If the system crashes during an operation, the filesystem can use the journal to help recover consistency.
+
+Examples:
+
+```text
+ext4
+NTFS
+```
+
+### Cybersecurity relevance
+
+Journals can sometimes provide useful forensic information about filesystem activity.
+
+---
+
+# 4.12 File descriptors
+
+When a process opens a file in Linux:
+
+```c
+open("secret.txt", ...);
+```
+
+the kernel gives the process a file descriptor.
+
+Conceptually:
+
+```text
+Process
+│
+├── fd 0 → stdin
+├── fd 1 → stdout
+├── fd 2 → stderr
+└── fd 3 → secret.txt
+```
+
+Then:
+
+```c
+read(3, buffer, size);
+```
+
+can read from that file.
+
+This connects storage directly to:
+
+- processes
+- system calls
+- OS internals
+
+and is important for cybersecurity.
+
+---
+
+# 4.13 Disk images
+
+A disk image is a file containing a representation/copy of storage contents.
+
+For example:
+
+```text
+physical disk
+      ↓
+forensic acquisition
+      ↓
+disk image
+      ↓
+analysis
+```
+
+Cybersecurity investigators can analyze the image without repeatedly modifying the original evidence.
+
+---
+
+# OPTIONAL / ADVANCED
+
+At your current cybersecurity stage, you don't need deep knowledge of:
+
+- NAND flash transistor physics
+- SSD controller firmware internals
+- Flash Translation Layers in detail
+- wear-leveling algorithms
+- magnetic recording physics
+- filesystem implementation source code
+- RAID controller internals
+
+You will encounter these later in digital forensics, vulnerability research, and hardware security.
+
+---
+
+# 5. Practical Example
+
+Let's use Linux because storage concepts become very visible there.
+
+## Step 1 — See your storage devices
+
+```bash
+lsblk
+```
+
+You might see:
+
+```text
+NAME        SIZE TYPE MOUNTPOINT
+nvme0n1     512G disk
+├─nvme0n1p1  512M part /boot/efi
+└─nvme0n1p2  511G part /
+```
+
+Interpretation:
+
+```text
+nvme0n1
+   │
+   ├── p1 → partition
+   │
+   └── p2 → partition
+             │
+             └── mounted at /
+```
+
+---
+
+## Step 2 — Check filesystem information
+
+```bash
+df -h
+```
+
+You might get:
+
+```text
+Filesystem      Size  Used Avail Use%
+/dev/nvme0n1p2  511G  120G  365G  25%
+```
+
+This tells you how much filesystem space is being used.
+
+---
+
+## Step 3 — Create a file
+
+```bash
+echo "hello" > test.txt
+```
+
+What happens conceptually?
+
+```text
+Shell
+ │
+ │ creates/writes file
+ ▼
+Operating System
+ │
+ ▼
+Filesystem
+ │
+ ▼
+Storage
+```
+
+The string:
+
+```text
+hello
+```
+
+is persisted in the filesystem.
+
+---
+
+## Step 4 — Read it
+
+```bash
+cat test.txt
+```
+
+Conceptually:
+
+```text
+Storage
+   ↓
+Filesystem
+   ↓
+Kernel
+   ↓
+Process memory
+   ↓
+Terminal
+```
+
+Output:
+
+```text
+hello
+```
+
+---
+
+## Step 5 — Inspect permissions
+
+```bash
+ls -l test.txt
+```
+
+Example:
+
+```text
+-rw-r--r-- 1 user user 6 Oct 6 14:00 test.txt
+```
+
+The important part:
+
+```text
+-rw-r--r--
+```
+
+means:
+
+```text
+Owner:  read + write
+Group:  read
+Others: read
+```
+
+This is storage interacting with the Linux security model.
+
+---
+
+# 6. Cybersecurity Connection
+
+This is where storage becomes particularly important.
+
+---
+
+## 6.1 Operating systems
+
+Operating systems depend heavily on storage.
+
+The OS itself is stored there:
+
+```text
+SSD
+ │
+ ├── Kernel
+ ├── System libraries
+ ├── Programs
+ ├── Configuration
+ └── User data
+```
+
+When the computer boots:
+
+```text
+Storage
+   ↓
+Bootloader
+   ↓
+Kernel
+   ↓
+Operating system
+   ↓
+Processes
+```
+
+Understanding storage therefore helps you understand the boot process.
+
+---
+
+# 6.2 Linux security
+
+Linux security heavily depends on filesystem concepts.
+
+For example:
+
+```text
+/etc/passwd
+/etc/shadow
+/home/user
+/tmp
+/var/log
+```
+
+Understanding:
+
+- ownership
+- permissions
+- mounts
+- paths
+- filesystems
+
+is essential for Linux security.
+
+---
+
+# 6.3 Privilege escalation
+
+Storage permissions can contribute directly to privilege escalation.
+
+Imagine:
+
+```text
+/root/script.sh
+```
+
+is supposed to be executed by root.
+
+But suppose an unprivileged user can modify it:
+
+```text
+root executes script
+        ↑
+        │
+attacker modifies script
+```
+
+Then:
+
+```text
+attacker
+   ↓
+modify privileged script
+   ↓
+root executes it
+   ↓
+attacker-controlled code runs as root
+```
+
+The vulnerability isn't necessarily in the CPU or network.
+
+It can simply be an incorrect filesystem permission.
+
+---
+
+# 6.4 Malware
+
+Malware frequently interacts with storage.
+
+For example:
+
+```text
+malware
+   │
+   ├── writes executable
+   ├── modifies configuration
+   ├── creates persistence mechanism
+   ├── deletes logs
+   └── stores stolen data
+```
+
+An analyst might investigate:
+
+```text
+What files did it create?
+What files did it modify?
+Where did it place them?
+What permissions did it use?
+What persistence mechanism did it create?
+```
+
+---
+
+# 6.5 Reverse engineering
+
+Suppose you obtain:
+
+```text
+malware.exe
+```
+
+from a compromised machine.
+
+You may inspect:
+
+```text
+file
+strings
+hash
+headers
+sections
+embedded files
+configuration
+```
+
+Storage is involved because the executable is initially a file on disk.
+
+You can then load it into tools such as:
+
+```text
+Ghidra
+IDA
+Binary Ninja
+```
+
+and analyze its binary structure.
+
+---
+
+# 6.6 Malware analysis: disk vs memory
+
+This distinction is very important.
+
+Suppose malware exists on disk:
+
+```text
+malware.exe
+```
+
+When executed:
+
+```text
+Disk
+ ↓
+RAM
+ ↓
+CPU
+```
+
+An attacker might:
+
+1. Store malware on disk.
+2. Execute it.
+3. Delete the original file.
+4. Keep malicious code running in memory.
+
+Now:
+
+```text
+Disk:
+malware.exe → deleted
+
+RAM:
+malicious process → still running
+```
+
+This is one reason cybersecurity professionals analyze both disk and memory.
+
+It also introduces the concept of fileless/in-memory techniques, which you'll encounter later.
+
+---
+
+# 6.7 Logs and defensive security
+
+Storage is extremely important for defenders because logs are usually persisted to disk.
+
+Linux:
+
+```text
+/var/log/
+```
+
+Windows has event logs.
+
+A defender may investigate:
+
+```text
+When did the attack happen?
+Which account was used?
+Which files changed?
+What processes were started?
+What IP addresses were contacted?
+```
+
+Persistent logs can provide evidence.
+
+Attackers may therefore attempt to:
+
+```text
+delete logs
+modify logs
+disable logging
+```
+
+which itself can become an indicator of compromise.
+
+---
+
+# 6.8 Digital forensics
+
+Storage is one of the primary sources of forensic evidence.
+
+An investigator may examine:
+
+```text
+files
+deleted files
+filesystem metadata
+logs
+browser data
+configuration
+executables
+documents
+timestamps
+```
+
+A forensic investigator may create:
+
+```text
+Disk
+ ↓
+Forensic image
+ ↓
+Hash verification
+ ↓
+Analysis
+```
+
+The goal is to preserve evidence while examining it.
+
+---
+
+# 6.9 System calls
+
+Storage interacts with the kernel through system calls.
+
+For example, Linux programs can use operations conceptually like:
+
+```text
+open()
+read()
+write()
+close()
+```
+
+So the chain is:
+
+```text
+Application
+     ↓
+System call
+     ↓
+Kernel
+     ↓
+Filesystem
+     ↓
+Storage
+```
+
+This is extremely useful when you later study:
+
+- malware behavior
+- sandboxing
+- exploitation
+- reverse engineering
+- Linux internals
+
+For example, a malware sample repeatedly calling:
+
+```text
+open()
+write()
+```
+
+may be creating or modifying files.
+
+---
+
+# 7. Common Mistakes and Misconceptions
+
+### ❌ "Storage and RAM are basically the same."
+
+No.
+
+```text
+RAM     → temporary working memory
+Storage → persistent data
+```
+
+---
+
+### ❌ "A file is physically stored as one continuous piece."
+
+Not necessarily.
+
+A file's data can be distributed across different storage blocks.
+
+The filesystem keeps track of where those pieces are.
+
+---
+
+### ❌ "Deleting a file immediately destroys its data."
+
+Not necessarily.
+
+Deleting a file usually means the filesystem marks its space as available for reuse.
+
+The underlying data may remain until overwritten or otherwise made inaccessible.
+
+However, SSD behavior makes recovery more complicated, partly because of mechanisms such as TRIM and internal flash management.
+
+---
+
+### ❌ "A partition is the same as a filesystem."
+
+No.
+
+```text
+Disk
+ ↓
+Partition
+ ↓
+Filesystem
+ ↓
+Files/directories
+```
+
+They are different layers.
+
+---
+
+### ❌ "If malware is deleted, it is completely gone."
+
+Not necessarily.
+
+It may still exist:
+
+- in memory
+- in backups
+- in logs
+- in other files
+- in forensic artifacts
+- in copies elsewhere
+
+---
+
+### ❌ "Read/write permissions only matter for normal users."
+
+No.
+
+Permissions can become security boundaries.
+
+A writable file executed by a privileged process can potentially become a privilege-escalation path.
+
+---
+
+# 8. What you should be able to do after learning this
+
+At Medium depth, you should be able to:
+
+### Storage fundamentals
+
+- [ ] Explain RAM vs storage.
+- [ ] Explain persistent storage.
+- [ ] Distinguish SSD and HDD at a high level.
+- [ ] Explain storage blocks.
+- [ ] Explain disk vs partition.
+- [ ] Explain what a filesystem does.
+- [ ] Explain file metadata.
+- [ ] Explain file permissions.
+
+### Linux
+
+- [ ] Understand `/dev/...` storage devices.
+- [ ] Understand partitions such as `/dev/sda1`.
+- [ ] Understand mounting.
+- [ ] Use `lsblk`.
+- [ ] Use `df`.
+- [ ] Understand basic filesystem hierarchy.
+- [ ] Read Linux permission strings such as `-rwxr-xr--`.
+
+### OS/security
+
+- [ ] Explain how an application accesses a file.
+- [ ] Understand the role of system calls.
+- [ ] Understand basic storage I/O.
+- [ ] Explain why permissions matter to privilege escalation.
+- [ ] Explain how malware interacts with files.
+- [ ] Understand disk vs memory during malware analysis.
+- [ ] Understand why storage matters to digital forensics.
+- [ ] Understand the basic idea of encryption at rest.
+
+---
+
+# 9. Short Recap
+
+Remember these 10 points:
+
+1. Storage provides persistent data storage.
+2. RAM is temporary; storage is persistent.
+3. SSDs and HDDs are common storage devices.
+4. Storage is exposed to the OS as logical blocks.
+5. A partition is a logical region of a storage device.
+6. A filesystem organizes storage into files and directories.
+7. Files have both data and metadata.
+8. Linux permissions control who can read, write, or execute files.
+9. Applications normally access storage through the OS/kernel and system calls.
+10. Cybersecurity uses storage knowledge for Linux security, malware analysis, privilege escalation, incident response, and digital forensics.
+
+The most important mental model is:
+
+```text
+                APPLICATION
+                     │
+                     ▼
+                SYSTEM CALL
+                     │
+                     ▼
+                   KERNEL
+                     │
+                     ▼
+                 FILESYSTEM
+                     │
+                     ▼
+                  PARTITION
+                     │
+                     ▼
+                  STORAGE
+```
+
+And when a program runs:
+
+```text
+Executable on storage
+        │
+        │ load
+        ▼
+       RAM
+        │
+        │ execute
+        ▼
+       CPU
+```
+
+---
+
+# 10. Knowledge Check
+
+Don't look for the answers yet. Try explaining these yourself.
+
+### Conceptual
+
+1. What is the fundamental difference between RAM and storage?
+
+2. What is the difference between a physical disk, partition, filesystem, and file?
+
+3. Why does an operating system need a filesystem?
+
+4. What happens conceptually when a program reads a file from an SSD?
+
+5. What does mounting mean in Linux?
+
+### Cybersecurity
+
+6. How could incorrect file permissions lead to privilege escalation?
+
+7. A malware executable is deleted from disk, but the malware process is still running. How is this possible?
+
+8. Why would a forensic investigator create a disk image instead of simply working directly on the original disk?
+
+9. Why might an attacker want to delete or modify system logs?
+
+10. Explain the complete path of this operation:
+
+```text
+malware → create file → filesystem → storage
+```
+
+Try to describe what happens at each layer.
+
+---

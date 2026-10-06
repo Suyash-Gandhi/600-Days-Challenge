@@ -746,9 +746,3 @@ potential security vulnerability
 This is the foundation.
 
 Don't study page tables, MMUs, TLBs, ASLR, or advanced memory exploitation yet. Once this basic model is comfortable, those concepts will become much easier.
-
-### Next prerequisite
-None. You now have enough to continue.
-
-### Next recommended topic
-Virtual Memory — but learn it at a basic level first, specifically: why it exists, process isolation, virtual vs physical addresses, and pages.

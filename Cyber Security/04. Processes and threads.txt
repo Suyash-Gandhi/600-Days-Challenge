@@ -1,0 +1,944 @@
+# 4. Processes and Threads
+
+For cybersecurity, processes and threads are extremely important because almost everything happening inside an operating system—applications, malware, services, shells, exploits, security tools—ultimately runs through processes and threads.
+
+---
+
+## 1. What is a Process?
+
+A process is a running instance of a program.
+
+For example, when you have a file:
+
+```text
+chrome.exe
+```
+
+that file sitting on disk is just a program.
+
+When you execute it:
+
+```text
+chrome.exe
+     ↓
+Operating System loads it
+     ↓
+Process is created
+```
+
+The process gets its own resources and execution environment.
+
+### Simple distinction
+
+```text
+Program = instructions stored on disk
+
+Process = those instructions currently executing
+```
+
+For example:
+
+```text
+notepad.exe          ← program
+      ↓
+Notepad running      ← process
+```
+
+A single program can create multiple processes.
+
+---
+
+# 2. What does a Process contain?
+
+A process isn't just the executable code.
+
+The OS gives it an execution environment containing things such as:
+
+```text
+Process
+│
+├── Code
+├── Data
+├── Heap
+├── Stack
+├── CPU state
+├── Virtual memory
+├── Open files
+├── Open sockets
+├── Environment variables
+├── Security credentials
+└── Threads
+```
+
+You don't need to memorize every internal structure yet. The important idea is:
+
+> A process is a container for a running program and the resources associated with its execution.
+
+---
+
+# 3. Process ID (PID)
+
+Every process normally receives a unique Process ID, or PID.
+
+Example on Linux:
+
+```bash
+ps
+```
+
+You might see:
+
+```text
+PID     COMMAND
+1       systemd
+421     sshd
+812     bash
+1032    firefox
+```
+
+The PID allows the OS and administrators to identify a particular process.
+
+For example:
+
+```bash
+kill 1032
+```
+
+means:
+
+> Send a signal to the process with PID 1032.
+
+### Cybersecurity importance
+
+PIDs are everywhere in security:
+
+- Process enumeration
+- Malware analysis
+- Incident response
+- Process injection
+- Debugging
+- Exploit development
+- EDR detection
+- Forensics
+
+For example, if you discover:
+
+```text
+powershell.exe → PID 4216
+```
+
+you can investigate what that specific process is doing.
+
+---
+
+# 4. Process Memory
+
+Each process normally gets its own virtual address space.
+
+Conceptually:
+
+```text
+Process A
+┌──────────────────────┐
+│ Code                 │
+│ Data                 │
+│ Heap                 │
+│ ...                  │
+│ Stack                │
+└──────────────────────┘
+
+Process B
+┌──────────────────────┐
+│ Code                 │
+│ Data                 │
+│ Heap                 │
+│ ...                  │
+│ Stack                │
+└──────────────────────┘
+```
+
+Process A normally cannot simply access Process B's memory.
+
+This isolation is extremely important.
+
+### Why?
+
+Imagine:
+
+```text
+Chrome
+PID 1000
+```
+
+could freely modify:
+
+```text
+Password Manager
+PID 2000
+```
+
+That would be a massive security problem.
+
+Operating systems therefore use virtual memory and hardware memory protection to isolate processes.
+
+This is one reason process isolation is a major security boundary.
+
+---
+
+# 5. What is a Thread?
+
+A thread is an execution path inside a process.
+
+Think of it like this:
+
+```text
+Process
+│
+├── Thread 1
+├── Thread 2
+└── Thread 3
+```
+
+The process provides the resources.
+
+The threads perform the actual execution.
+
+A process must have at least one thread to execute instructions.
+
+---
+
+# 6. Process vs Thread
+
+This distinction is extremely important.
+
+### Process
+
+A process has its own:
+
+- Virtual address space
+- Resources
+- Security context
+- File descriptors/handles
+- Other process-level state
+
+### Threads
+
+Threads within the same process generally share:
+
+- Code
+- Heap
+- Global variables
+- Open resources
+
+But each thread has its own:
+
+- Stack
+- CPU registers/state
+- Program counter
+- Thread-specific state
+
+Conceptually:
+
+```text
+              PROCESS
+                 │
+       ┌─────────┼─────────┐
+       │         │         │
+    Thread 1  Thread 2  Thread 3
+       │         │         │
+     Stack     Stack     Stack
+     Registers Registers Registers
+```
+
+---
+
+# 7. Why use multiple threads?
+
+Suppose a browser had only one thread.
+
+It needs to:
+
+```text
+Download webpage
+        ↓
+Process JavaScript
+        ↓
+Render UI
+        ↓
+Handle mouse
+        ↓
+Handle keyboard
+```
+
+If one operation takes a long time, the entire application could become unresponsive.
+
+Multiple threads allow different work to happen concurrently.
+
+For example:
+
+```text
+Browser Process
+│
+├── UI Thread
+├── Network Thread
+├── Rendering Thread
+├── JavaScript Thread
+└── Other Threads
+```
+
+This is one reason modern applications can perform many operations simultaneously.
+
+---
+
+# 8. Multithreading
+
+When a process contains multiple threads, it is multithreaded.
+
+Example:
+
+```text
+Process
+│
+├── Thread 1 → Network
+├── Thread 2 → UI
+├── Thread 3 → File processing
+└── Thread 4 → Background task
+```
+
+The CPU rapidly switches between threads and, on a multicore CPU, multiple threads can actually execute simultaneously on different cores.
+
+---
+
+# 9. Process Scheduling
+
+You learned previously that the CPU executes instructions.
+
+But there can be thousands of threads/processes wanting CPU time.
+
+The OS therefore has a scheduler.
+
+Conceptually:
+
+```text
+Thread A ──┐
+Thread B ──┤
+Thread C ──┼──→ Scheduler → CPU
+Thread D ──┤
+Thread E ──┘
+```
+
+The scheduler decides which runnable thread gets CPU time.
+
+The CPU may execute:
+
+```text
+Thread A
+   ↓
+Thread B
+   ↓
+Thread C
+   ↓
+Thread A
+   ↓
+Thread D
+```
+
+This happens extremely quickly.
+
+This creates the appearance that many programs are executing simultaneously.
+
+---
+
+# 10. Context Switching
+
+When the CPU stops executing one thread and starts executing another, the OS has to preserve the state of the current thread.
+
+For example:
+
+```text
+Thread A
+   ↓
+Save CPU state
+   ↓
+Load Thread B state
+   ↓
+Thread B executes
+```
+
+This is called a context switch.
+
+The state includes things such as CPU registers and the instruction location.
+
+You don't need to go deeply into scheduler algorithms yet.
+
+For cybersecurity, understand:
+
+> A context switch allows the OS to move CPU execution between threads/processes while preserving their execution state.
+
+---
+
+# 11. Process States
+
+A process/thread isn't always running.
+
+A simplified model is:
+
+```text
+             ┌──────────┐
+             │  New     │
+             └────┬─────┘
+                  ↓
+             ┌──────────┐
+             │  Ready   │
+             └────┬─────┘
+                  ↓
+             ┌──────────┐
+             │ Running  │
+             └───┬──┬───┘
+                 │  │
+        waiting  │  │ finished
+                 ↓  ↓
+          ┌────────┐ ┌─────────┐
+          │Blocked │ │Terminated│
+          └────────┘ └─────────┘
+```
+
+### Running
+
+Currently executing on a CPU.
+
+### Ready
+
+Able to run but waiting for CPU time.
+
+### Blocked/Waiting
+
+Waiting for something such as:
+
+- File I/O
+- Network data
+- User input
+- Another process
+- A synchronization event
+
+### Terminated
+
+Execution has finished.
+
+---
+
+# 12. Process Creation
+
+Processes can create other processes.
+
+For example:
+
+```text
+init/systemd
+      │
+      └── sshd
+            │
+            └── bash
+                  │
+                  └── python
+```
+
+This creates a process hierarchy.
+
+On Linux, processes have a parent-child relationship.
+
+You can inspect it with:
+
+```bash
+pstree
+```
+
+or:
+
+```bash
+ps --forest
+```
+
+Example:
+
+```text
+systemd
+ ├─ sshd
+ │   └─ bash
+ │       └─ python
+ └─ nginx
+     ├─ nginx
+     └─ nginx
+```
+
+This hierarchy is extremely useful in security.
+
+---
+
+# 13. Why Process Trees Matter in Cybersecurity
+
+Suppose an attacker compromises a web server.
+
+You see:
+
+```text
+nginx
+   └── bash
+       └── curl
+```
+
+That might be suspicious.
+
+Normally you might expect:
+
+```text
+nginx
+```
+
+to handle HTTP requests.
+
+But:
+
+```text
+nginx → bash → curl
+```
+
+could indicate command execution after exploitation.
+
+Another example:
+
+```text
+winword.exe
+    └── powershell.exe
+         └── rundll32.exe
+```
+
+This process chain could be highly suspicious depending on context.
+
+Security products such as EDRs heavily rely on process trees.
+
+---
+
+# 14. Threads and Shared Memory
+
+Threads in the same process share memory.
+
+For example:
+
+```text
+Process
+│
+├── Thread A ──┐
+│              │
+├── Thread B ──┼──→ Shared Heap
+│              │
+└── Thread C ──┘
+```
+
+This is useful because threads can communicate efficiently.
+
+But it creates security problems.
+
+Two threads could access the same variable simultaneously.
+
+For example:
+
+```text
+Thread A → balance = 100
+Thread B → balance = 100
+```
+
+Both modify it at nearly the same time.
+
+This can cause a race condition.
+
+---
+
+# 15. Race Conditions
+
+A race condition occurs when the result depends on the timing/order of concurrent operations.
+
+Example:
+
+```text
+Check:
+Is file allowed?
+
+       ↓
+
+Use:
+Open file
+```
+
+An attacker may change the file between those operations.
+
+Conceptually:
+
+```text
+Program checks file
+        ↓
+        ↓
+Attacker changes file
+        ↓
+Program uses file
+```
+
+This general class of issue is called TOCTOU:
+
+> Time Of Check To Time Of Use.
+
+Race conditions are important in:
+
+- Privilege escalation
+- File operations
+- Authentication
+- Concurrent applications
+- Kernel vulnerabilities
+- Exploitation
+
+---
+
+# 16. Process Communication
+
+Processes are isolated, but they sometimes need to communicate.
+
+Operating systems provide mechanisms called IPC — Inter-Process Communication.
+
+Common mechanisms include:
+
+```text
+Pipes
+Sockets
+Shared memory
+Signals
+Message queues
+```
+
+For example:
+
+```text
+Process A
+    │
+    │ pipe
+    ↓
+Process B
+```
+
+Or:
+
+```text
+Process A
+    │
+    │ socket
+    ↓
+Process B
+```
+
+IPC becomes important when analyzing malware and suspicious applications because processes may communicate with:
+
+- Other processes
+- Services
+- Databases
+- Network endpoints
+- Security components
+
+---
+
+# 17. Process Handles / File Descriptors
+
+A process needs access to resources.
+
+For example:
+
+```text
+Process
+ │
+ ├── File
+ ├── Socket
+ ├── Pipe
+ └── Device
+```
+
+Operating systems provide mechanisms to reference these resources.
+
+On Linux, processes use file descriptors.
+
+Example:
+
+```text
+0 → stdin
+1 → stdout
+2 → stderr
+```
+
+Other numbers can refer to:
+
+```text
+files
+sockets
+pipes
+devices
+```
+
+On Windows, the equivalent general concept is a handle.
+
+This becomes very important in malware analysis and forensic investigation.
+
+---
+
+# 18. Processes and Privileges
+
+A process doesn't automatically have unlimited authority.
+
+It runs under a security context.
+
+For example:
+
+```text
+Normal User Process
+        ↓
+Limited privileges
+```
+
+versus:
+
+```text
+Root process
+        ↓
+Very high privileges
+```
+
+On Windows:
+
+```text
+User process
+     ↓
+Access Token
+     ↓
+User identity + privileges
+```
+
+This is extremely important for cybersecurity.
+
+If malware gets execution as:
+
+```text
+Administrator
+```
+
+or:
+
+```text
+SYSTEM
+```
+
+it can potentially perform much more dangerous operations than a normal user process.
+
+---
+
+# 19. Process Injection
+
+This is one of the most important cybersecurity concepts related to processes.
+
+Process injection involves getting malicious code to execute inside another process.
+
+Conceptually:
+
+```text
+Legitimate Process
+        │
+        │ malicious code injected
+        ↓
+Legitimate Process
+        │
+        └── executes attacker-controlled code
+```
+
+Why would attackers do this?
+
+One reason is to hide malicious activity behind a legitimate process.
+
+For example:
+
+```text
+malware.exe
+```
+
+may be more suspicious than malicious code executing inside:
+
+```text
+explorer.exe
+```
+
+Common techniques include:
+
+- DLL injection
+- Process hollowing
+- Thread hijacking
+- APC injection
+- Reflective DLL injection
+
+You don't need to learn the individual techniques yet. Just understand the core idea:
+
+> A process can become a target for another process to execute code within its address space.
+
+This will become very important when you study Windows internals, malware analysis, and reverse engineering.
+
+---
+
+# 20. Threads in Malware
+
+Malware frequently uses multiple threads.
+
+For example:
+
+```text
+Malware Process
+│
+├── Thread 1 → Main logic
+├── Thread 2 → C2 communication
+├── Thread 3 → Keylogging
+├── Thread 4 → Persistence
+└── Thread 5 → Encryption
+```
+
+During malware analysis, you may encounter:
+
+```text
+Process
+  PID: 4216
+
+Threads:
+  TID: 4217
+  TID: 4218
+  TID: 4219
+```
+
+A suspicious thread may tell you something important about what the process is doing.
+
+---
+
+# 21. Process vs Thread — Remember This
+
+The easiest mental model:
+
+```text
+             PROCESS
+        ┌───────────────┐
+        │ Memory        │
+        │ Resources     │
+        │ Security      │
+        │               │
+        │  ┌─────────┐  │
+        │  │Thread 1 │  │
+        │  ├─────────┤  │
+        │  │Thread 2 │  │
+        │  ├─────────┤  │
+        │  │Thread 3 │  │
+        │  └─────────┘  │
+        └───────────────┘
+```
+
+Think:
+
+Process = container/resource boundary
+
+Thread = execution unit inside that process
+
+---
+
+# 22. What You Should Know for Cybersecurity
+
+### MUST KNOW
+
+You should be comfortable with:
+
+- Program vs process
+- Process vs thread
+- PID
+- TID
+- Process memory
+- Virtual address space
+- Process isolation
+- Threads
+- Multithreading
+- Process states
+- CPU scheduling
+- Context switching
+- Parent/child processes
+- Process trees
+- IPC basics
+- File descriptors/handles
+- Process privileges
+- Race conditions
+- Basic process injection concept
+
+### GOOD TO KNOW
+
+Learn later:
+
+- Linux `fork()`
+- Linux `exec()`
+- Windows `CreateProcess`
+- Windows access tokens
+- Signals
+- Threads APIs
+- Synchronization primitives
+- Mutexes
+- Semaphores
+- Condition variables
+- Advanced IPC
+
+### OPTIONAL FOR NOW
+
+Don't spend much time yet on:
+
+- Scheduler implementation
+- Kernel task structures
+- CPU scheduling algorithms in mathematical detail
+- Lock-free algorithms
+- Advanced synchronization theory
+
+Those become useful later when you study OS internals, exploit development, kernel security, and advanced malware analysis.
+
+---
+
+# The Mental Model You Should Keep
+
+If you remember only this, you're good:
+
+```text
+PROGRAM
+   │
+   │ execute
+   ↓
+PROCESS
+   │
+   ├── Virtual memory
+   ├── Resources
+   ├── Security context
+   │
+   ├── THREAD
+   ├── THREAD
+   └── THREAD
+        │
+        ↓
+       CPU
+```
+
+And from a cybersecurity perspective:
+
+```text
+Process
+   │
+   ├── Who owns it?
+   ├── What privileges does it have?
+   ├── What memory does it contain?
+   ├── What files does it access?
+   ├── What sockets does it use?
+   ├── What child processes does it create?
+   ├── What threads does it have?
+   └── What other processes does it interact with?
+```
+
+That last checklist is particularly important. A large part of malware analysis and incident response is essentially asking these questions about processes.

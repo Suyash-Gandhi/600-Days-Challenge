@@ -1,1355 +1,562 @@
-
-# 🛡️ Complete Cybersecurity → Purple Team Roadmap
-
-## PHASE 1 — 🧠 Computer & Operating System Foundations
-
-### A. Computer Fundamentals
-
-1. CPU fundamentals
-2. RAM and memory
-3. Storage
-4. Processes
-5. Threads
-6. Kernel
-7. User space vs kernel space
-8. System calls
-9. Filesystems
-10. I/O
-11. Virtual memory
-12. Memory management
-
-### B. Linux Fundamentals
-
-13. Linux filesystem
-14. `/etc`, `/var`, `/proc`, `/tmp`
-15. Linux CLI
-16. File permissions
-17. Users and groups
-18. Ownership
-19. Processes
-20. Process management
-21. Services
-22. systemd
-23. Cron
-24. Environment variables
-25. Bash
-26. Pipes
-27. Redirection
-28. SSH
-29. Package management
-30. Linux networking
-31. Linux logs
-32. `grep`
-33. `awk`
-34. `sed`
-35. `find`
-36. `ps`
-37. `top`
-38. `ss`
-39. `lsof`
-40. Basic Linux hardening
-
-### C. Windows Fundamentals
-
-41. Windows architecture
-42. Windows filesystem
-43. Processes
-44. Services
-45. Registry
-46. Users and groups
-47. Permissions
-48. Windows authentication
-49. PowerShell
-50. Event Viewer
-51. Windows Event Logs
-52. Scheduled Tasks
-53. Windows networking
-54. Windows security model
-55. Windows Defender
-
----
-
-# PHASE 2 — 🌐 Networking
-
-### A. Networking Fundamentals
-
-56. OSI model
-57. TCP/IP model
-58. MAC addresses
-59. IP addresses
-60. IPv4
-61. IPv6
-62. Subnetting
-63. CIDR
-64. Ports
-65. Sockets
-66. TCP
-67. UDP
-68. ARP
-69. ICMP
-70. DHCP
-71. NAT
-72. Routing
-73. Switching
-74. VLANs
-
-### B. Protocols
-
-75. HTTP
-76. HTTPS
-77. DNS
-78. SSH
-79. FTP
-80. SFTP
-81. SMTP
-82. IMAP
-83. POP3
-84. LDAP
-85. SMB
-86. SNMP
-87. RDP
-88. Kerberos
-
-### C. Network Architecture
-
-89. LAN
-90. WAN
-91. DMZ
-92. Proxy
-93. Reverse proxy
-94. Load balancer
-95. VPN
-96. Firewall
-97. WAF
-98. IDS
-99. IPS
-100. Network segmentation
-101. Zero Trust
-
-### D. Network Tools
-
-102. Wireshark
-103. tcpdump
-104. Nmap
-105. Netcat
-106. curl
-
----
-
-# PHASE 3 — 💻 Programming & Security Scripting
-
-### A. Python
-
-107. Python syntax
-108. Functions
-109. Classes
-110. Modules
-111. File handling
-112. JSON
-113. HTTP requests
-114. Sockets
-115. APIs
-116. Automation
-117. Log parsing
-118. Regular expressions
-
-### B. Bash
-
-119. Variables
-120. Conditions
-121. Loops
-122. Functions
-123. Pipes
-124. Redirection
-125. Shell automation
-
-### C. PowerShell
-
-126. PowerShell commands
-127. Objects
-128. Pipelines
-129. Scripts
-130. Windows administration
-131. Event/log querying
-132. Automation
-
-### D. JavaScript Security
-
-133. Browser execution
-134. DOM
-135. Cookies
-136. Browser storage
-137. Fetch
-138. CORS
-139. Node.js security
-140. Prototype pollution
-141. JavaScript injection
-142. Client-side trust issues
-143. `eval()` risks
-144. Unsafe rendering
-
-### E. Later Programming
-
-145. C fundamentals
-146. C++
-147. Assembly fundamentals
-
----
-
-# PHASE 4 — 🌍 Web & Application Foundations
-
-### A. HTTP
-
-148. HTTP methods
-149. Requests
-150. Responses
-151. Headers
-152. Status codes
-153. HTTP/1.1
-154. HTTP/2
-155. HTTP/3
-156. Cookies
-157. Sessions
-
-### B. Browser Security
-
-158. Same-Origin Policy
-159. CORS
-160. CSP
-161. SameSite
-162. Secure cookies
-163. HttpOnly
-164. Browser storage
-
-### C. Web Architecture
-
-165. Frontend
-166. Backend
-167. APIs
-168. Databases
-169. Reverse proxies
-170. CDN
-171. Load balancers
-172. Authentication
-173. Authorization
-
-### D. API Fundamentals
-
-174. REST
-175. JSON
-176. GraphQL basics
-177. API authentication
-178. API authorization
-179. Rate limiting
-180. API gateways
-
----
-
-# PHASE 5 — 🗄️ Database Security Foundations
-
-181. SQL
-182. PostgreSQL
-183. MySQL
-184. NoSQL
-185. MongoDB
-186. CRUD
-187. Joins
-188. Indexes
-189. Transactions
-190. Database permissions
-191. Connection security
-192. Database encryption
-193. SQL injection fundamentals
-194. NoSQL injection fundamentals
-
----
-
-# PHASE 6 — 🔐 Cryptography
-
-195. Plaintext
-196. Ciphertext
-197. Encryption
-198. Decryption
-199. Symmetric encryption
-200. AES
-201. Asymmetric encryption
-202. RSA
-203. ECC
-204. Hashing
-205. SHA-256
-206. Salt
-207. Password hashing
-208. HMAC
-209. Digital signatures
-210. Public/private keys
-211. Key exchange
-212. Certificates
-213. PKI
-214. TLS
-215. HTTPS
-
----
-
-# PHASE 7 — 👤 Authentication, Authorization & IAM
-
-216. Authentication
-217. Authorization
-218. Sessions
-219. Cookies
-220. Password authentication
-221. Password hashing
-222. MFA
-223. SSO
-224. RBAC
-225. ABAC
-226. ACL
-227. JWT
-228. OAuth 2.0
-229. OpenID Connect
-230. SAML
-231. LDAP
-232. Active Directory fundamentals
-233. Kerberos fundamentals
-234. IAM
-235. Privileged Access Management
-
----
-
-# PHASE 8 — 🛡️ Core Cybersecurity Concepts
-
-236. CIA Triad
-237. Confidentiality
-238. Integrity
-239. Availability
-240. Threats
-241. Vulnerabilities
-242. Exploits
-243. Risk
-244. Attack surface
-245. Attack vectors
-246. Threat actors
-247. Security controls
-248. Defense in depth
-249. Least privilege
-250. Zero Trust
-251. Security by design
-252. Attack chains
-253. Threat modeling
-254. Security architecture
-255. Security posture
-256. Indicators of Compromise
-257. Tactics
-258. Techniques
-259. Procedures
-260. TTPs
-261. MITRE ATT&CK
-262. Cyber Kill Chain
-
----
-
-# PHASE 9 — 🔵 BLUE TEAM: Security Monitoring
-
-263. Security monitoring
-264. Log collection
-265. Log normalization
-266. Log correlation
-267. Event analysis
-268. Security telemetry
-269. Network telemetry
-270. Endpoint telemetry
-271. Authentication telemetry
-272. DNS telemetry
-
-### Windows Security Monitoring
-
-273. Windows Event Logs
-274. Event IDs
-275. Sysmon
-276. PowerShell logging
-277. Process monitoring
-278. Service monitoring
-279. Registry monitoring
-280. Scheduled Task monitoring
-281. Authentication logs
-282. Account activity
-283. Windows Defender
-284. Windows security events
-
-### Linux Security Monitoring
-
-285. Linux authentication logs
-286. Syslog
-287. Journald
-288. Process monitoring
-289. File monitoring
-290. SSH logs
-291. User activity
-292. Permission monitoring
-293. Cron monitoring
-294. Service monitoring
-
----
-
-# PHASE 10 — 🔵 Blue Team: SIEM & EDR
-
-### SIEM
-
-295. SIEM architecture
-296. Log ingestion
-297. Parsing
-298. Normalization
-299. Correlation
-300. Searching
-301. Dashboards
-302. Alerts
-303. Detection rules
-304. Incident creation
-
-### Tools
-
-305. Wazuh
-306. Elastic
-307. Splunk
-
-### Query Languages
-
-308. SPL
-309. KQL
-
-### EDR
-
-310. Endpoint telemetry
-311. Process trees
-312. Command-line monitoring
-313. File activity
-314. Network connections
-315. Behavioral detection
-316. Endpoint isolation
-317. Threat investigation
-
----
-
-# PHASE 11 — 🔵 Blue Team: Network Defense
-
-318. Firewall security
-319. IDS
-320. IPS
-321. WAF
-322. VPN security
-323. Network segmentation
-324. DNS security
-325. Network monitoring
-326. Packet analysis
-327. Proxy logs
-328. Firewall logs
-329. Network anomaly detection
-
----
-
-# PHASE 12 — 🔵 Blue Team: Threat Intelligence
-
-330. Threat intelligence
-331. IOC
-332. IP indicators
-333. Domain indicators
-334. Hash indicators
-335. Malware indicators
-336. TTPs
-337. Threat actors
-338. Threat feeds
-339. Threat reports
-340. IOC enrichment
-341. MITRE ATT&CK intelligence
-
----
-
-# PHASE 13 — 🔵 Blue Team: Detection Engineering
-
-342. Detection logic
-343. Detection rules
-344. Signature detection
-345. Behavioral detection
-346. Anomaly detection
-347. Sigma
-348. YARA
-349. SPL detections
-350. KQL detections
-351. Detection tuning
-352. False positives
-353. False negatives
-354. Detection coverage
-355. MITRE ATT&CK mapping
-356. Correlation rules
-357. Detection-as-code
-358. Detection testing
-
----
-
-# PHASE 14 — 🔵 Blue Team: Incident Response
-
-359. Incident identification
-360. Incident triage
-361. Investigation
-362. Containment
-363. Eradication
-364. Recovery
-365. Lessons learned
-366. Incident documentation
-367. Incident timelines
-368. Evidence preservation
-369. Incident playbooks
-
----
-
-# PHASE 15 — 🔵 Blue Team: Threat Hunting & Forensics
-
-### Threat Hunting
-
-370. Hypothesis-driven hunting
-371. IOC hunting
-372. TTP hunting
-373. Behavioral hunting
-374. Query-based hunting
-375. MITRE ATT&CK hunting
-376. EDR hunting
-377. SIEM hunting
-378. Network hunting
-
-### Digital Forensics Fundamentals
-
-379. Disk forensics
-380. Memory forensics
-381. File analysis
-382. Windows artifacts
-383. Browser artifacts
-384. Event logs
-385. Registry
-386. Timeline analysis
-387. Network evidence
-
-### Tools
-
-388. Autopsy
-389. Volatility
-390. Velociraptor
-
----
-
-# PHASE 16 — 🔴 RED TEAM: Reconnaissance
-
-391. Passive reconnaissance
-392. Active reconnaissance
-393. OSINT
-394. DNS enumeration
-395. Subdomain discovery
-396. WHOIS
-397. Technology identification
-398. Attack surface discovery
-399. Archived URL discovery
-400. Parameter discovery
-401. JavaScript file analysis
-402. Target profiling
-
-### Tools
-
-403. Nmap
-404. Amass
-405. Subfinder
-406. WhatWeb
-407. theHarvester
-
----
-
-# PHASE 17 — 🔴 RED TEAM: Scanning & Enumeration
-
-408. Port scanning
-409. Service enumeration
-410. Version detection
-411. OS detection
-412. Vulnerability scanning
-413. SMB enumeration
-414. LDAP enumeration
-415. DNS enumeration
-416. SNMP enumeration
-
-### Tools
-
-417. Nmap
-418. Netcat
-419. Nikto
-420. Nessus/OpenVAS
-
----
-
-# PHASE 18 — 🔴 RED TEAM: Web Application Exploitation
-
-### XSS
-
-421. Stored XSS
-422. Reflected XSS
-423. DOM XSS
-424. CSP
-425. Filter bypass techniques
-
-### Injection
-
-426. SQL Injection
-427. Authentication bypass via SQLi
-428. UNION attacks
-429. Blind SQLi
-430. Time-based SQLi
-431. NoSQL Injection
-432. Command Injection
-433. Unsafe shell execution
-434. Node.js `child_process` risks
-
-### Authentication
-
-435. Weak password reset
-436. Session fixation
-437. Session hijacking
-438. Broken MFA
-439. Brute-force logic flaws
-440. Authentication bypass
-
-### Access Control
-
-441. IDOR
-442. Horizontal privilege escalation
-443. Vertical privilege escalation
-444. Broken access control
-
-### Other Web Attacks
-
-445. CSRF
-446. SameSite weaknesses
-447. Anti-CSRF bypass concepts
-448. SSRF
-449. Cloud metadata abuse
-450. Localhost/internal network attacks
-451. File upload vulnerabilities
-452. MIME bypass
-453. Extension bypass
-454. Web shells
-455. Image polyglots
-456. Clickjacking
-457. Open redirects
-458. CORS misconfiguration
-459. Race conditions
-460. Business logic vulnerabilities
-461. Security misconfiguration
-462. Path traversal
-463. File inclusion
-464. XXE
-465. Cryptographic failures
-
----
-
-# PHASE 19 — 🔴 RED TEAM: API Security
-
-466. REST API security
-467. API authentication flaws
-468. Broken authorization
-469. BOLA
-470. IDOR
-471. Rate limiting flaws
-472. Mass assignment
-473. API business logic flaws
-474. API injection
-475. Token attacks
-
-### JWT
-
-476. Weak JWT secrets
-477. Algorithm weaknesses
-478. Token tampering
-479. Token leakage
-480. Refresh token security
-
-### OAuth
-
-481. OAuth security
-482. OAuth implementation flaws
-483. Redirect URI issues
-484. Token handling issues
-
-### API Testing
-
-485. Burp Suite API testing
-486. Postman
-487. Browser DevTools
-488. curl
-
-### Critical Security Mindset
-
-489. Frontend restrictions are not security
-490. Client-side validation bypass
-491. Server-side validation
-492. Trust boundaries
-
----
-
-# PHASE 20 — 🔴 RED TEAM: Credentials & Password Attacks
-
-493. Brute force
-494. Dictionary attacks
-495. Password spraying
-496. Credential stuffing
-497. Hash cracking
-498. Credential dumping
-499. Pass-the-Hash
-500. Pass-the-Ticket
-501. Kerberoasting
-502. AS-REP Roasting
-
-### Tools
-
-503. Hashcat
-504. John the Ripper
-505. Mimikatz
-
----
-
-# PHASE 21 — 🔴 RED TEAM: Privilege Escalation
-
-### Linux
-
-506. SUID
-507. SGID
-508. Linux capabilities
-509. Weak permissions
-510. Cron jobs
-511. Sudo misconfiguration
-512. Kernel vulnerabilities
-513. PATH manipulation
-514. Service exploitation
-515. Credential discovery
-
-### Windows
-
-516. Windows services
-517. Registry
-518. Scheduled Tasks
-519. Weak permissions
-520. Token privileges
-521. DLL hijacking
-522. Credential discovery
-523. UAC
-524. PowerShell
-525. Windows internals
-
----
-
-# PHASE 22 — 🔴 RED TEAM: Active Directory
-
-526. Domains
-527. Domain Controllers
-528. Users
-529. Groups
-530. Organizational Units
-531. Group Policy
-532. LDAP
-533. Kerberos
-534. NTLM
-535. SPNs
-536. Trusts
-537. Delegation
-538. Domain Admin
-539. BloodHound
-540. AD enumeration
-541. Kerberoasting
-542. AS-REP Roasting
-543. Pass-the-Hash
-544. Pass-the-Ticket
-
----
-
-# PHASE 23 — 🔴 RED TEAM: Lateral Movement
-
-545. SMB
-546. WinRM
-547. RDP
-548. PSExec
-549. WMI
-550. Remote services
-551. Pass-the-Hash
-552. Pass-the-Ticket
-553. Credential reuse
-
----
-
-# PHASE 24 — 🔴 RED TEAM: Persistence & Command/Control
-
-### Persistence
-
-554. Scheduled Tasks
-555. Services
-556. Registry
-557. Startup mechanisms
-558. Accounts
-559. SSH keys
-560. Web shells
-561. Persistence techniques
-
-### Command & Control
-
-562. C2 fundamentals
-563. Beaconing
-564. HTTP C2
-565. DNS C2
-566. Reverse shells
-567. Bind shells
-568. C2 infrastructure
-569. Payloads
-570. Communication channels
-
----
-
-# PHASE 25 — 🔴 RED TEAM: Adversary Simulation
-
-571. MITRE ATT&CK
-572. Attack chains
-573. TTP simulation
-574. Attack scenarios
-575. Red Team operations
-576. Adversary emulation
-577. Rules of engagement
-578. Attack documentation
-579. Professional reporting
-
----
-
-# PHASE 26 — 🛡️ Secure Coding & AppSec
-
-This is particularly valuable because of your development background.
-
-580. Secure SDLC
-581. Security requirements
-582. Threat modeling
-583. Input validation
-584. Output encoding
-585. Secure error handling
-586. Secure session handling
-587. Password hashing
-588. Secure JWT handling
-589. File upload validation
-590. Rate limiting
-591. Helmet.js
-592. Environment variable security
-593. Secrets management
-594. Secure API design
-595. Secure authentication
-596. Secure authorization
-597. Dependency security
-598. Supply-chain security
-599. Code review
-600. SAST
-601. DAST
-602. SCA
-
-### MERN/Node Security
-
-603. Exposed MongoDB IDs
-604. Trusting frontend roles
-605. Insecure JWT storage
-606. Insecure CORS
-607. Leaking stack traces
-608. Weak middleware ordering
-609. Node.js security
-610. Express security
-
----
-
-# PHASE 27 — ☁️ Cloud & DevSecOps Security
-
-### Docker
-
-611. Docker fundamentals
-612. Containers
-613. Dockerfiles
-614. Image vulnerabilities
-615. Container permissions
-616. Secrets inside containers
-617. Docker security
-
-### Kubernetes
-
-618. Kubernetes fundamentals
-619. Kubernetes architecture
-620. Kubernetes security risks
-621. RBAC
-622. Secrets
-623. Network policies
-624. Container escape fundamentals
-
-### AWS
-
-625. AWS fundamentals
-626. Shared responsibility model
-627. IAM
-628. EC2
-629. S3
-630. VPC
-631. Security Groups
-632. NACL
-633. CloudTrail
-634. CloudWatch
-635. KMS
-636. Secrets Manager
-637. Cloud logging
-638. Cloud monitoring
-
-### CI/CD
-
-639. GitHub Actions
-640. Secret leaks
-641. Insecure pipelines
-642. Pipeline security
-
-### Dependency Security
-
-643. npm attacks
-644. Malicious packages
-645. Dependency confusion
-646. Lockfiles
-
-### Secrets
-
-647. `.env` leaks
-648. API key protection
-649. Git exposure
-650. HashiCorp Vault
-
-### Security Testing
-
-651. SAST
-652. DAST
-653. SCA
-654. IaC security
-655. Container scanning
-656. Secret scanning
-657. Secure SDLC
-
----
-
-# PHASE 28 — 🟣 PURPLE TEAM: Attack Simulation
-
-Now combine everything you've learned.
-
-658. Purple Team methodology
-659. Attack simulation
-660. Adversary emulation
-661. Atomic testing
-662. MITRE ATT&CK techniques
-663. Attack scenarios
-664. Attack chains
-665. Controlled exploitation
-666. TTP simulation
-
----
-
-# PHASE 29 — 🟣 PURPLE TEAM: Telemetry
-
-For every attack, understand what evidence it creates.
-
-667. Process telemetry
-668. Network telemetry
-669. DNS telemetry
-670. Authentication telemetry
-671. File telemetry
-672. Registry telemetry
-673. Endpoint telemetry
-674. Cloud telemetry
-675. Application telemetry
-676. API telemetry
-
----
-
-# PHASE 30 — 🟣 PURPLE TEAM: Detection Validation
-
-677. Attack → telemetry → detection
-678. Detection coverage
-679. Detection gaps
-680. Detection validation
-681. Alert quality
-682. False positives
-683. False negatives
-684. Detection tuning
-685. Security control validation
-
----
-
-# PHASE 31 — 🟣 PURPLE TEAM: Detection Engineering
-
-686. Sigma
-687. YARA
-688. KQL
-689. SPL
-690. SIEM rules
-691. EDR rules
-692. Behavioral detection
-693. Correlation rules
-694. Detection-as-code
-695. Detection testing
-696. Detection automation
-
----
-
-# PHASE 32 — 🟣 PURPLE TEAM: ATT&CK Coverage
-
-697. Attack → tactic mapping
-698. Attack → technique mapping
-699. Sub-technique mapping
-700. Telemetry mapping
-701. Detection mapping
-702. ATT&CK coverage matrix
-703. Detection coverage measurement
-704. Visibility gaps
-705. Detection gaps
-
-Example:
-
-```text
-ATT&CK Technique
-       ↓
-Attack Simulation
-       ↓
-Telemetry
-       ↓
-Detection
-       ↓
-Investigation
-       ↓
-Coverage
-```
-
----
-
-# PHASE 33 — 🟣 PURPLE TEAM: Threat Hunting Integration
-
-706. Red Team behavior analysis
-707. Hunting hypotheses
-708. IOC hunting
-709. TTP hunting
-710. Behavioral hunting
-711. SIEM hunting
-712. EDR hunting
-713. Network hunting
-714. Hunt → detection conversion
-715. Detection → hunt validation
-
----
-
-# PHASE 34 — 🟣 PURPLE TEAM: Security Control Validation
-
-716. EDR validation
-717. SIEM validation
-718. Firewall validation
-719. IDS/IPS validation
-720. WAF validation
-721. IAM validation
-722. Endpoint control validation
-723. Network control validation
-724. Cloud security control validation
-725. Security control effectiveness
-
----
-
-# PHASE 35 — 🟣 PURPLE TEAM: Complete Detection Cycle
-
-Master this workflow:
-
-```text
-1. Select ATT&CK technique
-             ↓
-2. Simulate attack
-             ↓
-3. Collect telemetry
-             ↓
-4. Analyze evidence
-             ↓
-5. Create detection
-             ↓
-6. Generate attack again
-             ↓
-7. Test detection
-             ↓
-8. Tune detection
-             ↓
-9. Measure coverage
-             ↓
-10. Document result
-```
-
-This is the core Purple Team skill.
-
----
-
-# PHASE 36 — 🟣 Purple Team Automation
-
-726. Python security automation
-727. PowerShell automation
-728. Bash automation
-729. REST APIs
-730. SIEM APIs
-731. EDR APIs
-732. MITRE ATT&CK data
-733. Automated attack simulation
-734. Automated telemetry collection
-735. Automated detection testing
-736. Automated reporting
-737. Security dashboards
-738. Docker-based security labs
-739. Terraform-based lab deployment
-
----
-
-# PHASE 37 — 📝 Security Reporting
-
-740. Vulnerability reports
-741. Penetration testing reports
-742. Incident reports
-743. Attack simulation reports
-744. ATT&CK mapping reports
-745. Detection gap reports
-746. Remediation recommendations
-747. Retesting
-748. Executive summaries
-749. Technical findings
-750. Evidence documentation
-
----
-
-# PHASE 38 — 🧪 Practical Labs & Portfolio
-
-Don't just study the concepts. Build projects around them.
-
-### Project 1 — Vulnerable MERN Application
-
-751. Build vulnerable MERN application
-752. Add authentication
-753. Add RBAC
-754. Add APIs
-755. Add intentional vulnerabilities
-756. Exploit vulnerabilities
-757. Patch vulnerabilities
-758. Document vulnerabilities
-
-### Project 2 — Blue Team Lab
-
-759. Windows machine
-760. Linux machine
-761. Sysmon
-762. Wazuh/Elastic
-763. Log collection
-764. Detection rules
-765. Generate attacks
-766. Investigate alerts
-
-### Project 3 — Active Directory Lab
-
-767. Domain Controller
-768. Windows clients
-769. Users/groups
-770. Group Policy
-771. Kerberos
-772. LDAP
-773. Attack simulation
-774. Detection
-
-### Project 4 — Purple Team Lab
-
-775. Red attack simulation
-776. Telemetry collection
-777. SIEM
-778. EDR
-779. ATT&CK mapping
-780. Detection engineering
-781. Detection validation
-782. Threat hunting
-783. Detection gap analysis
-784. Remediation
-785. Retesting
-
-### Project 5 — Cloud Security Lab
-
-786. AWS environment
-787. IAM
-788. VPC
-789. S3
-790. CloudTrail
-791. Cloud monitoring
-792. Security misconfiguration testing
-793. Detection
-
----
-
-# PHASE 39 — 🌐 Practical Platforms
-
-794. PortSwigger Web Security Academy
-795. TryHackMe
-796. Hack The Box
-797. CTFs
-798. Blue Team Labs
-799. Detection engineering labs
-800. Authorized bug bounty programs
-
----
-
-# PHASE 40 — 💼 Optional Bug Bounty
-
-Only after you have a solid foundation.
-
-801. Bug bounty methodology
-802. Recon methodology
-803. Vulnerability chaining
-804. Authentication bypass hunting
-805. Business logic testing
-806. API testing
-807. Writing vulnerability reports
-808. Responsible disclosure
-
----
-
-# PHASE 41 — ⛓️ OPTIONAL BLOCKCHAIN SECURITY
-
-I would keep this outside your core Purple Team roadmap because it is a separate specialization.
-
-### Blockchain
-
-809. Blockchain architecture
-810. Smart contracts
-811. Solidity
-812. EVM
-813. Wallets
-814. Transactions
-815. Gas
-
-### Smart Contract Security
-
-816. Reentrancy
-817. Integer overflow/underflow
-818. Access control
-819. Oracle manipulation
-820. Flash-loan attacks
-821. Signature vulnerabilities
-822. Upgradeable-contract risks
-823. Gas-related attacks
-824. DeFi business logic
-
-### Web3 Security
-
-825. Wallet drainers
-826. RPC/API abuse
-827. Phishing
-828. Malicious approvals
-829. Frontend Web3 vulnerabilities
-830. Private-key security
-
-### Auditing
-
-831. Smart-contract threat modeling
-832. Slither
-833. Foundry
-834. Hardhat
-835. Manual auditing
-836. Audit reporting
-
----
-
-# PHASE 42 — 🚀 Advanced Specializations
-
-These should come after your core Purple Team foundation, not during the first few months.
-
-837. Cloud Security
-838. Advanced Application Security
-839. DevSecOps
-840. Advanced Threat Hunting
-841. Advanced Digital Forensics
-842. Malware Analysis
-843. Reverse Engineering
-844. Exploit Development
-845. Security Research
-846. Advanced Active Directory
-847. Kernel Security
-848. Assembly
-849. Advanced Cryptography
-850. Security Architecture
-
----
-
-# Your final learning hierarchy
-
-So the 850-topic roadmap can be mentally compressed into:
-
-```text
-                    🧠 FOUNDATION
-                         │
-        ┌────────────────┼────────────────┐
-        │                │                │
-      SYSTEMS        NETWORKING        WEB/API
-        │                │                │
-        └────────────────┼────────────────┘
-                         │
-              PROGRAMMING / CRYPTO
-                         │
-                    IAM / SECURITY
-                         │
-                         ▼
-                  🔵 BLUE TEAM
-                         │
-       ┌─────────────────┼─────────────────┐
-       │                 │                 │
-      SIEM              EDR            NETWORK
-       │                 │                 │
-   Detection          Hunting         Monitoring
-       │                 │                 │
-       └─────────────────┼─────────────────┘
-                         │
-                  Incident Response
-                         │
-                         ▼
-                  🔴 RED TEAM
-                         │
-      ┌──────────────────┼──────────────────┐
-      │                  │                  │
-    Web/API           Network/AD        PrivEsc
-      │                  │                  │
-      └──────────────────┼──────────────────┘
-                         │
-                 Persistence / C2
-                         │
-                         ▼
-                  🟣 PURPLE TEAM
-                         │
-                 Attack Simulation
-                         ↓
-                    Telemetry
-                         ↓
-                    Detection
-                         ↓
-                  Investigation
-                         ↓
-                  Threat Hunting
-                         ↓
-                Control Validation
-                         ↓
-                  Detection Tuning
-                         ↓
-                    Retesting
-                         │
-                         ▼
-              🏗️ SECURITY ENGINEERING
-                         │
-        ┌────────────────┼────────────────┐
-        ▼                ▼                ▼
-      AppSec          Cloud Sec        DevSecOps
-        │                │                │
-        └────────────────┼────────────────┘
-                         ▼
-                 ADVANCED SECURITY
-                         │
-              ┌──────────┼──────────┐
-              ▼          ▼          ▼
-           Research    Malware    Architecture
-```
+# Cybersecurity Purple Team Roadmap
+Total - 492 topics
+
+## 1. Computer & OS Foundations
+1. CPU architecture and instruction execution (CPU, registers, instruction cycle)
+2. RAM, memory hierarchy and virtual memory
+3. Storage, disks and I/O
+4. Processes and threads
+5. Kernel, user space and system calls
+6. Filesystems
+7. Memory management
+8. Linux architecture and filesystem
+9. Linux CLI, Bash, pipes and redirection
+10. Linux permissions, ownership, users and groups
+11. Linux processes, services, systemd and cron
+12. Linux networking and SSH
+13. Linux logs and core troubleshooting utilities
+14. Linux package management and hardening
+15. Windows architecture and filesystem
+16. Windows processes, services and scheduled tasks
+17. Windows Registry, users, groups and permissions
+18. Windows authentication and security model
+19. PowerShell
+20. Windows Event Logs, Event Viewer and Defender
+
+## 2. Networking
+1. OSI and TCP/IP models
+2. MAC, IP, IPv4, IPv6, subnetting and CIDR
+3. Ports, sockets and network communication
+4. TCP, UDP, ARP and ICMP
+5. DHCP, NAT and routing
+6. Switching and VLANs
+7. HTTP/HTTPS networking
+8. DNS
+9. SSH, FTP/SFTP, SMTP/IMAP/POP3
+10. LDAP, SMB, SNMP, RDP and Kerberos networking
+11. LAN, WAN and DMZ
+12. Proxies, reverse proxies and load balancers
+13. VPNs, firewalls and WAFs
+14. IDS/IPS and network segmentation
+15. Zero Trust networking
+16. Wireshark and tcpdump
+17. Nmap, Netcat and curl
+
+## 3. Programming & Security Scripting
+1. Python programming fundamentals
+2. Python automation, file handling, JSON and APIs
+3. Python networking and sockets
+4. Log parsing and regular expressions
+5. Bash scripting and automation
+6. PowerShell scripting, objects, pipelines and administration
+7. JavaScript execution, DOM, cookies and browser storage
+8. Fetch, CORS and browser security
+9. Node.js and Express security
+10. Prototype pollution, JavaScript injection and unsafe rendering
+11. Client-side trust and validation
+12. C fundamentals
+13. C++ fundamentals
+14. Assembly fundamentals
+
+## 4. Web & Application Foundations
+1. HTTP fundamentals: methods, requests, responses, headers and status codes
+2. HTTP/1.1, HTTP/2 and HTTP/3
+3. Cookies and sessions
+4. Same-Origin Policy and CORS
+5. CSP and browser security headers
+6. SameSite, Secure and HttpOnly cookies
+7. Browser storage security
+8. Frontend, backend and web application architecture
+9. APIs and API architecture
+10. Databases in web applications
+11. Reverse proxies, CDNs and load balancing
+12. Authentication and authorization
+13. REST and JSON
+14. GraphQL basics
+15. API authentication and authorization
+16. Rate limiting and API gateways
+
+## 5. Database Security
+1. SQL fundamentals
+2. PostgreSQL and MySQL
+3. NoSQL and MongoDB
+4. CRUD, joins and indexes
+5. Database transactions
+6. Database permissions and connection security
+7. Database encryption
+8. SQL injection
+9. NoSQL injection
+
+## 6. Cryptography
+1. Cryptography fundamentals
+2. Symmetric encryption and AES
+3. Asymmetric encryption, RSA and ECC
+4. Cryptographic hashing and SHA-256
+5. Salts and password hashing
+6. HMAC
+7. Digital signatures
+8. Public/private keys and key exchange
+9. Certificates and PKI
+10. TLS and HTTPS security
+
+## 7. Authentication, Authorization & IAM
+1. Authentication vs authorization
+2. Sessions, cookies and password authentication
+3. Password hashing and MFA
+4. SSO
+5. RBAC, ABAC and ACLs
+6. JWT security
+7. OAuth 2.0
+8. OpenID Connect
+9. SAML
+10. LDAP
+11. Active Directory fundamentals
+12. Kerberos
+13. IAM
+14. Privileged Access Management
+
+## 8. Core Cybersecurity
+1. CIA Triad
+2. Threats, vulnerabilities, exploits and risk
+3. Attack surface and attack vectors
+4. Threat actors
+5. Security controls
+6. Defense in depth and least privilege
+7. Zero Trust
+8. Security by design
+9. Attack chains
+10. Threat modeling
+11. Security architecture and security posture
+12. Indicators of Compromise (IOCs)
+13. Tactics, Techniques and Procedures (TTPs)
+14. MITRE ATT&CK
+15. Cyber Kill Chain
+
+## 9. Security Monitoring
+1. Security monitoring and telemetry
+2. Log collection, normalization and correlation
+3. Event analysis
+4. Network, endpoint, authentication and DNS telemetry
+5. Windows Event Logs and Event IDs
+6. Sysmon and PowerShell logging
+7. Windows process, service, Registry and Scheduled Task monitoring
+8. Windows authentication and account activity
+9. Windows Defender telemetry
+10. Linux authentication logs, Syslog and Journald
+11. Linux process, file, SSH, user, permission, cron and service monitoring
+
+## 10. SIEM & EDR
+1. SIEM architecture and log ingestion
+2. Parsing, normalization and correlation
+3. SIEM search, dashboards and alerting
+4. Detection rules and incident creation
+5. Wazuh, Elastic and Splunk
+6. SPL and KQL
+7. EDR architecture and endpoint telemetry
+8. Process trees and command-line monitoring
+9. File activity and network connections
+10. Behavioral detection and endpoint isolation
+11. EDR threat investigation
+
+## 11. Network Defense
+1. Firewall security
+2. IDS/IPS security
+3. WAF security
+4. VPN security
+5. Network segmentation
+6. DNS security
+7. Network monitoring and packet analysis
+8. Proxy and firewall logs
+9. Network anomaly detection
+
+## 12. Threat Intelligence
+1. Threat intelligence fundamentals
+2. IOC types: IPs, domains and hashes
+3. Malware indicators
+4. TTP intelligence
+5. Threat feeds and threat reports
+6. IOC enrichment
+7. MITRE ATT&CK intelligence
+
+## 13. Detection Engineering
+1. Detection logic and rules
+2. Signature, behavioral and anomaly detection
+3. Sigma
+4. YARA
+5. SPL and KQL detections
+6. Detection tuning
+7. False positives and false negatives
+8. Detection coverage
+9. MITRE ATT&CK mapping
+10. Correlation rules
+11. Detection-as-code
+12. Detection testing
+
+## 14. Incident Response
+1. Incident identification and triage
+2. Investigation
+3. Containment
+4. Eradication and recovery
+5. Lessons learned
+6. Incident documentation and timelines
+7. Evidence preservation
+8. Incident response playbooks
+
+## 15. Threat Hunting & Digital Forensics
+1. Hypothesis-driven threat hunting
+2. IOC, TTP and behavioral hunting
+3. Query-based hunting
+4. MITRE ATT&CK hunting
+5. EDR, SIEM and network hunting
+6. Disk forensics
+7. Memory forensics
+8. File analysis
+9. Windows and browser forensic artifacts
+10. Event log and Registry forensics
+11. Timeline analysis
+12. Network evidence
+13. Autopsy, Volatility and Velociraptor
+
+## 16. Reconnaissance
+1. Passive reconnaissance
+2. Active reconnaissance
+3. OSINT
+4. DNS and subdomain enumeration
+5. WHOIS and technology identification
+6. Attack surface discovery
+7. Archived URL discovery
+8. Parameter discovery
+9. JavaScript reconnaissance
+10. Target profiling
+11. Amass, Subfinder, WhatWeb and theHarvester
+
+## 17. Scanning & Enumeration
+1. Port scanning
+2. Service and version enumeration
+3. OS detection
+4. Vulnerability scanning
+5. SMB enumeration
+6. LDAP enumeration
+7. DNS enumeration
+8. SNMP enumeration
+9. Nmap and Netcat for enumeration
+10. Nikto
+11. Nessus/OpenVAS
+
+## 18. Web Application Security
+1. XSS: stored, reflected and DOM
+2. CSP weaknesses and XSS filter bypass
+3. SQL injection: authentication bypass, UNION, blind and time-based
+4. NoSQL injection
+5. Command injection and unsafe shell execution
+6. Node.js child_process risks
+7. Password reset and authentication flaws
+8. Session fixation and session hijacking
+9. Broken MFA and authentication bypass
+10. Brute-force logic flaws
+11. IDOR/BOLA and broken access control
+12. Horizontal and vertical privilege escalation
+13. CSRF and SameSite weaknesses
+14. SSRF and cloud metadata abuse
+15. Internal network/localhost attacks
+16. File upload vulnerabilities and bypasses
+17. Web shells and image polyglots
+18. Clickjacking and open redirects
+19. CORS misconfiguration
+20. Race conditions
+21. Business logic vulnerabilities
+22. Security misconfiguration
+23. Path traversal and file inclusion
+24. XXE
+25. Cryptographic failures in web applications
+
+## 19. API Security
+1. REST API security
+2. API authentication flaws
+3. Broken API authorization and BOLA/IDOR
+4. Rate limiting flaws
+5. Mass assignment
+6. API business logic flaws
+7. API injection
+8. Token attacks
+9. JWT attacks: weak secrets, algorithm weaknesses, tampering, leakage and refresh-token issues
+10. OAuth implementation flaws and redirect URI issues
+11. OAuth token handling
+12. Burp Suite API testing
+13. Postman, Browser DevTools and curl for API testing
+14. Client-side restrictions and validation bypass
+15. Server-side validation
+16. Trust boundaries
+
+## 20. Credentials & Password Attacks
+1. Brute force and dictionary attacks
+2. Password spraying
+3. Credential stuffing
+4. Hash cracking
+5. Credential dumping
+6. Pass-the-Hash
+7. Pass-the-Ticket
+8. Kerberoasting
+9. AS-REP Roasting
+10. Hashcat and John the Ripper
+11. Mimikatz
+
+## 21. Privilege Escalation
+1. Linux SUID/SGID
+2. Linux capabilities
+3. Weak Linux permissions
+4. Cron job abuse
+5. Sudo misconfiguration
+6. Kernel vulnerabilities
+7. PATH manipulation
+8. Linux service exploitation
+9. Linux credential discovery
+10. Windows service exploitation
+11. Windows Registry and Scheduled Task abuse
+12. Weak Windows permissions
+13. Token privileges
+14. DLL hijacking
+15. Windows credential discovery
+16. UAC
+17. PowerShell abuse
+18. Windows internals
+
+## 22. Active Directory Security
+1. AD domains and Domain Controllers
+2. AD users, groups and OUs
+3. Group Policy
+4. LDAP in AD
+5. Kerberos in AD
+6. NTLM
+7. SPNs
+8. Trusts
+9. Delegation
+10. Domain Admin
+11. BloodHound
+12. AD enumeration
+13. Kerberoasting and AS-REP Roasting
+14. Pass-the-Hash and Pass-the-Ticket
+
+## 23. Lateral Movement
+1. SMB lateral movement
+2. WinRM
+3. RDP
+4. PsExec
+5. WMI
+6. Remote services
+7. Pass-the-Hash and Pass-the-Ticket
+8. Credential reuse
+
+## 24. Persistence & Command and Control
+1. Scheduled Task persistence
+2. Service persistence
+3. Registry persistence
+4. Startup mechanisms
+5. Account persistence
+6. SSH key persistence
+7. Web shell persistence
+8. Persistence techniques
+9. C2 fundamentals
+10. Beaconing
+11. HTTP C2
+12. DNS C2
+13. Reverse shells and bind shells
+14. C2 infrastructure
+15. Payloads and communication channels
+
+## 25. Adversary Simulation
+1. MITRE ATT&CK-driven adversary simulation
+2. Attack scenarios and attack chains
+3. TTP simulation
+4. Red Team operations
+5. Adversary emulation
+6. Atomic testing
+7. Controlled exploitation
+8. Rules of engagement
+9. Attack documentation
+
+## 26. Secure Coding & AppSec
+1. Secure SDLC
+2. Security requirements
+3. Threat modeling for applications
+4. Input validation and output encoding
+5. Secure error handling
+6. Secure session handling
+7. Password hashing
+8. Secure JWT handling
+9. File upload validation
+10. Rate limiting
+11. Helmet.js and security middleware
+12. Environment variable and secrets security
+13. Secure API design
+14. Secure authentication and authorization
+15. Dependency security and supply-chain security
+16. Code review
+17. SAST, DAST and SCA
+18. MERN/Node security
+19. Exposed MongoDB IDs
+20. Trusting frontend roles
+21. Insecure JWT storage
+22. Insecure CORS
+23. Leaking stack traces
+24. Weak middleware ordering
+
+## 27. Cloud & DevSecOps Security
+1. Docker fundamentals and container security
+2. Dockerfiles and image vulnerabilities
+3. Container permissions and secrets
+4. Kubernetes fundamentals and architecture
+5. Kubernetes RBAC and secrets
+6. Network policies
+7. Container escape fundamentals
+8. AWS fundamentals and shared responsibility
+9. AWS IAM
+10. EC2
+11. S3
+12. VPC
+13. Security Groups and NACLs
+14. CloudTrail and CloudWatch
+15. KMS and Secrets Manager
+16. Cloud logging and monitoring
+17. GitHub Actions and CI/CD security
+18. Secret leaks and insecure pipelines
+19. Pipeline security
+20. npm and malicious-package attacks
+21. Dependency confusion and lockfiles
+22. .env/API-key/Git exposure
+23. HashiCorp Vault
+24. IaC security
+25. Container scanning
+26. Secret scanning
+27. Secure DevSecOps lifecycle
+
+## 28. Purple Team Core
+1. Purple Team methodology
+2. Attack → telemetry → detection workflow
+3. Attack simulation and adversary emulation
+4. Atomic testing
+5. Telemetry collection
+6. Detection validation
+7. Detection gaps and visibility gaps
+8. Alert quality
+9. False-positive/false-negative analysis
+10. Detection tuning
+11. Security control validation
+12. ATT&CK tactic, technique and sub-technique mapping
+13. Telemetry mapping
+14. Detection mapping
+15. ATT&CK coverage matrix
+16. Detection coverage measurement
+17. EDR validation
+18. SIEM validation
+19. Firewall/IDS/IPS/WAF validation
+20. IAM, endpoint, network and cloud control validation
+21. Hunt-to-detection conversion
+22. Detection-to-hunt validation
+
+## 29. Purple Team Detection Engineering & Automation
+1. Sigma and YARA
+2. KQL and SPL
+3. SIEM and EDR detection rules
+4. Behavioral and correlation detection
+5. Detection-as-code
+6. Detection testing
+7. Detection automation
+8. Python security automation
+9. PowerShell and Bash automation
+10. REST, SIEM and EDR APIs
+11. MITRE ATT&CK data
+12. Automated attack simulation
+13. Automated telemetry collection
+14. Automated reporting
+15. Security dashboards
+16. Docker-based security labs
+17. Terraform-based lab deployment
+
+## 30. Security Reporting
+1. Vulnerability reports
+2. Penetration testing reports
+3. Incident reports
+4. Attack simulation reports
+5. ATT&CK mapping and detection-gap reports
+6. Remediation recommendations
+7. Retesting
+8. Executive summaries
+9. Technical findings
+10. Evidence documentation
+
+## 31. Practical Labs & Portfolio
+1. Vulnerable MERN application lab
+2. Authentication/RBAC/API security lab
+3. Exploit, patch and document application vulnerabilities
+4. Blue Team Windows/Linux monitoring lab
+5. Sysmon + Wazuh/Elastic lab
+6. Detection engineering and alert investigation lab
+7. Active Directory lab
+8. Kerberos/LDAP and Group Policy lab
+9. AD attack simulation and detection lab
+10. Purple Team attack-to-detection lab
+11. SIEM/EDR integration lab
+12. ATT&CK mapping and detection validation lab
+13. Threat hunting and detection-gap lab
+14. Cloud security lab
+15. AWS IAM/VPC/S3/CloudTrail lab
+16. Cloud misconfiguration testing and detection
+
+## 32. Practical Platforms & Bug Bounty
+1. PortSwigger Web Security Academy
+2. TryHackMe
+3. Hack The Box
+4. CTFs
+5. Blue Team Labs
+6. Detection engineering labs
+7. Authorized bug bounty programs
+8. Bug bounty methodology
+9. Recon methodology
+10. Vulnerability chaining
+11. Authentication bypass hunting
+12. Business logic testing
+13. API testing
+14. Vulnerability reporting
+15. Responsible disclosure
+
+## 33. Optional Blockchain Security
+1. Blockchain architecture
+2. Smart contracts and Solidity
+3. EVM
+4. Wallets, transactions and gas
+5. Reentrancy
+6. Integer overflow/underflow
+7. Smart contract access control
+8. Oracle manipulation
+9. Flash-loan attacks
+10. Signature vulnerabilities
+11. Upgradeable-contract risks
+12. Gas-related attacks
+13. DeFi business logic
+14. Wallet drainers
+15. RPC/API abuse
+16. Web3 phishing and malicious approvals
+17. Web3 frontend vulnerabilities
+18. Private-key security
+19. Smart contract threat modeling
+20. Slither
+21. Foundry and Hardhat
+22. Manual smart contract auditing
+23. Audit reporting
+
+## 34. Advanced Specializations
+1. Cloud Security
+2. Advanced Application Security
+3. DevSecOps
+4. Advanced Threat Hunting
+5. Advanced Digital Forensics
+6. Malware Analysis
+7. Reverse Engineering
+8. Exploit Development
+9. Security Research
+10. Advanced Active Directory
+11. Kernel Security
+12. Advanced Assembly
+13. Advanced Cryptography
+14. Security Architecture
