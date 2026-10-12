@@ -1,0 +1,287 @@
+# 6. Filesystems
+
+Depth: Medium — Cybersecurity Fundamentals
+
+## 1. What is a filesystem?
+
+A filesystem is the method an operating system uses to organize, store, find, and manage files on a storage device.
+
+Imagine your computer's storage is a large cupboard. Without organization, all your documents would be thrown inside randomly, and finding anything would be difficult.
+
+A filesystem acts like the cupboard's organization system. It helps the operating system know:
+
+- Which files exist.
+- Where their data is stored.
+- What each file is named.
+- Who can access or modify a file.
+- Which parts of storage are free or occupied.
+
+For example, when you save `notes.txt` inside your Documents folder, the filesystem manages how that file is represented and stored on your disk.
+
+Important: A storage device and a filesystem are not the same thing.
+
+- Storage device: The physical or virtual place where data is stored, such as an SSD, HDD, or USB drive.
+- Filesystem: The structure used to organize and manage data on that storage device.
+
+## 2. How does a filesystem work?
+
+Let's understand what happens when you create a file.
+
+Step 1: Create a file
+
+You create `secret.txt` in a folder.
+
+Step 2: Filesystem manages the file
+
+Records its name, metadata, and where its contents are stored.
+
+Step 3: Data is stored
+
+The file's contents are written to storage blocks.
+
+When you later open `secret.txt`, the operating system asks the filesystem to locate the file's data and make it available to your application.
+
+You don't need to know the exact physical location of the data. The filesystem handles that complexity.
+
+### Important filesystem concepts
+
+1\. Files and directories
+
+A file contains data, such as text, images, executable programs, or configuration settings.
+
+A directory (folder) organizes files and other directories into a hierarchy.
+
+For example, on Linux:
+
+```
+/
+├── home/
+│   └── user/
+│       └── secret.txt
+├── etc/
+│   └── passwd
+├── var/
+└── bin/
+```
+
+Here, `/` is the root directory. Everything in this Linux directory hierarchy is located beneath it.
+
+2\. Metadata
+
+Metadata is information about a file rather than its actual contents.
+
+It can include:
+
+- File size.
+- Owner and group.
+- Permissions.
+- Creation or modification timestamps, depending on the filesystem.
+- References to where file data is stored.
+
+For example, a file might contain a password list, while its metadata describes who owns it and who can read it.
+
+3\. Storage blocks
+
+Filesystems typically allocate storage in units called blocks or clusters. A large file may occupy many blocks, which do not necessarily sit next to each other physically.
+
+The filesystem tracks which blocks belong to which files and which blocks remain available.
+
+4\. File allocation and deletion
+
+When you create a file, the filesystem allocates space for its data and records the necessary metadata.
+
+When you delete a file, the filesystem commonly removes its directory entry or marks its space as available for reuse. The original data may remain on the storage device until overwritten or otherwise erased.
+
+This is an important concept in digital forensics.
+
+## 3. Common filesystem types
+
+Different operating systems and storage environments use different filesystems.
+
+[Take a Snapshot to Back Up Your System](https://images.openai.com/static-rsc-4/TfblRVqeRhQmnvPvsXJhbv34fUegbAzjivcgAjRsKPzxLiTRNQJ-H-DM65JshiL13Vuejs8kFaGWefkqpPuPFvcaZG_ebc0CJzWnpElzqycq1FztlrwFY5Ctbkx-k9UlJyPkU5WCioZuAAxFYpjP6ii_7f_0nRdxg9EcXojG-tg?purpose=inline)
+
+NTFS — Windows
+
+Commonly used for Windows system and data drives. Supports file permissions, journaling, and other features useful for security and reliability.
+
+[Linux terminál parancsok kezdőknek - Számítástechnika kezdőknek](https://images.openai.com/static-rsc-4/sWR_LvLA86czPUVYcAxlyeaWPWAqbRfosmnuzk62fJhqmqjtyFar4EPJHLD7VDVPEXazrYi8OaetG9YEy1OY24LVsA5o7FapGhr8PEMQ4l61gp0TeRLgSNxBYxUbBv1hNmR1JQ2HPrij4AqLiiR3R7E7d8GbWl5yxwqkebAASXg?purpose=inline)
+
+ext4 — Linux
+
+A widely used Linux filesystem. Supports Unix-style permissions, journaling, and large files and volumes.
+
+[Introducción a Utilidad de Discos en el Mac - Soporte técnico de Apple (ES)](https://images.openai.com/static-rsc-4/_ziBuBt9xxeJL-9u43YnffdBTjZax7HLfJ4Qv5TZZPelhkPR47s9Tx9ScMuOgNK_V7K5CdZOGkEcEGpWFG4s-SXpVGojZbsQAdHYsylk8J-3gZSJVfzANm460ja7ODXwqO2s1WwdCxnxx2sBIjJYSDpVJsXBN9eQ_9u_V3JwbtA?purpose=inline)
+
+APFS — Apple
+
+Designed for Apple's modern operating systems and flash storage. Supports features such as snapshots, cloning, and native encryption capabilities.
+
+[32G以上的大容量U盘如何格式化成FAT32文件系统 - wu.g.q - 博客园](https://images.openai.com/static-rsc-4/CKtHRsSo-wQ1bM9hn4a5XPAtA9rReIQcAYUXT0xDd6z81NMOxRmfi3oXJo_BwAeKGQ_axeE2rQIsDBNhkkR_a-ezVWX5cX1ejpWKjZkDsjqWgNaCSaiC1Gn6RTBbN5IXz-_qa0xJo7xqRC3hTAG6FW9itjekpcCdlgUfJSTij94?purpose=inline)
+
+FAT32 / exFAT — Portable storage
+
+Often encountered on USB drives and removable media. exFAT is useful for exchanging large files between compatible operating systems.
+
+For cybersecurity fundamentals, you should recognize these names and understand that filesystem features and security capabilities differ. You do not need to memorize every implementation detail.
+
+## 4. Filesystems and cybersecurity
+
+Filesystems matter because operating systems use them to manage access to files, and attackers often interact with files to execute attacks, hide data, or maintain access.
+
+### A. File permissions and access control
+
+On Linux, files commonly have read (`r`), write (`w`), and execute (`x`) permissions.
+
+For example:
+
+```
+ls -l secret.txt
+```
+
+Possible output:
+
+```
+-rw-r----- 1 alice developers 1200 Oct 10 secret.txt
+```
+
+The permission section means:
+
+- `rw-`: The owner can read and write.
+- `r--`: Members of the group can read.
+- `---`: Other users have no permissions.
+
+This matters because incorrectly configured permissions can expose sensitive information or allow unauthorized modification of files.
+
+### B. Sensitive files
+
+Attackers may search for files containing credentials, API keys, SSH private keys, configuration secrets, or application data.
+
+For example, Linux systems commonly store user account information in `/etc/passwd`, while password hashes are typically kept in `/etc/shadow` on traditional Linux installations.
+
+Understanding directory structures helps security analysts investigate suspicious access and find exposed data.
+
+### C. Hidden files and malicious files
+
+Some operating systems allow hidden files or files with unusual names. On Linux, names beginning with a dot are hidden by default in ordinary directory listings.
+
+```
+ls
+ls -la
+```
+
+The second command also displays hidden entries.
+
+Hidden does not mean secure. Malware may use hidden files or inconspicuous directories to store configuration, payloads, or other data. Security tools must not assume that hidden files are harmless.
+
+### D. File deletion and digital forensics
+
+Deleting a file does not always immediately erase its contents.
+
+Depending on the filesystem, storage device, encryption, and subsequent activity, forensic investigators may recover some deleted data or associated metadata.
+
+This is useful in investigations involving data theft, malware, or unauthorized activity. Solid-state drives and TRIM can complicate recovery, so recovery is never guaranteed.
+
+### E. Journaling and integrity
+
+Some filesystems maintain a journal that records certain pending filesystem changes. After an unexpected shutdown, this can help restore filesystem consistency.
+
+However, journaling is not the same as a backup, encryption, or malware protection. It does not guarantee that file contents are safe or recoverable.
+
+## 5. Filesystem paths in Linux and Windows
+
+A path identifies the location of a file or directory.
+
+| Concept        | Linux         | Windows                                                 |
+| -------------- | ------------- | ------------------------------------------------------- |
+| Root           | `/`           | `C:\` is a drive root                                   |
+| User directory | `/home/alice` | `C:\Users\Alice`                                        |
+| Configuration  | `/etc`        | Often under `C:\ProgramData` or application directories |
+| Path separator | `/`           | Usually `\`                                             |
+
+Linux treats filenames as case-sensitive on typical filesystems, so `secret.txt` and `Secret.txt` can be different files. Windows behavior depends on the filesystem and directory configuration, but filenames are usually treated as case-insensitive.
+
+These differences matter when investigating systems, writing scripts, and analyzing malware across operating systems.
+
+## 6. Practical Linux commands
+
+Learn these commands to begin exploring filesystems safely.
+
+| Command              | Purpose                                         |
+| -------------------- | ----------------------------------------------- |
+| `pwd`                | Show your current directory                     |
+| `ls -la`             | List files, including hidden entries            |
+| `stat filename`      | Display file metadata                           |
+| `df -h`              | Show filesystem space usage                     |
+| `du -sh directory`   | Estimate directory space usage                  |
+| `find /path -type f` | Find files under a directory                    |
+| `lsblk -f`           | List storage devices and filesystem information |
+| `mount`              | Display mounted filesystems                     |
+
+For example:
+
+```
+df -h
+lsblk -f
+stat secret.txt
+```
+
+These commands help you inspect storage capacity, identify filesystem types, and examine file metadata. Some commands may show different information depending on your permissions and environment.
+
+## 7. What you should remember for cybersecurity
+
+Focus on these six concepts:
+
+1. Filesystem: Organizes and manages files on storage.
+2. Metadata: Describes a file, including ownership and permissions.
+3. Permissions: Control who can read, modify, or execute files.
+4. Filesystem types: NTFS, ext4, APFS, FAT32, and exFAT have different features.
+5. Deletion and recovery: Deleting a file does not necessarily erase its underlying data immediately.
+6. Paths and directories: Help you navigate systems and investigate suspicious files.
+
+You can learn advanced topics such as inodes, the Master File Table (MFT), filesystem journaling internals, and filesystem forensics later, when studying Linux internals, reverse engineering, or incident response.
+
+## Quick self-test
+
+1\. What does a filesystem primarily do?
+
+Encrypts every file automatically
+
+Organizes and manages files on storage
+
+Prevents all malware infections
+
+Correct! A filesystem manages file organization, metadata, allocation, and access-related information.
+
+2\. What does deleting a file usually mean?
+
+Every data bit is immediately destroyed
+
+The computer uninstalls the filesystem
+
+Its entry or allocated space is marked for removal or reuse
+
+Correct! The underlying contents may remain until overwritten or erased by other mechanisms.
+
+3\. Which Linux command displays file permissions and other metadata?
+
+stat filename
+
+df -h
+
+pwd
+
+Not quite. stat displays metadata for a specified file or directory.
+
+4\. Does a hidden file automatically become secure?
+
+Yes, hidden files cannot be accessed
+
+No, hiding a file is not access control
+
+Yes, but only on Linux
+
+Correct! Hidden status affects ordinary visibility, not whether someone is authorized to access the file.
+
+## Score: 3 / 4
+
+Try again

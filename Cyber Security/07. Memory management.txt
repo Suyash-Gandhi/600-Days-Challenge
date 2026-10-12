@@ -1,0 +1,292 @@
+# 7. Memory Management
+
+Depth: Medium — Cybersecurity Fundamentals
+
+## 1. What is memory management?
+
+Memory management is the process by which an operating system manages RAM and controls how programs use it.
+
+Imagine your computer has 8 GB of RAM and you open Chrome, VS Code, and a game simultaneously. All three programs need memory to store their instructions and data while running.
+
+The operating system must decide:
+
+- Which program gets memory.
+- How much memory each program can use.
+- Where its data is stored in memory.
+- How to prevent one program from accessing another program's private memory.
+- What happens when memory becomes full.
+
+This is called memory management.
+
+## 2. Why does a program need memory?
+
+Consider a simple C program:
+
+```
+int main() {
+    int a = 10;
+    int b = 20;
+    int sum = a + b;
+    return 0;
+}
+```
+
+While this program runs, the computer needs memory to store information such as:
+
+- The program's instructions.
+- The values of `a` and `b`.
+- The result stored in `sum`.
+- Temporary information required during execution.
+
+The operating system and hardware work together to provide and manage this memory.
+
+## 3. Virtual memory
+
+[Virtual Memory](https://images.openai.com/static-rsc-4/Jh27owGDHIGqk0PjbqlHw8yprfqgpG48EaYFFMLAgnQgd2S1qWIQ_KJMSOVIRKfLFnrf28hUEuZgMogtmCqBQxSW8ixhsqpOgk2f06RQrH544_SZxkGZt1oX71mv2gbsCYeZ5XBUGCPvpuhW9hYSRCpk9lJ1vY7CfzaPOvss3mI?purpose=inline)
+
+[github-pages.senecapolytechnic.ca](https://github-pages.senecapolytechnic.ca/sep400/Week12/Week12.html)
+
+Virtual memory is one of the most important concepts in memory management.
+
+Every process is given its own virtual address space. This means a program works with virtual addresses rather than directly managing physical RAM addresses.
+
+Think of it like this:
+
+Imagine two students who each have a notebook with a page numbered 10. Both notebooks can have a page 10, even though they are separate notebooks.
+
+Similarly, two processes might use the same virtual address, but that address can refer to different physical locations in RAM.
+
+The operating system and the CPU's Memory Management Unit (MMU) translate virtual addresses into physical addresses using structures such as page tables.
+
+Why is this useful?
+
+1. Isolation: One process cannot normally read or modify another process's memory without authorization or a vulnerability.
+2. Convenience: Programs can work with their own address spaces without needing to know exactly where their data sits in physical RAM.
+3. Flexibility: The OS can manage physical memory efficiently and use disk storage to support memory demand.
+
+### Virtual memory versus physical memory
+
+| Virtual memory                             | Physical memory                                    |
+| ------------------------------------------ | -------------------------------------------------- |
+| Address space seen by a process            | Actual RAM installed in the computer               |
+| Uses virtual addresses                     | Uses physical addresses                            |
+| Managed through OS and hardware mechanisms | Contains the actual resident data and instructions |
+| Can be larger than available RAM           | Has a fixed physical capacity                      |
+
+Important: Virtual memory is not simply another name for disk space. It is an address-space and memory-management mechanism. Disk storage can support it, for example through swap space or a page file.
+
+## 4. Memory pages and paging
+
+Operating systems commonly divide virtual memory into fixed-size blocks called pages. Physical RAM is divided into corresponding blocks called frames.
+
+For example, suppose a process needs 12 KB of memory and the page size is 4 KB.
+
+It needs three pages:
+
+Virtual memory of a process
+
+Page 0
+
+4 KB
+
+Page 1
+
+4 KB
+
+Page 2
+
+4 KB
+
+Page table maps pages to frames
+
+Physical RAM (frames need not be adjacent)
+
+Frame 5
+
+Frame 2
+
+Frame 9
+
+Illustrative mapping: Page 0 → Frame 5, Page 1 → Frame 2, Page 2 → Frame 9.
+
+The pages of one process do not have to occupy consecutive physical RAM locations.
+
+The OS maintains page tables, while the MMU uses them to translate virtual addresses to physical addresses.
+
+This technique is called paging.
+
+### What is a page fault?
+
+Suppose a program tries to access a page that is not currently present in RAM.
+
+The CPU raises a page fault, transferring control to the operating system.
+
+The OS determines what happened:
+
+- If the access is valid but the page is absent, the OS may load it from storage into RAM and resume the program.
+- If the access is invalid or violates permissions, the OS may terminate the process or deliver an appropriate fault signal.
+
+A page fault does not automatically mean an error in the program. It can be a normal part of virtual memory operation.
+
+## 5. Stack and heap memory
+
+Programs use different memory regions for different purposes.
+
+Stack
+
+Stores function-call information and typically local variables with automatic storage duration.
+
+Example: `int x = 10;` inside a function.
+
+Heap
+
+Stores dynamically allocated memory whose lifetime is managed separately from an individual function call.
+
+Example: memory allocated using `malloc()` in C.
+
+Other regions
+
+Program instructions and global or static variables also occupy memory regions.
+
+In C:
+
+```
+int main() {
+    int x = 10;                  // Typically stack
+    int *p = malloc(sizeof(int)); // Allocates on heap
+
+    if (p != NULL) {
+        *p = 20;
+        free(p);
+    }
+
+    return 0;
+}
+```
+
+The pointer variable `p` is typically on the stack, while the memory allocated by `malloc()` is on the heap.
+
+The important distinction is that the pointer and the memory it points to are not the same thing.
+
+### Why is this important in cybersecurity?
+
+Memory bugs can create serious vulnerabilities:
+
+- Buffer overflow: A program writes beyond the intended bounds of a buffer.
+- Use-after-free: A program accesses memory after it has been freed.
+- Memory leak: A program fails to release memory it no longer needs.
+- Double free: A program attempts to free the same allocation twice.
+
+These bugs can cause crashes, expose sensitive data, corrupt program state, and sometimes enable code execution.
+
+## 6. Memory protection and process isolation
+
+A secure operating system must prevent processes from freely accessing each other's memory.
+
+For example, imagine that you open a banking website in one browser process and an untrusted application in another process.
+
+Ideally, the untrusted application must not be able to read the banking process's passwords, session tokens, or other private data simply by requesting the relevant memory address.
+
+The OS and CPU enforce access permissions through virtual memory mappings and hardware protection.
+
+Memory regions can have permissions such as:
+
+- Read: Data can be read.
+- Write: Data can be modified.
+- Execute: Instructions can be executed from that region.
+
+These permissions support security mechanisms such as Data Execution Prevention (DEP/NX), which can prevent code execution from certain memory regions.
+
+However, isolation is not absolute. Vulnerabilities in the OS, kernel, drivers, or hardware can sometimes undermine it.
+
+## 7. What happens when RAM becomes full?
+
+When RAM is under pressure, the operating system has several options.
+
+1. Reclaim memory that can be released or reused.
+2. Remove cached data that can be loaded again later.
+3. Move some eligible memory pages to swap space or a page file, depending on the OS.
+4. Reduce memory available to applications or terminate processes when necessary.
+
+When a required page must be retrieved from disk, accessing it is much slower than accessing RAM. Excessive paging can cause a system to become extremely slow.
+
+On some systems, severe memory pressure can trigger an out-of-memory mechanism that terminates processes to recover resources.
+
+## 8. Memory management in cybersecurity
+
+Here are the concepts you should connect to your cybersecurity studies.
+
+| Concept                | Why it matters                                                       |
+| ---------------------- | -------------------------------------------------------------------- |
+| Virtual memory         | Understand process address spaces and isolation                      |
+| Paging and page faults | Understand memory translation and memory-access behavior             |
+| Stack and heap         | Understand common memory-corruption vulnerabilities                  |
+| Memory permissions     | Understand DEP/NX and executable memory                              |
+| Process isolation      | Understand how the OS protects processes from each other             |
+| Memory leaks           | Recognize resource-exhaustion and availability problems              |
+| Swap and page files    | Understand how memory pressure affects performance and data handling |
+| Kernel memory          | Understand privileged memory and kernel-level vulnerabilities        |
+
+These foundations are particularly useful for Linux internals, reverse engineering, malware analysis, vulnerability research, and exploit development.
+
+## 9. Check your understanding
+
+1\. What is the main purpose of memory management?
+
+To manage how programs use memory
+
+To permanently store files
+
+To increase CPU clock speed
+
+Correct. The OS manages memory allocation, address translation, protection, and reclamation.
+
+2\. What translates virtual addresses into physical addresses?
+
+The file system alone
+
+The MMU using page-table information
+
+The compiler alone
+
+Correct. The Memory Management Unit uses address-translation structures maintained by the OS.
+
+3\. Where is memory allocated by malloc() typically located?
+
+Heap
+
+Stack
+
+CPU register only
+
+Correct. malloc() returns a pointer to a dynamically allocated block, typically in the heap.
+
+4\. Does every page fault mean the program has a bug?
+
+Yes, always
+
+No, it can be a normal memory-management event
+
+Only when RAM is full
+
+Correct. A valid page may simply need to be loaded into RAM. Invalid accesses can also cause faults.
+
+5\. What does process memory isolation help prevent?
+
+All programs from using RAM
+
+One process from freely accessing another process's memory
+
+All page faults
+
+Correct. Hardware-enforced address-space permissions help isolate processes, although vulnerabilities can weaken protection.
+
+5 of 5 answered
+
+Reset quiz
+
+## Score: 5/5
+
+## What you should remember
+
+You do not need to learn the internal implementation of every memory-management algorithm yet. For cybersecurity fundamentals, focus on understanding virtual memory, paging, page faults, stack versus heap, memory permissions, and process isolation. These concepts form the foundation for studying memory-corruption vulnerabilities and how operating systems protect applications.

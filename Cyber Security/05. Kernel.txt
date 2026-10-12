@@ -1,0 +1,271 @@
+# 5. Kernel, User Space and System Calls
+
+Depth: Medium — Cybersecurity Fundamentals
+
+Since you're learning cybersecurity for Linux, operating systems, reverse engineering, malware analysis, vulnerability research, and penetration testing, these three concepts are extremely important. They explain how programs interact with the operating system, how permissions work, and how malicious software can abuse the system.
+
+## 1. First, understand the basic idea
+
+Imagine your computer is a large office.
+
+- User space is where ordinary employees work. They can perform their assigned tasks but cannot access every resource.
+- Kernel is the highly privileged manager that controls important resources and decides what each employee can access.
+- System calls are the official requests employees make when they need the manager to perform a privileged operation.
+
+User Space
+
+Applications, browsers, shells, ordinary programs
+
+System Calls
+
+Requests to access protected operating-system services
+
+Kernel Space
+
+Process management, memory, filesystems, networking, device access
+
+Hardware interaction under kernel control
+
+Hardware
+
+CPU, RAM, storage devices, network interfaces
+
+The essential idea is that applications generally cannot directly perform privileged operations whenever they want. They must use controlled operating-system mechanisms.
+
+## 2. What is the kernel?
+
+The kernel is the core component of an operating system. It manages hardware resources and provides essential services to programs.
+
+For example, when you open a file, create a process, or receive network data, the kernel handles the underlying operating-system operations.
+
+### What does the kernel manage?
+
+| Responsibility           | What it means                                             |
+| ------------------------ | --------------------------------------------------------- |
+| Process management       | Creates, schedules and terminates processes.              |
+| Memory management        | Allocates memory and isolates processes from one another. |
+| Filesystems              | Controls access to files and directories.                 |
+| Networking               | Manages network protocols, sockets and packet processing. |
+| Device management        | Coordinates communication with hardware through drivers.  |
+| Security and permissions | Enforces access controls and privilege boundaries.        |
+
+### Example
+
+Suppose you open a text editor and save a file.
+
+1. The text editor runs as a normal application.
+2. It requests that the operating system save the file.
+3. The kernel checks applicable permissions and handles the filesystem operation.
+4. The data is passed to the storage subsystem, which coordinates writing it to the storage device.
+
+The application does not need to manage the physical storage hardware itself.
+
+### Why is the kernel important in cybersecurity?
+
+The kernel has extensive privileges. A vulnerability that allows an attacker to execute code inside the kernel can potentially give that attacker control over the entire operating system.
+
+For example, a kernel exploit might allow a normal user to gain root-level privileges on Linux.
+
+## 3. What is user space?
+
+User space is the environment in which ordinary applications and most user-level processes execute with restricted privileges.
+
+Examples include:
+
+- Web browsers
+- Text editors
+- Your terminal shell, such as Bash
+- Python scripts
+- Node.js applications
+- Most command-line utilities
+
+A process running in user space cannot simply access another process's private memory or execute arbitrary privileged hardware operations.
+
+These restrictions help prevent one faulty or compromised application from automatically taking over the entire computer.
+
+### Example: Two isolated processes
+
+Imagine you have two programs running:
+
+- Process A: a web browser
+- Process B: a password manager
+
+Normally, Process A cannot freely read Process B's private memory.
+
+The operating system enforces memory isolation, subject to permissions and the possibility of vulnerabilities or privileged debugging mechanisms.
+
+Cybersecurity connection: If malware compromises your browser, it does not automatically gain access to every process on the computer. It may need to exploit another vulnerability, steal accessible credentials, abuse permissions, or escalate privileges.
+
+### Is user space the same as a normal user account?
+
+Not exactly.
+
+- User space describes where code executes and the privileges associated with its execution mode.
+- User account describes an operating-system identity, such as a Linux user named `alice`.
+- Root is a highly privileged Linux user account, but even root-run programs normally execute in user mode unless they enter the kernel through an appropriate mechanism.
+
+This distinction matters because running as root does not mean a program is executing inside kernel space.
+
+## 4. What are system calls?
+
+A system call is a controlled mechanism through which a user-space program requests a service from the kernel.
+
+Applications need system calls because operations such as creating processes, accessing files, and communicating over networks require operating-system involvement.
+
+Common Linux system calls include:
+
+| System call | Purpose                                            |
+| ----------- | -------------------------------------------------- |
+| `openat()`  | Opens a file relative to a directory or path.      |
+| `read()`    | Reads data from a file descriptor.                 |
+| `write()`   | Writes data to a file descriptor.                  |
+| `close()`   | Closes a file descriptor.                          |
+| `fork()`    | Creates a new process.                             |
+| `execve()`  | Replaces a process's program with another program. |
+| `socket()`  | Creates a network communication endpoint.          |
+| `connect()` | Initiates a connection through a socket.           |
+| `mmap()`    | Maps memory into a process's address space.        |
+
+These are Linux/POSIX-related examples; exact interfaces and behavior vary across operating systems.
+
+### Example: Reading a file
+
+Suppose a Python program wants to read `notes.txt`.
+
+Step 1: Application requests data
+
+Python calls a function such as `open()` to access the file.
+
+Step 2: System-call interface
+
+The runtime and libraries invoke the required operating-system interface, such as `openat()` and `read()` on Linux.
+
+Step 3: Kernel handles the request
+
+The kernel checks access permissions and obtains the requested data through the filesystem.
+
+Step 4: Data returns to the application
+
+The program receives the data or an error, such as a permission-denied error.
+
+One important detail: a language function and a system call are not necessarily the same thing. For example, Python's `open()` is a high-level function; it typically uses lower-level runtime and operating-system interfaces to perform the actual work.
+
+## 5. What happens when a system call executes?
+
+The CPU supports different privilege levels. On common x86-64 systems, user applications ordinarily run at Ring 3, while the kernel operates at Ring 0.
+
+A system call causes a controlled transition from user mode to kernel mode.
+
+The simplified sequence is:
+
+1. A program requests a kernel service.
+2. The CPU switches to the appropriate privileged execution context through the system-call mechanism.
+3. The kernel validates and processes the request.
+4. The kernel returns a result or error.
+5. Execution resumes in user mode.
+
+This transition does not necessarily create a new process or thread. It is a change in execution privilege and control flow.
+
+Important: A system call is not the same as an ordinary function call. An ordinary function call usually stays within the same privilege level, whereas a system call crosses the user/kernel boundary.
+
+## 6. Why these concepts matter in cybersecurity
+
+1\. Malware analysis
+
+Malware may use file, process and networking system calls to create files, launch programs, establish connections or manipulate its environment. Observing these behaviors helps analysts understand what it does.
+
+2\. Privilege escalation
+
+Attackers may exploit a kernel vulnerability to move from restricted user-level privileges to higher privileges. This is one reason kernel patching is important.
+
+3\. Linux system monitoring
+
+Tools such as `strace` can show system calls made by a process. This is useful for debugging and investigating suspicious behavior.
+
+4\. Sandboxing and system hardening
+
+Linux mechanisms such as seccomp can restrict which system calls a process is allowed to make. This can reduce the impact of a compromised application.
+
+5\. Reverse engineering
+
+When analyzing a compiled program, identifying its system calls helps reveal whether it reads files, creates processes, accesses memory or communicates over a network.
+
+### Practical Linux example
+
+If you are using Linux or WSL, run:
+
+```
+strace -e trace=openat,read,write,close cat /etc/hostname
+```
+
+This traces selected system calls made by `cat` while it reads and displays the hostname file.
+
+You may see calls such as `openat()`, `read()` and `write()`. The exact output varies by environment.
+
+If `strace` is not installed, install it using your distribution's package manager. Tracing another user's process or a privileged process may require additional permissions.
+
+## 7. Test your understanding
+
+1\. Which component manages process scheduling and memory protection?
+
+User space
+
+Kernel
+
+Text editor
+
+Shell
+
+Correct. The kernel manages processes, memory and other core operating-system resources.
+
+2\. A program running as root is normally executing where?
+
+Only in kernel space
+
+In user space with elevated privileges
+
+Directly on the CPU without an operating system
+
+Inside the BIOS
+
+Correct answer: In user space with elevated privileges Root is a user identity. Root-run programs still normally execute in user mode.
+
+3\. What does a system call allow a program to do?
+
+Bypass every permission check
+
+Request a service from the kernel
+
+Turn user space into permanent kernel space
+
+Automatically gain root access
+
+Correct. System calls provide controlled access to operating-system services.
+
+4\. Which Linux tool can trace a program's system calls?
+
+strace
+
+mkdir
+
+grep only
+
+ping
+
+Correct. strace observes system calls and signals associated with a process.
+
+Check answers
+
+## Score: 3/4
+
+Try again
+
+## 8. What you should remember
+
+- Kernel: The privileged core of the operating system that manages resources and enforces protections.
+- User space: Where applications and ordinary processes run with restricted execution privileges.
+- System calls: The controlled interface through which applications request kernel services.
+- Kernel mode vs. user mode: Different CPU execution privilege levels.
+- Cybersecurity connection: These concepts are foundational to malware analysis, Linux internals, system-call tracing, sandboxing and kernel exploitation.
+
+You do not need to learn kernel programming yet. First, make sure you can explain how a normal program requests a file, how the kernel handles that request, and why a compromised user-space application does not automatically have full control of the operating system.
