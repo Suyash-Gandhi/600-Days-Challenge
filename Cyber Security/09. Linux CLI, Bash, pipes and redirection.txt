@@ -1,0 +1,547 @@
+# 9. Linux CLI, Bash, Pipes and Redirection
+
+Cybersecurity Fundamentals · Medium Depth
+
+Since you're learning cybersecurity for Linux, penetration testing, reverse engineering, malware analysis, and vulnerability research, this topic is important because you will spend a lot of time controlling Linux systems through commands rather than graphical interfaces.
+
+Let's understand it from the beginning with simple examples.
+
+## 1. What is the Linux CLI?
+
+CLI stands for Command-Line Interface. It allows you to interact with an operating system by typing commands instead of clicking buttons.
+
+[What's New In Ubuntu 20.04 LTS (Focal Fossa), With Screenshots - Linux Uprising Blog](https://images.openai.com/static-rsc-4/c1Q7lXwS9pR4FqBhjA_bVMXaP4o4gaie9NSTynKx2nO2SX_o2OKKu5ry2SWxw8bJR1gY54QXq36ubdpibDzxDnRK3HgnPOvjI5U6rH6yhSO6u4OOVJd9l6cglv-DNxXf3tQqMLrAmxMnJzFA-1zAKL-1BrUNS7i41Fd6rHPhrmc?purpose=inline)
+
+GUI
+
+You click folders, buttons and icons.
+
+[Unix & Bash Tutorial | RIT Research Computing Documentation](https://images.openai.com/static-rsc-4/RWRFOY875dquEgwYqwIUGSo8aQY3FEoLGLZCCRt1jtQVVdZb2pFp6cjb7sGkpt_eOYBia-d60Je_FbtorBXVcZsXbWFx_TYvBkRPQJSCn9rB6lb__rFMO0BNeGCLYCRsU8mRo6SsjE3J2hzgJ6Fg5Ec0uUIzMu4Wwxuoc3GXwvQ?purpose=inline)
+
+CLI
+
+You type commands to perform tasks.
+
+For example, suppose you want to see the files inside a folder.
+
+In a GUI, you open the folder and look at the files.
+
+In the CLI, you type:
+
+```
+ls
+```
+
+Linux displays the files in the current directory.
+
+Other useful commands include:
+
+| Command | Purpose                          |
+| ------- | -------------------------------- |
+| `pwd`   | Show your current directory      |
+| `ls`    | List files and directories       |
+| `cd`    | Change directory                 |
+| `mkdir` | Create a directory               |
+| `touch` | Create an empty file             |
+| `cp`    | Copy files                       |
+| `mv`    | Move or rename files             |
+| `rm`    | Remove files                     |
+| `cat`   | Display file contents            |
+| `less`  | Read a file page by page         |
+| `grep`  | Search text for a pattern        |
+| `find`  | Search for files and directories |
+| `man`   | Read a command's manual          |
+
+Example:
+
+```
+pwd
+ls
+mkdir security-lab
+cd security-lab
+touch notes.txt
+ls
+```
+
+What happens?
+
+1. `pwd` shows where you are.
+2. `ls` lists the current contents.
+3. `mkdir` creates a directory.
+4. `cd` enters that directory.
+5. `touch` creates a file.
+6. `ls` displays the new file.
+
+Cybersecurity connection: These commands help you navigate Linux servers, inspect suspicious files, examine evidence, and work inside penetration-testing environments.
+
+## 2. What is Bash?
+
+Bash stands for Bourne Again Shell.
+
+To understand Bash, you need to distinguish three things:
+
+- Terminal: The application or interface where you interact with the command line.
+- Shell: The program that interprets your commands and executes them.
+- Bash: One particular shell commonly used on Linux.
+
+Think of it like this:
+
+You
+
+Type a command
+
+Terminal
+
+Displays your input and output
+
+Bash shell
+
+Interprets the command and launches programs
+
+Linux programs and kernel
+
+Programs perform operations; the kernel provides protected system services
+
+For example:
+
+```
+ls -l
+```
+
+Bash interprets the command and launches the `ls` program with the `-l` option, which displays a detailed listing.
+
+### Bash variables
+
+Bash can store values in variables.
+
+```
+name="Suyash"
+echo "$name"
+```
+
+Output:
+
+```
+Suyash
+```
+
+Notice that there must be no spaces around `=` when assigning a simple Bash variable.
+
+### Running multiple commands
+
+```
+pwd
+ls
+whoami
+```
+
+Each command runs separately, in sequence.
+
+You can also write a Bash script in a file such as `check.sh`:
+
+```
+#!/usr/bin/env bash
+
+echo "Current user:"
+whoami
+
+echo "Current directory:"
+pwd
+
+echo "Files:"
+ls -la
+```
+
+Run it with:
+
+```
+bash check.sh
+```
+
+This is the beginning of shell scripting: automating a series of commands instead of typing them manually every time.
+
+Cybersecurity connection: Bash scripts are used for log analysis, repetitive security checks, incident-response automation, and system administration. Attackers also use shell commands and scripts, so understanding Bash helps you recognize suspicious activity.
+
+## 3. Understanding command structure
+
+A Linux command often follows this pattern:
+
+```
+command [options] [arguments]
+```
+
+For example:
+
+```
+ls -la /home
+```
+
+| Part    | Meaning                          |
+| ------- | -------------------------------- |
+| `ls`    | The command                      |
+| `-la`   | Options that modify its behavior |
+| `/home` | The directory to examine         |
+
+The options `-l` and `-a` can be combined:
+
+- `-l`: Show detailed information.
+- `-a`: Include hidden entries, including names starting with `.`.
+
+Another example:
+
+```
+grep -i "error" application.log
+```
+
+- `grep`: Searches text.
+- `-i`: Ignores case.
+- `"error"`: The search pattern.
+- `application.log`: The input file.
+
+This command finds lines containing `error`, `ERROR`, `Error`, and similar variations.
+
+To understand an unfamiliar command, try:
+
+```
+command --help
+```
+
+Or:
+
+```
+man command
+```
+
+Replace `command` with the actual program name.
+
+## 4. Standard input, output and error
+
+This is one of the most important concepts in this topic.
+
+Linux programs commonly work with three standard data streams.
+
+## 0
+
+stdin
+
+Standard input
+
+Data a program reads, often from your keyboard or another command.
+
+## 1
+
+stdout
+
+Standard output
+
+Normal results produced by the program.
+
+## 2
+
+stderr
+
+Standard error
+
+Error messages and diagnostic information.
+
+For example:
+
+```
+ls /home
+```
+
+If the directory exists, `ls` displays its contents through standard output.
+
+Now try:
+
+```
+ls /directory-that-does-not-exist
+```
+
+The command produces an error message through standard error.
+
+The important insight is that normal output and error messages are separate streams. Linux lets you redirect them independently.
+
+This is the foundation of pipes and redirection.
+
+## 5. Redirection: controlling where output goes
+
+Normally, command output appears in your terminal. Redirection allows you to send that output somewhere else, such as a file.
+
+### A. `>` — Write output to a file
+
+```
+ls > files.txt
+```
+
+Instead of displaying the listing in the terminal, this writes it to `files.txt`.
+
+If the file already exists, `>` normally overwrites its contents.
+
+### B. `>>` — Append output
+
+```
+date >> files.txt
+```
+
+This adds the date to the end of `files.txt` without removing its existing contents.
+
+### C. `<` — Read input from a file
+
+```
+sort < names.txt
+```
+
+The `sort` command reads its input from `names.txt` and sorts the lines.
+
+### D. `2>` — Redirect errors
+
+```
+ls /invalid-path 2> errors.txt
+```
+
+The error message is written to `errors.txt` instead of being displayed in the terminal.
+
+### E. `2>&1` — Send errors to the same destination as standard output
+
+```
+command > output.txt 2>&1
+```
+
+This redirects standard output to `output.txt`, then redirects standard error to the same destination.
+
+The order matters. For example:
+
+```
+command > output.txt 2>&1
+```
+
+is not equivalent to:
+
+```
+command 2>&1 > output.txt
+```
+
+In the second example, standard error is first connected to the original standard output, which is typically the terminal. Then standard output is redirected to the file.
+
+### Quick reference
+
+| Operator | Meaning                                                             |
+| -------- | ------------------------------------------------------------------- |
+| `>`      | Write output, overwriting the destination file                      |
+| `>>`     | Append output                                                       |
+| `<`      | Read input from a file                                              |
+| `2>`     | Redirect standard error                                             |
+| `2>>`    | Append standard error                                               |
+| `2>&1`   | Redirect standard error to the current standard-output destination  |
+| `&>`     | Bash shorthand for redirecting both output streams to a destination |
+
+Cybersecurity example: Suppose you are checking multiple files and some paths may not exist.
+
+```
+find /var/log -type f > log-files.txt 2> errors.txt
+```
+
+This saves discovered file paths in `log-files.txt` and error messages in `errors.txt`.
+
+You can examine both later instead of losing the information when the command finishes.
+
+## 6. Pipes: connecting commands together
+
+A pipe, written as `|`, sends the standard output of one command to the standard input of another.
+
+Imagine you have a list of 1,000 log entries but only want to see the lines containing the word `failed`.
+
+You could first save the output to a file and then search that file. However, a pipe lets you connect the operations directly.
+
+Command 1: `cat auth.log`
+
+Produces log lines
+
+### `|` Pipe
+
+Passes standard output as the next command's input
+
+Command 2: `grep -i "failed"`
+
+Filters the matching lines
+
+The combined command is:
+
+```
+cat auth.log | grep -i "failed"
+```
+
+A more direct way to write it is:
+
+```
+grep -i "failed" auth.log
+```
+
+Both can search for matching lines, but the second is simpler for this particular task.
+
+### Chaining multiple commands
+
+You can connect several commands using multiple pipes.
+
+```
+cat auth.log | grep -i "failed" | sort
+```
+
+The operations are:
+
+1. Read the log file.
+2. Filter lines containing `failed`, ignoring case.
+3. Sort the matching lines.
+
+Other useful examples:
+
+```
+ps aux | grep ssh
+```
+
+Search the process listing for lines containing `ssh`.
+
+```
+cat access.log | grep "404" | wc -l
+```
+
+Count the lines containing `404` in `access.log`.
+
+A simpler version is:
+
+```
+grep "404" access.log | wc -l
+```
+
+Here, `wc -l` counts matching lines.
+
+One important detail: a normal pipe passes standard output, not standard error. Error messages do not automatically flow through it.
+
+Cybersecurity connection: Pipes let analysts combine tools to search authentication logs, filter network scan results, inspect processes, and identify suspicious activity efficiently.
+
+## 7. Important related operators
+
+These operators look similar but do different things.
+
+\| Operator | Meaning | Example | |---|---|---| | `\|` | Pipe output to another command | `ps aux \| grep ssh` | | `;` | Run the next command after the previous one finishes, regardless of success | `pwd; ls` | | `&&` | Run the next command only if the previous command succeeds | `mkdir lab && cd lab` | | `||` | Run the next command only if the previous command fails | `cd lab || echo "Failed"` | | `&` | Run a command asynchronously in the background | `sleep 60 &` |
+
+Remember the distinction between a pipe and logical operators:
+
+- `|` passes data between programs.
+- `&&` and `||` make decisions based on command exit status.
+- `;` separates commands without checking success.
+
+## 8. Putting everything together: a cybersecurity example
+
+Suppose you have a file named `auth.log` containing authentication events. You want to identify failed login attempts, save them, and count them.
+
+First, filter the log:
+
+```
+grep -i "failed" auth.log
+```
+
+Next, save the matching entries:
+
+```
+grep -i "failed" auth.log > failed-logins.txt
+```
+
+Count the matching lines:
+
+```
+grep -i "failed" auth.log | wc -l
+```
+
+Display only the first 10 matching entries:
+
+```
+grep -i "failed" auth.log | head -n 10
+```
+
+Count the occurrences and save the result:
+
+```
+grep -i "failed" auth.log | wc -l > failed-count.txt
+```
+
+These examples illustrate a typical analysis workflow:
+
+- `grep` identifies relevant lines.
+- `|` passes results between commands.
+- `wc` calculates a count.
+- `>` saves results for later analysis.
+
+Real authentication logs vary between distributions and services, so the search pattern must match the actual log format. A failed-login count alone does not establish that an attack occurred.
+
+## 9. Practice exercise
+
+Try the following questions before moving to the next topic.
+
+1\. Which command displays your current directory?
+
+ls
+
+pwd
+
+cd
+
+Correct. pwd prints the current working directory.
+
+2\. What does \`>\` do?
+
+Appends to a file
+
+Deletes a file
+
+Redirects output and overwrites the destination
+
+Correct. A single > normally replaces the existing file contents.
+
+3\. What does \`grep 'error' app.log | wc -l\` do?
+
+Counts matching lines
+
+Deletes error lines
+
+Counts all files in the directory
+
+Correct. grep filters the lines, then wc -l counts those lines.
+
+4\. Which stream is used for standard error?
+
+0
+
+1
+
+2
+
+Correct. File descriptor 2 is standard error; 0 is stdin and 1 is stdout.
+
+5\. When does the command after \`&&\` run?
+
+Always
+
+Only if the first command succeeds
+
+Only if the first command fails
+
+Correct. && checks whether the previous command exited successfully.
+
+5 of 5 answered
+
+Reset
+
+## 10. What you should remember
+
+You don't need to memorize hundreds of commands at this stage. Focus on these core concepts:
+
+- CLI: Interact with Linux by typing commands.
+- Bash: A shell that interprets commands and supports scripting.
+- stdin, stdout, stderr: Input, normal output, and error output.
+- Redirection: Send input or output to files and other destinations.
+- Pipes: Connect the output of one command to the input of another.
+- Command chaining: Use `;`, `&&`, and `||` to control execution.
+
+For cybersecurity, prioritize becoming comfortable with `pwd`, `ls`, `cd`, `cat`, `less`, `grep`, `find`, `ps`, `sort`, `head`, `tail`, `wc`, and `chmod`. You'll use these frequently when investigating systems and working with Linux security tools.

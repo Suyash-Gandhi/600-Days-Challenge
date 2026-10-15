@@ -1,0 +1,432 @@
+# 10. Linux Permissions, Ownership, Users and Groups
+
+Cybersecurity Fundamentals • Medium Depth
+
+The most important idea to understand is this:
+
+Linux permissions control who can access a file or directory, what they can do with it, and which security boundaries they must respect.
+
+This is important in cybersecurity because attackers often try to read sensitive files, modify system configurations, execute malicious programs, or gain higher privileges.
+
+## 1. First, understand users and ownership
+
+Linux is a multi-user operating system. Multiple users can use the same machine, and each user can have different permissions.
+
+Imagine a Linux server used by three people:
+
+- `rahul` — a developer
+- `admin` — a system administrator
+- `www-data` — a user commonly used by web servers
+
+Suppose Rahul creates a file named `app.js`.
+
+app.js
+
+Owner: rahul
+
+Group: developers
+
+Owner
+
+rahul
+
+Group
+
+developers
+
+Others
+
+Everyone else
+
+Linux evaluates access using the file's ownership and permission rules, along with applicable special rules.
+
+Every file and directory has an owner and an associated group. Linux uses these identities to decide which permission rules apply.
+
+### Users
+
+A user represents an account on the system. Every user has a numeric user ID called a UID.
+
+Useful commands:
+
+```
+whoami          # Show the current username
+id              # Show your UID, primary group and groups
+who             # Show logged-in users
+cat /etc/passwd # View local account records
+```
+
+A line in `/etc/passwd` contains account information, including the username, UID, primary group ID, home directory and login shell. Password hashes are generally stored separately in `/etc/shadow`, which is restricted.
+
+### Groups
+
+A group is a collection of users. Groups make it easier to grant access to multiple people without configuring each person individually.
+
+For example, if `rahul`, `priya` and `amit` belong to the `developers` group, you can allow that group to modify a shared project directory.
+
+```
+groups rahul
+id rahul
+cat /etc/group
+```
+
+Common administration commands:
+
+```
+sudo useradd rahul
+sudo groupadd developers
+sudo usermod -aG developers rahul
+```
+
+- `useradd` creates a user account.
+- `groupadd` creates a group.
+- `usermod -aG` adds a user to supplementary groups. The `-a` is important because it preserves existing supplementary group memberships.
+
+Group membership changes may require logging in again to take effect in a new session.
+
+## 2. The three basic Linux permissions
+
+Linux defines three fundamental permissions for ordinary files and directories: read, write and execute.
+
+## r
+
+Value 4
+
+Read
+
+- File: view its contents.
+- Directory: list its entries, subject to the other required permissions.
+
+## w
+
+Value 2
+
+Write
+
+- File: modify its contents.
+- Directory: create, delete or rename entries, subject to the required permissions and special rules.
+
+## x
+
+Value 1
+
+Execute
+
+- File: execute it if it is a suitable executable or script.
+- Directory: traverse it, meaning access entries within it when their names are known.
+
+Important distinction: having write permission on a file is not the same as having write permission on its parent directory. Directory permissions determine whether you can create, remove or rename entries inside it.
+
+## 3. Understanding `rwxr-xr--`
+
+Run this command:
+
+```
+ls -l
+```
+
+Example output:
+
+```
+-rwxr-xr-- 1 rahul developers 1200 Oct 14  app.sh
+```
+
+Let's break down the permission string.
+
+# - rwx r-x r--
+
+Example: app.sh
+
+## -
+
+File type
+
+## rwx
+
+Owner
+
+## r-x
+
+Group
+
+## r--
+
+Others
+
+The first character indicates the file type. The remaining nine characters form three permission sets.
+
+The three sets mean:
+
+- Owner — `rwx`: Rahul can read, modify and execute the file.
+- Group — `r-x`: members of `developers` can read and execute it, but cannot modify the file's contents.
+- Others — `r--`: users outside the applicable owner and group categories can read the file, but cannot write or execute it.
+
+Other file-type characters include `d` for a directory and `l` for a symbolic link.
+
+## 4. Numeric permissions: `chmod 755`
+
+Linux also represents permissions using numbers.
+
+| Permission    | Value |
+| ------------- | ----- |
+| Read (`r`)    | 4     |
+| Write (`w`)   | 2     |
+| Execute (`x`) | 1     |
+
+Add the values for each permission set.
+
+For example:
+
+- `rwx` = 4 + 2 + 1 = 7
+- `r-x` = 4 + 0 + 1 = 5
+- `r--` = 4 + 0 + 0 = 4
+
+Therefore:
+
+```
+chmod 754 app.sh
+```
+
+means:
+
+- Owner: `7` = `rwx`
+- Group: `5` = `r-x`
+- Others: `4` = `r--`
+
+Other common examples:
+
+| Command               | Owner | Group | Others |
+| --------------------- | ----- | ----- | ------ |
+| `chmod 600 file`      | `rw-` | `---` | `---`  |
+| `chmod 644 file`      | `rw-` | `r--` | `r--`  |
+| `chmod 700 script.sh` | `rwx` | `---` | `---`  |
+| `chmod 755 script.sh` | `rwx` | `r-x` | `r-x`  |
+| `chmod 777 file`      | `rwx` | `rwx` | `rwx`  |
+
+Security lesson: avoid `chmod 777` as a quick fix. It grants everyone read, write and execute permissions, potentially allowing unauthorized modification or execution.
+
+## 5. Changing permissions and ownership
+
+These are commands you should be comfortable using in a Linux terminal.
+
+### `chmod` — change permissions
+
+```
+chmod 640 secret.txt
+chmod u+x script.sh
+chmod g-w shared.txt
+chmod o-r private.txt
+```
+
+The symbolic form uses:
+
+- `u` = owner
+- `g` = group
+- `o` = others
+- `a` = all three categories
+- `+` = add permissions
+- `-` = remove permissions
+- `=` = set permissions exactly
+
+For example, `chmod u+x script.sh` adds execute permission for the owner.
+
+### `chown` — change ownership
+
+```
+sudo chown rahul secret.txt
+sudo chown rahul:developers app.js
+```
+
+The second command changes the owner to `rahul` and the group to `developers`.
+
+### `chgrp` — change group ownership
+
+```
+sudo chgrp developers shared.txt
+```
+
+### Inspect permissions
+
+```
+ls -l
+ls -ld /var/www
+stat secret.txt
+namei -l /var/www/html/index.html
+```
+
+`namei -l` is especially useful for security investigations because it displays the permissions of each directory in a path.
+
+## 6. Directory permissions: an important security concept
+
+Consider this directory:
+
+```
+drwxr-x--- 2 rahul developers 4096 Oct 14 projects
+```
+
+Here, the owner can list, create, delete, rename and traverse entries as allowed by the directory permissions. The group can list and traverse, but cannot create or remove entries. Others have no access through these basic permission bits.
+
+For a directory:
+
+- `r` lets you list its names.
+- `w` lets you change its entries, usually together with `x`.
+- `x` lets you traverse it and access entries when other conditions permit.
+
+For example, if you have execute but not read permission on a directory, you may access a file by its known name but may not be able to list all filenames.
+
+A file can also be readable while still being inaccessible because one of its parent directories lacks the required traversal permission.
+
+## 7. Special permissions: SUID, SGID and sticky bit
+
+These are worth learning because they affect privilege boundaries.
+
+SUID — Set User ID
+
+On an executable, it can cause the program to run with the effective user ID of the file's owner, often root. This is used by some legitimate system programs but can create serious security risks when a privileged executable is vulnerable.
+
+Example permission display: `-rwsr-xr-x`
+
+SGID — Set Group ID
+
+On an executable, it can cause the program to run with the effective group ID of the file's group. On a directory, newly created entries generally inherit the directory's group, helping teams share files.
+
+Example directory: `drwxr-s---`
+
+Sticky bit
+
+On a shared writable directory, it restricts who can delete or rename entries, typically to the entry's owner, directory owner or a privileged process.
+
+Example: `/tmp` commonly has `drwxrwxrwt` permissions.
+
+You can set these with commands such as:
+
+```
+chmod 4755 program     # SUID
+chmod 2775 shared_dir  # SGID
+chmod 1777 shared_dir  # Sticky bit
+```
+
+Do not apply these special permissions blindly, especially SUID. An unsafe privileged program can become a route to privilege escalation.
+
+## 8. Root and `sudo`
+
+The `root` account is the superuser. It has extensive control over the system and can bypass many ordinary discretionary permission checks.
+
+`sudo` lets an authorized user execute a command with elevated privileges, according to the system's sudo policy.
+
+```
+sudo cat /etc/shadow
+sudo systemctl status ssh
+sudo -l
+```
+
+The command `sudo -l` shows which commands the current user is permitted to execute through sudo.
+
+Security principle: use the least privilege necessary. Do not run everything as root, and do not grant unrestricted sudo access unless it is genuinely required.
+
+## 9. Why this matters in cybersecurity
+
+These concepts show up in real security investigations.
+
+- Sensitive data exposure: a configuration file containing credentials is readable by unauthorized users.
+- Privilege escalation: an attacker exploits a vulnerable SUID executable or misconfigured sudo rule.
+- Web server compromise: a web application process can write to a sensitive script or configuration file.
+- Shared-directory abuse: weak permissions allow users to alter or remove files belonging to other users.
+- Persistence: an attacker changes scripts, executable files or startup-related files that a more privileged process later runs.
+
+Useful commands during a defensive investigation:
+
+```
+# Find world-writable files (potentially risky)
+find / -type f -perm -0002 2>/dev/null
+
+# Find SUID files for review
+find / -type f -perm -4000 2>/dev/null
+
+# Inspect the current user's privileges
+id
+sudo -l
+
+# Inspect a sensitive path
+namei -l /path/to/file
+```
+
+These searches can return legitimate system files and may take time. Treat the results as investigation leads, not automatic proof of a vulnerability.
+
+## 10. Practice quiz
+
+## Test your understanding
+
+5/5 answered
+
+1\. What does chmod 700 script.sh allow?
+
+Everyone can execute it
+
+Only the owner has read, write and execute permissions
+
+The owner can read and write, but not execute
+
+Correct
+
+7 means rwx for the owner; 0 means no permissions for the group or others.
+
+2\. What does the x permission on a directory allow?
+
+Modify every file inside it
+
+List every filename
+
+Traverse the directory
+
+Correct
+
+Execute on a directory allows traversal; listing its names requires read permission.
+
+3\. Which command adds Rahul to the developers group without replacing his existing supplementary groups?
+
+usermod -G developers rahul
+
+usermod -aG developers rahul
+
+chmod developers rahul
+
+Correct
+
+The -a option appends the group when used with -G.
+
+4\. Why can SUID executables be security-sensitive?
+
+They always run as root
+
+They may run with the file owner's effective user ID
+
+They disable all file permissions
+
+Correct
+
+SUID changes the effective user ID to the file owner's ID when the relevant execution conditions apply.
+
+5\. What is the main risk of chmod 777 on a sensitive file?
+
+It makes the file invisible
+
+It removes the owner
+
+It grants read, write and execute permissions to everyone
+
+Correct
+
+All three permission categories receive rwx, which can allow unauthorized modification and execution.
+
+Reset quiz
+
+## What you should remember
+
+1. Users identify accounts; groups organize users for shared access.
+2. Every file and directory has an owner, a group and permission rules.
+3. `r`, `w` and `x` have different meanings for files and directories.
+4. `chmod` changes permissions; `chown` changes ownership; `chgrp` changes the group.
+5. `sudo`, SUID and SGID affect privilege boundaries and deserve careful inspection.
+6. In cybersecurity, incorrect permissions can expose secrets, enable unauthorized changes or create privilege-escalation opportunities.
+
+The next useful step is to practise these commands in a Linux VM or WSL using test users, groups, files and directories—not by changing permissions on important system files.

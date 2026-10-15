@@ -1,0 +1,574 @@
+# 11. Linux Processes, Services, systemd and cron
+
+Cybersecurity Fundamentals · Operating Systems · Medium Depth
+
+The goal of this topic is to understand how Linux runs programs, keeps background tasks running, starts services automatically, and schedules tasks. These concepts are particularly important for SOC analysis, incident response, malware analysis, and penetration testing.
+
+## 1. What is a process?
+
+A process is a program that is currently running.
+
+Think of a program as a recipe and a process as someone actually following that recipe.
+
+For example:
+
+- `firefox` installed on your computer is a program.
+- When you open Firefox, Linux creates a process to run it.
+- If Firefox opens multiple processes for tabs or other functions, each has its own process ID (PID).
+
+A process typically has its own memory, execution state, and other resources managed by the operating system.
+
+### Process ID (PID)
+
+Every running process has a Process ID (PID), a number Linux uses to identify it.
+
+Try these commands in a Linux terminal:
+
+```
+ps
+```
+
+Shows processes associated with your terminal.
+
+```
+ps aux
+```
+
+Shows a broader list of running processes.
+
+```
+ps aux | grep firefox
+```
+
+Searches the displayed process list for Firefox.
+
+```
+top
+```
+
+Displays running processes and updates their CPU and memory usage in real time.
+
+Example output:
+
+```
+USER       PID  %CPU  %MEM  COMMAND
+root         1   0.0   0.1  systemd
+user      1420   2.5   1.2  firefox
+user      1580   0.4   0.3  bash
+```
+
+The numbers above are illustrative.
+
+- PID `1` is commonly the system's initial process, `systemd`, on modern Linux distributions.
+- PID `1420` identifies a Firefox process.
+- PID `1580` identifies a Bash shell.
+
+Cybersecurity relevance: When investigating suspicious activity, you need to identify which processes are running, who owns them, what resources they use, and how they were started.
+
+## 2. Foreground and background processes
+
+Linux programs can run in the foreground or background relative to your shell.
+
+[How to Run the ping Command in Windows, Mac, and Linux | Zihad Labs](https://images.openai.com/static-rsc-4/i9xP6lxkjh1yW_c_8ApXHjEQBu3LveRrlDrz3_R65ufUpZRQp8R_SLFNk0ks6JPlULKmxmCKsdxweVXN5yBAusRlFnKMKZ-Cpa7hR4s_VfLNdP-0qV5nfsSakV5QoJ-yDF-ud2dD0aehp-B-8-YjueAdOQsXE-5D_vYCX8vzBv0?purpose=inline)
+
+Foreground process
+
+Runs attached to your current terminal. You normally interact with it directly.
+
+Example:
+
+```
+ping 127.0.0.1
+```
+
+Press `Ctrl + C` to interrupt it.
+
+[How to execute Linux Commands in the background:](https://images.openai.com/static-rsc-4/PLFrRYtxzTEmkLIIp_Zx7Zv6iRy3Ga_4zNsPr0VVMPuINN6hdfeWPDd_x1p4-m5Lgk4aH-m_pTptblqkscRz0HqBhLqMDE7CCp7PsQtFXjf26VNuzhK8FujfTpyrr0dk34IZYno1I0OAmKOGf2WnmPQBELTXkxjTXmzaC2XRDC4?purpose=inline)
+
+Background process
+
+Runs as a background job of your shell, allowing you to enter other commands.
+
+Example:
+
+```
+sleep 300 &
+```
+
+Linux prints a job number and PID. The `&` asks the shell to start the command in the background.
+
+Useful commands:
+
+```
+jobs          # List jobs in the current shell
+fg            # Bring a background job to the foreground
+bg            # Resume a stopped job in the background
+```
+
+Remember that a background job is not automatically a permanent service. Its lifetime may still depend on the shell or session that started it.
+
+## 3. How Linux manages processes
+
+There are a few important concepts to understand.
+
+### Parent and child processes
+
+Processes can create other processes.
+
+For example:
+
+```
+systemd (PID 1)
+    |
+    +-- sshd
+    |
+    +-- cron
+    |
+    +-- User's shell
+            |
+            +-- python script.py
+```
+
+This is a simplified example of a process tree.
+
+- Parent process: Creates another process.
+- Child process: Created by another process.
+- PID: Identifies a process.
+- PPID: Identifies its parent process.
+
+To view the process tree:
+
+```
+pstree -p
+```
+
+Or:
+
+```
+ps -ef --forest
+```
+
+Why does this matter? If a suspicious script launches a shell, which launches another program, the process tree can help you understand how the activity began.
+
+### Signals and terminating processes
+
+Linux uses signals to communicate with processes.
+
+```
+kill -l
+```
+
+Lists available signals.
+
+Two especially important signals are:
+
+| Signal         | Meaning                                                          |
+| -------------- | ---------------------------------------------------------------- |
+| `SIGTERM` (15) | Requests that a process terminate gracefully.                    |
+| `SIGKILL` (9)  | Forces a process to stop; it cannot catch or ignore this signal. |
+
+Example:
+
+```
+kill 1420
+```
+
+Requests termination of PID `1420`.
+
+```
+kill -9 1420
+```
+
+Forces termination of that PID.
+
+Use the second command cautiously. A forced termination can cause unfinished work or data loss.
+
+Cybersecurity relevance: Malware may create processes, spawn shells, or restart other processes. Incident responders inspect these relationships and may terminate malicious processes after collecting relevant evidence.
+
+## 4. What is a service or daemon?
+
+A service is a program that provides a function for the system or other programs. It often runs in the background.
+
+A daemon is a background process that commonly provides a service without requiring direct interaction through a terminal.
+
+Examples include:
+
+- `sshd` — accepts SSH connections.
+- `cron` or `crond` — schedules recurring commands.
+- `nginx` — serves web traffic.
+- `postgresql` — runs a database server.
+
+The distinction is important: a process is any running program instance, while a service describes a function or managed application. A service usually involves one or more processes.
+
+For example, when an SSH server is running, it has processes that listen for incoming SSH connections.
+
+### Process vs. service
+
+| Process                         | Service                            |
+| ------------------------------- | ---------------------------------- |
+| A running instance of a program | A system function or application   |
+| Identified by its PID           | Often managed by a service manager |
+| May run briefly and exit        | Often designed to remain available |
+| Example: `python script.py`     | Example: SSH server                |
+
+A service does not have to run continuously in every configuration. Some services start only when needed, and a service may start successfully and then exit if its job is complete.
+
+## 5. systemd: Linux's service manager
+
+[Understanding Linux Processes and systemd Through Real Experiments | by Mohammed Afridi | Medium](https://images.openai.com/static-rsc-4/Nic0ZXleSwO7HYhLbfRVT-YPAgqtaxzGMvOnTcGJTomKTfl7LaesqUnaGKOrbG6WyW-cJIRHZDyThkwls72X1vF2cvXjWCgQZIx8BSo0wy2PFJDLRGrd3P1ytPC768pNdb6QMw9ZBb7JdlzuiuEJfa25GIf6ObhhNrqM6WngYEA?purpose=inline)
+
+[medium.com](https://medium.com/%40code.afridi/understanding-linux-processes-and-systemd-through-real-experiments-07fe0f9d41cd)
+
+systemd is the system and service manager used by many modern Linux distributions, including Ubuntu, Debian, Fedora, and their derivatives.
+
+During boot, the Linux kernel initializes the system and starts the initial userspace process. On a typical systemd-based installation, this is `systemd`, running as PID 1.
+
+systemd helps Linux:
+
+- Start services during boot.
+- Stop and restart services.
+- Manage dependencies between services.
+- Track service status and failures.
+- Schedule certain tasks using timers.
+- Collect logs through its integration with `journald`.
+
+### Essential systemctl commands
+
+`systemctl` is the command-line interface for managing systemd units.
+
+| Command                               | Purpose                                             |
+| ------------------------------------- | --------------------------------------------------- |
+| `systemctl status ssh`                | Check the status of the SSH service.                |
+| `sudo systemctl start ssh`            | Start a service now.                                |
+| `sudo systemctl stop ssh`             | Stop a service now.                                 |
+| `sudo systemctl restart ssh`          | Restart a service.                                  |
+| `sudo systemctl enable ssh`           | Configure a service to start automatically at boot. |
+| `sudo systemctl disable ssh`          | Disable automatic startup at boot.                  |
+| `systemctl list-units --type=service` | List loaded service units.                          |
+| `systemctl --failed`                  | Show failed units.                                  |
+
+Important: `start` and `enable` are different.
+
+- `start` affects the service now.
+- `enable` configures it for automatic startup at boot.
+- `enable --now` does both.
+
+For example:
+
+```
+sudo systemctl enable --now ssh
+```
+
+On Ubuntu, the service is often called `ssh`; on other distributions, it may be called `sshd`.
+
+You can inspect the configuration of a service using:
+
+```
+systemctl cat ssh
+```
+
+This shows the unit configuration and any applicable overrides.
+
+## 6. Why systemd matters in cybersecurity
+
+Imagine an attacker gains access to a Linux server and wants a malicious program to run again after a reboot.
+
+One possible persistence technique is to create or modify a systemd service.
+
+A simplified example of a legitimate custom service configuration is:
+
+```
+[Unit]
+Description=Example Background Worker
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/example/worker.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+This is a unit-file example, not something you should install without reviewing its program and permissions.
+
+Here is what the sections mean:
+
+- `[Unit]`: Describes the unit and its relationships.
+- `[Service]`: Defines the program to execute and how it should behave.
+- `ExecStart`: Specifies the command to run.
+- `Restart=on-failure`: Requests a restart after certain failures.
+- `[Install]`: Specifies how the unit can be enabled.
+
+A service file may be stored in locations such as:
+
+```
+/etc/systemd/system/       # Locally configured system services
+/usr/lib/systemd/system/   # Common vendor-supplied location
+/lib/systemd/system/       # Used on some distributions
+```
+
+The exact vendor directory varies by distribution.
+
+### What should a security analyst look for?
+
+- Unknown or unexpected services.
+- Services that execute scripts from temporary or unusual directories.
+- Unexpected `ExecStart` commands.
+- Suspicious changes to service files.
+- Services enabled at boot without a clear business reason.
+- Unexpected restart behavior.
+- Unusual executable permissions or ownership.
+
+Useful inspection commands:
+
+```
+systemctl list-unit-files --type=service
+systemctl --type=service --state=running
+systemctl cat suspicious.service
+```
+
+Do not assume every unfamiliar service is malicious. Compare findings with the host's expected configuration and investigate the executable, owner, timestamps, and logs.
+
+## 7. What is cron?
+
+cron is a scheduler that runs commands automatically at specified times or intervals.
+
+Suppose you want a script to run every day at midnight. You could manually execute it each day, but cron automates that task.
+
+Cron is frequently used for:
+
+- Backups.
+- Log cleanup.
+- Maintenance scripts.
+- Data processing.
+- Periodic health checks.
+
+### Understanding cron syntax
+
+A standard cron expression contains five time fields:
+
+```
+┌──────── minute (0–59)
+│ ┌────── hour (0–23)
+│ │ ┌──── day of month (1–31)
+│ │ │ ┌── month (1–12)
+│ │ │ │ ┌ day of week (0–7; Sunday is commonly 0 or 7)
+│ │ │ │ │
+* * * * * command
+```
+
+Examples:
+
+| Schedule       | Meaning                                 |
+| -------------- | --------------------------------------- |
+| `* * * * *`    | Every minute                            |
+| `0 * * * *`    | At minute 0 of every hour               |
+| `0 2 * * *`    | Every day at 2:00 AM                    |
+| `30 9 * * 1-5` | At 9:30 AM, Monday through Friday       |
+| `0 0 1 * *`    | Midnight on the first day of each month |
+
+These schedules use the cron daemon's configured time zone, which may differ from your local time zone.
+
+### Example: Run a backup script daily
+
+```
+0 2 * * * /usr/local/bin/backup.sh
+```
+
+This instructs cron to run the script at 2:00 AM every day.
+
+To edit your personal crontab:
+
+```
+crontab -e
+```
+
+To list your scheduled jobs:
+
+```
+crontab -l
+```
+
+To remove your personal crontab:
+
+```
+crontab -r
+```
+
+Be careful with `crontab -r`: it removes the entire personal crontab.
+
+System-wide scheduled tasks can also be configured in `/etc/crontab` and directories such as `/etc/cron.d/`, `/etc/cron.hourly/`, `/etc/cron.daily/`, and `/etc/cron.weekly/`.
+
+## 8. Cron vs. systemd timers
+
+Both can schedule work, but they use different mechanisms.
+
+| Feature             | cron                                        | systemd timers                                               |
+| ------------------- | ------------------------------------------- | ------------------------------------------------------------ |
+| Primary purpose     | Schedule commands                           | Schedule systemd units                                       |
+| Scheduling          | Calendar-based expressions                  | Calendar-based or monotonic timers                           |
+| Service integration | Usually runs a command or script            | Integrates with systemd services                             |
+| Logging             | Depends on configuration and system logging | Often available through the journal                          |
+| Missed schedules    | Usually does not automatically catch up     | Can use `Persistent=true` for certain missed calendar events |
+
+For cybersecurity, you should know both because an administrator or attacker may use either mechanism to run tasks automatically.
+
+## 9. Cron and persistence in cybersecurity
+
+Persistence means maintaining access or execution capability after events such as a reboot or logout.
+
+An attacker with sufficient permissions might add a scheduled job to repeatedly execute a malicious script.
+
+For example, an unexpected cron entry that executes a script from `/tmp/` every few minutes deserves investigation. However, the location alone does not prove maliciousness.
+
+### Investigating scheduled jobs
+
+```
+crontab -l
+```
+
+Lists the current user's scheduled jobs.
+
+```
+sudo crontab -l
+```
+
+Lists root's scheduled jobs.
+
+```
+ls -la /etc/cron.d/
+ls -la /etc/cron.daily/
+```
+
+Inspects common system-wide cron locations.
+
+On many systemd-based distributions, cron activity may be recorded in system logs or the journal, depending on configuration.
+
+```
+journalctl -u cron
+```
+
+On some distributions, the service is named `crond` instead:
+
+```
+journalctl -u crond
+```
+
+To inspect systemd-related logs:
+
+```
+journalctl -u suspicious.service
+```
+
+A key limitation: A cron entry may have been removed, logs may have rotated, and a malicious job may run under another user's account. A proper investigation examines all relevant accounts, system-wide scheduling locations, service units, and available logs.
+
+## 10. Practical cybersecurity investigation
+
+Imagine a Linux server is behaving suspiciously. CPU usage is high, an unfamiliar Python process is running, and it returns after being terminated.
+
+Use a structured approach rather than immediately killing processes.
+
+Step 1 — Inspect processes
+
+```
+ps aux --sort=-%cpu | head
+pstree -ap
+```
+
+Identify resource-heavy processes and trace parent-child relationships.
+
+Step 2 — Inspect services
+
+```
+systemctl --type=service --state=running
+systemctl --failed
+```
+
+Look for unexpected services and failures.
+
+Step 3 — Inspect scheduled tasks
+
+```
+crontab -l
+sudo crontab -l
+ls -la /etc/cron.d/
+```
+
+Check for unexpected commands or recurring execution.
+
+Step 4 — Collect evidence
+
+```
+systemctl cat suspicious.service
+journalctl -u suspicious.service
+```
+
+Examine configuration and logs, then correlate the evidence with process details and file metadata.
+
+This workflow helps identify both the suspicious process and the mechanism that might be restarting it. If investigating a real incident, preserve relevant evidence before making changes when feasible.
+
+## 11. Test your understanding
+
+1\. What is a process?
+
+A program stored on disk
+
+A program that is currently executing
+
+A scheduled task only
+
+Correct. A process is a running instance of a program.
+
+2\. Which command checks whether a systemd service is running?
+
+crontab -e
+
+systemctl status ssh
+
+kill -l
+
+Correct. systemctl status displays the current state and related information for a service.
+
+3\. What is the difference between start and enable?
+
+They do exactly the same thing
+
+start runs it now; enable configures startup at boot
+
+start schedules it for tomorrow
+
+Correct. Starting a service and configuring it to start automatically are separate operations.
+
+4\. What does 0 2 \* \* \* mean in cron?
+
+Every two minutes
+
+Every day at 2 AM
+
+Every Sunday at midnight
+
+Correct. The minute is 0, the hour is 2, and the remaining fields allow every day, month, and weekday.
+
+5\. Why investigate cron jobs and systemd units during incident response?
+
+They can be used for persistence
+
+They contain all user passwords
+
+They prevent every malware infection
+
+Correct. Unexpected scheduled jobs and services can repeatedly execute unwanted code or survive reboots.
+
+Reset quiz
+
+## Final summary
+
+Remember these five concepts:
+
+1. Process: A program that is currently running.
+2. Service: A system function commonly provided by one or more background processes.
+3. systemd: Manages services, startup, dependencies, and related system units on many Linux distributions.
+4. cron: Executes commands according to a schedule.
+5. Cybersecurity connection: Processes, services, and scheduled jobs are important places to investigate suspicious execution and persistence.
+
+You do not need to memorize every command immediately. Focus first on understanding what each component does and how they relate to one another.

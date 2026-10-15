@@ -1,0 +1,503 @@
+# 8. Linux Architecture and Filesystem
+
+Cybersecurity Fundamentals • Medium Depth
+
+Linux architecture and the filesystem are two closely related concepts. Linux architecture explains how the operating system is organized and how its components interact, while the filesystem explains how files, directories, and storage are organized and accessed.
+
+Both are essential for understanding Linux administration, penetration testing, malware analysis, privilege escalation, and digital forensics.
+
+## 1. Linux Architecture
+
+Linux architecture describes the major components of a Linux operating system and how they communicate with each other.
+
+A Linux system can be understood through four main layers:
+
+1\. User Applications
+
+Browsers, editors, terminals, programs
+
+2\. Shell and System Libraries
+
+Bash, shared libraries, command interfaces
+
+3\. Kernel
+
+Processes, memory, filesystems, devices, networking
+
+4\. Hardware
+
+CPU, RAM, disks, network cards, peripherals
+
+The arrows represent communication, not a strict requirement that every operation pass through every layer.
+
+### 1.1 Hardware
+
+Hardware consists of the physical components of a computer:
+
+- CPU: Executes instructions.
+- RAM: Holds data and instructions currently in use.
+- Storage: Stores files and programs persistently.
+- Network interface: Sends and receives network traffic.
+
+Applications generally cannot directly control hardware however they want. The operating system manages access to hardware resources.
+
+Cybersecurity relevance: Attackers may exploit hardware or firmware vulnerabilities, while defenders investigate how software interacts with devices and system resources.
+
+### 1.2 Kernel
+
+The kernel is the core of Linux. It operates with high privileges and manages access to hardware and system resources.
+
+Its major responsibilities include:
+
+| Component             | Responsibility                                       |
+| --------------------- | ---------------------------------------------------- |
+| Process management    | Creates, schedules, and terminates processes         |
+| Memory management     | Allocates memory and isolates process address spaces |
+| Filesystem management | Provides access to files and directories             |
+| Device drivers        | Communicate with hardware                            |
+| Networking            | Handles network protocols and packet processing      |
+| Security mechanisms   | Enforces permissions and other access controls       |
+
+For example, when a program reads a file, the kernel checks access permissions and coordinates the operation with the filesystem and storage system.
+
+Cybersecurity relevance: A kernel vulnerability can be particularly dangerous because kernel code has extensive privileges. An attacker exploiting such a flaw may gain control beyond what an ordinary user account permits.
+
+### 1.3 User space and kernel space
+
+Linux separates execution into two broad areas.
+
+### User space
+
+Restricted
+
+Where ordinary applications and most user-level services execute.
+
+Examples: Bash, Firefox, Python programs.
+
+### Kernel space
+
+Highly privileged
+
+Where the kernel executes and manages system resources.
+
+Examples: kernel code and many device drivers.
+
+The separation prevents ordinary applications from freely accessing protected memory or executing privileged operations.
+
+For instance, a normal application cannot simply read arbitrary kernel memory. It must use permitted interfaces, and the kernel applies the appropriate checks.
+
+### 1.4 System calls
+
+A system call is a controlled interface through which a user-space program requests a service from the kernel.
+
+Common examples include:
+
+- `open()` — open a file.
+- `read()` — read data.
+- `write()` — write data.
+- `fork()` — create a process.
+- `execve()` — execute a program.
+- `socket()` — create a network communication endpoint.
+
+Consider this example:
+
+```
+cat /etc/passwd
+```
+
+Conceptually, the operation proceeds as follows:
+
+1. The shell starts the `cat` program.
+2. `cat` requests access to `/etc/passwd`.
+3. The kernel checks permissions and handles the file access.
+4. The program receives the file's contents.
+5. `cat` writes those contents to the terminal.
+
+This is simplified; libraries, system calls, and caching may be involved at several stages.
+
+Cybersecurity relevance: System-call monitoring helps defenders investigate suspicious processes. Malware may use system calls to access files, create processes, or communicate over a network.
+
+### 1.5 The shell
+
+A shell is a program that accepts commands and runs programs. It is not the kernel itself.
+
+For example:
+
+```
+pwd
+ls -la
+ps aux
+```
+
+These commands help you inspect your current directory, list files, and view processes.
+
+Common shells include Bash and Zsh.
+
+Important distinction: The terminal is the interface in which you interact with a shell. The shell interprets commands, while the kernel performs privileged operating-system operations.
+
+## 2. Linux Filesystem
+
+The Linux filesystem has two related meanings:
+
+1. Filesystem hierarchy: How files and directories are organized.
+2. Filesystem implementation: How file data and metadata are stored and managed, such as with ext4 or XFS.
+
+Linux presents files and directories through a single directory tree beginning at `/`, called the root directory.
+
+[Day 3: Understanding the Linux Filesystem | by Karthick Dk | devsecops-community | Medium](https://images.openai.com/static-rsc-4/WA3TyRP6yCkrR055eOskQQKbmDjFaJRzrV--HPW5U7-Ib_Xa2fC2hd9IwPbW08IQ8088kw0ol4AmgJLnG52SwuFxXHZxnBec5WmSmjAvkS3q7F_fQx1BXhJyvMVxRnev3MpHrJmxEEEY66SiFBAp3Ws5MGf3K0d7MN-U4KlN8dQ?purpose=inline)
+
+[medium.com](https://medium.com/devsecops-community/day-3-understanding-the-linux-filesystem-072cd9a4089f)
+
+### 2.1 Understanding the root directory
+
+Unlike a typical Windows setup where you commonly see drive letters such as `C:\` and `D:\`, Linux normally presents storage through one unified hierarchy.
+
+Example:
+
+```
+/
+├── bin
+├── boot
+├── dev
+├── etc
+├── home
+├── lib
+├── media
+├── mnt
+├── opt
+├── proc
+├── root
+├── run
+├── sys
+├── tmp
+├── usr
+└── var
+```
+
+These directories have different purposes.
+
+| Directory | Purpose                                                    | Cybersecurity relevance                     |
+| --------- | ---------------------------------------------------------- | ------------------------------------------- |
+| `/`       | Root of the entire directory tree                          | Starting point for filesystem navigation    |
+| `/home`   | Ordinary users' home directories                           | User files and configuration                |
+| `/root`   | Root user's home directory                                 | Potentially sensitive administrative files  |
+| `/etc`    | System-wide configuration                                  | Service settings and security configuration |
+| `/bin`    | Essential user commands on systems using this layout       | Important executables                       |
+| `/usr`    | Most user-space programs, libraries and shared data        | Installed tools and software                |
+| `/var`    | Frequently changing data, including logs and caches        | Log analysis and incident investigation     |
+| `/tmp`    | Temporary files                                            | Temporary payloads and suspicious files     |
+| `/dev`    | Device files and interfaces                                | Access to devices and virtual devices       |
+| `/proc`   | Virtual filesystem exposing process and kernel information | Process investigation                       |
+| `/sys`    | Kernel and device information through sysfs                | Hardware and kernel inspection              |
+| `/boot`   | Bootloader-related files and kernels                       | Boot integrity investigation                |
+| `/mnt`    | Common temporary mount point                               | Accessing mounted filesystems               |
+| `/media`  | Common mount location for removable media                  | Investigating removable storage             |
+| `/opt`    | Optional or third-party application software               | Locating installed applications             |
+
+Directory layouts vary across distributions. For example, `/bin` may be a symbolic link to `/usr/bin`.
+
+### 2.2 Everything is treated like a file
+
+Linux follows the idea that many system resources can be accessed through file-like interfaces. This does not mean every resource is an ordinary disk file.
+
+Examples:
+
+- Regular files contain data.
+- Directories organize names and references to files.
+- Device files provide interfaces to devices.
+- `/proc` exposes process and kernel information.
+- `/sys` exposes information about devices and kernel subsystems.
+- Sockets provide communication endpoints.
+
+For example:
+
+```
+cat /proc/cpuinfo
+cat /proc/meminfo
+```
+
+These commands display information about the CPU and memory through the virtual `/proc` filesystem. The data is generated by the kernel rather than simply read from ordinary files stored on disk.
+
+Cybersecurity relevance: Investigators use these interfaces to examine processes, system configuration, mounted filesystems, and other runtime information.
+
+### 2.3 Filesystem types
+
+Linux supports multiple filesystem implementations.
+
+| Filesystem    | General use                                                      |
+| ------------- | ---------------------------------------------------------------- |
+| ext4          | Common general-purpose Linux filesystem                          |
+| XFS           | General-purpose filesystem used for many large storage workloads |
+| Btrfs         | Filesystem with features such as snapshots and checksumming      |
+| FAT32 / exFAT | Common on removable storage and cross-platform devices           |
+| NTFS          | Common Windows filesystem, also accessible on Linux              |
+| tmpfs         | Memory-backed temporary filesystem                               |
+
+The filesystem type determines how data and metadata are managed. A filesystem may be stored on a disk partition, but not all filesystems correspond directly to physical partitions.
+
+For example, `tmpfs` typically uses memory and may use swap, whereas ext4 usually stores persistent data on a storage device.
+
+### 2.4 Mounting a filesystem
+
+Linux makes a filesystem accessible by mounting it at a directory called a mount point.
+
+Suppose a USB drive contains a filesystem. Linux can mount it at:
+
+```
+/mnt/usb
+```
+
+The files on the drive then appear beneath that directory.
+
+Useful commands:
+
+```
+lsblk
+findmnt
+df -h
+mount
+```
+
+- `lsblk` lists block devices and their partitions.
+- `findmnt` displays mounted filesystems.
+- `df -h` displays filesystem space usage.
+- `mount` displays mount information or mounts filesystems when used with suitable arguments.
+
+Cybersecurity relevance: Investigators may need to identify mounted drives, examine removable media, or determine whether a filesystem is mounted with security-sensitive options such as `noexec`, `nosuid`, or `nodev`.
+
+## 3. Linux files, permissions, and ownership
+
+Filesystem security depends heavily on permissions and ownership.
+
+Run:
+
+```
+ls -l /etc/passwd
+```
+
+Example output:
+
+```
+-rw-r--r-- 1 root root 2500 Oct 14 10:00 /etc/passwd
+```
+
+The exact size, timestamp, and permission bits can vary.
+
+The first section, `-rw-r--r--`, describes the file type and permissions.
+
+- `-` means regular file.
+- `rw-` gives the owner read and write permission.
+- `r--` gives the group read permission.
+- `r--` gives other users read permission.
+
+Linux permissions are commonly represented using three categories:
+
+| Category   | Meaning                              |
+| ---------- | ------------------------------------ |
+| User (u)   | The file's owner                     |
+| Group (g)  | Users in the file's associated group |
+| Others (o) | Everyone else                        |
+
+The root account normally has broad administrative privileges, although Linux security mechanisms can impose additional restrictions.
+
+Useful commands:
+
+```
+id
+whoami
+ls -l
+chmod 640 file.txt
+chown user:group file.txt
+```
+
+`chmod` changes permissions, while `chown` changes ownership. Both can affect security significantly.
+
+### Why permissions matter in cybersecurity
+
+Consider a script that runs with elevated privileges. If an unprivileged user can modify that script, they may be able to influence what the privileged process executes.
+
+This is why penetration testers inspect:
+
+- World-writable files and directories.
+- Ownership of executable files.
+- SUID and SGID permissions.
+- Sensitive configuration files.
+- Scripts executed by privileged services or scheduled jobs.
+
+For example, `find` can help identify world-writable regular files:
+
+```
+find /path/to/check -type f -perm -0002 -print
+```
+
+This identifies files with the world-write permission bit set. Such permissions are not automatically vulnerabilities; their security impact depends on the file and its context.
+
+## 4. Absolute paths and relative paths
+
+A path tells Linux where a file or directory is located.
+
+Absolute path: Starts from the root directory `/`.
+
+```
+/etc/passwd
+/home/user/Documents
+```
+
+Relative path: Starts from the current working directory.
+
+```
+Documents/report.txt
+../Downloads/file.txt
+```
+
+Useful symbols:
+
+| Symbol | Meaning                                              |
+| ------ | ---------------------------------------------------- |
+| `/`    | Root directory or path separator                     |
+| `.`    | Current directory                                    |
+| `..`   | Parent directory                                     |
+| `~`    | Current user's home directory in shells such as Bash |
+
+Commands to practise:
+
+```
+pwd
+cd /etc
+ls -la
+cd ..
+```
+
+Cybersecurity relevance: Understanding paths is essential for navigating Linux, locating logs, analyzing suspicious files, and understanding path traversal vulnerabilities in web applications.
+
+For example, a vulnerable application that mishandles user-controlled paths might allow access to files outside its intended directory.
+
+## 5. How Linux architecture and the filesystem work together
+
+Suppose you run:
+
+```
+cat /var/log/auth.log
+```
+
+Conceptually:
+
+Shell
+
+Starts `cat` with the requested path
+
+`cat` program
+
+Requests file access using system interfaces
+
+Kernel
+
+Checks permissions and resolves the file path
+
+Filesystem
+
+Provides file data, possibly from cache or storage
+
+Terminal output
+
+Displays the contents returned by `cat`
+
+The path `/var/log/auth.log` is a common location for authentication logs on some Linux distributions, but it does not exist everywhere. Other systems may use `/var/log/secure` or systemd's journal.
+
+This example connects the concepts:
+
+- Architecture: Explains the shell, application, kernel, and system calls.
+- Filesystem: Explains the path, directory hierarchy, and file data.
+- Security: Explains access checks and the importance of protecting logs.
+
+## 6. Practical commands for cybersecurity
+
+Try these commands in a Linux virtual machine or your own Linux environment.
+
+| Goal                               | Command                       |
+| ---------------------------------- | ----------------------------- |
+| Identify your current directory    | `pwd`                         |
+| List files, including hidden files | `ls -la`                      |
+| Identify your current user         | `whoami`                      |
+| Inspect user and group IDs         | `id`                          |
+| Inspect filesystem space           | `df -h`                       |
+| Inspect mounted filesystems        | `findmnt`                     |
+| List storage devices               | `lsblk`                       |
+| Inspect running processes          | `ps aux`                      |
+| Inspect kernel information         | `uname -a`                    |
+| View memory information            | `cat /proc/meminfo`           |
+| Inspect permissions                | `stat filename`               |
+| Search for a filename              | `find /path -name 'filename'` |
+
+Be cautious when reading files or exploring directories that contain sensitive data. Avoid changing permissions, mounting unknown filesystems, or executing suspicious files on a production system.
+
+## 7. What you should remember
+
+By the end of this topic, you should understand these core ideas:
+
+1. Linux architecture consists of hardware, the kernel, user-space programs, and interfaces between them.
+2. The kernel manages processes, memory, devices, filesystems, and networking.
+3. System calls let applications request kernel services.
+4. The Linux filesystem presents files through a unified directory hierarchy rooted at `/`.
+5. Directories such as `/etc`, `/var`, `/home`, `/proc`, and `/dev` serve different purposes and are important during investigations.
+6. Mounting makes a filesystem accessible within the directory tree.
+7. Permissions and ownership control who can access or modify files.
+8. These concepts help you investigate processes, analyze logs, identify privilege-escalation opportunities, and understand malware behavior.
+
+### Quick knowledge check
+
+1\. Which component directly manages process scheduling and memory protection?
+
+Bash shell
+
+Linux kernel
+
+File manager
+
+Text editor
+
+Correct. The kernel manages processes, memory, hardware access, and other core operating-system functions.
+
+2\. Where are system-wide configuration files commonly stored?
+
+/home
+
+/tmp
+
+/etc
+
+/media
+
+Correct. The /etc directory conventionally contains system-wide configuration files.
+
+3\. What does mounting a filesystem do?
+
+Deletes its files
+
+Makes it accessible at a mount point
+
+Changes every file to root ownership
+
+Encrypts the entire drive
+
+Correct. Mounting attaches a filesystem to a location within Linux's directory hierarchy.
+
+4\. Which interface commonly exposes runtime process information?
+
+/proc
+
+/boot
+
+/home
+
+/opt
+
+Correct. The virtual /proc filesystem exposes information about processes and the kernel.
+
+4 of 4 answered
+
+Reset quiz
+
+## Score: 4/4
+
+Next topic suggestion: Linux users, groups, permissions, and privilege escalation. This builds directly on today's concepts and is particularly useful for penetration testing and Linux security.
