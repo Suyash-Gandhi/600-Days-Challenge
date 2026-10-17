@@ -1,0 +1,431 @@
+# 12. Linux Networking and SSH
+
+Cybersecurity Fundamentals · Medium Depth
+
+Linux networking is how a Linux computer communicates with other computers, servers, and devices over a network. SSH allows you to securely access and control another computer remotely.
+
+These concepts are important for Linux administration, penetration testing, SOC analysis, network troubleshooting, and remote server management.
+
+## 1. How Linux networking works
+
+Imagine your Linux computer wants to communicate with a website or another computer.
+
+Your Linux computer
+
+IP: 192.168.1.10
+
+Router / Network
+
+Forwards traffic between networks
+
+Remote server
+
+IP: 203.0.113.20
+
+Illustrative example — the remote IP is from a reserved documentation range.
+
+Your computer sends network packets through its network interface. The router forwards traffic toward the destination, and the destination computer processes it.
+
+Linux networking involves several important components:
+
+- Network interface: The connection through which the computer communicates, such as Ethernet or Wi-Fi.
+- IP address: Identifies a device's network interface.
+- Port: Identifies a particular network service or application.
+- Routing table: Helps Linux decide where to send packets.
+- DNS: Translates domain names, such as `example.com`, into IP addresses.
+- Firewall: Controls which network traffic is allowed or blocked.
+
+## 2. IP addresses and ports
+
+An IP address identifies a network destination, while a port identifies a service running on that destination.
+
+For example, a server might have this address:
+
+`192.168.1.20:22`
+
+- `192.168.1.20` — the IP address.
+- `22` — the port, commonly used by SSH.
+
+A single computer can run many services simultaneously because they can listen on different ports.
+
+| Port | Common service                |
+| ---- | ----------------------------- |
+| 22   | SSH — secure remote access    |
+| 53   | DNS — domain name resolution  |
+| 80   | HTTP — web traffic            |
+| 443  | HTTPS — encrypted web traffic |
+
+These are conventional default ports; services can be configured to use different ones.
+
+Cybersecurity relevance: Port scanning helps security professionals discover which services a system exposes. An exposed service may be a potential attack surface if it is vulnerable or misconfigured.
+
+## 3. Essential Linux networking commands
+
+You do not need to memorize every networking command immediately. Start with these.
+
+### A. `ip` — inspect network configuration
+
+```
+ip addr
+```
+
+Displays network interfaces and their IP addresses.
+
+```
+ip link
+```
+
+Displays network interfaces and their status.
+
+```
+ip route
+```
+
+Displays the routing table, including the default route used to reach external networks.
+
+Example output:
+
+```
+default via 192.168.1.1 dev eth0
+```
+
+This means Linux normally sends traffic for destinations outside its directly connected routes through the router at `192.168.1.1`, using interface `eth0`.
+
+### B. `ping` — test connectivity
+
+```
+ping -c 4 8.8.8.8
+```
+
+Sends four ICMP echo requests to test whether a destination responds.
+
+If it succeeds, it provides evidence of IP connectivity. If it fails, that does not necessarily mean the destination is offline; a firewall may block ICMP.
+
+### C. `ss` — inspect network connections and listening ports
+
+```
+ss -tuln
+```
+
+Displays TCP and UDP sockets, including listening ports, without resolving names.
+
+Common flags:
+
+- `-t` — TCP sockets.
+- `-u` — UDP sockets.
+- `-l` — listening sockets.
+- `-n` — numeric addresses and port numbers.
+
+To see processes associated with sockets, try:
+
+```
+sudo ss -tulpn
+```
+
+This is useful for discovering services listening on your own machine.
+
+### D. `curl` — test application-level connectivity
+
+```
+curl -I https://example.com
+```
+
+Requests HTTP response headers from a website.
+
+This helps investigate whether an HTTP service responds, rather than merely checking basic IP connectivity.
+
+### E. `dig` — investigate DNS
+
+```
+dig example.com
+```
+
+Queries DNS and displays information about the response, including resolved IP addresses when available.
+
+If a domain fails to resolve but its server IP is reachable, DNS may be the issue.
+
+### F. `traceroute` — inspect the network path
+
+```
+traceroute example.com
+```
+
+Shows intermediate network hops toward a destination, where responses are available. Depending on the system, you may need to install `traceroute` or use an alternative such as `tracepath`.
+
+## 4. What is SSH?
+
+SSH stands for Secure Shell. It is a protocol that allows you to securely connect to and control another computer over a network.
+
+Suppose you have a Linux server in a data center. You can use SSH from your own computer to:
+
+- Execute commands remotely.
+- Manage users and files.
+- Install and configure software.
+- Inspect logs and investigate incidents.
+- Transfer files securely using related tools.
+
+[Linux From Scratch 13.0 nu uit met de 6.18.10 kernel - Notebookcheck.nl Nieuws](https://images.openai.com/static-rsc-4/zanSMpwtEqcGhEwXmnWsRiijbVV5DP0-_8xsEh8SVDpMzxxF30jHk71TiGhwXz2pL0PkLWH4O9PxaMRbwPrt1pX2QyngyIpErruFdeXGYt28sjbTrn16aTwvm8CMxEr9bMrKkqEAe0DqzPoizXhqmtzO4UxPUISWPdKK_95BsO0?purpose=inline)
+
+Your computer — SSH client
+
+Initiates a secure connection.
+
+Encrypted SSH connection
+
+[Andreas Prein introduces himself – Department of Environmental Systems Science | ETH Zurich](https://images.openai.com/static-rsc-4/QkyoC9XZn0LpN4emxAGpsSe5XHl5XAQfDy0RyEIsFpJTXum7ANXEtdrXZznT_E0VUuppnhuNzG7Y0wcX3Q6s-kIzsyBJv-hyYrt04tTwsGncCLOeXg9tFx4q461ouyRNC5W9bL7Tep0QXxCOsvDYlowl13ECPWGdpjvSogNV6-U?purpose=inline)
+
+Remote computer — SSH server
+
+Authenticates you and provides a shell if authorized.
+
+SSH protects the connection through encryption and supports authentication using passwords or cryptographic keys. It also helps you verify the server's identity through host keys.
+
+## 5. Connecting to a Linux machine using SSH
+
+The basic syntax is:
+
+```
+ssh username@server_ip
+```
+
+Example:
+
+```
+ssh alice@192.168.1.20
+```
+
+Here:
+
+- `ssh` starts the SSH client.
+- `alice` is the remote username.
+- `192.168.1.20` is the remote machine's IP address.
+
+If SSH uses a non-default port:
+
+```
+ssh -p 2222 alice@192.168.1.20
+```
+
+The default SSH port is `22`.
+
+On your first connection, SSH may ask you to verify the server's host key. Verify its fingerprint through a trusted channel before accepting it, especially for important systems. This helps protect against connecting to an impersonating server.
+
+After successful authentication, you receive a remote shell and can run commands on that computer.
+
+For example:
+
+```
+whoami
+hostname
+ip addr
+```
+
+These commands execute on the remote machine, not your local computer.
+
+## 6. SSH authentication: password vs. SSH keys
+
+There are two common authentication methods.
+
+### Password authentication
+
+You connect and provide the remote account's password.
+
+Advantages:
+
+- Simple to understand.
+- Easy to use for initial learning.
+
+Risks:
+
+- Weak or reused passwords can be guessed or stolen.
+- Internet-facing SSH services may face repeated login attempts.
+
+### SSH key authentication
+
+SSH uses a cryptographic key pair.
+
+Private key
+
+Stored securely on your local computer. Do not share it.
+
+Public key
+
+Installed on the remote account, commonly in `~/.ssh/authorized_keys`.
+
+The client proves it possesses the private key without sending the private key itself to the server.
+
+Generate an Ed25519 key pair:
+
+```
+ssh-keygen -t ed25519
+```
+
+Copy the public key to a server where you already have authorized access:
+
+```
+ssh-copy-id alice@192.168.1.20
+```
+
+Then connect:
+
+```
+ssh alice@192.168.1.20
+```
+
+Important: Keep your private key secure. A passphrase can protect it if the key file is exposed. Key-based authentication improves security when properly configured, but it does not automatically eliminate every SSH risk.
+
+## 7. The SSH server on Linux
+
+The SSH server is commonly provided by OpenSSH's `sshd` service. On many Linux distributions, you need to install the OpenSSH server package before accepting incoming SSH connections.
+
+On Ubuntu or Debian:
+
+```
+sudo apt update
+sudo apt install openssh-server
+```
+
+Check its status:
+
+```
+sudo systemctl status ssh
+```
+
+Start it if needed:
+
+```
+sudo systemctl start ssh
+```
+
+Enable it to start automatically on boot:
+
+```
+sudo systemctl enable ssh
+```
+
+On some distributions, including many RHEL-based systems, the service name is `sshd` instead of `ssh`.
+
+The main server configuration file is commonly:
+
+```
+/etc/ssh/sshd_config
+```
+
+Administrators use this file to configure authentication, listening ports, permitted users, and other security settings. Validate configuration changes and retain a way to recover access before restarting SSH on a remote server.
+
+## 8. SSH security and cybersecurity
+
+SSH is a useful administrative tool, but a poorly secured SSH server can become an entry point for attackers.
+
+Important practices include:
+
+- Prefer SSH keys over password-only access where appropriate.
+- Disable direct root login when it is not required.
+- Restrict SSH access through firewalls or VPNs when possible.
+- Keep OpenSSH updated.
+- Review authentication logs for suspicious activity.
+- Use strong passphrases and protect private keys.
+- Restrict which accounts are allowed to connect.
+
+On Ubuntu, authentication logs are commonly available through:
+
+```
+sudo journalctl -u ssh
+```
+
+On systems using the `sshd` service:
+
+```
+sudo journalctl -u sshd
+```
+
+These logs can help identify repeated authentication failures or unexpected connections.
+
+For defensive security, you should understand the difference between an unsuccessful login attempt and evidence of a successful compromise. A failed login alone does not prove a system was breached.
+
+## 9. Common Linux networking troubleshooting
+
+Use the following approach when a connection fails.
+
+| Problem                  | Commands to investigate             |
+| ------------------------ | ----------------------------------- |
+| No network address       | `ip addr`                           |
+| Cannot reach the gateway | `ip route`, `ping`                  |
+| Domain does not resolve  | `dig`, `getent hosts`               |
+| Website does not respond | `curl -I`, `ping`                   |
+| SSH connection refused   | `ss -tln`, `systemctl status ssh`   |
+| SSH connection times out | `ip route`, `ping`, firewall checks |
+| SSH authentication fails | `ssh -v user@host`, server logs     |
+
+These are starting points, not definitive diagnoses. For example, connection refused often indicates that no service is listening on the target port or that a device actively rejected the connection. A timeout can indicate filtering, routing issues, or an unavailable host.
+
+## 10. Practical lab
+
+Practice these commands on your own Linux system or a virtual machine.
+
+## Networking checklist
+
+6 of 6
+
+Inspect network interfaces
+
+Identify your IP address and network interface.
+
+ip addr
+
+&#x20;Copy
+
+Inspect routing
+
+Find the default gateway and available routes.
+
+ip route
+
+&#x20;Copy
+
+Test IP connectivity
+
+Check whether a destination responds to ICMP.
+
+ping -c 4 8.8.8.8
+
+&#x20;Copy
+
+Resolve a domain
+
+Check whether the system can resolve a hostname.
+
+getent hosts example.com
+
+&#x20;Copy
+
+List listening ports
+
+Identify locally listening TCP and UDP sockets.
+
+ss -tuln
+
+&#x20;Copy
+
+Inspect SSH service
+
+Check the SSH service on systems that use this service name.
+
+systemctl status ssh
+
+&#x20;Copy
+
+Note: The SSH service check may report that the service is not installed or that your distribution uses `sshd`. You can still complete the other exercises.
+
+## What you should understand before moving on
+
+By the end of this topic, you should be able to explain:
+
+1. How IP addresses, ports, network interfaces, and routing work together.
+2. How to inspect Linux network configuration and test connectivity.
+3. What SSH does and how to connect to a remote machine.
+4. How public and private SSH keys work.
+5. How to inspect listening services and troubleshoot SSH failures.
+6. Why exposed services, weak authentication, and insecure SSH configuration matter to cybersecurity.
+
+The main idea: Linux networking helps you understand how a machine communicates, while SSH gives you a secure way to administer another machine remotely. Both are foundational skills for cybersecurity.

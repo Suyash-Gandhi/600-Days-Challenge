@@ -1,0 +1,450 @@
+# 13. Linux Logs and Core Troubleshooting Utilities
+
+Depth: Medium — Cybersecurity Fundamentals
+
+Linux logs and troubleshooting utilities are essential for understanding system failures, investigating suspicious activity, debugging services, and analyzing security incidents.
+
+The goal is to learn how to find out what happened, when it happened, and why it happened on a Linux system.
+
+## 1. What are Linux logs?
+
+A log is a record of events that happen on a computer.
+
+Think of logs as a computer's diary. Whenever something important happens, Linux or an application may record it.
+
+For example:
+
+- A user logs in or fails to log in.
+- An application crashes.
+- A service starts or stops.
+- Someone attempts to access a restricted file.
+- The system encounters an error.
+
+A log entry might look like this:
+
+```
+Oct 14 10:25:31 server sshd[1245]: Failed password for root from 192.168.1.50
+```
+
+Let's understand the entry:
+
+| Part              | Meaning                             |
+| ----------------- | ----------------------------------- |
+| `Oct 14`          | Date                                |
+| `10:25:31`        | Time                                |
+| `server`          | Computer's hostname                 |
+| `sshd`            | SSH service that recorded the event |
+| `[1245]`          | Process ID (PID)                    |
+| `Failed password` | Event that occurred                 |
+| `root`            | Account targeted                    |
+| `192.168.1.50`    | Source IP address                   |
+
+Cybersecurity relevance: If you see hundreds of failed login attempts from an unfamiliar IP address, you might be observing a brute-force attack. One failed login alone does not prove an attack.
+
+## 2. Where are Linux logs stored?
+
+On most Linux distributions, system logs are stored under `/var/log/`.
+
+`/var/log/`
+
+Main directory containing many traditional Linux log files.
+
+`/var/log/syslog`
+
+General system messages on many Debian/Ubuntu systems.
+
+`/var/log/auth.log`
+
+Authentication and authorization events on many Debian/Ubuntu systems.
+
+`/var/log/kern.log`
+
+Kernel messages on systems that maintain this file.
+
+`/var/log/nginx/` or `/var/log/apache2/`
+
+Web server access and error logs, depending on configuration.
+
+These files vary by distribution and configuration. For example, Ubuntu often uses `auth.log`, while RHEL-based distributions commonly use `/var/log/secure`.
+
+Modern Linux systems may also store logs in the systemd journal, which you access using `journalctl`.
+
+## 3. Essential commands for reading logs
+
+You do not need to memorize every command immediately. Understand what each one does and when to use it.
+
+### A. `cat` — display a file
+
+```
+cat /var/log/auth.log
+```
+
+Displays the file's contents.
+
+Use it for small files. Large logs can flood your terminal.
+
+### B. `less` — browse a log
+
+```
+less /var/log/syslog
+```
+
+Useful controls:
+
+- `Space` — next page
+- `b` — previous page
+- `/error` — search for the word `error`
+- `n` — next search match
+- `q` — quit
+
+This is often better than opening a massive log file all at once.
+
+### C. `tail` — inspect recent entries
+
+```
+tail /var/log/syslog
+```
+
+Displays the last 10 lines by default.
+
+To display the last 50 lines:
+
+```
+tail -n 50 /var/log/syslog
+```
+
+To watch new lines as they are written:
+
+```
+tail -f /var/log/syslog
+```
+
+The `-f` option is especially useful when troubleshooting an application while it is running.
+
+Press `Ctrl+C` to stop following the file.
+
+### D. `head` — inspect the beginning
+
+```
+head -n 20 /var/log/syslog
+```
+
+Displays the first 20 lines. This is useful for examining the start of a log or checking its format.
+
+### E. `grep` — search for specific events
+
+Suppose a log contains thousands of lines, but you only want to find errors.
+
+```
+grep -i "error" /var/log/syslog
+```
+
+Here, `-i` makes the search case-insensitive.
+
+Other useful examples:
+
+```
+grep -i "failed" /var/log/auth.log
+grep "sshd" /var/log/auth.log
+grep -iE "error|failed|denied" /var/log/syslog
+```
+
+The last command searches for any of three terms.
+
+Cybersecurity use: Search authentication logs for failed logins, permission denials, and suspicious service activity.
+
+### F. `journalctl` — inspect the systemd journal
+
+Many modern Linux distributions use systemd to manage services and collect logs.
+
+```
+journalctl
+```
+
+Useful variations:
+
+```
+journalctl -b
+journalctl -b -1
+journalctl -p err
+journalctl -u ssh
+journalctl -f
+```
+
+| Command             | Purpose                                       |
+| ------------------- | --------------------------------------------- |
+| `journalctl -b`     | Logs from the current boot                    |
+| `journalctl -b -1`  | Logs from the previous boot, if retained      |
+| `journalctl -p err` | Show error-priority messages                  |
+| `journalctl -u ssh` | Show logs for the SSH service, if named `ssh` |
+| `journalctl -f`     | Follow new journal entries                    |
+
+On some distributions, the SSH service is called `sshd` instead of `ssh`.
+
+To inspect logs from a particular time range:
+
+```
+journalctl --since "1 hour ago"
+journalctl --since "2026-10-14 10:00:00" \
+            --until "2026-10-14 11:00:00"
+```
+
+This is useful when you know approximately when an incident occurred.
+
+## 4. Core Linux troubleshooting utilities
+
+Logs tell you what the system recorded. Troubleshooting utilities help you investigate the system's current state.
+
+`top` — CPU and memory usage
+
+```
+top
+```
+
+Shows running processes and their resource consumption. Useful when a machine becomes slow or a process consumes excessive CPU.
+
+`ps` — inspect processes
+
+```
+ps aux
+ps aux | grep nginx
+```
+
+Shows running processes. Use it to find a process, inspect its owner, or investigate a suspicious executable.
+
+`df` — check disk space
+
+```
+df -h
+```
+
+Reports filesystem capacity and available space in readable units. A full disk can prevent applications from writing logs or operating correctly.
+
+`du` — find disk usage
+
+```
+du -sh /var/log
+du -sh /var/log/*
+```
+
+Helps identify which directories or log files are consuming storage.
+
+`free` — inspect memory
+
+```
+free -h
+```
+
+Displays RAM and swap usage. Low available memory may cause slowdowns or trigger the kernel's out-of-memory (OOM) killer.
+
+`ss` — inspect network sockets
+
+```
+ss -tulpn
+```
+
+Displays listening TCP/UDP sockets and associated processes where permissions allow. Useful for identifying unexpected listening services.
+
+`ping` — test basic network reachability
+
+```
+ping -c 4 1.1.1.1
+```
+
+Sends four ICMP echo requests. A response suggests reachability, but no response does not necessarily mean the destination is down because ICMP may be blocked.
+
+`uptime` — check system load
+
+```
+uptime
+```
+
+Shows how long the system has been running and its load averages. Load average is not the same as CPU utilization; interpret it relative to the number of CPU cores.
+
+## 5. Troubleshooting services with `systemctl`
+
+Linux services are background programs that provide functionality such as SSH, web hosting, or database access.
+
+For example, if an SSH connection fails, the SSH service may be stopped or malfunctioning.
+
+Check its status:
+
+```
+systemctl status ssh
+```
+
+On distributions using the alternative service name:
+
+```
+systemctl status sshd
+```
+
+Other useful commands:
+
+```
+systemctl --failed
+systemctl list-units --type=service
+sudo systemctl restart ssh
+```
+
+- `status` shows whether a service is running and often displays recent log messages.
+- `--failed` lists failed systemd units.
+- `restart` stops and starts a service.
+
+Only restart a service when appropriate; doing so can interrupt active users or applications.
+
+A powerful troubleshooting combination is:
+
+```
+systemctl status nginx
+journalctl -u nginx -n 50
+```
+
+The first command checks service status. The second displays its latest 50 journal entries.
+
+## 6. Understanding common troubleshooting scenarios
+
+Scenario 1: The system is running slowly
+
+Investigate CPU, RAM, and disk capacity.
+
+```
+top
+free -h
+df -h
+```
+
+If CPU usage is high, inspect the processes. If a filesystem is full, identify which directories consume space.
+
+Scenario 2: SSH login is failing
+
+Check the service and authentication records.
+
+```
+systemctl status ssh
+journalctl -u ssh --since "30 minutes ago"
+```
+
+If the service is running, inspect authentication failures and confirm that the correct username, credentials, network path, and SSH configuration are being used.
+
+Scenario 3: A web application is unavailable
+
+Check service state, logs, ports, and resources.
+
+```
+systemctl status nginx
+journalctl -u nginx -p err
+ss -tulpn
+df -h
+```
+
+Look for startup failures, port conflicts, exhausted disk space, and configuration errors.
+
+Scenario 4: A suspicious process is running
+
+Identify the process before taking action.
+
+```
+ps aux
+top
+ss -tulpn
+journalctl --since "1 hour ago"
+```
+
+Investigate the process owner, executable path, network connections, and relevant logs. A process name alone is not enough to determine whether it is malicious.
+
+## 7. Linux logs in cybersecurity investigations
+
+Logs are a major source of evidence during incident response.
+
+Consider this example:
+
+```
+10:00 Failed SSH login from 203.0.113.25
+10:01 Failed SSH login from 203.0.113.25
+10:02 Failed SSH login from 203.0.113.25
+10:03 Successful SSH login for admin
+```
+
+This sequence is suspicious, but it does not establish that the successful login came from the same source unless the final event includes that information. You would correlate the source IP, account, timestamps, session details, and other evidence.
+
+During an investigation, look for:
+
+- Authentication anomalies: repeated failures, unexpected successful logins, unusual accounts.
+- Process anomalies: unexpected executables, unfamiliar process owners, unusual resource usage.
+- Network anomalies: unfamiliar listening ports or unexpected outbound connections.
+- System anomalies: unexpected reboots, failed services, resource exhaustion.
+- Evidence of tampering: missing logs, gaps in timestamps, changed permissions, or disabled logging.
+
+Remember that logs can be incomplete, rotated, altered, or deleted. Investigators should preserve relevant evidence and correlate multiple sources instead of relying on a single log file.
+
+## 8. Practical exercise
+
+Try the following commands on your own Linux VM, WSL installation, or Linux lab machine.
+
+Hands-on checklist
+
+5 of 5 completed
+
+Inspect log directories
+
+Learn which logs your distribution actually maintains.
+
+Command: ls -lah /var/log/
+
+&#x20; Copy command
+
+Read recent system messages
+
+View the latest 30 journal entries from the current boot.
+
+Command: journalctl -b -n 30
+
+&#x20; Copy command
+
+Find failed services
+
+Identify services or system units that did not start correctly.
+
+Command: systemctl --failed
+
+&#x20; Copy command
+
+Check resource usage
+
+Inspect memory, storage, and system load.
+
+Command: free -h && df -h && uptime
+
+&#x20; Copy command
+
+Inspect listening ports
+
+Identify network services listening for connections.
+
+Command: ss -tulpn
+
+&#x20; Copy command
+
+Some commands may require elevated privileges for complete output. In WSL or a minimal Linux installation, systemd or particular log files may not be available; use the tools your environment supports.
+
+## 9. What you should remember
+
+| Tool                          | Primary purpose                     |
+| ----------------------------- | ----------------------------------- |
+| `cat`, `less`, `head`, `tail` | Read log files                      |
+| `grep`                        | Search log contents                 |
+| `journalctl`                  | Read systemd journal logs           |
+| `systemctl`                   | Inspect and manage services         |
+| `top`, `ps`                   | Investigate processes               |
+| `free`                        | Check memory                        |
+| `df`, `du`                    | Investigate disk usage              |
+| `ss`                          | Inspect listening ports and sockets |
+| `ping`                        | Test basic network reachability     |
+| `uptime`                      | Check uptime and system load        |
+
+The most important troubleshooting habit is to follow a sequence:
+
+Observe the problem → inspect the system state → examine relevant logs → identify a likely cause → test a safe fix → verify the result.
+
+For cybersecurity, these fundamentals prepare you for Linux hardening, system auditing, SOC analysis, incident response, and malware investigation.
