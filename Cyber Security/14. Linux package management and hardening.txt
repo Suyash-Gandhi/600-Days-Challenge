@@ -1,0 +1,1045 @@
+# 14. Linux Package Management and Hardening
+Depth: Medium | Cybersecurity Fundamentals
+
+Linux package management and hardening are important cybersecurity skills because they help you install software safely, manage dependencies, apply security updates, remove vulnerable packages, and reduce the attack surface of a Linux system.
+
+By the end of this topic, you should understand how Linux software installation works, how to maintain an updated system, and how to apply essential security configurations.
+
+---
+
+# 1. Linux Package Management
+
+## 1.1 What Is Package Management?
+
+Package management is the process of installing, updating, configuring, and removing software on a Linux system.
+
+For example, suppose you want to install Nmap, a network scanning tool, on Ubuntu.
+
+Instead of downloading its source code, compiling it, and manually installing every dependency, you can run:
+
+```bash
+sudo apt install nmap
+```
+
+The package manager handles the installation and resolves the required dependencies.
+
+### What Is a Package?
+
+A package is a collection of files and metadata required to install and manage a software application.
+
+A typical package may contain:
+
+- Executable files.
+- Configuration files.
+- Libraries and dependencies.
+- Installation scripts.
+- Package version information.
+- Metadata about the software and its maintainer.
+
+Examples include:
+
+| Package | Purpose |
+|---|---|
+| `nginx` | Web server |
+| `openssh-server` | Remote SSH access |
+| `curl` | Transfer data using URLs |
+| `nmap` | Network discovery and scanning |
+| `ufw` | Firewall management on Ubuntu |
+| `fail2ban` | Helps block repeated suspicious authentication attempts |
+
+Cybersecurity relevance: Vulnerable or outdated packages are common sources of security weaknesses. Package management helps you identify, update, and remove potentially vulnerable software.
+
+---
+
+# 2. Linux Package Managers
+
+Different Linux distributions use different package management systems.
+
+## 2.1 APT — Debian and Ubuntu
+
+APT stands for Advanced Package Tool.
+
+It is commonly used on:
+- Ubuntu
+- Debian
+- Kali Linux
+- Linux Mint
+
+Important commands:
+
+| Command | Purpose |
+|---|---|
+| `sudo apt update` | Refresh package repository metadata |
+| `sudo apt upgrade` | Upgrade installed packages |
+| `sudo apt install nginx` | Install a package |
+| `sudo apt remove nginx` | Remove a package but generally retain its configuration files |
+| `sudo apt purge nginx` | Remove a package and its system-managed configuration files |
+| `sudo apt autoremove` | Remove automatically installed dependencies that are no longer needed |
+| `apt search nginx` | Search available package metadata |
+| `apt show nginx` | Display package information |
+| `dpkg -l` | List installed packages |
+| `dpkg -L nginx` | List files installed by a package |
+
+### Important distinction: `apt update` vs. `apt upgrade`
+
+These commands perform different operations.
+
+Step 1: Refresh repository information
+
+```bash
+sudo apt update
+```
+
+This downloads current package metadata from configured repositories. It does not, by itself, upgrade installed software.
+
+Step 2: Install available updates
+
+```bash
+sudo apt upgrade
+```
+
+This upgrades installed packages when updates are available and can be installed without removing other packages.
+
+Step 3: Review the result
+
+```bash
+apt list --upgradable
+```
+
+This lists packages with available upgrades.
+
+For a normal maintenance session, you might use:
+
+```bash
+sudo apt update
+apt list --upgradable
+sudo apt upgrade
+```
+
+Security importance: Refreshing package metadata does not patch vulnerabilities. You must install the relevant updates for the vulnerable software to be upgraded.
+
+### What does `sudo` mean?
+
+`sudo` allows an authorized user to execute a command with elevated privileges.
+
+For example:
+
+```bash
+sudo apt install nginx
+```
+
+Installing system software usually requires administrative privileges because the operation changes system directories and package databases.
+
+Security rule: Do not execute every command with `sudo`. Use elevated privileges only when necessary.
+
+---
+
+## 2.2 DNF — Fedora, RHEL and Related Distributions
+
+DNF is a package manager used by Fedora and modern Red Hat Enterprise Linux-based systems.
+
+Common commands:
+
+| Command | Purpose |
+|---|---|
+| `sudo dnf check-update` | Check for available package updates |
+| `sudo dnf upgrade` | Upgrade installed packages |
+| `sudo dnf install nginx` | Install a package |
+| `sudo dnf remove nginx` | Remove a package |
+| `dnf search nginx` | Search package repositories |
+| `dnf info nginx` | Display package information |
+| `rpm -qa` | List installed RPM packages |
+| `rpm -qi nginx` | Display information about an installed RPM package |
+
+Example:
+
+```bash
+sudo dnf upgrade
+```
+
+This updates installed packages according to the configured repositories and system policies.
+
+Note that `dnf check-update` can return a nonzero exit status when updates are available; that does not necessarily indicate an error.
+
+---
+
+## 2.3 Other Package Management Systems
+
+You should recognize these systems, but you do not need to memorize every command yet.
+
+| Distribution or ecosystem | Package system | Package format |
+|---|---|---|
+| Ubuntu | APT / dpkg | `.deb` |
+| Debian | APT / dpkg | `.deb` |
+| Kali Linux | APT / dpkg | `.deb` |
+| Fedora | DNF / RPM | `.rpm` |
+| RHEL | DNF / RPM | `.rpm` |
+| Arch Linux | Pacman | `.pkg.tar.zst` |
+| Alpine Linux | APK | `.apk` |
+
+For example, on Arch Linux:
+
+```bash
+sudo pacman -Syu
+```
+
+This synchronizes package databases and upgrades the system.
+
+On Alpine Linux:
+
+```bash
+sudo apk update
+sudo apk upgrade
+```
+
+These commands refresh package indexes and upgrade installed packages.
+
+For your cybersecurity learning environment, focus primarily on APT, especially if you are using Ubuntu or Kali Linux.
+
+---
+
+# 3. How Package Management Works Internally
+
+Understanding the process helps you troubleshoot installation problems and identify software supply-chain risks.
+
+Consider this command:
+
+```bash
+sudo apt install nginx
+```
+
+The process is broadly as follows:
+
+1. Repository configuration: APT identifies the configured software repositories.
+2. Metadata lookup: It uses downloaded repository metadata to find the package and its version.
+3. Dependency resolution: It determines which additional packages are required.
+4. Package download: It retrieves the required package files.
+5. Package verification: Repository authentication and package-integrity mechanisms help verify that packages come from trusted sources and have not been improperly modified.
+6. Installation: The package manager unpacks files and performs the necessary configuration steps.
+7. Package database update: The installed package state is recorded.
+
+### What Is a Repository?
+
+A repository is a source of software packages and related metadata.
+
+For example, Ubuntu has official repositories containing packages maintained under its distribution's packaging and security processes.
+
+APT repository configuration commonly resides in:
+
+```text
+/etc/apt/sources.list
+/etc/apt/sources.list.d/
+```
+
+Inspect your configured sources:
+
+```bash
+grep -R -h -v '^#' /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null
+```
+
+Some systems use Deb822-style `.sources` files in the same directory.
+
+### Why Are Repositories a Security Concern?
+
+Imagine that an attacker convinces an administrator to add an untrusted repository.
+
+The repository might provide a malicious package disguised as a legitimate utility. If that package is installed with administrative privileges, its installation scripts or executables may gain significant access to the system.
+
+Potential consequences include:
+
+- Unauthorized access.
+- Credential theft.
+- Installation of backdoors.
+- Modification of system files.
+- Persistence after reboot.
+
+Therefore:
+
+- Prefer official distribution repositories.
+- Verify third-party repository ownership and trustworthiness.
+- Avoid adding repositories from unknown websites.
+- Do not blindly trust installation commands copied from online forums.
+- Never disable package signature verification simply to make an installation work.
+
+Important: A valid package signature establishes a relationship with a trusted signing key. It does not guarantee that the software itself is free of vulnerabilities or malicious behavior.
+
+---
+
+# 4. Software Updates and Security Patching
+
+## 4.1 What Is Security Patching?
+
+A security patch is a software update that fixes a vulnerability or improves a product's security.
+
+For example, suppose an installed version of OpenSSH contains a vulnerability that could allow unauthorized access under specific conditions.
+
+The distribution may publish an updated package that fixes the problem.
+
+Installing the appropriate update helps protect the system against exploitation of that vulnerability.
+
+### Types of Updates
+
+| Update type | Example |
+|---|---|
+| Security update | Fixes a known vulnerability |
+| Bug fix | Corrects unexpected application behavior |
+| Feature update | Adds functionality |
+| Dependency update | Updates a library required by another application |
+| Kernel update | Fixes kernel vulnerabilities or other defects |
+
+Not every software update is a security update, and not every vulnerability fix requires a change to the upstream software's major version.
+
+Distributions sometimes backport security fixes to older package versions.
+
+Consequently, an apparently older version number does not automatically mean that a distribution package is vulnerable. Check the distribution's security advisories and package status.
+
+## 4.2 Check for Outdated Packages
+
+On Ubuntu or Debian:
+
+```bash
+sudo apt update
+apt list --upgradable
+```
+
+To inspect a specific package:
+
+```bash
+apt policy openssh-server
+```
+
+This displays package version information and available candidates from configured sources.
+
+You can also inspect installed packages:
+
+```bash
+dpkg -l
+```
+
+To inspect the kernel version currently running:
+
+```bash
+uname -r
+```
+
+Remember that the running kernel may differ from a newly installed kernel until you reboot.
+
+## 4.3 Enable Automatic Security Updates
+
+On Ubuntu, the `unattended-upgrades` package can automatically install eligible updates.
+
+Install it if needed:
+
+```bash
+sudo apt install unattended-upgrades
+```
+
+Check whether the service or scheduled job is active:
+
+```bash
+systemctl status unattended-upgrades
+```
+
+Inspect its configuration:
+
+```bash
+cat /etc/apt/apt.conf.d/20auto-upgrades
+```
+
+The configuration commonly controls whether package-list updates and unattended upgrades run automatically.
+
+Security benefit: Automatic security updates can reduce the time between a patch becoming available and its installation.
+
+Operational consideration: Servers may require testing, maintenance windows, monitoring, and planned reboots. Automatic updates should fit the system's availability and change-management requirements.
+
+---
+
+# 5. What Is Linux Hardening?
+
+Linux hardening is the process of reducing a system's attack surface and strengthening its security configuration.
+
+The attack surface is the collection of components, services, interfaces, permissions, and other points through which an attacker might attempt to interact with a system.
+
+Consider a Linux server with the following configuration:
+
+- SSH permits password authentication from anywhere.
+- Multiple unused services are running.
+- Several users have administrative privileges.
+- The firewall permits unnecessary inbound connections.
+- Security updates have not been installed.
+- File permissions expose sensitive configuration files.
+
+Each condition creates a potential security risk.
+
+Hardening aims to reduce these risks.
+
+### Core Principles of Linux Hardening
+
+| Principle | Meaning |
+|---|---|
+| Least privilege | Give users and services only the permissions they require |
+| Minimize attack surface | Remove unnecessary software and disable unused services |
+| Defense in depth | Apply multiple complementary security controls |
+| Secure configuration | Configure services and operating-system settings safely |
+| Patch management | Install relevant security fixes promptly |
+| Access control | Restrict who can access the system and its resources |
+| Monitoring and auditing | Record and investigate relevant system activity |
+
+These principles apply to Linux workstations, cloud servers, web servers, containers, and security appliances.
+
+---
+
+# 6. Essential Linux Hardening Techniques
+
+## 6.1 Remove Unnecessary Software
+
+Every installed application can introduce additional files, dependencies, privileged operations, or services that require maintenance.
+
+List installed packages:
+
+```bash
+dpkg -l
+```
+
+Search for a package:
+
+```bash
+apt search telnet
+```
+
+Remove an unnecessary package:
+
+```bash
+sudo apt remove telnet
+```
+
+However, do not remove packages merely because you do not recognize them. Some packages are dependencies of essential system components.
+
+Cybersecurity objective: Reduce the amount of software that must be secured and maintained.
+
+---
+
+## 6.2 Identify and Disable Unnecessary Services
+
+A service is a background process that provides functionality such as remote access, web hosting, or database operations.
+
+Examples include:
+
+- SSH server.
+- Web server.
+- Database server.
+- Printing service.
+- File-sharing service.
+
+An unnecessary network-facing service can expose additional attack paths.
+
+### Step 1: List Running Services
+
+```bash
+systemctl list-units --type=service --state=running
+```
+
+This lists running service units managed by systemd.
+
+### Step 2: Inspect Listening Network Ports
+
+```bash
+sudo ss -tulpn
+```
+
+This helps identify TCP and UDP sockets that are listening, along with associated process information where available.
+
+Example output might include:
+
+```text
+Netid  State   Local Address:Port
+tcp    LISTEN  0.0.0.0:22
+tcp    LISTEN  127.0.0.1:5432
+```
+
+Interpretation:
+
+- Port `22` is commonly used by SSH.
+- Port `5432` is commonly used by PostgreSQL.
+- `0.0.0.0` generally indicates listening on all IPv4 interfaces.
+- `127.0.0.1` indicates listening on the IPv4 loopback interface.
+
+A listening port does not automatically mean a vulnerability exists. The risk depends on the service, its configuration, network reachability, and access controls.
+
+### Step 3: Inspect a Service
+
+```bash
+systemctl status cups
+```
+
+This checks the status of the CUPS printing service.
+
+### Step 4: Stop and Disable an Unnecessary Service
+
+If you have confirmed that the service is unnecessary:
+
+```bash
+sudo systemctl disable --now cups
+```
+
+This disables automatic startup and stops the service now.
+
+Important: Do not disable services blindly. Identify their purpose and dependencies first. For example, stopping SSH on a remote server could lock you out of the machine.
+
+---
+
+## 6.3 Harden SSH
+
+SSH is commonly used to administer Linux systems remotely.
+
+An improperly configured SSH server can expose the system to password guessing, credential theft, and unauthorized access.
+
+The primary SSH server configuration file is:
+
+```text
+/etc/ssh/sshd_config
+```
+
+### Important SSH Security Settings
+
+| Setting | Security purpose |
+|---|---|
+| `PermitRootLogin no` | Prevents direct root login over SSH |
+| `PubkeyAuthentication yes` | Enables public-key authentication |
+| `PasswordAuthentication no` | Disables password-based SSH authentication |
+| `AllowUsers user1 user2` | Restricts SSH login to specified users |
+| `MaxAuthTries 3` | Limits authentication attempts per connection |
+
+These are configuration examples, not universal settings that should be applied without preparation.
+
+### Recommended Approach
+
+Step 1: Create a normal administrative user if necessary.
+
+Step 2: Configure SSH public-key authentication and verify that the correct public key is installed.
+
+Step 3: Open a second terminal and confirm that key-based login works.
+
+Step 4: Back up the configuration before editing it.
+
+```bash
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+```
+
+Step 5: Edit the configuration.
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Step 6: Validate the configuration syntax.
+
+```bash
+sudo sshd -t
+```
+
+Step 7: Reload the SSH service if validation succeeds.
+
+```bash
+sudo systemctl reload ssh
+```
+
+On some distributions, the service is named `sshd` instead of `ssh`.
+
+Critical warning: Do not disable password authentication until you have verified that key-based authentication works. Keep an existing session open while testing a new one, and ensure you have an alternative recovery method.
+
+---
+
+## 6.4 Configure a Firewall
+
+A firewall controls network traffic according to configured rules.
+
+On Ubuntu, UFW provides a relatively straightforward interface for managing firewall rules.
+
+Check its status:
+
+```bash
+sudo ufw status verbose
+```
+
+Allow SSH:
+
+```bash
+sudo ufw allow OpenSSH
+```
+
+Allow HTTPS:
+
+```bash
+sudo ufw allow 443/tcp
+```
+
+Enable the firewall:
+
+```bash
+sudo ufw enable
+```
+
+Verify the rules:
+
+```bash
+sudo ufw status numbered
+```
+
+### Why Is This Important?
+
+Suppose a server runs:
+
+- SSH on port 22.
+- HTTPS on port 443.
+- PostgreSQL on port 5432.
+
+If the server only needs to provide a public HTTPS website, the database should generally not be publicly accessible.
+
+A firewall can help restrict inbound traffic to the required services.
+
+However, firewall rules are only one layer of defense. Applications must also be configured to listen on appropriate interfaces and enforce authentication.
+
+If you administer a remote machine, allow the required management connection before enabling restrictive firewall rules. Otherwise, you may lose access.
+
+---
+
+## 6.5 Secure User Accounts and Privileges
+
+Linux security depends heavily on controlling user permissions.
+
+### Inspect User Accounts
+
+```bash
+cat /etc/passwd
+```
+
+This lists account records, including service accounts. It does not expose plaintext passwords.
+
+Inspect administrative group membership:
+
+```bash
+getent group sudo
+```
+
+On Ubuntu, users in the `sudo` group can generally obtain administrative privileges, subject to the configured sudo policy.
+
+Inspect the current user's identity and groups:
+
+```bash
+id
+```
+
+### Apply Least Privilege
+
+Avoid giving every user administrative privileges.
+
+For example, a user who only needs to read application logs should not automatically receive full root access.
+
+Use `sudo` for authorized administrative operations rather than working as root all the time.
+
+Review privileged access periodically and remove permissions that are no longer needed.
+
+---
+
+## 6.6 Secure File Permissions
+
+Linux uses permissions to control access to files and directories.
+
+For ordinary files, the basic permission categories are:
+
+- Owner.
+- Group.
+- Others.
+
+The main permission types are:
+
+- `r`: Read.
+- `w`: Write.
+- `x`: Execute.
+
+Inspect permissions:
+
+```bash
+ls -l
+```
+
+Example:
+
+```text
+-rw------- 1 root root 1200 Oct 22 secrets.conf
+```
+
+Here, the owner has read and write permissions, while group members and other users have no permissions.
+
+The permissions can be expressed numerically as `600`.
+
+Change permissions:
+
+```bash
+chmod 600 secrets.conf
+```
+
+Change file ownership:
+
+```bash
+sudo chown root:root secrets.conf
+```
+
+### Why Does This Matter?
+
+Suppose an application stores database credentials in a configuration file.
+
+If every local user can read that file, a compromised unprivileged account might be able to steal the credentials.
+
+Restricting access reduces this risk.
+
+Important: Do not indiscriminately change permissions across system directories. Incorrect ownership or permissions can break applications and create new vulnerabilities.
+
+---
+
+## 6.7 Apply Secure Kernel Settings
+
+Linux exposes kernel parameters that influence system behavior.
+
+Many can be configured through the `sysctl` interface.
+
+List available kernel parameters:
+
+```bash
+sysctl -a
+```
+
+Inspect a specific setting:
+
+```bash
+sysctl kernel.randomize_va_space
+```
+
+Address Space Layout Randomization (ASLR) helps make exploitation more difficult by randomizing the memory locations of certain process structures.
+
+On typical Linux systems, a value of `2` enables full ASLR support provided by the kernel.
+
+Example:
+
+```bash
+sudo sysctl -w kernel.randomize_va_space=2
+```
+
+This changes the setting at runtime.
+
+For persistent configuration, administrators typically place appropriate settings in a file under:
+
+```text
+/etc/sysctl.d/
+```
+
+For example, a configuration file could contain:
+
+```text
+kernel.randomize_va_space = 2
+```
+
+Then apply the configuration:
+
+```bash
+sudo sysctl --system
+```
+
+Security relevance: Kernel hardening mechanisms can reduce the reliability of certain exploitation techniques. They do not replace software patching, access controls, or secure application development.
+
+---
+
+# 7. Audit a Linux System for Security Weaknesses
+
+A security audit involves inspecting the system to identify potential weaknesses.
+
+You can begin with built-in commands.
+
+## 7.1 Check System Information
+
+```bash
+uname -a
+```
+
+Displays kernel and system information.
+
+```bash
+cat /etc/os-release
+```
+
+Displays Linux distribution information.
+
+```bash
+uptime
+```
+
+Displays how long the system has been running and its load averages.
+
+## 7.2 Check Listening Ports
+
+```bash
+sudo ss -tulpn
+```
+
+Questions to ask:
+
+- Which services are listening?
+- Are they required?
+- Are they listening on all interfaces or only localhost?
+- Should they be reachable from the network?
+- Are authentication and access controls configured correctly?
+
+## 7.3 Check Failed Login Attempts
+
+On systems using systemd's journal:
+
+```bash
+sudo journalctl -u ssh --since "24 hours ago"
+```
+
+This can display SSH service logs from the previous 24 hours. Depending on the distribution, the unit may be named `sshd`.
+
+On Ubuntu systems that record authentication events in the traditional authentication log:
+
+```bash
+sudo grep "Failed password" /var/log/auth.log
+```
+
+The exact log location and format vary by distribution and logging configuration.
+
+Repeated failed attempts may indicate password guessing, but they can also result from misconfigured legitimate clients.
+
+## 7.4 Check Automatic Security Updates
+
+```bash
+systemctl status unattended-upgrades
+```
+
+Also inspect the package manager's update and unattended-upgrade logs when investigating patching behavior.
+
+Do not assume that a service being active proves every security update has installed successfully.
+
+## 7.5 Check Firewall Configuration
+
+```bash
+sudo ufw status verbose
+```
+
+Confirm that only required network traffic is allowed and that the rules match the system's role.
+
+---
+
+# 8. Package Management and Hardening: Real-World Security Scenario
+
+Imagine that you are responsible for securing an Ubuntu web server.
+
+The server hosts a website and uses SSH for remote administration.
+
+During your initial inspection, you discover:
+
+- Some packages have available updates.
+- An unused printing service is running.
+- SSH permits password authentication.
+- The firewall allows unnecessary inbound traffic.
+- Application credentials are stored in a broadly readable file.
+
+How would you address these problems?
+
+| Finding | Action | Security benefit |
+|---|---|---|
+| Outdated packages | Review and install applicable security updates | Reduces exposure to known vulnerabilities |
+| Unused service | Investigate dependencies, then disable the service if unnecessary | Reduces attack surface |
+| SSH password authentication | Configure and test key-based authentication before disabling passwords | Reduces exposure to password-based attacks |
+| Unnecessary open ports | Restrict inbound traffic using the firewall and service configuration | Limits network exposure |
+| Overly broad file permissions | Restrict file access to the appropriate account and group | Protects sensitive information |
+| No update monitoring | Configure and verify an appropriate patch-management process | Improves ongoing maintenance |
+
+### A Sensible Order of Operations
+
+1. Identify the system's purpose and required services.
+2. Inspect package status and security updates.
+3. Review accounts, permissions, listening ports, and services.
+4. Back up important configuration files.
+5. Apply changes incrementally.
+6. Validate configurations and test application functionality.
+7. Verify that legitimate administrative access still works.
+8. Review logs and establish ongoing maintenance.
+
+This approach is safer than applying a collection of hardening commands without understanding their impact.
+
+---
+
+# 9. Practical Lab: Basic Ubuntu Security Audit
+
+You can perform this lab on your own Ubuntu virtual machine or a Linux system you are authorized to administer.
+
+Objective: Inspect the system's package status, running services, network exposure, account privileges, and firewall configuration.
+
+### Step 1: Identify the Operating System
+
+```bash
+cat /etc/os-release
+uname -r
+```
+
+Record the distribution and running kernel version.
+
+### Step 2: Inspect Package Updates
+
+```bash
+sudo apt update
+apt list --upgradable
+```
+
+Identify which packages have available upgrades.
+
+Do not automatically assume every listed upgrade is security-related.
+
+### Step 3: Inspect Installed Packages
+
+```bash
+dpkg -l
+```
+
+Identify software that you recognize and investigate packages you do not understand before making changes.
+
+### Step 4: Inspect Running Services
+
+```bash
+systemctl list-units --type=service --state=running
+```
+
+Identify services that are necessary for your system's purpose.
+
+### Step 5: Inspect Network Exposure
+
+```bash
+sudo ss -tulpn
+```
+
+Record listening ports and the corresponding services.
+
+### Step 6: Inspect Firewall Rules
+
+```bash
+sudo ufw status verbose
+```
+
+If UFW is inactive, determine whether another firewall or network control is protecting the machine. An inactive UFW configuration does not necessarily mean the machine has no firewall protection.
+
+### Step 7: Inspect User Privileges
+
+```bash
+id
+getent group sudo
+```
+
+Determine which users have administrative access.
+
+### Step 8: Inspect SSH Configuration
+
+If the OpenSSH server is installed:
+
+```bash
+sudo sshd -t
+```
+
+If the command is not found, the SSH server binary might not be installed or might be located elsewhere.
+
+Review the configuration in `/etc/ssh/sshd_config` and any relevant included configuration files.
+
+### Step 9: Review Authentication Logs
+
+```bash
+sudo journalctl -u ssh --since "24 hours ago"
+```
+
+Look for repeated authentication failures, unexpected access attempts, or other suspicious events.
+
+### Step 10: Document Findings
+
+Create a table like this:
+
+| Check | Finding | Risk | Recommended action |
+|---|---|---|---|
+| Package updates | Pending updates | Depends on the packages and vulnerabilities | Review and install applicable updates |
+| Running services | Unused service identified | Potentially unnecessary attack surface | Disable only after checking dependencies |
+| Open ports | Unexpected listening port | Potentially unnecessary network exposure | Identify the service and restrict access if appropriate |
+| User privileges | Unnecessary administrator access | Excessive privileges | Review and reduce access |
+| File permissions | Sensitive file is broadly readable | Potential credential exposure | Restrict permissions and ownership |
+| SSH configuration | Password authentication enabled | Greater exposure to password-based attacks | Evaluate and implement safer authentication |
+
+The purpose of this lab is not to make every system look identical. It is to learn how to assess a system against its intended purpose and security requirements.
+
+---
+
+# 10. Important Concepts to Remember
+
+### Package management
+
+Know how to:
+- Install, update, and remove software.
+- Identify installed and outdated packages.
+- Understand package repositories and dependencies.
+- Explain why repository trust and signature verification matter.
+
+### Linux hardening
+
+Know how to:
+- Reduce unnecessary software and services.
+- Inspect listening ports.
+- Configure firewalls.
+- Secure SSH.
+- Apply least privilege.
+- Protect sensitive files.
+- Inspect kernel security settings.
+- Review logs and update status.
+
+### Common mistakes
+
+Avoid these practices:
+
+1. Running `apt update` and assuming that all packages have been patched.
+2. Installing software from untrusted repositories.
+3. Disabling services without understanding their purpose.
+4. Disabling SSH password authentication before verifying key-based access.
+5. Enabling a firewall without allowing the required remote administration traffic.
+6. Granting unnecessary users administrative privileges.
+7. Changing system-wide file permissions without understanding the consequences.
+8. Assuming that an updated system is automatically secure.
+
+---
+
+# 11. What You Need to Learn for Cybersecurity
+
+For your cybersecurity roadmap, you do not need to become a Linux system administrator immediately. Focus on the skills that support vulnerability analysis, incident response, and penetration testing.
+
+| Topic | Required depth | Priority |
+|---|---|---|
+| APT package management | Practical command usage | Essential |
+| Package repositories and trust | Understand verification and supply-chain risks | Essential |
+| Security updates and patching | Understand and perform basic updates | Essential |
+| Services and systemd | Inspect, stop, and disable services safely | Essential |
+| Listening ports | Identify exposed services using `ss` | Essential |
+| Linux firewall basics | Understand and configure basic rules | Essential |
+| SSH hardening | Understand authentication and access restrictions | Essential |
+| Users and permissions | Inspect and apply least privilege | Essential |
+| Kernel hardening | Understand ASLR and basic `sysctl` usage | Moderate |
+| Automated hardening frameworks | Explore after mastering the fundamentals | Optional initially |
+
+### How This Connects to Different Cybersecurity Roles
+
+- SOC Analyst: Investigates authentication logs, suspicious services, and system configuration changes.
+- Penetration Tester: Identifies outdated software, unnecessary exposed services, and weak configurations.
+- Security Engineer: Implements hardening policies, access controls, firewall rules, and patch-management processes.
+- Incident Responder: Examines package installations, service changes, suspicious processes, and authentication activity.
+- Vulnerability Researcher: Studies vulnerable software versions, patch differences, and the security implications of system configurations.
+
+## Final takeaway
+
+Linux package management keeps software maintained; Linux hardening reduces the opportunities an attacker has to exploit the system.
+
+These practices work together. An updated server with unnecessary exposed services may still be vulnerable, while a carefully configured server running unpatched software may remain susceptible to known exploits.
+
+Your goal is to understand both sides: maintaining secure software and configuring the operating system to minimize risk.
