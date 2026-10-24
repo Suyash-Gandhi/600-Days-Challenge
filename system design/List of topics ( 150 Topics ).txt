@@ -25,7 +25,7 @@
 👉 Goal: Understand how backend systems actually execute
 
 10. Threading vs multiprocessing
-11. Async I/O vs multithreading vs multiprocessing
+11. Async I&O vs multithreading vs multiprocessing
 12. Containerization basics (Docker)
 
 ---
