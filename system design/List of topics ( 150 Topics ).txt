@@ -1,246 +1,335 @@
+# System Design Topics 
 
+## Phase 1: Core Foundations
+1. What Is System Design?
+2. Functional vs. Non-Functional Requirements
+3. Latency vs. Throughput
+4. Horizontal vs. Vertical Scaling
+5. Stateless vs. Stateful Services
+6. CAP Theorem Basics
+7. High Availability & Fault Tolerance
+8. Single Points of Failure (SPOF)
+9. Load Testing, Stress Testing & Benchmarking
+10. Queueing Theory & Little's Law
 
-# 🧠 SYSTEM DESIGN — FINAL MASTER LIST ( 140 topics + 25 case studies)
+## Phase 2: Backend & Runtime Fundamentals
+11. Threading vs. Multiprocessing
+12. Asynchronous I/O vs Multiprocessing vs Multithreading
+13. Event Loop Architecture (Node.js)
+14. Memory Management & Garbage Collection
+15. Connection Pooling & Resource Management
+16. Containerization with Docker
+17. Monolith vs. Modular Monolith vs. Microservices
+18. Graceful Shutdown & Process Management
+19. API Timeouts, Retries & Backpressure
 
+## Phase 3: Networking & Communication
+20. HTTP/HTTPS Fundamentals
+21. TCP vs. UDP
+22. DNS Resolution
+23. HTTP/1.1 vs. HTTP/2 vs. HTTP/3
+24. REST vs. GraphQL vs. gRPC
+25. WebSockets, Server-Sent Events & Long Polling
+26. Reverse Proxies & Forward Proxies
+27. Nginx & HAProxy
+28. API Gateways
+29. TLS Handshake & Certificate Management
+30. TLS Termination
+31. CDN & Edge Networking
+32. Multi-Region Networking & Latency
+33. Network Congestion & Flow Control
+34. Webhooks & Reliable Delivery
 
+## Phase 4: Databases & Storage
+35. Relational Databases (SQL)
+36. NoSQL Databases: Document, Key-Value, Graph & Wide-Column
+37. SQL vs. NoSQL Trade-Offs
+38. ACID Transactions & BASE
+39. Database Isolation Levels
+40. Database Locking & Deadlocks
+41. Database Indexing: B-Trees & LSM Trees
+42. Database Replication
+43. Database Sharding & Partitioning
+44. Database Connection Pooling
+45. Database Migrations & Zero-Downtime Schema Changes
+46. Write-Ahead Logging (WAL)
+47. Database Backups & Point-in-Time Recovery
+48. Object Storage & Distributed File Systems
+49. Data Retention, Archival & Deletion
+50. OLTP vs. OLAP
 
-## 🔹 PHASE 1: Core Foundations (Start Here)
+## Phase 5: Caching & Performance
+51. Caching Fundamentals
+52. Client-Side vs. Server-Side Caching
+53. Redis & Distributed Caching
+54. Cache-Aside, Read-Through & Write-Through
+55. Cache Eviction: LRU, LFU & FIFO
+56. Cache Invalidation
+57. Cache Stampede & Thundering Herd Prevention
+58. CDN Edge vs. Origin Caching
+59. Bloom Filters
+60. Distributed Rate Limiting
+61. Read/Write Amplification
+62. Performance Profiling & Distributed Tracing
+63. Tail Latency & Percentile-Based Performance
 
-👉 Goal: Build intuition before touching distributed systems
+## Phase 6: Messaging & Event-Driven Systems
+64. Message Queues
+65. Publish-Subscribe Pattern
+66. Delivery Guarantees: At-Most-Once & At-Least-Once
+67. Dead-Letter Queues
+68. Event-Driven Architecture
+69. Kafka Fundamentals
+70. Consumer Groups & Partitioning
+71. Event Sourcing
+72. CQRS
+73. Transactional Outbox Pattern
+74. Change Data Capture (CDC)
+75. Idempotency & Message Deduplication
+76. Event Replay & Reprocessing
+77. Distributed Task Queues
+78. Background Jobs & Scheduled Tasks
+79. Schema Evolution & Backward Compatibility
 
-1. What is system design & why it matters
-2. Functional vs non-functional requirements
-3. Latency vs throughput
-4. Scalability basics (horizontal vs vertical)
-5. Stateless vs stateful services
-6. Consistency vs availability (CAP theorem basics)
-7. High availability & fault tolerance basics
-8. Single point of failure (SPOF)
-9. Load testing, stress testing, benchmarking
+## Phase 7: Scalability & Reliability
+80. Load Balancing Algorithms
+81. Global Load Balancing
+82. Rate Limiting Algorithms: Token Bucket & Leaky Bucket
+83. Circuit Breakers, Retries & Retry Budgets
+84. Bulkheads & Fault Isolation
+85. Service Discovery
+86. Health Checks & Heartbeats
+87. Failover Strategies
+88. Autoscaling
+89. Serverless Architecture
+90. Auto-Healing Systems
+91. Graceful Degradation & Load Shedding
+92. Service Mesh Fundamentals
+93. Disaster Recovery: RPO & RTO
+94. Active-Active vs. Active-Passive Architecture
+95. Capacity Planning & Demand Forecasting
+
+## Phase 8: Distributed Systems
+96. Distributed Transactions: Two-Phase Commit
+97. Distributed Locks
+98. Idempotency in Distributed Systems
+99. Clock Synchronization: NTP & Logical Clocks
+100. Vector Clocks
+101. Gossip Protocol
+102. Network Partitions & Split-Brain Prevention
+103. Synchronous vs. Asynchronous Replication
+104. Consistent Hashing
+105. Quorum-Based Systems
+106. Leader Election: Raft & Paxos Basics
+107. Saga Pattern & Distributed Workflows
+108. Distributed ID Generation: UUID, ULID & Snowflake
+109. Eventual Consistency Anomalies
+110. CRDTs Fundamentals
+
+## Phase 9: Cybersecurity & Secure System Design
+
+### Authentication & Authorization
+111. Authentication vs. Authorization
+112. Session-Based Authentication
+113. JWT: Structure, Validation & Security
+114. OAuth 2.0 & OpenID Connect
+115. Single Sign-On (SSO) & Identity Federation
+116. API Keys & HMAC Authentication
+117. RBAC vs. ABAC
+118. Multi-Factor Authentication (MFA)
+119. Password Hashing: Argon2, bcrypt & scrypt
+120. Session Management & Session Fixation
+121. Secure Token Storage, Rotation & Revocation
+122. Multi-Tenant Authorization & Tenant Isolation
+
+### Web Application Security
+123. OWASP Top 10
+124. SQL Injection & Parameterized Queries
+125. Cross-Site Scripting (XSS)
+126. Cross-Site Request Forgery (CSRF)
+127. Server-Side Request Forgery (SSRF)
+128. Broken Access Control & IDOR/BOLA
+129. Remote Code Execution (RCE) Prevention
+130. Path Traversal & File Inclusion
+131. Secure File Uploads
+132. Clickjacking & Security Headers
+133. Content Security Policy (CSP)
+134. CORS & Same-Origin Policy
+135. Input Validation & Output Encoding
+136. HTTP Request Smuggling Basics
+137. Prototype Pollution in JavaScript
+138. NoSQL Injection
+139. GraphQL Security
+140. WebSocket Security
+141. Rate Limiting & Brute-Force Protection
+142. Account Takeover Prevention
+
+### Infrastructure & Network Security
+143. TLS, PKI & Certificate Validation
+144. Firewalls, WAFs & Network Segmentation
+145. DDoS Protection
+146. Zero Trust Architecture
+147. VPNs & Secure Remote Access
+148. Network Access Control
+149. Cloud Network Security: VPCs, Subnets & Security Groups
+150. DNS Security & DNS Spoofing Prevention
+151. Secrets Management & Secret Rotation
+152. Encryption at Rest vs. In Transit
+153. Key Management Systems (KMS) & HSM Basics
+154. Least Privilege & Privilege Escalation Prevention
+155. Linux Permissions & Process Isolation
+156. Container Security & Image Scanning
+157. Kubernetes Security Fundamentals
+
+### Secure Software Development
+158. Secure SDLC
+159. Threat Modeling: STRIDE
+160. Security Requirements & Abuse Cases
+161. Dependency & Supply Chain Security
+162. Software Composition Analysis (SCA)
+163. Static Application Security Testing (SAST)
+164. Dynamic Application Security Testing (DAST)
+165. Software Bill of Materials (SBOM)
+166. Software Secrets Scanning
+167. CI/CD Pipeline Security
+168. Infrastructure as Code Security
+169. Secure Code Review
+170. Software Signing & Artifact Integrity
+171. API Security Testing
+172. Security Regression Testing
+173. Privacy by Design & Data Minimization
+174. Audit Logging & Tamper-Evident Logs
+175. Data Residency & Regulatory Compliance Basics
+
+## Phase 10: Cloud & DevOps Fundamentals
+
+176. Cloud Computing Fundamentals: IaaS, PaaS & SaaS
+177. AWS, Azure & GCP Core Services
+178. Virtual Machines vs. Containers vs. Serverless
+179. Docker Networking & Container Volumes
+180. Kubernetes Architecture Basics
+181. Kubernetes Pods, Deployments & Services
+182. Kubernetes Networking & Ingress
+183. Infrastructure as Code with Terraform
+184. CI/CD Pipelines
+185. Blue-Green Deployments
+186. Canary Releases & Progressive Delivery
+187. Rollbacks & Release Engineering
+188. Environment Configuration Management
+189. Cloud IAM & Workload Identity
+190. Cloud Cost Optimization & Egress Costs
+191. Immutable Infrastructure
+192. Cloud Backup & Disaster Recovery
+193. Infrastructure Monitoring & Auto-Scaling
+
+## Phase 11: Monitoring, Observability & Incident Response
+
+194. Structured Logging
+195. Metrics & Monitoring with Prometheus
+196. Distributed Tracing
+197. Log Aggregation: ELK/OpenSearch
+198. SLIs, SLOs & SLAs
+199. Alerting & Incident Detection
+200. Error Budgets
+201. Synthetic vs. Real-User Monitoring
+202. Observability-Driven Design
+203. Security Information and Event Management (SIEM)
+204. Security Orchestration, Automation & Response (SOAR)
+205. Intrusion Detection & Prevention Systems (IDS/IPS)
+206. Endpoint Detection & Response (EDR) Fundamentals
+207. Threat Detection & Log Correlation
+208. Incident Response & Digital Forensics Basics
+209. Root Cause Analysis & Postmortems
+210. Chaos Engineering & Fault Injection
+211. Production Readiness Reviews
+
+## Phase 12: Full-Stack Architecture & Design Patterns
+
+212. Domain-Driven Design (DDD)
+213. Bounded Contexts & Context Mapping
+214. API Versioning & Backward Compatibility
+215. API Pagination & Filtering Strategies
+216. Backend for Frontend (BFF)
+217. API Composition & Aggregation
+218. Strangler Fig Pattern & Legacy Modernization
+219. Feature Flags & Safe Rollouts
+220. Multi-Tenant SaaS Architecture
+221. Tenant-Level Resource Isolation & Noisy Neighbors
+222. File Uploads & Resumable Transfers
+223. Real-Time Collaboration & Presence Systems
+224. WebRTC Fundamentals
+225. Search Autocomplete & Full-Text Search
+226. Geospatial Indexing & Location-Based Queries
+227. Inventory Reservation & Overselling Prevention
+228. Payment Idempotency & Reconciliation
+229. Notification System Design
+230. Audit Trail & Activity Feed Design
+231. Distributed Search Architecture
+232. System Design Trade-Off Analysis
+233. Architecture Decision Records (ADRs)
+234. Dependency Mapping & Failure Propagation
+
+## Phase 13: AI & Emerging Technologies — Basics Only
+
+235. Machine Learning Model Serving Fundamentals
+236. Vector Databases & Embedding Search
+237. Retrieval-Augmented Generation (RAG)
+238. LLM API Integration & Rate Limiting
+239. AI Agent Architecture Fundamentals
+240. AI Application Security: Prompt Injection & Data Leakage
+241. AI Model Access Control & Tenant Isolation
+242. AI Inference Cost Optimization
+243. Data Privacy in AI Applications
 
 ---
 
-## 🔹 PHASE 2: Backend & Runtime Fundamentals
+# Practical System Design Case Studies
 
-👉 Goal: Understand how backend systems actually execute
+## Full-Stack Development
+1. URL Shortener
+2. Authentication & Authorization Service
+3. Multi-Tenant SaaS Platform
+4. E-Commerce Platform
+5. Real-Time Chat Application
+6. Social Media Feed
+7. Notification Service
+8. File Storage & Sharing Platform
+9. Search Autocomplete Service
+10. Collaborative Document Editor
+11. Job Queue & Background Processing Platform
+12. Payment Processing System
+13. API Gateway & Rate Limiter
+14. Analytics Event Collection Platform
+15. Feature Flag Management System
 
-10. Threading vs multiprocessing
-11. Async I&O vs multithreading vs multiprocessing
-12. Containerization basics (Docker)
+## Cybersecurity
+16. Secure Authentication Platform
+17. API Security Gateway
+18. Centralized Audit Logging System
+19. Security Event Monitoring Platform
+20. Multi-Tenant Authorization Service
+21. Secrets Management Service
+22. Web Application Firewall Architecture
+23. Centralized Identity & SSO Platform
+24. Security Incident Alerting Pipeline
+25. Secure File Upload & Malware Scanning System
+26. Vulnerability Management Platform
+27. SIEM Log Ingestion & Correlation Pipeline
+28. Zero Trust Access Architecture
+29. Secure CI/CD Pipeline
+30. Cloud Security Monitoring Platform
 
----
+## Cloud & Infrastructure
+31. Highly Available Web Application on AWS/Azure/GCP
+32. Containerized Microservices Platform
+33. Kubernetes Deployment Architecture
+34. Multi-Region Application
+35. Centralized Logging & Monitoring Platform
+36. Disaster Recovery Architecture
 
-## 🔹 PHASE 3: Networking & Communication
-
-👉 Goal: How services talk to each other
-
-13. HTTP/HTTPS fundamentals
-14. TCP vs UDP trade-offs
-15. DNS resolution
-16. REST vs gRPC vs GraphQL
-17. WebSockets & long polling
-18. Reverse proxies & forward proxies
-19. Nginx/HAProxy basics
-20. API gateways
-21. TLS & HTTPS handshake (merged duplicate topics)
-22. TLS termination (LB vs app server)
-23. CDN basics & caching
-24. Multi-region networking & latency
-
----
-
-## 🔹 PHASE 4: Databases & Storage Systems
-
-👉 Goal: Data is the core of every system
-
-25. Relational databases (SQL basics)
-26. NoSQL databases (types & use cases)
-27. SQL vs NoSQL trade-offs
-28. ACID vs BASE
-29. Strong vs eventual consistency
-30. Database indexing
-31. Database replication
-32. Database sharding
-33. CAP theorem in databases (merged duplicate)
-34. OLTP vs OLAP
-35. Data lakes vs warehouses
-36. Denormalization & materialized views
-37. Specialized DBs:
-
- Time-series DB
- Graph DB
-
----
-
-## 🔹 PHASE 5: Caching & Performance Optimization
-
-👉 Goal: Make systems fast
-
-38. Caching fundamentals
-39. Client-side vs server-side caching
-40. Cache strategies (write-through, write-back, write-around)
-41. Cache eviction (LRU, LFU, FIFO)
-42. Cache invalidation
-43. CDN edge vs origin caching
-44. Hotspot problem
-45. Bloom filters
-46. Rate limiting basics (moved from multiple sections)
-47. Distributed cache consistency
-48. Read/write amplification
-49. Performance profiling & tracing
-
----
-
-## 🔹 PHASE 6: Messaging, Queues & Event Systems
-
-👉 Goal: Decouple systems and scale async workloads
-
-50. Message queues basics
-51. Publish-subscribe pattern
-52. Delivery guarantees (at-most / at-least / exactly once)
-53. Dead-letter queues
-54. Event-driven architecture
-55. Kafka basics (partitions, offsets)
-56. Consumer groups & scaling
-57. Stream processing basics
-58. Event sourcing
-59. CQRS
-60. Event replay & reprocessing
-61. Lambda architecture
-62. Event storming
-
----
-
-## 🔹 PHASE 7: Scalability & Reliability Engineering
-
-👉 Goal: Build systems that don’t break at scale
-
-63. Load balancing (algorithms)
-64. Global load balancing (GeoDNS, Anycast)
-65. Rate limiting strategies (kept one unified topic)
-66. Circuit breakers & retries
-67. Service discovery
-68. Health checks & heartbeat
-69. Failover strategies
-70. Leader election (Raft, Paxos)
-71. Consensus basics
-72. Quorum-based systems
-73. Autoscaling
-74. Serverless scaling
-75. Multi-cloud vs hybrid cloud
-76. Auto-healing systems
-
----
-
-## 🔹 PHASE 8: Distributed Systems Deep Dive
-
-👉 Goal: True system design mastery
-
-77. Distributed transactions (2PC, 3PC)
-78. Distributed locks
-79. Idempotency
-80. Clock synchronization (NTP, Lamport)
-81. Vector clocks
-82. Gossip protocol
-83. Network partitions handling
-84. Data replication (sync vs async)
-85. Consistent hashing
-86. Quorum vs leader-based replication
-87. Saga pattern & distributed workflows
-
----
-
-## 🔹 PHASE 9: Security & System Protection
-
-👉 Goal: Build production-safe systems
-
-88. Authentication vs authorization
-89. OAuth 2.0 & OpenID Connect
-90. JWT
-91. API keys & HMAC
-92. RBAC vs ABAC
-93. Encryption basics (HTTPS, TLS)
-94. CSRF, XSS, SQL injection prevention
-95. Secrets management
-96. Zero trust architecture
-97. DDoS protection & WAF
-98. Compliance (GDPR, etc.)
-
----
-
-## 🔹 PHASE 10: Monitoring & Observability
-
-👉 Goal: Know when your system breaks (and why)
-
-99. Logging (structured logs)
-100. Metrics & monitoring (Prometheus)
-101. Distributed tracing
-102. Log aggregation (ELK)
-103. SLIs, SLOs, SLAs
-104. Alerting systems
-105. Error budgets
-106. Canary deployments
-107. Blue-green deployments
-108. Chaos engineering
-109. Synthetic vs real-user monitoring
-110. Observability-driven design
-
----
-
-## 🔹 PHASE 11: Advanced Design Patterns (Bridging to Real Systems)
-
-111. Designing for consistency trade-offs
-112. Designing for high-throughput ingestion
-113. Designing low-latency systems
-114. Designing global systems (multi-region)
-115. Feature flags & experimentation
-116. Modular microservices design
-117. Caching strategies for workloads
-118. Distributed task queues
-119. Stateful vs stateless interactions
-120. Data pipelines with idempotency
-121. Disaster recovery (RPO/RTO)
-122. Observability-first systems
-123. Secure system design
-124. Cost optimization in cloud
-
----
-
-## 🔹 PHASE 12: Real-World System Design (Interview Level)
-
-
-125. Designing a URL shortener (Bitly)
-126. Designing a rate limiter
-127. Designing a social media feed (Twitter/FB)
-128. Designing a chat/messaging app (WhatsApp)
-129. Designing a video streaming service (YouTube/Netflix)
-130. Designing an e-commerce system (Amazon-like)
-131. Designing a ride-hailing service (Uber, Lyft)
-132. Designing a distributed search engine (Google-lite)
-133. Designing a payment system (Stripe, PayPal)
-134. Designing large-scale microservices orchestration (Kubernetes-level)
-135. Designing a notification system (email, push, SMS)
-136. Designing a recommendation system (collaborative filtering, ML-lite)
-137. Designing an analytics pipeline (tracking events at scale)
-138. Designing multi-tenant SaaS systems
-139. Designing systems with regulatory constraints (HIPAA, PCI-DSS)
-140. Designing for eventual consistency vs strong consistency trade-offs
-141. Designing for high-throughput ingestion (IoT, logs, telemetry)
-142. Designing globally distributed systems (multi-region)
-143. Designing systems for low-latency read/write operations
-144. Designing systems for A/B testing & experimentation
-145. Designing feature flag systems for safe rollouts
-146. Designing modular & extensible microservices
-147. Designing caching layers for read-heavy vs write-heavy workloads
-148. Designing distributed task queues
-149. Designing stateful vs stateless service interactions
-150. Designing data pipelines with replay & idempotency
-151. Designing disaster recovery strategies & RPO/RTO considerations
-152. Designing telemetry & monitoring pipelines for large-scale services
-153. Designing observability-first microservices
-154. Designing secure authentication & authorization flows
-155. Designing cost-optimized systems in cloud environments
-
----
-
+## AI Fundamentals
+37. RAG-Based Document Search
+38. AI-Powered Log Analysis
+39. Secure AI Chatbot with Access Control
+40. AI-Based Security Alert Triage
 
