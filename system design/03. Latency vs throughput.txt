@@ -1,0 +1,512 @@
+# 3. Latency vs Throughput
+
+## 1. Definition
+
+Latency and throughput are two important performance metrics in system design. They help us understand how fast a system responds and how much work it can handle.
+
+### A. Latency
+
+Latency is the time taken by a system to process a request and return a response.
+
+It measures how long a user or another system must wait for a result.
+
+Example:
+- You click the login button on a website.
+- The server processes your login request.
+- The website takes 200 milliseconds to respond.
+
+The latency is approximately 200 ms, assuming we measure from sending the request until receiving the response.
+
+Common units:
+- Milliseconds (ms)
+- Microseconds (µs)
+- Seconds (s)
+
+Lower latency = Faster response.
+
+### B. Throughput
+
+Throughput is the amount of work a system can complete within a given period.
+
+In web applications, it is often measured by the number of requests a server can successfully process per second.
+
+Example:
+
+Suppose a server processes 5,000 requests in one second.
+
+Its throughput is:
+
+Throughput = 5,000 requests per second (RPS)
+
+Other common units include:
+- Requests per second (RPS)
+- Transactions per second (TPS)
+- Messages per second
+- Megabytes per second (MB/s)
+
+Higher throughput = More work processed per unit of time, assuming the work is comparable and the system meets its performance requirements.
+
+---
+
+## 2. Latency vs Throughput: Key Differences
+
+| Aspect | Latency | Throughput |
+|---|---|---|
+| Meaning | Time taken to complete a request | Amount of work completed per unit of time |
+| Measures | Response speed | Processing capacity |
+| Goal | Minimize latency | Maximize throughput |
+| Common units | ms, µs, seconds | RPS, TPS, MB/s |
+| User experience | Affects how quickly users receive responses | Affects how many users or requests the system can serve |
+| Example | A page loads in 150 ms | A server handles 10,000 RPS |
+| Typical optimization | Caching, reducing network calls, optimizing queries | Batching, parallel processing, load balancing |
+| Main concern | How long an individual request takes | How much work the system handles overall |
+
+Remember:
+- Latency = How long does one request take?
+- Throughput = How many requests can the system handle over time?
+
+---
+
+## 3. Real-World Example
+
+Imagine a restaurant.
+
+- Latency: How long one customer waits to receive their meal.
+- Throughput: How many customers the restaurant serves in one hour.
+
+Consider two restaurants:
+
+| Metric | Restaurant A | Restaurant B |
+|---|---:|---:|
+| Average waiting time | 5 minutes | 10 minutes |
+| Customers served per hour | 30 | 100 |
+| Latency | Lower | Higher |
+| Throughput | Lower | Higher |
+
+Restaurant A serves each customer faster, but Restaurant B serves more customers overall.
+
+This illustrates an important concept: a system can have lower latency but lower throughput, or higher throughput but higher latency.
+
+However, real systems can improve both metrics through better architecture and resource utilization.
+
+---
+
+## 4. Can a System Have High Throughput but High Latency?
+
+Yes! This is a fundamental concept in system design.
+
+Consider an API server that receives 10,000 requests per second.
+
+Suppose:
+- It processes a large number of requests concurrently.
+- Its average response time is 2 seconds.
+- Its throughput is 10,000 requests per second.
+
+The server has high throughput, but individual requests still take a relatively long time to complete.
+
+Now consider another server:
+- It responds to requests in 50 ms.
+- It handles only 500 requests per second.
+
+This server has lower throughput but lower latency.
+
+These examples assume comparable requests and sustained workloads.
+
+### Why does this happen?
+
+A system may achieve high throughput by:
+1. Processing many requests concurrently.
+2. Using multiple CPU cores.
+3. Distributing requests across multiple servers.
+4. Batching operations.
+5. Using asynchronous processing.
+
+However, these techniques do not guarantee low latency. Queues, resource contention, slow database queries, and network delays can still make individual requests slow.
+
+### Important relationship: Little's Law
+
+In a stable system, Little's Law describes the relationship between concurrency, throughput, and latency:
+
+\[
+\boxed{L = \lambda W}
+\]
+
+Where:
+
+- \(L\) = Average number of requests in the system.
+- \(\lambda\) = Average throughput (requests per second).
+- \(W\) = Average time each request spends in the system (seconds).
+
+Example:
+
+Suppose:
+- Throughput = 1,000 requests/second.
+- Average latency = 0.2 seconds.
+
+Then:
+
+\[
+L = 1000 \times 0.2
+\]
+
+\[
+\boxed{L = 200 \text{ requests}}
+\]
+
+On average, 200 requests are in the system, including requests being processed and requests waiting in queues.
+
+Important: Little's Law describes a stable system. It does not mean that increasing the number of concurrent requests will automatically increase throughput.
+
+---
+
+## 5. What Happens When Traffic Increases?
+
+Consider an API server handling increasing numbers of requests.
+
+| Incoming Traffic | Server Behavior | Latency | Throughput |
+|---|---|---|---|
+| Low | Plenty of available resources | Low | Low |
+| Moderate | Resources are used efficiently | Low | Increasing |
+| High | Server approaches capacity | Starts increasing | Near maximum |
+| Very high | Requests accumulate in queues | Very high | May plateau |
+| Overloaded | Timeouts and failures occur | Extremely high for affected requests | May decrease |
+
+This is why simply adding more traffic does not always increase throughput.
+
+Once a system reaches its capacity, additional requests may wait in queues or fail entirely.
+
+### Key takeaway
+
+As a system approaches saturation, latency often increases sharply while throughput stops increasing proportionally.
+
+A well-designed system aims to operate within its capacity and handle traffic spikes gracefully.
+
+---
+
+## 6. How to Improve Latency
+
+The goal is to reduce the time required to complete individual requests.
+
+### Common techniques
+
+1. Caching
+
+Store frequently accessed data in memory or a cache such as Redis.
+
+Example: Cache product details instead of querying the database for every request.
+
+2. Database query optimization
+
+- Add appropriate indexes.
+- Avoid unnecessary queries.
+- Reduce expensive joins where appropriate.
+- Examine slow-query logs.
+
+3. Reduce network calls
+
+Avoid unnecessary communication between services.
+
+For example, retrieve related data in one request rather than making five sequential API calls.
+
+4. Use a Content Delivery Network (CDN)
+
+Serve static assets from locations closer to users.
+
+5. Optimize application code
+
+Reduce unnecessary computation, serialization overhead, and blocking operations.
+
+6. Reduce queueing delays
+
+Prevent overloaded services from accumulating excessive work.
+
+Remember: Optimizing the slowest component of a request often produces the greatest latency improvement.
+
+---
+
+## 7. How to Improve Throughput
+
+The goal is to increase the amount of work the system can complete per unit of time.
+
+### Common techniques
+
+1. Horizontal scaling
+
+Add more servers to distribute the workload.
+
+2. Load balancing
+
+Distribute requests across available server instances.
+
+3. Parallel processing
+
+Process independent tasks simultaneously.
+
+4. Batching
+
+Combine multiple operations into one operation when doing so reduces overhead.
+
+Example: Insert 100 database records in a batch rather than executing 100 separate insert operations.
+
+5. Asynchronous processing
+
+Move noncritical tasks to background workers.
+
+Example: After an order is placed, process email notifications asynchronously instead of making the customer wait for the email to be sent.
+
+6. Optimize database capacity
+
+Improve query efficiency, connection pooling, indexing, and database resource utilization.
+
+Important: Horizontal scaling improves throughput only when the workload can be distributed effectively and shared bottlenecks do not dominate.
+
+---
+
+## 8. Latency vs Throughput in System Design
+
+When designing a system, you must determine which metric matters most for each operation.
+
+| Application | Latency Priority | Throughput Priority | Reason |
+|---|---|---|---|
+| Online gaming | Very high | High | Players need fast responses |
+| Stock trading | Very high | High | Delays can affect trading outcomes |
+| Video streaming | Low startup delay and smooth playback | Very high | Large amounts of data must be delivered continuously |
+| File uploads | Moderate | Very high | Large volumes of data must be transferred |
+| Search engine | Very high | Very high | Results must be returned quickly at large scale |
+| Email delivery | Often moderate | High | Large volumes of messages must be processed |
+| Payment processing | High | High | Payments need timely processing and reliable completion |
+| Analytics batch jobs | Often moderate | High | Large datasets must be processed efficiently |
+
+The priorities depend on the specific workload. For example, payment processing also requires correctness and reliability; optimizing latency alone is not sufficient.
+
+### Example: Designing an E-commerce Application
+
+Suppose you are building an e-commerce website.
+
+Product search
+- Goal: Return search results quickly.
+- Priority: Low latency and high throughput.
+- Possible solutions: Search indexes, caching, and horizontal scaling.
+
+Order placement
+- Goal: Process orders correctly without unnecessary delays.
+- Priority: Reasonable latency, sufficient throughput, and strong consistency for critical operations.
+- Possible solutions: Database transactions, idempotency, and appropriate database capacity.
+
+Email notifications
+- Goal: Deliver large volumes of notifications efficiently.
+- Priority: High throughput; immediate delivery may not be necessary.
+- Possible solution: A message queue such as Kafka or RabbitMQ with background workers.
+
+The key is to choose optimizations based on the requirements of each operation, rather than trying to optimize the entire system for only one metric.
+
+---
+
+## 9. Latency Percentiles: p50, p95, and p99
+
+Average latency does not tell the entire story.
+
+Suppose an API handles 10,000 requests:
+- Most requests finish in 50 ms.
+- A small number take 2 seconds.
+
+The average might look acceptable even though some users experience severe delays.
+
+Engineers therefore use latency percentiles.
+
+| Metric | Meaning |
+|---|---|
+| p50 | 50% of requests complete within this time |
+| p90 | 90% of requests complete within this time |
+| p95 | 95% of requests complete within this time |
+| p99 | 99% of requests complete within this time |
+| p99.9 | 99.9% of requests complete within this time |
+
+For example, if p99 latency is 500 ms, approximately 99% of measured requests completed within 500 ms, while the slowest 1% took at least that long.
+
+Percentiles are particularly useful for identifying tail latency: unusually slow requests that may affect a small but significant portion of users.
+
+A production system should monitor both latency percentiles and throughput.
+
+---
+
+## 10. Cybersecurity Relevance
+
+Latency and throughput also matter in cybersecurity because security controls consume computing and network resources.
+
+### A. Rate limiting
+
+Rate limiting restricts how many requests a client can send within a specified period.
+
+Benefits:
+- Helps protect APIs from excessive traffic.
+- Can reduce resource exhaustion.
+- Helps enforce fair usage.
+
+Trade-off: An overly restrictive limit may reject legitimate requests, while a poorly configured limit may fail to control abusive traffic.
+
+### B. DDoS protection
+
+A Distributed Denial-of-Service (DDoS) attack attempts to overwhelm a service with traffic or requests.
+
+Possible consequences:
+- Increased latency.
+- Reduced legitimate-user throughput.
+- Exhausted server resources.
+- Request timeouts and service unavailability.
+
+Mitigation techniques include traffic filtering, rate limiting, CDN-based protection, and distributed traffic scrubbing.
+
+### C. Encryption overhead
+
+TLS encryption and cryptographic operations consume CPU resources.
+
+At high traffic volumes, inefficient cryptographic processing or inadequate capacity can increase latency and reduce throughput.
+
+Modern hardware, efficient implementations, and appropriate connection reuse can help mitigate this overhead.
+
+### D. Authentication and authorization
+
+Security checks are essential, but expensive checks on every request can increase latency.
+
+For example, repeatedly making synchronous calls to a remote authorization service can slow down an API.
+
+Possible improvements include efficient token validation, carefully designed caching, and avoiding unnecessary network calls.
+
+Security principle: Performance optimizations must not bypass authentication, authorization, encryption, or other required security controls.
+
+---
+
+## 11. Full-Stack Development Relevance
+
+Latency and throughput are important across the frontend, backend, database, and network.
+
+### A. Frontend
+
+Frontend performance primarily affects the time users perceive before a page becomes usable.
+
+Techniques:
+- Lazy loading.
+- Code splitting.
+- Image optimization.
+- Browser caching.
+- Reducing unnecessary API calls.
+
+Example: Loading a large JavaScript bundle may delay page interactivity even when the backend API responds quickly.
+
+### B. Backend
+
+Backend performance determines how efficiently application servers process requests.
+
+Techniques:
+- Efficient algorithms.
+- Nonblocking I/O where appropriate.
+- Connection pooling.
+- Caching.
+- Horizontal scaling.
+
+Example: A Node.js server can handle many concurrent I/O-bound requests, but CPU-intensive work can block its event loop and delay other requests.
+
+### C. Database
+
+Database performance can become a major bottleneck.
+
+Techniques:
+- Indexing.
+- Query optimization.
+- Connection pooling.
+- Read replicas where suitable.
+- Caching frequently accessed data.
+
+Example: A missing database index may increase query latency and reduce the number of requests the application can handle.
+
+### D. API design
+
+API design influences both latency and throughput.
+
+Techniques:
+- Pagination.
+- Efficient response payloads.
+- Batching related requests.
+- Avoiding unnecessary sequential calls.
+- Using asynchronous processing for suitable background tasks.
+
+Example: An endpoint that makes ten sequential database calls may have significantly higher latency than one that efficiently retrieves the same information in fewer operations.
+
+---
+
+## 12. Interview Questions and Answers
+
+### Q1. What is the difference between latency and throughput?
+
+Answer: Latency measures the time taken to complete an individual request, while throughput measures how much work a system completes per unit of time.
+
+### Q2. Can a system have high throughput and high latency?
+
+Answer: Yes. A system can process many requests concurrently while individual requests take a long time because of queueing, slow dependencies, or resource contention.
+
+### Q3. How can you improve latency?
+
+Answer: Optimize database queries, reduce network calls, use caching, improve application code, and reduce queueing delays.
+
+### Q4. How can you improve throughput?
+
+Answer: Scale horizontally, use parallel processing, optimize resource utilization, batch operations, and remove bottlenecks.
+
+### Q5. Does adding more servers always improve throughput?
+
+Answer: No. A shared database, network bottleneck, centralized service, or poorly parallelized workload can limit the benefit of additional servers.
+
+### Q6. What is tail latency?
+
+Answer: Tail latency refers to the latency experienced by the slowest portion of requests. Metrics such as p95 and p99 help measure it.
+
+### Q7. What happens when a server reaches its maximum capacity?
+
+Answer: Throughput may stop increasing, queues may grow, latency may rise, and requests may eventually time out or fail.
+
+### Q8. Which is more important: latency or throughput?
+
+Answer: It depends on the workload. Interactive applications often prioritize low latency, while bulk-processing systems often prioritize throughput. Many production systems need to optimize both.
+
+### Q9. What is Little's Law?
+
+Answer: Little's Law states that the average number of items in a stable system equals the average arrival or completion rate multiplied by the average time spent in the system:
+
+\[
+L = \lambda W
+\]
+
+### Q10. How would you diagnose high latency in a web application?
+
+Answer: Measure end-to-end latency, examine p95 and p99, trace requests across services, inspect database queries, check network delays, and identify queueing or resource saturation.
+
+---
+
+## 13. Quick Revision Notes
+
+Remember these five points:
+
+1. Latency = Time taken per request.
+2. Throughput = Work completed per unit of time.
+3. Lower latency generally means faster responses.
+4. Higher throughput generally means more work processed per second.
+5. High throughput does not guarantee low latency.
+
+### Simple memory trick
+
+Latency = How long?
+
+Throughput = How many?
+
+For example:
+- API latency: 100 ms.
+- API throughput: 5,000 requests per second.
+
+These two numbers describe different aspects of the same system.
+
+### Final takeaway
+
+In system design, the goal is not merely to make requests fast or maximize requests per second. It is to build a system that meets its latency targets, handles the required workload, and remains reliable under increasing traffic.
+
+A well-designed system balances latency, throughput, resource utilization, reliability, and cost.

@@ -1,0 +1,569 @@
+2. Functional vs Non-Functional Requirements
+
+1. Definition
+
+In system design, requirements describe what a system must do and how well it must do it.
+
+Requirements are divided into two major categories:
+
+1. Functional Requirements (FR) — What the system should do.
+2. Non-Functional Requirements (NFR) — How well the system should perform its functions and what constraints it must satisfy.
+
+Simple Example: Instagram
+
+Imagine you are designing Instagram.
+
+- Functional requirement: Users should be able to upload photos.
+- Non-functional requirement: Photos should upload within 2 seconds under normal network conditions.
+
+The first defines a feature. The second defines a performance expectation for that feature.
+
+2. Functional Requirements (FR)
+
+Definition
+
+Functional requirements specify the features, behaviors, and operations that a system must provide to its users or other systems.
+
+They describe the system's expected functionality.
+
+Examples
+
+Consider designing an e-commerce application like Amazon.
+
+Feature: User authentication
+Functional Requirement: Users can register, log in, and log out.
+
+Feature: Product search
+Functional Requirement: Users can search for products by name or category.
+
+Feature: Shopping cart
+Functional Requirement: Users can add, remove, and update products in their cart.
+
+Feature: Checkout
+Functional Requirement: Users can place orders and provide delivery information.
+
+Feature: Payment
+Functional Requirement: The system can initiate payments through a payment gateway.
+
+Feature: Order tracking
+Functional Requirement: Users can view the status of their orders.
+
+Feature: Notifications
+Functional Requirement: The system can send order confirmation emails.
+
+Feature: Administration
+Functional Requirement: Administrators can add, update, and delete products.
+
+Characteristics of Functional Requirements
+
+- Describe specific features or operations.
+- Define how the system responds to user actions.
+- Can often be expressed as use cases or user stories.
+- Can be tested using functional tests.
+- Usually depend on the application's purpose and business rules.
+
+Example User Story
+
+As a user, I want to reset my password so that I can regain access to my account if I forget it.
+
+Acceptance criteria:
+
+1. The user can request a password reset.
+2. The system sends a reset link to the registered email address.
+3. The link expires after a specified period.
+4. The user can set a new password using a valid link.
+
+These requirements describe what the system must do.
+
+3. Non-Functional Requirements (NFR)
+
+Definition
+
+Non-functional requirements specify the quality attributes, performance expectations, operational constraints, and other conditions under which a system must operate.
+
+They help determine whether the system is fast, secure, reliable, scalable, and maintainable enough for its intended purpose.
+
+Examples
+
+For the same e-commerce application:
+
+1. Performance: 95% of product-search requests should complete within 300 ms under a defined workload.
+2. Scalability: The system should support 100,000 concurrent users under specified conditions.
+3. Availability: The service should achieve 99.95% monthly availability.
+4. Security: Passwords must be stored using an appropriate password-hashing algorithm.
+5. Reliability: Confirmed orders must not be lost when a service restarts.
+6. Maintainability: Components should be modular and independently testable where practical.
+7. Usability: Users should be able to complete checkout without unnecessary steps.
+8. Compatibility: The application should support specified versions of major browsers.
+9. Observability: The system should produce logs, metrics, and traces that support troubleshooting.
+10. Data durability: Once an order is successfully committed, it must survive the defined failure scenarios.
+
+Important: Non-functional requirements should be measurable whenever possible.
+
+For example:
+
+- Vague: The application should be fast.
+- Better: 95% of product-search requests should complete within 300 ms under a workload of 5,000 requests per second.
+
+The second requirement gives developers and testers a measurable target.
+
+These numbers are illustrative, not universal industry standards.
+
+4. Functional vs Non-Functional Requirements: Key Differences
+
+Main question:
+
+- Functional Requirements: What should the system do?
+- Non-Functional Requirements: How well should it work?
+
+Focus:
+
+- Functional Requirements: Features and behavior.
+- Non-Functional Requirements: Quality attributes and constraints.
+
+Purpose:
+
+- Functional Requirements: Deliver required functionality.
+- Non-Functional Requirements: Ensure functionality meets quality expectations.
+
+Examples:
+
+- Functional Requirements: Login, search, checkout, messaging.
+- Non-Functional Requirements: Security, performance, scalability, availability.
+
+Testing:
+
+- Functional Requirements: Functional tests, integration tests, acceptance tests.
+- Non-Functional Requirements: Load tests, security tests, resilience tests, performance tests.
+
+Failure example:
+
+- Functional Requirements: User cannot place an order.
+- Non-Functional Requirements: Order placement takes 15 seconds.
+
+Scope:
+
+- Functional Requirements: Often tied to individual features or workflows.
+- Non-Functional Requirements: Often affects multiple features or the whole system.
+
+Measurement:
+
+- Functional Requirements: Expected outputs and behaviors.
+- Non-Functional Requirements: Latency, throughput, uptime, resource usage, security properties.
+
+Implementation:
+
+- Functional Requirements: APIs, business logic, workflows, database operations.
+- Non-Functional Requirements: Architecture, caching, replication, monitoring, access controls.
+
+Business impact:
+
+- Functional Requirements: Determines what users can accomplish.
+- Non-Functional Requirements: Determines the quality and dependability of that experience.
+
+Remember This
+
+Functional = What the system does.
+
+Non-functional = How well the system does it and under what constraints.
+
+However, the distinction is not always absolute. For example, authentication is a functional capability, while the strength of authentication and resistance to attacks are security requirements.
+
+5. Real-World Example: Designing WhatsApp
+
+Let's understand both types of requirements using a messaging application.
+
+A. Functional Requirements
+
+The system should allow users to:
+
+1. Register and log in.
+2. Send messages to other users.
+3. Receive messages.
+4. Create group chats.
+5. Send images, videos, and documents.
+6. See message delivery and read receipts.
+7. Make voice and video calls.
+8. Block and report users.
+
+These requirements define the application's capabilities.
+
+B. Non-Functional Requirements
+
+The system should:
+
+1. Perform well: Deliver messages with low latency under normal operating conditions.
+2. Scale: Support a large number of concurrent users and messages.
+3. Remain available: Continue providing core messaging services despite certain component failures.
+4. Protect privacy: Prevent unauthorized parties from reading protected message contents.
+5. Be reliable: Avoid losing messages that the system has acknowledged as durably accepted.
+6. Recover gracefully: Restore service after infrastructure failures.
+7. Use resources efficiently: Avoid excessive memory, CPU, and network consumption.
+
+C. How They Work Together
+
+Consider sending a message from User A to User B.
+
+Functional requirement:
+The application must allow User A to send a message to User B.
+
+Non-functional requirements:
+
+- The message should be delivered with low latency.
+- Unauthorized users must not be able to read its protected contents.
+- The system must handle temporary network failures.
+- A message acknowledged as durably accepted must not be lost under the defined failure model.
+
+A messaging application may implement the sending feature correctly but still provide a poor experience if messages take too long to arrive or disappear after a server failure.
+
+Conclusion: Functional and non-functional requirements are complementary. Both are necessary to build a successful system.
+
+6. How Requirements Influence System Design
+
+Requirements influence architectural decisions before implementation begins.
+
+Consider a system that must support millions of users.
+
+1. Requirement: Users can search products.
+
+- Possible Design Decision: Search API and search index.
+- Reason: Enables product discovery.
+
+2. Requirement: Users can log in.
+
+- Possible Design Decision: Authentication service.
+- Reason: Manages identity and access.
+
+3. Requirement: Search requests must be fast.
+
+- Possible Design Decision: Caching and optimized indexing.
+- Reason: Reduces response latency.
+
+4. Requirement: The system must scale horizontally.
+
+- Possible Design Decision: Stateless application instances and load balancing.
+- Reason: Allows capacity to increase by adding instances.
+
+5. Requirement: The system must remain available.
+
+- Possible Design Decision: Redundancy, health checks, and failover.
+- Reason: Reduces the impact of component failures.
+
+6. Requirement: Orders must not be lost.
+
+- Possible Design Decision: Durable database transactions and appropriate recovery mechanisms.
+- Reason: Protects committed order data.
+
+7. Requirement: Payments must not be duplicated.
+
+- Possible Design Decision: Idempotency keys and payment-state management.
+- Reason: Prevents repeated processing of the same logical request.
+
+8. Requirement: Sensitive information must be protected.
+
+- Possible Design Decision: Encryption, authorization, and secret management.
+- Reason: Reduces unauthorized access.
+
+9. Requirement: Failures must be diagnosable.
+
+- Possible Design Decision: Structured logs, metrics, and distributed tracing.
+- Reason: Helps engineers identify problems.
+
+Notice that the requirements come first, and the design decisions follow.
+
+For example, you should not automatically introduce Kafka, Redis, or microservices simply because they are popular technologies.
+
+First, understand the requirements. Then select the simplest architecture that satisfies them at the required scale and quality level.
+
+7. Functional and Non-Functional Requirements in System Design Interviews
+
+In a system design interview, identifying requirements is one of the first steps.
+
+Suppose the interviewer asks:
+
+"Design YouTube."
+
+Before drawing the architecture, clarify the system's expected functionality and quality requirements.
+
+Step 1: Identify Functional Requirements
+
+Ask what users should be able to do.
+
+For example:
+
+- Upload videos.
+- Watch videos.
+- Search for videos.
+- Like and comment on videos.
+- Subscribe to channels.
+
+For an initial design, you might prioritize uploading, playback, and searching.
+
+Step 2: Identify Non-Functional Requirements
+
+Determine the system's expected scale and quality attributes.
+
+For example:
+
+- Support millions of concurrent viewers.
+- Start video playback quickly.
+- Maintain high availability.
+- Scale during traffic spikes.
+- Store videos durably.
+- Deliver video content efficiently across geographic regions.
+
+Step 3: Clarify Constraints
+
+Ask additional questions about:
+
+- Expected daily active users.
+- Average video size and viewing duration.
+- Peak requests per second.
+- Geographic distribution.
+- Latency targets.
+- Budget and infrastructure constraints.
+
+These details help you estimate capacity and choose an appropriate architecture.
+
+Step 4: Choose the Architecture
+
+Based on the requirements, you might consider:
+
+- Object storage for video files.
+- A content delivery network (CDN) for video delivery.
+- Databases for metadata and user information.
+- A search engine for video discovery.
+- A queue and background workers for video processing.
+- Load balancers and horizontally scalable services.
+
+Step 5: Explain the Trade-offs
+
+For example, caching popular videos can improve playback performance and reduce load on origin servers, but it introduces cache invalidation and storage-management considerations.
+
+Similarly, replicating data can improve availability and read performance, but replication introduces consistency and operational trade-offs.
+
+Interview tip: Clearly state your assumptions. Requirements such as "support millions of users" are too vague to drive an architecture without additional context.
+
+8. Cybersecurity Relevance
+
+Functional and non-functional requirements are both essential in cybersecurity.
+
+Security-Related Functional Requirements
+
+These define security capabilities the system must provide.
+
+Examples:
+
+- Users can authenticate using a password and a second factor.
+- Administrators can assign and revoke user permissions.
+- The system records security-relevant events.
+- Users can report suspicious activity.
+- Administrators can terminate active sessions.
+
+Security-Related Non-Functional Requirements
+
+These define security properties and measurable expectations.
+
+Examples:
+
+- Passwords must never be stored in plaintext.
+- Access to sensitive information must be restricted to authorized users.
+- Sensitive data must be protected in transit and at rest where required by the threat model.
+- Security controls must resist specified attack scenarios.
+- Security logs must be protected against unauthorized modification.
+- The system must meet applicable security and compliance obligations.
+
+Practical Example: Banking Application
+
+Functional Requirement: Users can transfer money.
+Non-Functional Security Requirement: Transfers must be authorized and protected against tampering.
+
+Functional Requirement: Users can view account balances.
+Non-Functional Security Requirement: Only authorized users may access the relevant account information.
+
+Functional Requirement: Users can reset passwords.
+Non-Functional Security Requirement: Password-reset tokens must be unpredictable, short-lived, and single-use.
+
+Functional Requirement: Administrators can manage accounts.
+Non-Functional Security Requirement: Administrative privileges must follow least-privilege principles.
+
+Functional Requirement: The system records transactions.
+Non-Functional Security Requirement: Transaction records must have appropriate integrity and audit protections.
+
+Key lesson: A system can provide all its intended features and still be insecure. Security must be incorporated into both functional behavior and non-functional quality requirements.
+
+9. Full-Stack Development Relevance
+
+Full-stack developers use both types of requirements when building frontend interfaces, backend services, APIs, and databases.
+
+A. Functional Requirements in Full-Stack Development
+
+Suppose you are building a login feature.
+
+Frontend:
+
+- Display email and password fields.
+- Validate required inputs.
+- Show appropriate error messages.
+
+Backend:
+
+- Receive login requests.
+- Validate credentials.
+- Create a session or issue an authentication token.
+
+Database:
+
+- Retrieve the user's account information.
+- Store the appropriate account and authentication-related data securely.
+
+These define the functionality of the login feature.
+
+B. Non-Functional Requirements in Full-Stack Development
+
+Frontend:
+
+- Requirement: Login form should respond smoothly.
+- Possible Implementation: Efficient rendering and appropriate loading states.
+
+Frontend:
+
+- Requirement: Sensitive authentication data should not leak.
+- Possible Implementation: Avoid exposing credentials in URLs, logs, or browser storage unnecessarily.
+
+API:
+
+- Requirement: Login responses should have low latency.
+- Possible Implementation: Efficient request processing and database queries.
+
+Backend:
+
+- Requirement: Authentication must resist abuse.
+- Possible Implementation: Rate limiting, secure session management, and appropriate monitoring.
+
+Database:
+
+- Requirement: User data must remain protected.
+- Possible Implementation: Least-privilege access, encryption where appropriate, and secure configuration.
+
+Infrastructure:
+
+- Requirement: Login service should remain available.
+- Possible Implementation: Health checks, redundancy, and appropriate recovery procedures.
+
+C. Example: E-Commerce Checkout
+
+Functional requirement:
+Users can place orders and pay for them.
+
+Frontend implementation:
+
+- Display cart items and totals.
+- Collect delivery information.
+- Show payment status.
+
+Backend implementation:
+
+- Validate the cart and prices.
+- Create an order.
+- Integrate with the payment gateway.
+- Update the order state.
+
+Non-functional requirements:
+
+- Checkout should complete within a defined latency target.
+- The system must prevent unauthorized access to orders.
+- Repeated requests must not accidentally create duplicate payments.
+- The database must preserve committed orders.
+- The application must handle temporary payment-provider failures safely.
+
+Full-stack takeaway: Functional requirements determine what you build; non-functional requirements influence how you implement, secure, optimize, and operate it.
+
+10. Common Mistakes to Avoid
+
+Mistake 1: Treating Security as Only Non-Functional
+
+Security includes both functional and non-functional requirements.
+
+For example, implementing multi-factor authentication is a functional capability, while resisting brute-force attacks is a security quality requirement.
+
+Mistake 2: Writing Vague Non-Functional Requirements
+
+Weak requirement:
+"The application should be scalable."
+
+Better requirement:
+"The application should support 10,000 requests per second while maintaining a 95th-percentile API latency below 200 ms under the specified workload."
+
+The numbers are illustrative. Real targets should be based on business needs and testing.
+
+Mistake 3: Confusing Features with Implementation Choices
+
+"Use Redis" is not itself a user-facing functional requirement.
+
+A requirement might instead be:
+"Product details should be returned within 100 ms at the 95th percentile under the defined workload."
+
+Redis caching is one possible implementation, not necessarily the only one.
+
+Mistake 4: Ignoring Trade-offs
+
+A system designed for very low latency may require caching or data replication, which can introduce consistency challenges.
+
+Likewise, stronger redundancy can increase infrastructure costs.
+
+System design involves balancing these trade-offs against the requirements.
+
+Mistake 5: Defining Requirements Without Testing Them
+
+Every important requirement should have a way to verify whether it has been met.
+
+For example:
+
+- Functional: Verify that a user can successfully place an order.
+- Performance: Measure checkout latency under a representative workload.
+- Security: Test whether unauthorized users can access another user's order.
+- Reliability: Test the system's behavior during a database or service failure.
+
+11. Quick Revision Notes
+
+- Functional requirements: What the system must do.
+- Non-functional requirements: How well the system must work and what constraints it must satisfy.
+- Functional example: Users can upload videos.
+- Non-functional example: Video playback should start within a specified time under defined conditions.
+- Functional testing: Verifies expected features and behavior.
+- Performance testing: Measures latency, throughput, and resource usage.
+- Security requirements: Can be functional, non-functional, or both.
+- System design connection: Requirements guide architecture and technology choices.
+- Cybersecurity connection: Security capabilities and security quality constraints must both be considered.
+- Full-stack connection: Requirements guide frontend behavior, backend logic, APIs, databases, and deployment.
+
+One-Line Interview Answer
+
+Functional requirements define what a system should do, while non-functional requirements define the quality attributes and constraints under which it should do it. Both guide architectural decisions and help ensure the system meets business and user expectations.
+
+12. Practice Questions
+
+Test your understanding by classifying each requirement as functional, non-functional, or a combination of both.
+
+1. Users should be able to reset their passwords.
+2. The API should respond within 200 ms for 95% of requests under a specified workload.
+3. The system should support 50,000 concurrent users.
+4. Users should be able to download invoices as PDFs.
+5. The application should achieve 99.9% monthly availability.
+6. Only authorized users should be able to view private messages.
+7. The system should prevent duplicate payments when a checkout request is retried.
+8. Administrators should be able to suspend user accounts.
+
+Answers:
+
+1. Functional.
+2. Non-functional.
+3. Non-functional.
+4. Functional.
+5. Non-functional.
+6. A combination: authorization is a functional security capability, while the required security properties are non-functional constraints.
+7. A combination: payment processing is functional, while preventing duplicate processing is a correctness and reliability requirement.
+8. Functional, with associated security and authorization requirements.
+
+Next topic in your system design roadmap: Requirements gathering and estimation — learning how to clarify scope, estimate users and traffic, and translate requirements into concrete design decisions.
