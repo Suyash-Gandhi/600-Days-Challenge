@@ -1,0 +1,418 @@
+# 6. Consistency vs Availability (CAP Theorem Basics)
+
+## 1. What is CAP Theorem?
+
+The CAP Theorem is a fundamental concept in distributed systems. It states that when a network partition occurs, a distributed system must choose between:
+
+- Consistency (C): Every user sees the latest data.
+- Availability (A): Every request receives a response.
+- Partition Tolerance (P): The system continues operating despite communication failures between nodes.
+
+The key idea: When a network partition occurs, a distributed system cannot guarantee both perfect consistency and availability simultaneously. It must prioritize one over the other for the affected operations.
+
+Let's understand this with an example.
+
+Imagine you have an e-commerce application running on two servers:
+
+- Server A is in Delhi.
+- Server B is in Mumbai.
+
+Both servers maintain copies of the same product inventory.
+
+Initially, both have 10 items in stock.
+
+Now, a network failure prevents the servers from communicating.
+
+Server A sells 2 items, so its inventory becomes 8.
+
+Server B still shows 10 because it cannot receive the update.
+
+The system must decide how to handle requests during this failure.
+
+- Prioritize consistency: Server B may reject or delay inventory requests until it can verify the latest data.
+- Prioritize availability: Server B may continue responding with its local inventory, even though that information could be outdated.
+
+This is the fundamental trade-off described by the CAP theorem.
+
+---
+
+## 2. The Three Components of CAP
+
+### A. Consistency (C)
+
+Definition: Every successful read returns the most recent successful write, or an error if the system cannot provide that guarantee.
+
+In a distributed database, consistency means that users do not receive conflicting versions of data when strong consistency is required.
+
+Example: Banking application
+
+Suppose your account balance is ₹10,000.
+
+You transfer ₹2,000 to another account.
+
+Your new balance is ₹8,000.
+
+A strongly consistent system ensures that subsequent successful reads reflect the latest committed balance rather than the old ₹10,000 balance.
+
+Important: CAP consistency specifically refers to consistency across distributed nodes during a network partition. It is not the same as database consistency in the ACID properties.
+
+### B. Availability (A)
+
+Definition: Every request received by a non-failing node receives a response, even if that response might not contain the latest data.
+
+The response does not necessarily have to be successful from a business perspective, but the system must respond rather than indefinitely waiting for unavailable nodes.
+
+Example: Social media application
+
+Suppose a user updates their profile picture.
+
+A network problem prevents one server from receiving the update.
+
+An availability-oriented system may continue serving profile requests from that server using its existing data.
+
+Users can continue using the application, although some might temporarily see the old picture.
+
+Key point: Availability does not mean the system is fast, nor does it mean every operation must succeed. It means requests to functioning nodes receive responses.
+
+### C. Partition Tolerance (P)
+
+Definition: The system continues operating despite network communication failures between parts of the distributed system.
+
+A network partition can occur when:
+- A network connection breaks.
+- A router fails.
+- Communication between data centers becomes unavailable.
+- Messages are lost or delayed beyond acceptable limits.
+
+Example: Distributed database
+
+A database operates across three data centers.
+
+If one data center loses connectivity with the other two, the system experiences a network partition.
+
+A partition-tolerant design must account for this failure rather than assuming all servers can always communicate.
+
+Key point: In a distributed system, network partitions cannot always be prevented. Systems must be designed to handle them.
+
+---
+
+## 3. Understanding the CAP Trade-Off
+
+CAP is often described using three combinations.
+
+| Combination | Meaning | Behavior During a Network Partition | Example Use Case |
+|---|---|---|---|
+| CP | Consistency + Partition Tolerance | May reject or delay requests that cannot be processed consistently | Banking transactions, inventory reservation |
+| AP | Availability + Partition Tolerance | Continues responding, potentially with stale or conflicting data | Social media feeds, some shopping-cart operations |
+| CA | Consistency + Availability | Provides both guarantees when nodes can communicate, but cannot guarantee both during a partition | A single-node database or a system operating without network partitions |
+
+### CP: Consistency + Partition Tolerance
+
+A CP system prioritizes consistency when a network partition occurs.
+
+It may refuse certain operations if it cannot establish that they are safe.
+
+Example: Inventory reservation
+
+Suppose only one concert ticket remains.
+
+Two customers attempt to purchase it through different servers.
+
+If the servers cannot communicate, the system must avoid selling the same ticket twice.
+
+A CP-oriented design might reject or delay a purchase until it can safely determine whether the ticket is available.
+
+Advantages:
+- Helps prevent conflicting updates.
+- Suitable for operations requiring strong consistency.
+- Reduces the risk of duplicate resource allocation.
+
+Disadvantages:
+- Some requests may fail or wait during network partitions.
+- Parts of the application may become temporarily unavailable.
+
+### AP: Availability + Partition Tolerance
+
+An AP system prioritizes availability during a network partition.
+
+It continues responding to requests even if some nodes cannot communicate.
+
+Example: Social media likes
+
+Suppose a user likes a post while connected to a server that cannot communicate with other servers.
+
+That server records the like locally and responds to the user.
+
+Other servers might not immediately reflect the change.
+
+Once connectivity is restored, the system can reconcile the updates, provided the application is designed to do so.
+
+Advantages:
+- Users can continue interacting with the application during network failures.
+- Useful for systems that tolerate temporary inconsistencies.
+- Can support high availability across distributed locations.
+
+Disadvantages:
+- Users may temporarily see stale data.
+- Conflicting updates may require reconciliation.
+- Some operations need additional logic to merge changes safely.
+
+### CA: Consistency + Availability
+
+A CA system provides consistency and availability when communication between relevant components is functioning.
+
+However, a distributed system cannot guarantee both consistency and availability during a network partition.
+
+A single-node database can avoid inter-node network partitions within its own database architecture, but it is not thereby protected against machine or other infrastructure failures.
+
+This is why CA is generally not a practical third choice for a distributed system that must tolerate network partitions.
+
+---
+
+## 4. CAP Theorem: A Real-World Example
+
+Imagine you are designing a payment application.
+
+A customer has ₹5,000 in their account and attempts to make two payments of ₹4,000 simultaneously.
+
+The payments reach different servers.
+
+If both servers independently approve their payments based on the same initial balance, the customer could spend ₹8,000 despite having only ₹5,000.
+
+A strongly consistent design coordinates the operations so that only one payment can be approved.
+
+If the servers cannot communicate and the system cannot safely determine whether a payment is valid, it may reject or delay the operation.
+
+This prioritizes consistency over availability for that transaction.
+
+Why does this matter?
+
+A payment application generally needs to prioritize financial correctness over accepting every request during a network failure.
+
+A social media application may make a different trade-off because temporarily displaying an outdated like count is usually less serious than approving an invalid payment.
+
+The appropriate choice depends on the business requirements.
+
+---
+
+## 5. CAP vs ACID Consistency
+
+These two concepts are related but different.
+
+| Feature | CAP Consistency | ACID Consistency |
+|---|---|---|
+| Focus | Agreement about data across distributed nodes | Database transactions preserving defined rules and constraints |
+| Main concern | What happens during network partitions | Whether a transaction preserves database invariants |
+| Example | A read reflects the latest committed write | A transfer preserves the total amount of money across accounts |
+| Context | Distributed systems | Transaction processing |
+
+Interview tip: If an interviewer asks about CAP consistency, discuss distributed reads, writes, and network partitions—not merely database constraints.
+
+---
+
+## 6. CAP vs PACELC
+
+CAP explains the trade-off that arises during a network partition.
+
+However, distributed systems also make trade-offs when the network is operating normally.
+
+This is addressed by PACELC:
+
+- P: If there is a partition, choose between availability and consistency.
+- E: Else, when there is no partition, choose between latency and consistency.
+
+For example, a distributed database might provide faster responses by reading from a nearby replica. However, that replica might not have received the latest update.
+
+Alternatively, the database might coordinate with other nodes before responding, improving consistency but increasing latency.
+
+PACELC therefore helps explain design choices that CAP alone does not fully describe.
+
+---
+
+## 7. Practical Applications
+
+### A. Banking and Payment Systems
+
+Typical priority: Strong consistency for critical financial operations.
+
+Examples:
+- Transferring money between accounts.
+- Preventing duplicate payments.
+- Maintaining correct account balances.
+
+A system may reject or delay a transaction when it cannot safely determine the correct outcome.
+
+### B. E-Commerce Applications
+
+Typical priority: Depends on the operation.
+
+Examples:
+- Product descriptions can tolerate temporary inconsistencies.
+- Shopping-cart updates may tolerate some conflicts.
+- Final inventory allocation must prevent overselling.
+- Payment processing requires careful transaction guarantees.
+
+Different components of the same application can make different trade-offs.
+
+### C. Social Media Applications
+
+Typical priority: Availability for many user-facing features.
+
+Examples:
+- Viewing feeds.
+- Recording likes.
+- Displaying follower counts.
+- Updating noncritical profile information.
+
+Some information can be temporarily stale without preventing the application from functioning.
+
+### D. Distributed Caching
+
+Typical priority: Often availability and low latency, depending on the cached data.
+
+Examples:
+- Product catalog caching.
+- Frequently accessed public content.
+- Session-related information.
+
+A cache may serve stale data while a database update propagates. However, security-sensitive or authorization-related information requires greater care.
+
+---
+
+## 8. Common Interview Questions
+
+### Q1. What is CAP theorem?
+
+CAP theorem states that when a network partition occurs, a distributed system cannot guarantee both strong consistency and availability for every request. It must make a trade-off.
+
+### Q2. Why can't we have all three: C, A, and P?
+
+During a network partition, two parts of a distributed system cannot reliably exchange information.
+
+If both parts must continue responding independently, they may return conflicting results.
+
+If the system must prevent conflicting results, it may have to reject or delay requests from one or both parts.
+
+Therefore, a system that tolerates partitions cannot guarantee both consistency and availability during every partition.
+
+### Q3. Is MongoDB CP or AP?
+
+MongoDB's behavior depends on its configuration and the operation being performed.
+
+A replica set can use majority write concern and appropriate read settings to provide strong consistency guarantees for supported operations, but it may reject or delay operations when a majority is unavailable.
+
+Other configurations can favor availability or permit stale reads.
+
+Interview tip: Avoid categorizing a database solely by its name. Discuss its consistency settings, replication model, and behavior during failures.
+
+### Q4. Is a relational database CA?
+
+Not necessarily.
+
+A relational database can run as a single instance, or it can use replication and distributed deployment architectures.
+
+Its CAP behavior depends on the architecture and guarantees it provides during a network partition.
+
+### Q5. Can an application use both CP and AP approaches?
+
+Yes.
+
+A single application can use different approaches for different features.
+
+For example:
+- Payments: prioritize correctness.
+- Product browsing: prioritize availability.
+- Analytics dashboards: tolerate delayed updates.
+- Inventory reservation: prevent conflicting allocations.
+
+The design should reflect the consequences of stale data or unavailable requests for each operation.
+
+---
+
+## 9. Cybersecurity Relevance
+
+CAP theorem is not a cybersecurity framework, but its principles affect security and reliability.
+
+1. Authentication and authorization
+
+If an application cannot retrieve the latest permissions, it must decide whether to reject the request or use previously cached information.
+
+For sensitive operations, relying on stale permissions can create security risks.
+
+2. Fraud prevention
+
+Distributed payment systems must coordinate operations to prevent duplicate processing and inconsistent transaction states.
+
+3. Availability and resilience
+
+Attackers can disrupt network connectivity through denial-of-service attacks or other network failures.
+
+Partition-tolerant architectures can help maintain service during some failures, although CAP alone does not protect against attacks.
+
+4. Security monitoring
+
+Security events collected by different servers might not immediately reach a central monitoring system during a partition.
+
+Systems should account for delayed log delivery and reconcile events after connectivity is restored.
+
+Important: Availability must not override security controls. A system should not automatically allow sensitive operations merely because an authorization service is unreachable.
+
+---
+
+## 10. Full-Stack Development Relevance
+
+CAP theorem influences how frontend applications, backend services, and databases behave when information is temporarily inconsistent.
+
+1. Frontend development
+
+A frontend may display stale information while waiting for a backend update to propagate.
+
+Developers should design appropriate loading states, refresh behavior, and conflict messages.
+
+2. Backend development
+
+Backend services must determine how to handle failed database operations, retries, and concurrent requests.
+
+For example, a payment API should use appropriate transaction guarantees and idempotency mechanisms to prevent duplicate processing when clients retry requests.
+
+3. Database design
+
+Developers need to understand replication, consistency guarantees, and read/write behavior.
+
+A replicated database may provide stronger consistency for certain operations while allowing less strict behavior for others.
+
+4. Microservices
+
+Different services may have different consistency requirements.
+
+For example, an order service might need reliable order creation, while an analytics service can process order events asynchronously.
+
+5. API design
+
+APIs should communicate meaningful failures and avoid implying that an operation succeeded when its outcome is uncertain.
+
+For instance, if a payment request times out, the backend might have completed the payment even though the client did not receive the response. The client should check the transaction status or safely retry using an idempotency key instead of blindly submitting a new payment.
+
+---
+
+## 11. Quick Revision Notes
+
+Remember these three definitions:
+
+| Term | Remember This |
+|---|---|
+| Consistency | Reads reflect the latest successful write under the system's consistency guarantee |
+| Availability | Every request to a non-failing node receives a response |
+| Partition Tolerance | The system accounts for communication failures between distributed nodes |
+
+The most important interview rule:
+
+> When a network partition occurs, a distributed system that tolerates that partition must choose between consistency and availability for the affected operations.
+
+- CP: Protect consistency, even if some requests must wait or fail.
+- AP: Keep responding, even if some responses are temporarily stale or conflicting.
+- CA: Consistency and availability can coexist when communication is functioning, but both cannot be guaranteed during a partition.
+
+### One-line takeaway
+
+CAP theorem helps you decide whether a distributed application should prioritize correct, up-to-date data or continued responses when parts of the system cannot communicate.
