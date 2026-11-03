@@ -1,0 +1,1583 @@
+# 17. Windows Registry, Users, Groups and Permissions
+Category: Operating Systems & Windows Internals  
+Difficulty: Beginner to Intermediate  
+Relevance: System Administration, Windows Security, SOC Analyst, Digital Forensics, Incident Response, and Penetration Testing.
+
+Understanding the Windows Registry, user accounts, groups, and permissions is essential for cybersecurity. These components control how Windows stores configuration, identifies users, grants access to resources, and enforces security restrictions.
+
+For example, if malware executes on a Windows machine, it might modify the Registry to maintain persistence, create a new user account, or change permissions to access sensitive files. Security professionals need to understand these mechanisms to detect and investigate such activity.
+
+This topic has four major sections:
+
+1. Windows Registry and its security implications.
+2. Windows users and authentication.
+3. Windows groups and privilege management.
+4. Windows permissions and access control.
+
+---
+
+# 1. Windows Registry
+
+## 1.1 What is the Windows Registry?
+
+The Windows Registry is a hierarchical database that stores configuration settings for the Windows operating system, installed applications, hardware, users, and security-related components.
+
+Think of it as a centralized configuration database used by Windows and many applications.
+
+For example, Windows needs to know:
+
+- Which applications are configured to start automatically.
+- Which user preferences should be loaded.
+- How particular hardware devices are configured.
+- Which applications are associated with specific file types.
+- Which services and drivers are configured.
+- What certain system and application policies require.
+
+Much of this information is stored in the Registry.
+
+### Example
+
+Suppose you install a text editor on Windows.
+
+The application might store configuration information such as:
+
+```text
+Application Name: MyEditor
+Theme: Dark
+Font Size: 16
+Auto Save: Enabled
+```
+
+Depending on how the application is designed, these settings might be stored in a configuration file, the Windows Registry, or another storage mechanism.
+
+Windows itself also uses the Registry to maintain system configuration.
+
+### Why is the Registry important in cybersecurity?
+
+Attackers may abuse legitimate Registry functionality to:
+
+- Establish persistence after reboot.
+- Change security-related configuration.
+- Configure applications to execute malicious programs.
+- Modify settings that affect Windows Defender or other security tools.
+- Store configuration data used by malware.
+
+Defenders examine Registry changes to investigate suspicious activity.
+
+Important: Registry modification is not inherently malicious. Windows and legitimate applications modify the Registry constantly. The context, location, value, and timing of a change determine whether it is suspicious.
+
+---
+
+## 1.2 Registry Structure
+
+The Registry is organized into a hierarchy of keys, subkeys, and values.
+
+Consider this example:
+
+```text
+HKEY_CURRENT_USER
+    └── Software
+        └── ExampleApp
+            ├── Theme       = Dark
+            ├── FontSize    = 16
+            └── AutoSave    = 1
+```
+
+Let's understand each component.
+
+### A. Registry hive
+
+A hive is a major Registry data structure backed by storage files.
+
+Common Registry hives include:
+
+- `HKEY_LOCAL_MACHINE`
+- `HKEY_CURRENT_USER`
+- `HKEY_USERS`
+- `HKEY_CLASSES_ROOT`
+- `HKEY_CURRENT_CONFIG`
+
+These names are commonly called root keys, although their underlying storage and implementation differ.
+
+### B. Registry key
+
+A key is a container that organizes configuration information.
+
+For example:
+
+```text
+HKEY_CURRENT_USER\Software
+```
+
+Here, `Software` is a Registry key beneath `HKEY_CURRENT_USER`.
+
+Keys can contain other keys and Registry values.
+
+### C. Registry subkey
+
+A subkey is a key located beneath another key.
+
+For example:
+
+```text
+HKEY_CURRENT_USER\Software\ExampleApp
+```
+
+`ExampleApp` is a subkey of `Software`.
+
+### D. Registry value
+
+A value stores the actual configuration data.
+
+For example:
+
+```text
+Theme = Dark
+FontSize = 16
+```
+
+A Registry value has a name, a data type, and data.
+
+---
+
+## 1.3 Important Registry Root Keys
+
+You should become familiar with the following Registry locations.
+
+| Root key | Purpose | Security relevance |
+|---|---|---|
+| `HKEY_LOCAL_MACHINE` (HKLM) | System-wide configuration | Services, system policies, software configuration |
+| `HKEY_CURRENT_USER` (HKCU) | Settings for the current user | User-specific application settings and persistence locations |
+| `HKEY_USERS` (HKU) | Loaded user profiles | Investigation of individual users' settings |
+| `HKEY_CLASSES_ROOT` (HKCR) | File associations and COM-related registration | Application activation and file-handler investigation |
+| `HKEY_CURRENT_CONFIG` (HKCC) | Current hardware profile configuration | Hardware-related configuration |
+
+Let's examine the most important ones.
+
+### A. HKEY_LOCAL_MACHINE (HKLM)
+
+This contains configuration that generally applies to the entire computer.
+
+Example:
+
+```text
+HKEY_LOCAL_MACHINE\SOFTWARE
+```
+
+This location contains system-wide software configuration.
+
+Another important location is:
+
+```text
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services
+```
+
+It contains configuration for Windows services and drivers.
+
+Cybersecurity application: Investigators can examine service configuration to identify suspicious services, unexpected executable paths, and potentially unauthorized persistence mechanisms.
+
+However, the presence of a service in this location does not automatically indicate malicious activity.
+
+### B. HKEY_CURRENT_USER (HKCU)
+
+This contains configuration associated with the current user's profile.
+
+Example:
+
+```text
+HKEY_CURRENT_USER\Software
+```
+
+It may contain application preferences, user-specific policies, and other settings.
+
+A security analyst investigating a suspicious program may examine the current user's Registry for unexpected configuration changes.
+
+### C. HKEY_USERS (HKU)
+
+This exposes Registry data for loaded user profiles.
+
+For example:
+
+```text
+HKEY_USERS\<User-SID>
+```
+
+The SID identifies the relevant security principal.
+
+A user's HKCU is effectively a view into the corresponding loaded user hive under HKU.
+
+This is useful during forensic investigations because an analyst may need to inspect the configuration of a particular user rather than only the currently logged-in user.
+
+### D. HKEY_CLASSES_ROOT (HKCR)
+
+This provides a merged view of file associations and COM registration information from relevant machine-wide and per-user locations.
+
+For example, Windows uses file association information to determine which application should open a particular file type.
+
+Investigators may examine these registrations when investigating suspicious file handlers or unexpected application activation.
+
+---
+
+## 1.4 Registry Value Data Types
+
+Registry values can store different types of data.
+
+| Type | Description | Example |
+|---|---|---|
+| `REG_SZ` | String | `"C:\Windows\System32\example.exe"` |
+| `REG_EXPAND_SZ` | String containing expandable environment variables | `"%SystemRoot%\System32\example.exe"` |
+| `REG_DWORD` | 32-bit integer | `1` |
+| `REG_QWORD` | 64-bit integer | `123456789` |
+| `REG_BINARY` | Binary data | Application-specific binary settings |
+| `REG_MULTI_SZ` | Multiple strings | A list of paths or names |
+| `REG_NONE` | No defined data type | Application-specific data |
+
+### Example
+
+A Registry value might look like this:
+
+```text
+Name: EnableFeature
+Type: REG_DWORD
+Data: 1
+```
+
+The application may interpret `1` as enabled and `0` as disabled.
+
+However, the meaning depends on the application or Windows component using that value. A DWORD value of `1` does not universally mean that a feature is enabled.
+
+---
+
+## 1.5 Registry Storage Files
+
+The Registry is not simply a collection of ordinary text files.
+
+Important Registry data is stored in hive files.
+
+Common examples include:
+
+| Hive | Typical storage location |
+|---|---|
+| SYSTEM | `C:\Windows\System32\config\SYSTEM` |
+| SOFTWARE | `C:\Windows\System32\config\SOFTWARE` |
+| SAM | `C:\Windows\System32\config\SAM` |
+| SECURITY | `C:\Windows\System32\config\SECURITY` |
+| Default user hive | `C:\Users\Default\NTUSER.DAT` |
+| Individual user hive | `C:\Users\<username>\NTUSER.DAT` |
+
+The first four are system hives. User profiles typically have an `NTUSER.DAT` file containing user-specific Registry information.
+
+These files are generally protected by Windows permissions and operating-system mechanisms.
+
+### Why are these files important?
+
+During digital forensics, an analyst may examine Registry hives to reconstruct configuration, user activity, software installation, and potential persistence.
+
+For example, an offline copy of a user's `NTUSER.DAT` can reveal configuration associated with that profile.
+
+Forensic caution: A Registry hive is not a complete record of everything a user has done. Available evidence depends on the application, Windows version, retention, hive state, and other artifacts.
+
+---
+
+# 2. Working with the Windows Registry
+
+Windows provides a graphical Registry editor and a command-line utility.
+
+## 2.1 Registry Editor
+
+The Registry Editor executable is:
+
+```text
+regedit.exe
+```
+
+To open it:
+
+1. Press `Win + R`.
+2. Type `regedit`.
+3. Press Enter.
+4. Approve the User Account Control (UAC) prompt if required.
+
+You can navigate through Registry keys, inspect values, export selected keys, and make changes where you have sufficient permissions.
+
+Warning: Incorrect Registry modifications can break applications, damage Windows configuration, or prevent parts of the operating system from working correctly. Export relevant keys before making changes, and avoid modifying system keys unless you understand their purpose.
+
+## 2.2 Using the `reg` Command
+
+Windows includes the `reg` command for managing Registry data.
+
+Open Command Prompt or PowerShell.
+
+### Display a Registry key
+
+```cmd
+reg query "HKCU\Software"
+```
+
+This displays information beneath the specified key, subject to access permissions.
+
+### Query a specific value
+
+```cmd
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```
+
+This queries the `ProductName` value.
+
+### Export a Registry key
+
+```cmd
+reg export "HKCU\Software" "%USERPROFILE%\Desktop\software-backup.reg"
+```
+
+This exports the specified key and its subkeys to a `.reg` file.
+
+### Import Registry data
+
+```cmd
+reg import "%USERPROFILE%\Desktop\software-backup.reg"
+```
+
+This imports Registry data from a `.reg` file.
+
+Only import Registry files from trusted sources. Imported values can modify system configuration and may have security consequences.
+
+### Search a Registry key recursively
+
+```cmd
+reg query "HKLM\SOFTWARE" /s /f "ExampleApp"
+```
+
+This searches beneath the specified key for matching data.
+
+### List loaded user hives
+
+```cmd
+reg query HKU
+```
+
+This lists the currently exposed subkeys beneath `HKEY_USERS`.
+
+Practice tip: Begin with read-only queries. You do not need to modify the Registry to learn how it works.
+
+---
+
+# 3. Windows Users and Accounts
+
+## 3.1 What is a Windows user account?
+
+A Windows user account represents a security principal that can authenticate and access resources according to its assigned rights and permissions.
+
+When a user signs in, Windows establishes a security context associated with that account.
+
+This context influences what the user can access and which operations the user can perform.
+
+For example:
+
+```text
+User: Alice
+Account type: Standard User
+```
+
+Alice may be able to:
+
+- Open applications.
+- Create files in her profile.
+- Modify her own application settings.
+- Access shared resources for which she has permission.
+
+She generally cannot make arbitrary system-wide changes without the necessary authorization.
+
+By contrast, an administrator account has additional capabilities, although Windows still applies UAC and other security controls.
+
+---
+
+## 3.2 Types of Windows Accounts
+
+### A. Local accounts
+
+A local account is managed by a particular Windows computer.
+
+Its account database is maintained locally.
+
+Example:
+
+```text
+Computer: DESKTOP-01
+User: Alice
+```
+
+The account is local to `DESKTOP-01`.
+
+Local accounts are useful for standalone computers and situations where centralized identity management is not required.
+
+### B. Microsoft accounts
+
+A Microsoft account can be used to sign in to supported Windows installations and Microsoft services.
+
+It can support features such as synchronization and cloud-connected services.
+
+Its identity is associated with Microsoft's account infrastructure, although the Windows device still maintains local security information for the sign-in experience.
+
+### C. Domain accounts
+
+A domain account is managed through an Active Directory domain.
+
+For example:
+
+```text
+Domain: company.local
+User: alice
+```
+
+A domain account can be used to access authorized resources across an organization's network.
+
+Domain administrators can centrally manage accounts, groups, authentication policies, and other settings.
+
+### D. Microsoft Entra ID accounts
+
+Organizations can also connect Windows devices to Microsoft Entra ID, Microsoft's cloud identity service.
+
+This supports organizational identity and access-management scenarios.
+
+Do not confuse Microsoft Entra ID identities with traditional Active Directory domain accounts. They are related identity-management technologies, but they are not the same system.
+
+---
+
+## 3.3 Standard User vs. Administrator
+
+One of the most important security distinctions in Windows is the difference between standard-user privileges and administrative privileges.
+
+| Capability | Standard user | Administrator |
+|---|---|---|
+| Run ordinary applications | Yes | Yes |
+| Modify personal files | Generally yes | Yes |
+| Install software for personal use | Depends on installer and configuration | Generally more capable |
+| Modify protected system configuration | Usually restricted | Can be authorized through elevation |
+| Manage system services | Generally restricted | Can generally manage services with elevation |
+| Create or manage local accounts | Usually restricted | Can generally manage accounts with elevation |
+| Modify protected security settings | Restricted | Depends on the specific permission and security controls |
+
+An administrator account is not equivalent to unrestricted access at every moment.
+
+On typical Windows client installations, UAC helps control elevation. An administrator commonly runs applications with a filtered token until an operation requires elevated privileges.
+
+A standard user may also be prompted to provide administrator credentials for an operation requiring elevation.
+
+### What is User Account Control (UAC)?
+
+User Account Control (UAC) is a Windows security mechanism that helps prevent unauthorized changes by requiring appropriate consent or credentials for operations that need elevation.
+
+For example, opening an ordinary text editor typically does not require elevation.
+
+Installing a system-wide driver may require elevated privileges.
+
+The objective is to reduce the likelihood that every application automatically runs with administrative privileges.
+
+Security principle: Use a standard account for routine activities when practical, and elevate privileges only when necessary.
+
+---
+
+# 4. Windows Security Identifiers (SIDs)
+
+## 4.1 What is a SID?
+
+A Security Identifier (SID) is a unique identifier assigned to a security principal, such as a user account or group.
+
+Windows uses SIDs to identify security principals when evaluating access.
+
+Example:
+
+```text
+S-1-5-21-111111111-222222222-333333333-1001
+```
+
+This is an illustrative SID, not an identifier for a real account.
+
+The components indicate information about the SID's authority and identifier structure.
+
+The final portion of a typical local or domain account SID is called the Relative Identifier (RID).
+
+For example, a SID ending in `-1001` has a RID of `1001`.
+
+Do not assume that a particular RID always identifies the same person across different computers.
+
+### Why are SIDs important?
+
+Consider a file whose access control list grants access to a particular user.
+
+Windows records security identifiers in security-related structures rather than relying exclusively on usernames.
+
+If the username changes, the underlying account SID normally remains the same.
+
+If an account is deleted and a new account is created using the same username, the new account generally receives a different SID.
+
+Therefore, identical usernames do not necessarily mean identical security identities.
+
+---
+
+## 4.2 Find Your SID
+
+Open Command Prompt and run:
+
+```cmd
+whoami /user
+```
+
+Example output:
+
+```text
+USER INFORMATION
+----------------
+
+User Name       SID
+=============== ============================================
+desktop-01\alice S-1-5-21-111111111-222222222-333333333-1001
+```
+
+The displayed SID is associated with the current security identity.
+
+To display the current account name:
+
+```cmd
+whoami
+```
+
+To display groups and privileges in the current security context:
+
+```cmd
+whoami /all
+```
+
+This last command is especially useful when investigating access problems and understanding the current security token.
+
+---
+
+# 5. Windows Groups
+
+## 5.1 What is a Windows group?
+
+A Windows group is a collection of security principals used to manage permissions and user rights.
+
+Instead of assigning access individually to every employee, an administrator can assign users to groups and grant permissions to those groups.
+
+For example:
+
+```text
+Company
+   |
+   ├── Developers
+   │      ├── Alice
+   │      ├── Bob
+   │      └── Charlie
+   |
+   ├── HR
+   │      ├── David
+   │      └── Eva
+   |
+   └── Administrators
+          └── IT Admin
+```
+
+A folder might grant read access to the `Developers` group.
+
+Members of that group can then receive the granted access without requiring separate permissions for every user.
+
+This is easier to manage than assigning individual permissions throughout an organization.
+
+---
+
+## 5.2 Important Windows Local Groups
+
+The following groups are especially important for security work.
+
+| Group | Purpose | Security significance |
+|---|---|---|
+| Administrators | Administrative control over the computer | Membership can enable powerful system changes |
+| Users | General access for ordinary users | Commonly associated with standard-user access |
+| Guests | Limited guest access where enabled | Guest access should be tightly controlled |
+| Remote Desktop Users | Users authorized to connect through Remote Desktop under applicable policy | Unauthorized membership can create a remote-access risk |
+| Backup Operators | Special backup-related privileges | Certain privileges can expose sensitive data |
+| Event Log Readers | Read access to supported event logs | Useful for monitoring and troubleshooting |
+| Hyper-V Administrators | Administrative capabilities for Hyper-V | Can provide powerful access to virtual machines and the host environment |
+
+Actual effective capabilities depend on the group's assigned rights, the specific operation, the Windows configuration, and additional security controls.
+
+For example, Backup Operators can possess powerful privileges, but their capabilities should not be simplified to unrestricted access to every file in every situation.
+
+### Why is group membership important?
+
+Suppose an attacker compromises an ordinary account and then manages to obtain membership in a highly privileged group.
+
+The attacker's effective capabilities may increase significantly.
+
+Security teams therefore monitor:
+
+- New group memberships.
+- Unexpected administrative accounts.
+- Changes to Remote Desktop Users.
+- Changes to security-sensitive local groups.
+- Unauthorized privilege assignments.
+
+Unexpected membership changes can be important indicators of compromise.
+
+---
+
+## 5.3 List Local Users
+
+Open PowerShell and run:
+
+```powershell
+Get-LocalUser
+```
+
+This displays local user accounts.
+
+To inspect a particular account:
+
+```powershell
+Get-LocalUser -Name "Administrator"
+```
+
+The built-in Administrator account may be renamed, disabled, or configured differently, so do not assume that it always appears under that exact name or is enabled.
+
+### Using Command Prompt
+
+```cmd
+net user
+```
+
+This lists local user accounts.
+
+To inspect one account:
+
+```cmd
+net user Alice
+```
+
+Replace `Alice` with an account name on your system.
+
+---
+
+## 5.4 List Local Groups
+
+In PowerShell:
+
+```powershell
+Get-LocalGroup
+```
+
+To list members of the Administrators group:
+
+```powershell
+Get-LocalGroupMember -Group "Administrators"
+```
+
+To list members of the Remote Desktop Users group:
+
+```powershell
+Get-LocalGroupMember -Group "Remote Desktop Users"
+```
+
+These commands are useful during basic Windows security audits.
+
+On a domain-managed computer, you may also need to inspect domain group membership and the effective group memberships of the signed-in account.
+
+---
+
+## 5.5 User Rights vs. Group Membership
+
+Group membership and user rights are related but different concepts.
+
+Group membership establishes which groups are associated with an account.
+
+User rights authorize particular system-level actions.
+
+Examples of user rights include:
+
+- Log on locally.
+- Log on through Remote Desktop Services.
+- Shut down the system.
+- Back up files and directories.
+- Debug programs.
+
+An account can receive a user right through a group assignment.
+
+For example, a security policy may grant a particular logon right to an authorized group.
+
+This distinction matters because having permission to read a file does not automatically grant the right to log on through Remote Desktop.
+
+Likewise, having a particular logon right does not automatically grant access to every file on the machine.
+
+---
+
+# 6. Windows Permissions and Access Control
+
+## 6.1 What are permissions?
+
+Permissions determine which actions a security principal can perform on a resource.
+
+Resources can include:
+
+- Files.
+- Directories.
+- Registry keys.
+- Shared folders.
+- Printers.
+- Other securable Windows objects.
+
+Consider a directory:
+
+```text
+C:\Company\Finance
+```
+
+The organization might configure access as follows:
+
+| Principal | Access |
+|---|---|
+| Finance group | Modify |
+| Managers group | Read |
+| Ordinary users | No access |
+| Administrators | Administrative access, subject to applicable controls |
+
+These permissions help prevent unauthorized access to confidential information.
+
+---
+
+## 6.2 Access Control List (ACL)
+
+Windows uses access control lists to describe access rules associated with securable objects.
+
+An ACL contains access control entries.
+
+There are two major types to understand.
+
+### A. Discretionary Access Control List (DACL)
+
+A DACL controls which security principals are allowed or denied access to an object.
+
+For example:
+
+```text
+File: payroll.xlsx
+
+Alice  → Read
+Bob    → Modify
+Eve    → Deny Read
+```
+
+This is a simplified illustration of possible access rules.
+
+A DACL can contain:
+
+- Allow entries.
+- Deny entries.
+- Entries for individual users.
+- Entries for groups.
+
+Windows evaluates these entries alongside the caller's security token and the requested access.
+
+### B. System Access Control List (SACL)
+
+A SACL specifies which access-related events should be audited for an object.
+
+For example, an organization might configure auditing for failed access attempts to a sensitive directory.
+
+The resulting audit records can help security analysts investigate suspicious activity.
+
+A SACL does not itself grant or deny access. It defines auditing behavior.
+
+### Remember
+
+- DACL: Who can access the object, and how?
+- SACL: Which access-related activities should be audited?
+
+---
+
+## 6.3 Common NTFS Permissions
+
+NTFS is a Windows filesystem that supports detailed file and directory security.
+
+Common permissions include:
+
+| Permission | Meaning |
+|---|---|
+| Full control | Broad control, including permissions-related operations |
+| Modify | Read, write, and modify content, including deletion where permitted |
+| Read & execute | Read content and execute applicable files |
+| List folder contents | Enumerate a directory's contents |
+| Read | Read file content and applicable metadata |
+| Write | Create or modify content, subject to the specific access rights |
+| Special permissions | Specific combinations of lower-level access rights |
+
+The exact access granted depends on the underlying rights and the object involved.
+
+### Example
+
+Suppose:
+
+```text
+Folder: C:\Projects
+
+Developers: Modify
+Interns: Read & execute
+```
+
+Developers may be able to create, edit, and delete files in the folder.
+
+Interns may be able to read files and run permitted executables, but they generally cannot modify the protected contents.
+
+This is an example of least privilege: users receive only the access needed for their responsibilities.
+
+---
+
+## 6.4 Inherited Permissions
+
+Windows allows permissions to be inherited from parent directories.
+
+Consider this structure:
+
+```text
+C:\Projects
+    |
+    ├── App1
+    │     └── source.js
+    |
+    └── App2
+          └── config.json
+```
+
+Suppose `C:\Projects` grants the Developers group Modify access.
+
+Depending on the inheritance configuration, that permission may propagate to `App1`, `App2`, and their contents.
+
+This simplifies administration because permissions do not need to be configured independently on every file.
+
+However, inheritance can be disabled or overridden.
+
+A child directory may have explicit permissions that differ from those of its parent.
+
+Security implication: When investigating access to a file, examine its effective permissions rather than looking only at the parent directory.
+
+---
+
+## 6.5 Explicit vs. Inherited Permissions
+
+Explicit permissions are configured directly on an object.
+
+Inherited permissions are received from a parent object.
+
+For example:
+
+```text
+C:\Projects
+    Developers: Modify
+
+C:\Projects\Confidential
+    Managers: Read
+```
+
+If `Confidential` inherits permissions, it may receive the Developers group's Modify permission as well as its explicitly configured Managers permission.
+
+If inheritance is disabled, its access rules may differ significantly.
+
+Do not assume that adding a new permission automatically removes inherited access.
+
+To protect a confidential directory, you must review the entire effective access configuration.
+
+---
+
+# 7. Allow and Deny Permissions
+
+Windows permissions may include both allow and deny entries.
+
+A common misconception is that an explicit Deny entry always overrides every Allow entry under all circumstances.
+
+The real behavior depends on how Windows evaluates the security descriptor, the requested access, the ordering of ACEs, and the security token.
+
+For example, an account may receive access through group membership, while a relevant deny entry can prevent the requested access.
+
+A simplified example:
+
+```text
+File: confidential.txt
+
+Developers group → Allow Read
+Alice             → Deny Read
+```
+
+If Alice is a member of Developers, the deny entry can prevent Alice from reading the file.
+
+However, Windows access checks are more nuanced than simply comparing two rows in a table.
+
+For practical security work, inspect the effective access and understand the relevant ACEs rather than relying on a blanket rule.
+
+### Try this in Windows
+
+1. Create a test folder.
+2. Right-click it and select Properties.
+3. Open Security.
+4. Select Edit to inspect permissions.
+5. Select Advanced to examine detailed entries and inheritance.
+
+Use a test folder rather than changing permissions on Windows system directories.
+
+---
+
+# 8. File Permissions vs. Share Permissions
+
+This distinction is especially important when investigating access to Windows network shares.
+
+Windows can enforce permissions at two different layers:
+
+1. Share permissions.
+2. NTFS permissions.
+
+Suppose a folder is shared over the network:
+
+```text
+D:\Shared\Finance
+```
+
+Share permissions govern access through the network share.
+
+NTFS permissions govern access to the underlying filesystem object.
+
+When a user accesses a file through an SMB network share, both layers apply.
+
+### Example
+
+| Permission layer | User's effective allowance |
+|---|---|
+| Share permissions | Read |
+| NTFS permissions | Modify |
+
+The user will generally be limited to Read access through the share.
+
+In this simplified example, the more restrictive effective allowance limits the resulting access.
+
+However, this comparison is only a shortcut. Windows evaluates the actual requested access and the applicable security entries at each layer.
+
+### Why is this important?
+
+A folder may have permissive NTFS permissions but restrictive share permissions.
+
+Conversely, permissive share permissions do not automatically override restrictive NTFS permissions.
+
+When troubleshooting network access, inspect both layers.
+
+---
+
+# 9. Registry Permissions and Security
+
+Registry keys themselves have security descriptors and access permissions.
+
+This means that Registry access control follows concepts similar to those used for files.
+
+For example:
+
+```text
+HKEY_LOCAL_MACHINE\SOFTWARE\Example
+```
+
+The key may allow ordinary users to read configuration but restrict modifications to administrators or a particular service account.
+
+A user who lacks the required access may receive an access-denied error when attempting to modify it.
+
+### Why do Registry permissions matter?
+
+Suppose a security-sensitive Registry key controls a system component.
+
+If ordinary users can modify that key unexpectedly, an attacker may be able to influence the component's behavior without obtaining full administrative access.
+
+Security assessments therefore examine:
+
+- Who can read a Registry key.
+- Who can modify its values.
+- Whether permissions are inherited.
+- Whether access differs between machine-wide and per-user locations.
+- Whether a service or application relies on the key's contents.
+
+Do not assume that every key under `HKLM` is writable only by administrators. Permissions vary by key and Windows configuration.
+
+### Inspect Registry permissions
+
+1. Open `regedit.exe`.
+2. Navigate to a key you are authorized to inspect.
+3. Right-click the key.
+4. Select Permissions.
+5. Review the listed users, groups, and access rights.
+
+Avoid changing permissions on protected Windows Registry keys during initial practice.
+
+---
+
+# 10. Security Tokens and Access Checks
+
+This section connects users, groups, SIDs, and permissions.
+
+## 10.1 What is a Windows access token?
+
+When a user logs on, Windows creates a security context represented by an access token for the resulting logon session and processes.
+
+A token can contain information such as:
+
+- The user's SID.
+- Group SIDs.
+- Privileges.
+- Other security-related attributes.
+
+Windows uses this information during access checks.
+
+### Example
+
+Suppose Alice belongs to the Developers group.
+
+```text
+User:
+    Alice
+
+Group memberships:
+    Users
+    Developers
+```
+
+Alice attempts to open:
+
+```text
+C:\Projects\source.js
+```
+
+The simplified access-check process is:
+
+1. Windows obtains the relevant security context for Alice.
+2. Windows examines the requested operation.
+3. Windows checks the object's security descriptor.
+4. Windows evaluates applicable access control entries against the security context.
+5. Windows grants or denies the requested access.
+
+If the DACL grants Read access to the Developers group, Alice may be able to read the file because her security context contains the relevant group SID.
+
+Actual access checks can also involve restricted tokens, integrity levels, privileges, impersonation, and other security mechanisms.
+
+---
+
+## 10.2 What are Windows privileges?
+
+Permissions and privileges are not the same thing.
+
+Permissions typically govern access to particular objects.
+
+Privileges authorize specific system-level operations.
+
+Examples include:
+
+| Privilege | Purpose |
+|---|---|
+| `SeDebugPrivilege` | Allows debugging of processes under applicable conditions |
+| `SeBackupPrivilege` | Supports backup-related access operations |
+| `SeRestorePrivilege` | Supports restoration-related operations |
+| `SeTakeOwnershipPrivilege` | Allows taking ownership of securable objects |
+| `SeImpersonatePrivilege` | Allows impersonation of a client security context under applicable conditions |
+
+These privileges can have significant security implications.
+
+For example, `SeDebugPrivilege` can enable powerful process-inspection capabilities. Backup and restore privileges can affect access to protected data.
+
+Possession of a privilege does not mean it is necessarily enabled in the current token or that every operation will succeed regardless of other security controls.
+
+### Inspect your current token
+
+Run:
+
+```cmd
+whoami /priv
+```
+
+This displays privileges associated with your current security context and their status.
+
+Then run:
+
+```cmd
+whoami /groups
+```
+
+This displays groups in the current security context.
+
+These commands are valuable for learning how Windows represents identity and authorization.
+
+---
+
+# 11. UAC, Integrity Levels, and Elevation
+
+Windows uses additional security mechanisms beyond ordinary file permissions.
+
+One important mechanism is Mandatory Integrity Control (MIC).
+
+Integrity levels help Windows restrict certain interactions based on the trust level associated with processes and securable objects.
+
+Common integrity levels include:
+
+- Low.
+- Medium.
+- High.
+- System.
+
+For example, a typical unelevated desktop application runs at Medium integrity, while an elevated administrator application commonly runs at High integrity.
+
+This is a simplified description; actual process integrity depends on the security context and configuration.
+
+### Why does this matter?
+
+A process may have access to a resource according to some discretionary permissions but still be restricted by mandatory integrity controls or other security mechanisms.
+
+This is one reason why Windows authorization cannot be reduced to checking a username or a single permission entry.
+
+### Inspect your process identity
+
+Run:
+
+```cmd
+whoami /all
+```
+
+This provides information about the current user's security context, including groups and privileges.
+
+For deeper investigation, Windows security tools can also inspect process tokens and integrity levels.
+
+---
+
+# 12. Common Windows Security Misconfigurations
+
+Security professionals often investigate mistakes involving accounts, groups, permissions, and Registry configuration.
+
+## 12.1 Excessive administrative privileges
+
+Problem: Ordinary users have administrative access without a legitimate requirement.
+
+Risk: Malware running in the user's context may gain the ability to make more extensive system changes.
+
+Mitigation:
+- Apply least privilege.
+- Review local Administrators group membership.
+- Separate routine user accounts from administrative accounts where practical.
+- Monitor changes to privileged groups.
+
+## 12.2 Weak account security
+
+Problem: Accounts have weak passwords, unnecessary access, or inadequate authentication protections.
+
+Risk: Attackers may compromise accounts and use them to access protected resources.
+
+Mitigation:
+- Enforce appropriate authentication policies.
+- Use multifactor authentication where supported.
+- Disable or remove unnecessary accounts.
+- Monitor failed logons and suspicious authentication activity.
+
+## 12.3 Excessive file permissions
+
+Problem: Sensitive files can be modified by users who should only have read access.
+
+Risk: Unauthorized modification, data exposure, or execution of untrusted content may become possible.
+
+Mitigation:
+- Review effective NTFS permissions.
+- Remove unnecessary write access.
+- Review inheritance.
+- Audit sensitive directories.
+
+## 12.4 Unusual Registry modifications
+
+Problem: A Registry key controlling a security-sensitive component is unexpectedly modified.
+
+Risk: An attacker may alter configuration or establish persistence.
+
+Mitigation:
+- Monitor relevant Registry changes.
+- Investigate unexpected executable paths.
+- Compare changes against approved software installations and administrative activity.
+- Correlate Registry events with process creation and account activity.
+
+## 12.5 Unauthorized remote access
+
+Problem: An account is added to Remote Desktop Users without approval.
+
+Risk: The account may gain the ability to initiate remote sessions, subject to the applicable logon rights, network configuration, and other restrictions.
+
+Mitigation:
+- Restrict remote access to approved users.
+- Enforce strong authentication.
+- Monitor group membership changes and remote logons.
+- Disable unnecessary remote-access services.
+
+---
+
+# 13. Practical Cybersecurity Investigation
+
+Now let's connect the concepts to a realistic investigation.
+
+## Scenario: Suspicious activity on a Windows computer
+
+An employee reports that a program appeared unexpectedly after restarting the computer.
+
+A security analyst needs to determine:
+
+1. Which user account was involved?
+2. Whether the program is configured to run automatically.
+3. Whether the account has elevated privileges.
+4. Whether relevant Registry settings were modified.
+5. Whether the program has suspicious file permissions.
+
+You can perform a basic, read-only investigation using built-in Windows commands.
+
+### Step 1: Identify the current user
+
+```cmd
+whoami
+```
+
+This displays the current security identity.
+
+### Step 2: Examine groups and privileges
+
+```cmd
+whoami /all
+```
+
+Review the account's group memberships and privileges.
+
+Look for unexpected privileged memberships or unusual security context information.
+
+### Step 3: Review local accounts
+
+Open PowerShell:
+
+```powershell
+Get-LocalUser
+```
+
+Check for unfamiliar or unexpected local accounts.
+
+Remember that an unfamiliar account is not automatically malicious; Windows and installed software may use legitimate service accounts.
+
+### Step 4: Inspect sensitive group membership
+
+```powershell
+Get-LocalGroupMember -Group "Administrators"
+```
+
+Look for unexpected administrative accounts.
+
+### Step 5: Inspect common startup locations
+
+Query the current user's Run key:
+
+```cmd
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+```
+
+Query the machine-wide Run key:
+
+```cmd
+reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+```
+
+These locations are commonly used to configure applications that launch when a user signs in.
+
+Important: These are only two potential persistence locations. Not all startup mechanisms use these keys, and legitimate software commonly registers entries here.
+
+### Step 6: Inspect the executable
+
+If a suspicious Registry entry points to an executable, examine its file location and metadata.
+
+For example, in PowerShell:
+
+```powershell
+Get-Item "C:\Path\To\Program.exe" |
+    Select-Object FullName, Length, CreationTime, LastWriteTime
+```
+
+Replace the example path with the actual file path.
+
+You can also inspect its access permissions:
+
+```powershell
+Get-Acl "C:\Path\To\Program.exe" |
+    Format-List
+```
+
+Review who can modify the file and whether its permissions are appropriate for its location.
+
+Do not execute the suspicious file merely to determine what it does.
+
+### Step 7: Correlate the evidence
+
+A useful investigation correlates several evidence sources:
+
+```text
+Unexpected Startup Entry
+          |
+          v
+Executable Path
+          |
+          v
+File Ownership and Permissions
+          |
+          v
+Account and Group Membership
+          |
+          v
+Process Creation and Security Logs
+          |
+          v
+Assessment of Suspicious Activity
+```
+
+A single suspicious Registry entry is not enough to establish that a machine is compromised.
+
+Confidence improves when multiple independent indicators support the same explanation.
+
+---
+
+# 14. Important Windows Event Logs
+
+Windows records security-related events that can support investigations of accounts, groups, and access.
+
+The following Security log event IDs are particularly useful in many Windows environments.
+
+| Event ID | Meaning | Investigative use |
+|---|---|---|
+| 4624 | Successful logon | Identify successful authentication activity |
+| 4625 | Failed logon | Investigate failed authentication attempts |
+| 4648 | Logon attempted using explicit credentials | Investigate use of explicitly supplied credentials |
+| 4672 | Special privileges assigned to a new logon | Examine logons associated with sensitive privileges |
+| 4720 | User account created | Investigate unexpected account creation |
+| 4722 | User account enabled | Investigate activation of an account |
+| 4728 | Member added to a security-enabled global group | Investigate certain domain group membership changes |
+| 4732 | Member added to a security-enabled local group | Investigate local group membership changes |
+| 4738 | User account changed | Investigate modifications to an account |
+| 1102 | Security audit log cleared | Investigate unexpected clearing of the Security log |
+
+These events are not guaranteed to exist for every action on every machine.
+
+Their availability depends on the Windows version, audit policy, log retention, and whether the relevant activity occurred.
+
+For example, event 4732 is especially relevant to changes involving security-enabled local groups, while domain group changes may produce different event IDs.
+
+### Open Event Viewer
+
+Press:
+
+```text
+Win + R
+```
+
+Enter:
+
+```text
+eventvwr.msc
+```
+
+Then navigate to:
+
+```text
+Windows Logs → Security
+```
+
+You may need administrative permissions to access the log.
+
+On your own machine, you can inspect available events without changing the audit configuration.
+
+---
+
+# 15. Hands-On Lab: Practice Safely
+
+The best way to understand these concepts is to practice in a Windows virtual machine or on a test computer.
+
+You do not need to perform dangerous modifications to learn the fundamentals.
+
+## Lab 1: Inspect Registry structure
+
+Objective: Understand Registry keys and values.
+
+Run:
+
+```cmd
+reg query "HKCU\Software"
+```
+
+Then run:
+
+```cmd
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+```
+
+Tasks:
+
+1. Identify several Registry keys.
+2. Identify at least three values.
+3. Record their names and data types.
+4. Explain why user-specific and system-wide settings are stored in different locations.
+
+## Lab 2: Inspect users and groups
+
+Objective: Understand Windows identities.
+
+Run:
+
+```cmd
+whoami /user
+```
+
+```cmd
+whoami /groups
+```
+
+```cmd
+net user
+```
+
+Then run in PowerShell:
+
+```powershell
+Get-LocalGroup
+```
+
+Tasks:
+
+1. Record your account SID.
+2. Identify the groups associated with your current security context.
+3. List the local accounts on your computer.
+4. Explain the difference between a user SID and a group SID.
+
+Do not share the complete output publicly if it contains organizational usernames or other sensitive information.
+
+## Lab 3: Examine file permissions
+
+Objective: Understand NTFS access control.
+
+1. Create a folder called `C:\SecurityLab`.
+2. Create a text file inside it.
+3. Right-click the folder and open Properties → Security.
+4. Examine the listed users, groups, and permissions.
+5. Open Advanced and inspect inheritance.
+
+You can also use PowerShell:
+
+```powershell
+Get-Acl "C:\SecurityLab" | Format-List
+```
+
+Tasks:
+
+- Identify the owner.
+- Identify at least two access control entries.
+- Determine whether inherited permissions are present.
+- Explain why file ownership and file permissions are different.
+
+Avoid changing permissions on important folders during this exercise.
+
+## Lab 4: Inspect startup configuration
+
+Objective: Understand Registry-based startup entries.
+
+Run:
+
+```cmd
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+```
+
+Then:
+
+```cmd
+reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+```
+
+Tasks:
+
+1. Record the configured values, if any.
+2. Identify the executable paths.
+3. Determine whether the paths correspond to expected software.
+4. Explain why an unexpected startup entry deserves investigation but is not conclusive proof of malware.
+
+Do not delete entries simply because you do not recognize them.
+
+## Lab 5: Inspect Security events
+
+Objective: Understand Windows security auditing.
+
+1. Open Event Viewer.
+2. Navigate to `Windows Logs → Security`.
+3. Look for available logon events, such as 4624 and 4625.
+4. Examine the event details.
+5. Identify the logon type and account information where available.
+
+Tasks:
+
+- Explain the difference between a successful and a failed logon.
+- Identify why the timestamp matters.
+- Explain how logon events could be correlated with suspicious process activity.
+
+If the logs do not contain the events you expect, check the audit configuration and log retention rather than assuming the activity never occurred.
+
+---
+
+# 16. Essential Concepts to Memorize
+
+| Concept | Meaning |
+|---|---|
+| Windows Registry | Hierarchical database for system, user, application, and hardware configuration |
+| Registry hive | Major Registry data structure backed by storage files |
+| Registry key | Container for subkeys and values |
+| Registry value | Named item containing typed configuration data |
+| SID | Identifier for a security principal |
+| RID | Relative identifier component of a SID |
+| Local account | Account managed by a particular computer |
+| Domain account | Account managed through an Active Directory domain |
+| Security group | Collection of security principals used to manage access and rights |
+| UAC | Mechanism that helps control privilege elevation |
+| Access token | Security context containing identity, group, privilege, and related information |
+| DACL | Access control list governing allowed and denied access |
+| SACL | Access control list specifying security auditing behavior |
+| NTFS permissions | Filesystem access controls |
+| Share permissions | Permissions governing access through a network share |
+| Inheritance | Propagation of applicable access control entries from a parent object |
+| User right | Authorization to perform a particular system-level action |
+| Privilege | Authorization to perform a particular security-sensitive operation |
+| Least privilege | Granting only the access necessary for a task |
+| Registry persistence | Using Registry configuration to help maintain execution or access across logons or restarts |
+
+---
+
+# 17. How This Topic Fits into Cybersecurity
+
+This topic supports several cybersecurity career paths.
+
+| Career path | How you use these concepts |
+|---|---|
+| SOC Analyst | Investigate suspicious logons, account changes, Registry modifications, and group membership changes |
+| Incident Responder | Determine how an attacker gained access and whether privileges were changed |
+| Digital Forensics Analyst | Examine Registry hives, user profiles, and Windows event logs |
+| Penetration Tester | Assess excessive permissions, account privileges, and security misconfigurations in authorized environments |
+| Windows Security Engineer | Configure access controls, audit policies, and privilege management |
+| Malware Analyst | Investigate Registry-based persistence and suspicious process execution |
+| Active Directory Security Specialist | Analyze domain identities, group membership, delegated privileges, and authentication-related security |
+
+For your cybersecurity fundamentals, pay particular attention to Registry persistence, SIDs, security tokens, group membership, NTFS permissions, UAC, and Windows Security event logs. These concepts recur throughout defensive security, incident response, digital forensics, and Windows security assessments.
+
+## Recommended learning sequence
+
+You have now covered the basic concepts needed to understand Windows identity and access control. A useful progression is:
+
+1. Windows Registry and configuration.
+2. Users, groups, SIDs, and access tokens.
+3. NTFS permissions, ACLs, and inheritance.
+4. UAC, privileges, and integrity levels.
+5. Windows authentication and logon types.
+6. Windows Security logs and auditing.
+7. Registry-based persistence and its detection.
+8. Active Directory fundamentals and privilege escalation concepts.
+
+Your main learning objective: Be able to inspect a Windows machine, identify its users and groups, understand who can access a file or Registry key, and recognize configuration changes that warrant a security investigation.

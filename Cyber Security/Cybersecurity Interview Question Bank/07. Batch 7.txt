@@ -1,0 +1,1041 @@
+# Cybersecurity Interview Question Bank
+
+# Section 16 — Threat Hunting & Digital Forensics
+
+## Part A — Threat Hunting Fundamentals
+
+### Beginner (Q0601–Q0605)
+
+Q0601
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, SOC Analyst, Security Analyst
+- Competency: Understanding threat hunting fundamentals
+
+Question: What is threat hunting, and how does it differ from traditional alert-driven security monitoring?
+
+Q0602
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, SOC Analyst, Incident Responder
+- Competency: Understanding hypothesis-driven investigations
+
+Question: What is hypothesis-driven threat hunting, and why do threat hunters begin investigations with a hypothesis rather than searching randomly through security logs?
+
+Q0603
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, Threat Intelligence Analyst, SOC Analyst
+- Competency: Understanding threat indicators
+
+Question: What is the difference between an Indicator of Compromise (IOC), an Indicator of Attack (IOA), and a behavioral indicator? Provide one example of each.
+
+Q0604
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, Security Analyst, Purple Team Engineer
+- Competency: Understanding behavioral hunting
+
+Question: Why is detecting attacker behavior generally more resilient than relying exclusively on known malicious IP addresses, file hashes and domain names?
+
+Q0605
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, SOC Analyst, Detection Engineer
+- Competency: Understanding MITRE ATT&CK-based hunting
+
+Question: What information does the MITRE ATT&CK framework provide to a threat hunter, and how do tactics, techniques and sub-techniques help structure an investigation?
+
+### Intermediate (Q0606–Q0612)
+
+Q0606
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Threat Hunter, SOC Analyst, Incident Responder
+- Competency: Formulating hunting hypotheses
+
+Question: Your organization observes an unusual increase in failed authentication attempts followed by successful logins from unfamiliar IP addresses. Develop three distinct threat-hunting hypotheses and identify the telemetry you would examine to validate each one.
+
+Q0607
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Threat Hunter, Detection Engineer, Security Analyst
+- Competency: Selecting hunting methodologies
+
+Question: Compare IOC-based hunting, TTP-based hunting and anomaly-based hunting. What are their strengths, limitations and most appropriate use cases?
+
+Q0608
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Threat Hunter, SIEM Engineer, SOC Analyst
+- Competency: Investigating telemetry gaps
+
+Question: A threat-hunting query returns no suspicious results, but your EDR platform has generated an alert for the same endpoint. How would you determine whether the absence of results indicates clean activity, incomplete telemetry, incorrect query logic or a data ingestion problem?
+
+Q0609
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Threat Hunter, SOC Analyst, Detection Engineer
+- Competency: Query-based threat hunting
+
+Question: You suspect that an attacker is using PowerShell to execute encoded commands. Write a Splunk SPL query that searches Windows process-creation telemetry for PowerShell executions containing suspicious command-line indicators such as `-EncodedCommand`, `-enc` or `FromBase64String`. Explain the limitations of your query.
+
+Q0610
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Threat Hunter, SIEM Engineer, Detection Engineer
+- Competency: Investigating suspicious process execution
+
+Question: Using KQL and a Microsoft Defender-style process telemetry table containing `Timestamp`, `DeviceName`, `FileName`, `ProcessCommandLine` and `InitiatingProcessFileName`, write a query to identify suspicious command interpreters launched by Microsoft Office applications.
+
+Q0611
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Threat Hunter, DFIR Analyst, SOC Analyst
+- Competency: Correlating endpoint telemetry
+
+Question: An endpoint records an unusual executable launch, a suspicious outbound connection and a newly created scheduled task within five minutes. How would you correlate these events to determine whether they represent one attack chain or unrelated activity?
+
+Q0612
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, Security Analyst, Detection Engineer
+- Competency: Understanding ATT&CK technique mapping
+
+Question: How would you map a suspicious process-injection behavior to MITRE ATT&CK? Why is identifying the exact technique more useful than assigning only a broad tactic such as Defense Evasion?
+
+### Advanced (Q0613–Q0620)
+
+Q0613
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Threat Hunter, Incident Responder, SOC Analyst
+- Competency: Investigating living-off-the-land activity
+
+Question: An attacker appears to be using legitimate Windows utilities such as `rundll32.exe`, `regsvr32.exe` and `mshta.exe` to execute suspicious content. Design a hunting strategy that distinguishes legitimate administrative usage from malicious living-off-the-land activity.
+
+Q0614
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Threat Hunter, Detection Engineer, SIEM Engineer
+- Competency: Building multi-event hunting logic
+
+Question: You have process creation, DNS query and network connection telemetry. Design a correlation query that identifies a process resolving a newly observed domain and establishing an outbound connection shortly afterward. Explain how you would account for timestamp differences, process identifiers and missing events.
+
+Q0615
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Threat Hunter, DFIR Analyst, Incident Responder
+- Competency: Identifying lateral movement patterns
+
+Question: A workstation generates an unusual sequence of authentication events involving multiple internal servers, followed by remote service creation. How would you investigate whether this represents lateral movement, and which Windows event logs and endpoint artifacts would support your conclusion?
+
+Q0616
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Threat Hunter, Detection Engineer, SOC Analyst
+- Competency: Hunting credential theft
+
+Question: A threat actor may have attempted to extract credentials from LSASS without creating an obvious memory-dump file. Develop a hunting approach using process access telemetry, Sysmon Event ID 10, suspicious handle access and EDR behavioral events.
+
+Q0617
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, Detection Engineer, Purple Team Engineer
+- Competency: Understanding threat-hunting effectiveness
+
+Question: How do you measure the effectiveness of a threat-hunting program? Discuss hunt success rates, previously unknown detections, validated hypotheses, detection improvements and investigation outcomes.
+
+Q0618
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Threat Hunter, SIEM Engineer, Detection Engineer
+- Competency: Investigating DNS-based command and control
+
+Question: Your network telemetry shows a workstation generating frequent DNS queries with unusually long subdomains and high-entropy labels. How would you investigate whether the activity represents DNS tunneling, legitimate software behavior or a DNS-based command-and-control channel?
+
+Q0619
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Threat Hunter, DFIR Analyst, Incident Responder
+- Competency: Detecting persistence through forensic telemetry
+
+Question: A user account executes an unfamiliar PowerShell script, modifies a Registry Run key and creates a new scheduled task. Explain how you would reconstruct the sequence, identify the persistence mechanism and determine whether the attacker maintained access after the initial execution.
+
+Q0620
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, Detection Engineer, Threat Intelligence Analyst
+- Competency: Understanding ATT&CK-driven hunting
+
+Question: How would you convert a threat intelligence report describing a multi-stage intrusion into a structured MITRE ATT&CK-based hunting plan? Explain how you would prioritize techniques, identify required telemetry and define evidence that would validate each hypothesis.
+
+## Part B — Digital Forensics Fundamentals
+
+### Intermediate (Q0621–Q0628)
+
+Q0621
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: DFIR Analyst, Incident Responder, Security Analyst
+- Competency: Understanding digital forensics
+
+Question: What is digital forensics, and how does it differ from incident response? Explain how the two disciplines work together during a security incident.
+
+Q0622
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: DFIR Analyst, Malware Analyst, Incident Responder
+- Competency: Understanding forensic evidence sources
+
+Question: Compare disk forensics, memory forensics and network forensics in terms of the evidence they provide, their collection methods and the types of investigations where each is most valuable.
+
+Q0623
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: DFIR Analyst, Security Analyst, Incident Responder
+- Competency: Evidence integrity
+
+Question: What is forensic disk imaging, and why should investigators calculate cryptographic hashes before and after acquiring a forensic image?
+
+Q0624
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: DFIR Analyst, Security Auditor, Incident Responder
+- Competency: Understanding chain of custody
+
+Question: What is a chain-of-custody record, and which details must be documented when collecting, transferring, storing and analyzing digital evidence?
+
+Q0625
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: DFIR Analyst, Incident Responder, SOC Analyst
+- Competency: Preserving volatile evidence
+
+Question: You arrive at a workstation suspected of running malware. The machine is powered on, the user is logged in and suspicious processes are actively communicating with external servers. What evidence would you prioritize collecting before shutting down the machine, and why?
+
+Q0626
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: DFIR Analyst, Incident Responder
+- Competency: Understanding forensic acquisition
+
+Question: What is the difference between physical acquisition, logical acquisition and file-system acquisition in digital forensics? What types of evidence might each method fail to capture?
+
+Q0627
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: DFIR Analyst, Security Analyst
+- Competency: Validating forensic evidence
+
+Question: A forensic image produces a different hash from the original disk after acquisition. What could cause this discrepancy, how would you investigate it and under what circumstances should the image be considered unreliable?
+
+Q0628
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: DFIR Analyst, Incident Responder, Security Analyst
+- Competency: Understanding forensic timelines
+
+Question: What is the difference between file creation time, modification time, access time and metadata-change time? Why can these timestamps be misleading during an investigation?
+
+### Advanced (Q0629–Q0640)
+
+Q0629
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Disk forensic acquisition
+
+Question: You are authorized to acquire evidence from a Linux workstation using a forensic imaging tool. Explain how you would use `dd` or an equivalent acquisition utility to create a bit-for-bit disk image, calculate SHA-256 hashes and verify the resulting image without modifying the original evidence.
+
+Q0630
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Windows artifact analysis
+
+Question: An investigator finds an unfamiliar executable in a user's Downloads folder. Explain how you would correlate the file's metadata, NTFS timestamps, Prefetch artifacts, Amcache records and Windows event logs to establish whether it was executed and approximately when.
+
+Q0631
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Windows Registry forensics
+
+Question: During an investigation, you discover unfamiliar entries under the Windows Registry `Run` and `RunOnce` keys. Which Registry hives and supporting artifacts would you examine to determine the affected user, persistence mechanism, execution history and possible attacker intent?
+
+Q0632
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Security Analyst
+- Competency: Browser forensic analysis
+
+Question: An employee may have downloaded and executed a malicious file after visiting a phishing website. How would you examine Chrome or Edge browser history, download records, cache, cookies and relevant operating-system artifacts to reconstruct the activity?
+
+Q0633
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: DFIR Analyst, Incident Responder, SOC Analyst
+- Competency: Deleted file investigation
+
+Question: A user claims that a suspicious file was deleted immediately after execution. Explain how you would investigate whether the file can be recovered using NTFS metadata, the Master File Table, the USN Journal, Recycle Bin artifacts and unallocated disk space.
+
+Q0634
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Linux Security Analyst
+- Competency: Linux forensic investigation
+
+Question: You suspect unauthorized access to a Linux server. Which commands and log sources would you use to investigate recent authentication activity, process execution, active connections, user creation, privilege escalation and persistence through cron or systemd?
+
+Q0635
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Memory artifact investigation
+
+Question: A Windows memory image contains evidence of an unfamiliar process, suspicious network connections and an unexpected loaded DLL. How would you correlate process listings, DLL information, network connections and process command lines to establish whether the endpoint was compromised?
+
+Q0636
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: DFIR Analyst, Threat Hunter, Malware Analyst
+- Competency: Understanding memory forensics
+
+Question: What are the differences between a process's virtual address space, physical memory pages and pagefile contents? How can these differences affect the completeness of a memory forensic investigation?
+
+Q0637
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Security Analyst
+- Competency: Autopsy forensic analysis
+
+Question: You receive a forensic disk image of a compromised Windows endpoint. Explain how you would use Autopsy to create a case, ingest the image, calculate file hashes, identify suspicious files, examine deleted files and build a timeline of relevant activity.
+
+Q0638
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Volatility memory analysis
+
+Question: You receive a Windows memory dump and need to investigate suspicious process execution. Explain how you would use Volatility 3 to identify the operating-system profile or symbols required, enumerate processes, inspect process command lines, investigate network connections and identify potentially injected code.
+
+Q0639
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Security Engineer
+- Competency: Velociraptor endpoint forensics
+
+Question: Your organization needs to collect forensic artifacts from 200 Windows endpoints without manually acquiring each machine. How would you use Velociraptor to deploy an investigation, collect targeted artifacts, manage endpoint scope and preserve the resulting evidence?
+
+Q0640
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Multi-source forensic timeline reconstruction
+
+Question: A compromised endpoint has incomplete Windows logs, a suspicious browser download, a recently created scheduled task and evidence of outbound communication. Explain how you would combine Registry artifacts, Prefetch, browser history, NTFS metadata and network telemetry to reconstruct the most likely attack timeline.
+
+## Part C — Expert Digital Forensics & Threat Hunting
+
+### Expert (Q0641–Q0650)
+
+Q0641
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Investigating process injection
+
+Question: A memory image shows a legitimate signed process containing executable memory regions that do not correspond to its loaded modules. How would you investigate possible process injection using memory mappings, VAD analysis, memory protections, thread start addresses and suspicious memory regions?
+
+Q0642
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: DFIR Analyst, Malware Analyst, Threat Hunter
+- Competency: Investigating memory acquisition limitations
+
+Question: A memory acquisition tool produces an incomplete dump, and several expected processes are absent from the resulting image. How would you determine whether this is caused by acquisition limitations, corrupted memory pages, anti-forensic activity or deliberate process hiding?
+
+Q0643
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Incident Responder, Threat Hunter
+- Competency: Investigating anti-forensic activity
+
+Question: An attacker may have manipulated system timestamps, cleared Windows event logs and deleted traces of executable activity. How would you identify inconsistencies between independent forensic artifacts and establish a defensible reconstruction of the incident?
+
+Q0644
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: DFIR Analyst, Incident Responder, Threat Hunter
+- Competency: Investigating fileless malware
+
+Question: A compromised Windows machine shows suspicious PowerShell activity, unusual memory allocations and outbound connections, but no suspicious executable exists on disk. Design a forensic investigation that prioritizes volatile memory, script-block logging, AMSI-related telemetry, process ancestry and network artifacts.
+
+Q0645
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Threat Hunter, Incident Responder
+- Competency: Reconstructing multi-host intrusions
+
+Question: You are investigating an intrusion involving an initially compromised workstation, a lateral movement event, credential theft from a server and subsequent access to a domain controller. How would you correlate evidence from multiple endpoints to reconstruct the attack sequence and identify the original entry point?
+
+Q0646
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Threat Hunter, Detection Engineer, DFIR Analyst
+- Competency: Developing forensic hunting automation
+
+Question: Design a Python-based forensic triage script that collects process information, active network connections, logged-in users, persistence-related artifacts and file hashes from a Windows investigation environment. How would you ensure evidence integrity, reliable timestamps, error handling and safe execution?
+
+Q0647
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: DFIR Analyst, Threat Hunter, Security Architect
+- Competency: Evaluating forensic reliability
+
+Question: How do you evaluate the reliability and evidentiary value of digital artifacts when multiple sources provide conflicting timestamps, incomplete records or contradictory indications of attacker activity?
+
+Q0648
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: DFIR Analyst, Incident Responder, Security Architect
+- Competency: Evidence acquisition prioritization
+
+Question: During a ransomware incident, a critical server is actively encrypting files, but it also contains potentially valuable volatile evidence. How would you balance evidence preservation against stopping the damage? Explain the technical and operational considerations behind your decision.
+
+Q0649
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Threat Hunter, DFIR Analyst, Detection Engineer
+- Competency: Cross-telemetry hunting
+
+Question: An attacker uses a legitimate remote administration tool to access multiple endpoints, executes commands through WMI and then deletes temporary files. Design a cross-endpoint hunting investigation using process telemetry, authentication logs, WMI event records and file-system artifacts.
+
+Q0650
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Design and Architecture
+- Job Roles: DFIR Analyst, Threat Hunter, Security Architect
+- Competency: Enterprise forensic readiness
+
+Question: How would you design an enterprise forensic readiness program that ensures Windows, Linux, cloud-connected endpoints and critical servers produce sufficient evidence for investigations while balancing storage costs, privacy requirements, retention policies and operational performance?
+
+# Section 17 — Malware Analysis & Reverse Engineering
+
+## Part A — Malware Fundamentals and Static Analysis
+
+### Beginner (Q0651–Q0660)
+
+Q0651
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, SOC Analyst, Security Analyst
+- Competency: Understanding malware fundamentals
+
+Question: What is malware, and how do viruses, worms, Trojans, ransomware, spyware, rootkits and botnets differ in their functionality and propagation methods?
+
+Q0652
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Security Analyst, Incident Responder
+- Competency: Understanding malware analysis objectives
+
+Question: What is malware analysis, and what information should an analyst aim to obtain when examining a suspicious executable?
+
+Q0653
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Malware Analyst, SOC Analyst, Threat Hunter
+- Competency: Understanding malware analysis methodologies
+
+Question: What is the difference between static malware analysis and dynamic malware analysis? Explain the advantages and limitations of each approach.
+
+Q0654
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, DFIR Analyst, SOC Analyst
+- Competency: Understanding file identification
+
+Question: What is the difference between a file extension, file signature and MIME type? Why should malware analysts never trust a file's extension alone when determining its actual format?
+
+Q0655
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Threat Intelligence Analyst, Security Analyst
+- Competency: Understanding malware identification
+
+Question: What are MD5, SHA-1 and SHA-256 hashes, and how are cryptographic hashes used to identify and track malware samples?
+
+Q0656
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding executable files
+
+Question: What is a binary executable, and how does an operating system use executable files to start and run a program?
+
+Q0657
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, SOC Analyst, DFIR Analyst
+- Competency: Basic static malware inspection
+
+Question: You receive a suspicious executable in an isolated analysis environment. Which basic tools and commands would you use to calculate its hash, identify its file type, inspect printable strings and check whether it contains suspicious URLs, IP addresses or command-line arguments?
+
+Q0658
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Understanding assembly fundamentals
+
+Question: What are CPU registers, instructions, opcodes and operands in assembly language? Explain how they relate to the execution of a compiled program.
+
+Q0659
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding executable formats
+
+Question: What are the fundamental differences between Windows PE executables and Linux ELF executables? Why does each operating system use its own executable format?
+
+Q0660
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Incident Responder, Security Engineer
+- Competency: Understanding malware analysis safety
+
+Question: Why should suspicious malware samples be analyzed inside isolated virtual machines or dedicated sandboxes? What risks can arise if an analyst executes malware on their normal workstation?
+
+### Intermediate (Q0661–Q0670)
+
+Q0661
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, DFIR Analyst, Threat Intelligence Analyst
+- Competency: Conducting structured static analysis
+
+Question: You receive a Windows executable with an unknown reputation. Describe a structured static analysis workflow using tools such as Detect It Easy, PEStudio, Strings and FLOSS. What information would you extract before deciding whether the sample requires dynamic analysis?
+
+Q0662
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Analyzing suspicious executable structure
+
+Question: A Windows executable claims to be a PDF document but contains the `MZ` signature and an unexpected PE header. How would you inspect the file structure, identify its actual format and determine whether it may be masquerading as another file type?
+
+Q0663
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding PE file structure
+
+Question: Explain the purpose of the DOS header, PE signature, COFF file header, optional header and section table in the Windows PE file format. Which of these structures would you examine first when investigating a suspicious executable?
+
+Q0664
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Understanding executable sections
+
+Question: What information is typically stored in the `.text`, `.data`, `.rdata`, `.bss` and `.rsrc` sections of an executable? How might unusual section permissions or names indicate suspicious behavior?
+
+Q0665
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Reverse Engineer, DFIR Analyst
+- Competency: Identifying suspicious API usage
+
+Question: A PE executable imports functions such as `VirtualAlloc`, `VirtualProtect`, `WriteProcessMemory`, `CreateRemoteThread` and `LoadLibrary`. What capabilities might these imports indicate, and what additional evidence would you need before concluding that the executable performs process injection?
+
+Q0666
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Understanding Windows API internals
+
+Question: What is the Windows API, and how do user-mode applications interact with operating-system functionality through Windows API calls? Explain the relationship between application-level API functions, system libraries and system calls.
+
+Q0667
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Identifying executable metadata
+
+Question: You are analyzing a suspicious PE executable. How would you use PE-bear or another PE inspection tool to examine imported functions, exported functions, section characteristics, entry-point information, image base and compilation metadata?
+
+Q0668
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Understanding DLL loading
+
+Question: Explain how Windows loads a DLL into a process. What are the roles of the Import Address Table (IAT), Export Address Table (EAT), DLL search order and dynamic linking?
+
+Q0669
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, DFIR Analyst
+- Competency: ELF static analysis
+
+Question: You discover a suspicious executable on a Linux server. How would you use `file`, `readelf`, `objdump`, `strings` and `ldd` to examine its ELF structure, architecture, dependencies, symbols and potentially suspicious embedded information? What safety precautions are necessary when inspecting dependencies?
+
+Q0670
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding static and dynamic linking
+
+Question: How do static linking and dynamic linking differ in executable files? What security and forensic implications arise when a suspicious executable contains statically linked libraries instead of relying on external shared libraries?
+
+## Part B — Dynamic Malware Analysis & Reverse Engineering
+
+### Advanced (Q0671–Q0680)
+
+Q0671
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Incident Responder
+- Competency: Dynamic malware analysis
+
+Question: A suspicious Windows executable contains very few readable strings and does not reveal its functionality through static analysis. Design a dynamic analysis workflow using an isolated Windows VM, Process Monitor, Process Explorer, Wireshark and Regshot. Explain which changes you would monitor and how you would preserve the results.
+
+Q0672
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Threat Hunter, DFIR Analyst
+- Competency: Analyzing malware execution behavior
+
+Question: During dynamic analysis, a sample creates a child process, modifies Registry keys, drops an executable into a temporary directory and establishes an outbound HTTPS connection. How would you correlate these observations to determine the malware's execution sequence, persistence behavior and potential command-and-control functionality?
+
+Q0673
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Automated sandbox analysis
+
+Question: You need to analyze 50 suspicious executables received from an incident response team. How would you use an automated malware sandbox such as CAPE or ANY.RUN to analyze the samples, collect behavioral reports, identify common indicators and prioritize samples for manual reverse engineering?
+
+Q0674
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding reverse engineering methodology
+
+Question: What is reverse engineering in cybersecurity, and how does it help analysts understand malware functionality when source code is unavailable? Explain the roles of disassembly, decompilation, debugging and behavioral analysis.
+
+Q0675
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Ghidra-based binary analysis
+
+Question: You open an unfamiliar Windows executable in Ghidra. Explain how you would identify its entry point, examine functions, inspect cross-references, follow suspicious function calls and use the decompiler to understand a suspected credential-stealing routine.
+
+Q0676
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Debugging malware execution
+
+Question: You need to investigate a suspicious program that dynamically resolves Windows API functions instead of importing them normally. How would you use x64dbg to set breakpoints, inspect registers, follow API calls and observe memory changes during execution?
+
+Q0677
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding x64 assembly
+
+Question: Explain the purpose of the `RAX`, `RBX`, `RCX`, `RDX`, `RSP` and `RBP` registers in x86-64 architecture. How would you use register values, stack inspection and calling conventions to understand an unfamiliar function during malware analysis?
+
+Q0678
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Reverse Engineer, Threat Hunter
+- Competency: Identifying malware obfuscation
+
+Question: A malware sample contains encrypted configuration data, unusually high-entropy sections and dynamically generated API names. How would you investigate whether the sample uses string encryption, API hashing, control-flow obfuscation or another technique to conceal its behavior?
+
+Q0679
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Investigating sandbox evasion
+
+Question: A suspicious executable exits immediately inside your analysis sandbox but behaves normally on a physical workstation. What environmental differences would you investigate, and how would you determine whether the sample uses virtual-machine detection, timing checks, debugger detection or other anti-analysis techniques?
+
+Q0680
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding malware execution techniques
+
+Question: What are process injection, DLL injection, reflective DLL loading and process hollowing? Explain their fundamental differences and why attackers use these techniques to execute code within other processes.
+
+## Part C — Advanced Malware Analysis Techniques
+
+### Expert (Q0681–Q0690)
+
+Q0681
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Reverse Engineer, Threat Hunter
+- Competency: Analyzing process hollowing
+
+Question: A suspicious process appears to have a legitimate executable name and parent process, but its in-memory executable image differs from the file on disk. How would you investigate possible process hollowing by examining process creation, image mappings, thread context, memory regions and execution flow?
+
+Q0682
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Advanced Ghidra analysis
+
+Question: A malware sample uses indirect function calls, dynamically resolves API addresses and contains several functions with misleading names. Explain how you would use Ghidra's function graph, cross-references, data references, decompiler output and scripting capabilities to reconstruct its execution logic.
+
+Q0683
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding API hashing and dynamic resolution
+
+Question: During reverse engineering, you discover a routine that hashes API function names and compares the resulting values against constants before resolving function addresses. Explain how you would identify the hashing algorithm, reconstruct the API-resolution logic and determine which Windows APIs the malware intends to invoke.
+
+Q0684
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding anti-analysis techniques
+
+Question: How do malware authors use anti-debugging, anti-virtualization, timing checks, environment fingerprinting and exception-based control flow to interfere with analysis? Explain how these techniques affect both automated sandboxes and manual reverse engineering.
+
+Q0685
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Analyzing packed malware
+
+Question: A suspicious executable has a high-entropy section, an unusual entry point and very few imported functions. You suspect that it is packed. How would you investigate the packing mechanism, identify the unpacking stub, observe memory allocation and determine when the original executable code becomes available for analysis?
+
+Q0686
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Comparing reverse-engineering tools
+
+Question: You need to reverse engineer a complex x64 malware sample containing indirect calls, encrypted strings and dynamically loaded DLLs. Compare how you would approach the investigation using Ghidra, IDA Free and x64dbg. Which tool would you use for static analysis, which for interactive execution and why?
+
+Q0687
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, DFIR Analyst, Threat Hunter
+- Competency: Investigating ransomware behavior
+
+Question: A suspected ransomware sample enumerates files, modifies file extensions, creates encrypted copies and attempts to delete shadow copies. How would you analyze its file-enumeration logic, encryption workflow, key-management behavior, recovery inhibition and potential impact without allowing it to damage production data?
+
+Q0688
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding malware encryption
+
+Question: How would you distinguish between symmetric encryption, asymmetric encryption and hybrid encryption in a ransomware implementation? Explain how an analyst could identify key-generation routines, cryptographic API usage, encryption modes and possible key-management weaknesses through reverse engineering.
+
+Q0689
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, Threat Hunter, Detection Engineer
+- Competency: Extracting malware behavior into detection intelligence
+
+Question: You have completed static and dynamic analysis of a malware family. How would you extract reliable IOCs, behavioral indicators, persistence mechanisms, command-and-control patterns and ATT&CK techniques, then convert your findings into actionable YARA rules and SIEM or EDR detections?
+
+Q0690
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Evaluating malware attribution confidence
+
+Question: How would you distinguish between malware similarity, shared code, shared infrastructure and actual threat-actor attribution? What evidence is necessary before associating two malware samples with the same campaign or threat group?
+
+## Part D — Senior-Level Malware Analysis & Reverse Engineering
+
+### Senior / Architect (Q0691–Q0700)
+
+Q0691
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Security Architect, Security Researcher
+- Competency: Designing malware analysis capabilities
+
+Question: How would you design an enterprise malware analysis capability that supports static analysis, dynamic analysis, memory inspection, automated sandboxing and reverse engineering while preventing malware from escaping the analysis environment?
+
+Q0692
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Malware Analyst, Security Architect, Detection Engineer
+- Competency: Building a malware analysis pipeline
+
+Question: Your organization receives approximately 1,000 suspicious files every day from email gateways, EDR systems and threat intelligence feeds. Design an automated malware analysis pipeline covering sample ingestion, deduplication, hashing, reputation checks, sandbox execution, behavioral extraction, prioritization and analyst escalation.
+
+Q0693
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Architect
+- Competency: Balancing analysis depth and operational cost
+
+Question: How would you decide which malware samples deserve full manual reverse engineering versus automated sandbox analysis or basic static inspection? Discuss threat severity, prevalence, business impact, intelligence value, analyst capacity and investigation cost.
+
+Q0694
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Malware Analyst, Incident Responder, Security Architect
+- Competency: Managing malware incidents
+
+Question: Your security team identifies a previously unknown malware sample on 40 enterprise endpoints. Initial analysis suggests credential theft and possible lateral movement, but the malware's full capabilities are not yet understood. How would you organize the investigation, prioritize containment, allocate analysis resources and communicate uncertainty to leadership?
+
+Q0695
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Detection Engineer, Security Architect
+- Competency: Converting malware intelligence into defense
+
+Question: How would you establish a process for converting malware research findings into production security controls? Explain the relationship between reverse engineering, threat intelligence, YARA signatures, behavioral detections, EDR policies, SIEM correlation and Purple Team validation.
+
+Q0696
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Malware Analyst, Security Architect, DFIR Analyst
+- Competency: Designing secure malware analysis infrastructure
+
+Question: Design an isolated malware analysis laboratory for a security team of 20 analysts. Address network segmentation, VM snapshots, controlled internet simulation, sample storage, evidence handling, analyst access, logging, sandbox escape risks and secure destruction of contaminated environments.
+
+Q0697
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Evaluating reverse-engineering maturity
+
+Question: How would you evaluate the technical maturity of a malware analysis team? Define measurable criteria for analysis accuracy, turnaround time, behavioral coverage, reverse-engineering depth, intelligence production, detection effectiveness and reproducibility.
+
+Q0698
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Malware Analyst, Threat Hunter, Security Architect
+- Competency: Handling novel malware threats
+
+Question: A newly discovered malware family uses polymorphic code, encrypted configuration, multiple anti-analysis mechanisms and fileless execution. Existing antivirus signatures and sandbox detections are ineffective. How would you establish a coordinated research strategy involving memory analysis, behavioral detection, threat hunting, reverse engineering and defensive control improvements?
+
+Q0699
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Security Architect, Detection Engineer
+- Competency: Establishing malware intelligence governance
+
+Question: How would you establish enterprise governance for malware samples, reverse-engineering results and threat intelligence? Discuss sample provenance, evidence retention, classification, sharing restrictions, confidence levels, reproducibility and the lifecycle of derived detection content.
+
+Q0700
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Malware Analyst, Reverse Engineer, Purple Team Engineer, Security Architect
+- Competency: Building an end-to-end malware defense program
+
+Question: Your organization wants to build an end-to-end malware defense program. Design a framework connecting malware acquisition, static and dynamic analysis, reverse engineering, threat intelligence, forensic investigation, detection engineering, adversary simulation and continuous detection validation. How would you measure whether the program is reducing the organization's exposure to malware threats?

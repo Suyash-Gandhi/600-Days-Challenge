@@ -1,0 +1,1033 @@
+# Cybersecurity Interview Question Bank
+
+# Batch 18 — Q1701–Q1800
+
+# Section 34 — Practical Labs & Portfolio (Continued)
+
+## Topic 1: AWS IAM/VPC/S3/CloudTrail Lab
+
+Q1701
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: Understanding AWS security lab components
+
+Question: What are the security responsibilities of IAM, VPC, S3 and CloudTrail in an AWS environment, and how do these services work together to provide identity control, network isolation, storage protection and activity auditing?
+
+Q1702
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: AWS IAM inspection
+
+Question: You have access to an isolated AWS training account. Which AWS CLI commands would you use to retrieve the current caller identity, list IAM users, inspect attached user policies and examine available roles? Explain what security information each command provides.
+
+Q1703
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect
+- Competency: AWS network security fundamentals
+
+Question: What is the difference between a VPC, subnet, route table, Internet Gateway and NAT Gateway, and how do these components influence the network exposure of cloud resources?
+
+Q1704
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: AWS Security Engineer, Cloud Security Engineer
+- Competency: S3 access inspection
+
+Question: Using the AWS CLI, how would you inspect an S3 bucket's Block Public Access configuration, bucket policy and encryption settings? Which results would indicate a potentially unsafe configuration?
+
+Q1705
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, SOC Analyst
+- Competency: CloudTrail investigation
+
+Question: You need to determine which IAM identity created an EC2 instance in your training account. How would you search CloudTrail event history for the `RunInstances` API operation and identify the event time, user identity, source IP and affected resources?
+
+Q1706
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: AWS Security Engineer, Security Architect
+- Competency: Cloud security boundaries
+
+Question: Why should cloud security testing distinguish between identity-based permissions, resource-based policies and network-level controls rather than treating them as interchangeable security mechanisms?
+
+Q1707
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: Security Group auditing
+
+Question: An EC2 instance has a Security Group allowing inbound TCP traffic from `0.0.0.0/0` on ports 22 and 3389. How would you inspect this configuration using the AWS CLI and document the exposure without attempting unauthorized access?
+
+Q1708
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: IAM least-privilege testing
+
+Question: You are given an IAM policy granting `s3:*` on `Resource: "*"`. How would you identify the excessive permissions and redesign the policy to permit only the required read operations on a specified training bucket?
+
+## Topic 2: Cloud Misconfiguration Testing and Detection
+
+Q1709
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Analyst
+- Competency: Understanding cloud misconfigurations
+
+Question: What is a cloud security misconfiguration, and why can a technically functioning cloud deployment still contain serious security weaknesses?
+
+Q1710
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, Security Auditor
+- Competency: Cloud configuration assessment
+
+Question: You are auditing an AWS training environment. How would you use a cloud security posture assessment tool such as Prowler to identify configuration weaknesses, review its findings and distinguish actionable risks from informational observations?
+
+Q1711
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, DevSecOps Engineer
+- Competency: Infrastructure configuration review
+
+Question: An infrastructure-as-code template creates an S3 bucket without explicitly configuring encryption or public-access restrictions. How would you inspect the template and identify the missing security controls before deployment?
+
+Q1712
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect
+- Competency: Cloud security posture management
+
+Question: What is Cloud Security Posture Management, and how does continuous configuration assessment differ from performing a one-time cloud security audit?
+
+Q1713
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, SOC Analyst
+- Competency: Cloud audit-log interpretation
+
+Question: A CloudTrail record shows an `AuthorizeSecurityGroupIngress` operation. Which event fields would you examine to determine who modified the Security Group, when the modification occurred, which permissions were added and which resource was affected?
+
+Q1714
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect
+- Competency: Cloud misconfiguration risk assessment
+
+Question: Why should cloud misconfiguration assessments consider the interaction between identity permissions, network exposure, resource sensitivity and monitoring coverage instead of evaluating each configuration independently?
+
+## Topic 3: GRC Risk Assessment and ISO 27001 Implementation Lab
+
+Q1715
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Basic risk register development
+
+Question: You are creating a risk register for a small organization. How would you record an asset, associated threat, vulnerability, likelihood, business impact, inherent risk, existing controls and residual risk for a scenario involving an exposed employee database?
+
+Q1716
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Auditor, Security Manager
+- Competency: Understanding ISO 27001 implementation
+
+Question: What are the major activities involved in implementing an ISO/IEC 27001 information security management system, and how do risk assessment, risk treatment, the Statement of Applicability and continual improvement relate to one another?
+
+Q1717
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Risk assessment execution
+
+Question: An organization stores customer information in a cloud database. Identify the assets, threats, vulnerabilities and existing controls you would examine when performing a risk assessment. How would you document the reasoning behind the resulting risk rating?
+
+Q1718
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Risk treatment selection
+
+Question: Explain the differences between risk avoidance, risk mitigation, risk transfer and risk acceptance. Under what circumstances might an organization select each treatment option?
+
+Q1719
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Statement of Applicability preparation
+
+Question: You are preparing an ISO 27001 Statement of Applicability. How would you record whether an applicable Annex A control has been implemented, the reason for its inclusion or exclusion, its implementation status and supporting evidence?
+
+Q1720
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Auditor, Security Manager
+- Competency: ISMS governance
+
+Question: Why is ISO 27001 implementation an ongoing management-system activity rather than a one-time exercise to obtain a certificate, and how do internal audits, management reviews and corrective actions support continual improvement?
+
+Q1721
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Risk scoring methodology
+
+Question: An organization uses a five-point likelihood scale and a five-point impact scale. A cloud database exposure has likelihood 4 and impact 5. Calculate its risk score using multiplication, explain the limitations of this scoring approach and identify additional context needed before deciding on treatment priority.
+
+Q1722
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Auditor, Security Architect
+- Competency: Control effectiveness assessment
+
+Question: What is the difference between a security control being documented, implemented and operating effectively? Why must a risk assessment evaluate actual control effectiveness rather than simply confirm that a policy exists?
+
+Q1723
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: ISO 27001 evidence collection
+
+Question: During an ISO 27001 internal audit, you are asked to verify access-control practices. Which records, policies, access reviews, approval documents and technical configurations would you collect to demonstrate that access is appropriately authorized and periodically reviewed?
+
+Q1724
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Risk ownership and accountability
+
+Question: What responsibilities should be assigned to risk owners, control owners, asset owners and information security teams during an ISO 27001 risk assessment, and why should these responsibilities be clearly separated?
+
+Q1725
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Corrective action management
+
+Question: An internal audit identifies that employee access is not consistently removed after termination. Design a corrective action record containing the finding, root cause, affected process, responsible owner, corrective measures, completion deadline and effectiveness verification criteria.
+
+Q1726
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Architect, Security Auditor
+- Competency: GRC framework comparison
+
+Question: How do ISO 27001 and the NIST Cybersecurity Framework differ in their primary purposes, structures and implementation approaches, and how could an organization use both without creating duplicate compliance activities?
+
+Q1727
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Risk treatment plan development
+
+Question: An organization identifies a high residual risk involving privileged access to production systems. Prepare a risk treatment plan that defines the selected treatment, required controls, responsible owners, implementation milestones, acceptance criteria and evidence required for closure.
+
+Q1728
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: GRC Analyst, Security Manager, Security Architect
+- Competency: Security governance measurement
+
+Question: How should an organization measure whether its information security management system is becoming more effective over time, and why are completed audit checklists and certification status insufficient indicators of security maturity?
+
+## Topic 4: Security Audit and Compliance Evidence Lab
+
+Q1729
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Security audit planning
+
+Question: You have been assigned to audit an organization's privileged-access management process. How would you define the audit scope, identify relevant control requirements, select evidence sources, interview control owners and develop an audit testing plan?
+
+Q1730
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Auditor, GRC Analyst, Security Manager
+- Competency: Audit evidence reliability
+
+Question: What makes audit evidence sufficient, relevant, reliable and traceable, and how do these characteristics influence the defensibility of an information security audit conclusion?
+
+Q1731
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Access-control audit testing
+
+Question: You receive an export of 500 employee accounts, including department, assigned role, last login and account status. How would you identify potentially excessive access, dormant accounts, inappropriate role assignments and terminated employees with active accounts?
+
+Q1732
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Audit sampling methodology
+
+Question: What is audit sampling, and how do population size, risk level, control frequency and sample selection methodology influence whether an auditor can draw reliable conclusions about control effectiveness?
+
+Q1733
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Compliance evidence verification
+
+Question: An organization claims that all production database backups are encrypted. What technical records, database configurations, backup settings, key-management evidence and restoration-test results would you inspect to independently verify the claim?
+
+Q1734
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Auditor, Security Manager
+- Competency: Audit finding classification
+
+Question: How should an auditor distinguish between a control design deficiency, an implementation failure and an operating-effectiveness failure, and why do these findings require different corrective actions?
+
+Q1735
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Audit evidence traceability
+
+Question: Design an evidence-tracking register for a security audit containing evidence ID, control reference, source system, collection date, responsible owner, integrity verification, reviewer and conclusion. How would you maintain links between evidence and the findings it supports?
+
+Q1736
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Auditor, GRC Analyst, Security Architect
+- Competency: Continuous compliance monitoring
+
+Question: How does continuous compliance monitoring differ from periodic manual audits, and what are the limitations of relying entirely on automated compliance checks?
+
+Q1737
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst, Security Architect
+- Competency: Multi-framework control mapping
+
+Question: An organization must demonstrate compliance with ISO 27001, SOC 2 and internal security policies. Design a control-mapping approach that links common security objectives to multiple framework requirements while preserving framework-specific evidence, testing procedures and reporting obligations.
+
+Q1738
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst, Security Manager
+- Competency: Audit finding root-cause analysis
+
+Question: An audit repeatedly identifies missing access reviews across multiple departments. How would you investigate whether the root cause is unclear ownership, inadequate workflow automation, insufficient policy enforcement or lack of management oversight? What evidence would distinguish these possibilities?
+
+Q1739
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Auditor, Security Architect, GRC Analyst
+- Competency: Independent assurance
+
+Question: What is the difference between first-party, second-party and third-party security assessments, and how do independence, conflicts of interest and evidence access influence the credibility of their conclusions?
+
+Q1740
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Auditor, GRC Analyst, Security Architect
+- Competency: Enterprise audit program design
+
+Question: Design a risk-based annual security audit program for an organization with cloud infrastructure, internal applications, employee endpoints and external service providers. How would you prioritize audit areas, schedule assessments, assign auditors and track unresolved findings?
+
+## Topic 5: Android Application Penetration Testing Lab
+
+Q1741
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Penetration Tester
+- Competency: Android application security assessment
+
+Question: What are the major stages of an Android application penetration test, and how do static analysis, dynamic analysis, device testing and backend API assessment complement one another?
+
+Q1742
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Penetration Tester
+- Competency: APK inspection and analysis
+
+Question: You receive an APK from an authorized mobile security assessment. How would you use `adb` and JADX to inspect the application package, examine its manifest, identify declared permissions, locate exported components and review potentially sensitive application logic?
+
+Q1743
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Application Security Engineer
+- Competency: Android application security architecture
+
+Question: How do Android application sandboxing, application permissions, component export settings and inter-process communication mechanisms contribute to the Android security model?
+
+Q1744
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Penetration Tester
+- Competency: Android storage security testing
+
+Question: An Android application stores authentication tokens in local storage. How would you inspect the application's private data storage, shared preferences, databases and external storage in an authorized test environment, and what evidence would indicate insecure storage?
+
+Q1745
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, API Security Engineer
+- Competency: Mobile API security testing
+
+Question: You are testing an Android application that communicates with a backend REST API. How would you use an authorized interception proxy to inspect API requests, authentication tokens, authorization behavior, response data and potential transport-security weaknesses?
+
+Q1746
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Security Architect
+- Competency: Mobile application threat modeling
+
+Question: How would you threat-model an Android application that processes sensitive user information, stores authentication tokens, communicates with external APIs and integrates third-party SDKs?
+
+Q1747
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Penetration Tester
+- Competency: Android component security assessment
+
+Question: An Android application exposes an activity through its manifest with `android:exported="true"`. How would you investigate whether another application can invoke the activity, determine whether access controls are correctly enforced and document the security implications?
+
+Q1748
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Application Security Engineer
+- Competency: Android security control assessment
+
+Question: What is the difference between client-side security controls and backend-enforced security controls in Android applications, and why should root detection, application integrity checks and local permission restrictions never replace server-side authorization?
+
+Q1749
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Penetration Tester
+- Competency: Android runtime investigation
+
+Question: During an authorized Android assessment, how would you use Frida to observe calls to selected application methods at runtime? Explain how you would document the instrumentation setup, method behavior and evidence without modifying production application data.
+
+Q1750
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Security Auditor
+- Competency: Mobile security assessment standards
+
+Question: How does the OWASP Mobile Application Security Testing Guide help structure an Android assessment, and why should its testing categories be treated as a systematic assessment framework rather than a checklist that automatically proves an application is secure?
+
+## Topic 6: Mobile Application Reverse Engineering Lab
+
+Q1751
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Reverse Engineer
+- Competency: APK reverse engineering
+
+Question: You are analyzing an Android APK in an isolated reverse-engineering lab. How would you extract the APK, examine its DEX files, inspect resources and reconstruct readable Java-like code using JADX? What limitations should you expect from decompilation?
+
+Q1752
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Reverse Engineer, Mobile Security Engineer
+- Competency: Static and dynamic reverse-engineering comparison
+
+Question: Compare static and dynamic Android application reverse engineering. What information can each method reveal, and why can using both methods produce a more complete understanding of application behavior?
+
+Q1753
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Reverse Engineer
+- Competency: Runtime method tracing
+
+Question: An Android application performs a sensitive operation through a Java method whose implementation is unclear. How would you use Frida to observe the method arguments, return values and call frequency in an authorized test environment, and how would you correlate the results with your static analysis?
+
+Q1754
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Reverse Engineer, Mobile Security Engineer
+- Competency: Code obfuscation analysis
+
+Question: How do code obfuscation, reflection, dynamic class loading and native libraries complicate Android application reverse engineering, and what limitations do these techniques introduce for static analysis?
+
+Q1755
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Reverse Engineer
+- Competency: Native library investigation
+
+Question: An APK contains a native `.so` library responsible for cryptographic operations. How would you identify the library's architecture, inspect its exported symbols, examine its strings and investigate its native functions using appropriate reverse-engineering tools?
+
+Q1756
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Reverse Engineer, Security Researcher
+- Competency: Reverse-engineering methodology
+
+Question: How would you establish a repeatable reverse-engineering methodology that connects APK metadata, manifest analysis, decompiled code, runtime observations and native library analysis into one defensible technical investigation?
+
+Q1757
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Mobile Security Engineer, Reverse Engineer
+- Competency: Investigating certificate validation
+
+Question: In an authorized mobile test environment, an application appears to implement custom certificate validation. How would you inspect its network-security configuration and relevant code paths, then use controlled runtime instrumentation to understand how certificate-validation decisions are made?
+
+Q1758
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Security Engineer, Security Architect
+- Competency: Reverse-engineering findings interpretation
+
+Question: Why should reverse-engineering findings distinguish between suspicious code, confirmed insecure behavior and demonstrated security impact, and how can static analysis results be misleading without runtime validation?
+
+## Topic 7: Malware Static and Dynamic Analysis Lab
+
+Q1759
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Malware sample handling
+
+Question: You receive a suspected malware sample for analysis. How would you prepare an isolated analysis environment, calculate cryptographic hashes, record sample metadata and prevent accidental execution on production systems?
+
+Q1760
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Security Analyst
+- Competency: Static versus dynamic malware analysis
+
+Question: What are the fundamental differences between static and dynamic malware analysis, and under what circumstances should an analyst use each method or combine them?
+
+Q1761
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: PE file analysis
+
+Question: A suspicious Windows executable is submitted for analysis. How would you inspect its PE headers, sections, imports, exports, timestamps and embedded strings to identify structural anomalies and potential indicators of malicious behavior?
+
+Q1762
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Malware execution analysis
+
+Question: How can malware use Windows APIs to interact with processes, files, memory and network resources, and why is understanding these API interactions important when interpreting malware behavior?
+
+Q1763
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, SOC Analyst
+- Competency: Dynamic malware behavior analysis
+
+Question: In an isolated malware-analysis lab, how would you monitor a suspicious executable's process creation, filesystem changes, Registry modifications and network activity using suitable monitoring tools? Which observations would you preserve as evidence?
+
+Q1764
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Threat Hunter, Detection Engineer
+- Competency: Malware behavior classification
+
+Question: Why is classifying malware solely by filename, hash or antivirus label insufficient, and how can behavioral observations help identify relationships between different samples?
+
+Q1765
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Debugging malware in an isolated lab
+
+Question: A suspected malware sample terminates when executed inside a debugger. How would you investigate whether this behavior is caused by anti-debugging checks, environmental detection or an unrelated execution failure, while preserving the safety of the analysis environment?
+
+Q1766
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Malware analysis limitations
+
+Question: How do packing, obfuscation, anti-analysis behavior and environment-dependent execution affect the reliability of malware analysis, and how should analysts communicate uncertainty in their conclusions?
+
+## Topic 8: Malware Detection and YARA Rule Development Lab
+
+Q1767
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer
+- Competency: YARA rule engineering
+
+Question: You have identified a malware sample containing several distinctive strings and structural characteristics. How would you develop a YARA rule using string conditions, file-size constraints and Boolean logic, and then validate it against both malicious and legitimate files?
+
+Q1768
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Detection Engineer
+- Competency: Malware signature quality
+
+Question: What makes a malware detection signature reliable across multiple samples from the same malware family, and why can overfitting a YARA rule to one sample produce poor detection coverage?
+
+Q1769
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer, SOC Analyst
+- Competency: Malware indicator extraction
+
+Question: During dynamic analysis, a sample creates a Registry Run key, writes an executable into a user-writable directory and communicates with a suspicious domain. How would you extract and validate these indicators, then determine which should be used for file-based, endpoint-behavioral and network-based detections?
+
+Q1770
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer
+- Competency: YARA false-positive reduction
+
+Question: A YARA rule detects your target malware family but also matches several legitimate executables because of shared library strings. How would you refine the rule using more distinctive patterns, string combinations, file characteristics and representative benign test samples?
+
+Q1771
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer, SIEM Engineer
+- Competency: Integrating malware detection into monitoring
+
+Question: Design a lab pipeline that scans newly submitted files using YARA, records matching rule identifiers, calculates file hashes, stores analysis metadata and sends high-confidence results to a SIEM. How would you isolate scanning failures from genuine non-matches?
+
+Q1772
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Detection Engineer, Security Architect
+- Competency: Malware detection lifecycle
+
+Question: How should malware detection rules evolve as new samples, variants and legitimate software changes become available, and what governance process would prevent outdated or unreliable signatures from remaining active indefinitely?
+
+## Topic 9: Enterprise IAM and Entra ID Security Lab
+
+Q1773
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: IAM Engineer, Cloud Security Engineer, Security Analyst
+- Competency: Entra ID security assessment
+
+Question: You are auditing a Microsoft Entra ID training tenant. How would you inspect users, groups, directory roles, application registrations and service principals to identify excessive privileges and suspicious identity configurations?
+
+Q1774
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Enterprise identity security architecture
+
+Question: How do identity lifecycle management, Conditional Access, privileged identity management and identity governance work together to secure enterprise identities in Microsoft Entra ID?
+
+Q1775
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: Conditional Access testing
+
+Question: You are testing a Conditional Access policy intended to require MFA for access from untrusted locations. How would you verify policy assignments, conditions, exclusions, authentication requirements and sign-in outcomes without accidentally locking out administrative access?
+
+Q1776
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Architect, Security Auditor
+- Competency: Enterprise identity governance
+
+Question: What is the difference between identity provisioning, authentication, authorization and identity governance, and how should an enterprise manage the full lifecycle of employees, contractors and service identities?
+
+Q1777
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Service principal security assessment
+
+Question: An enterprise application in Entra ID has several application permissions and a client secret that has not been rotated recently. How would you inspect its permissions, consent grants, credential metadata and sign-in activity to determine whether the application presents an excessive-access or credential-management risk?
+
+Q1778
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Architect, Security Manager
+- Competency: Identity threat detection and response
+
+Question: How should an enterprise identify and respond to compromised identities, suspicious consent grants, abnormal service-principal behavior and privileged role changes across its identity infrastructure?
+
+## Topic 10: Kubernetes Security and Misconfiguration Lab
+
+Q1779
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Kubernetes Security Engineer, Cloud Security Engineer
+- Competency: Kubernetes security assessment
+
+Question: You have deployed a Kubernetes cluster for security testing. How would you inspect namespaces, workloads, service accounts, RBAC bindings, secrets and network policies to identify excessive permissions and insecure workload configurations?
+
+Q1780
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Kubernetes Security Engineer, Security Architect
+- Competency: Kubernetes security architecture
+
+Question: How do Kubernetes authentication, authorization, admission control, pod security and network policies provide different layers of protection, and why is enabling only RBAC insufficient for securing a production cluster?
+
+Q1781
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Kubernetes Security Engineer, DevSecOps Engineer
+- Competency: Kubernetes RBAC validation
+
+Question: A Kubernetes service account has permissions to list and create resources across multiple namespaces. How would you inspect its RoleBindings and ClusterRoleBindings, determine its effective permissions using `kubectl auth can-i` and redesign the access model according to least privilege?
+
+Q1782
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Kubernetes Security Engineer, Cloud Security Engineer
+- Competency: Pod security misconfiguration testing
+
+Question: You discover a Kubernetes pod configured with `privileged: true`, hostPath volume mounts and a container running as root. How would you assess the security implications and propose safer pod-level configurations without breaking required application functionality?
+
+Q1783
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Kubernetes Security Engineer, Security Architect
+- Competency: Container and cluster security boundaries
+
+Question: What is the difference between container isolation, Kubernetes namespace isolation and node-level isolation, and what security assumptions should not be made about namespace separation?
+
+Q1784
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Kubernetes Security Engineer, SOC Analyst
+- Competency: Kubernetes audit investigation
+
+Question: Your Kubernetes audit logs show that a service account created a new ClusterRoleBinding and subsequently accessed sensitive resources. Which audit-log fields and object relationships would you inspect to reconstruct the activity and identify whether the permission change was authorized?
+
+## Topic 11: Cloud Incident Response and Forensic Investigation Lab
+
+Q1785
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, Incident Responder, DFIR Analyst
+- Competency: Cloud forensic evidence collection
+
+Question: An AWS account is suspected of compromise. How would you preserve CloudTrail logs, IAM configuration, relevant resource metadata and available network telemetry before containment actions change the environment? Explain how you would maintain evidence integrity.
+
+Q1786
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Incident Responder, Security Architect
+- Competency: Cloud incident response strategy
+
+Question: How does cloud incident response differ from traditional endpoint incident response in terms of shared responsibility, ephemeral infrastructure, centralized audit logs, identity-based access and provider-managed services?
+
+Q1787
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, DFIR Analyst
+- Competency: Investigating cloud identity compromise
+
+Question: CloudTrail records show an unfamiliar principal creating access keys, modifying IAM policies and launching compute resources. Design an investigation that establishes the identity used, sequence of API calls, source addresses, affected resources and potential persistence mechanisms.
+
+Q1788
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, Incident Responder
+- Competency: Cloud incident containment
+
+Question: An exposed cloud access key is confirmed to have been used by an unauthorized party. Design a containment sequence that addresses credential revocation, active sessions, affected resources, persistence, service continuity and evidence preservation. How would you avoid relying solely on deleting the compromised key?
+
+## Topic 12: Wireless and Network Security Assessment Lab
+
+Q1789
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Network Security Engineer, Penetration Tester
+- Competency: Wireless security assessment
+
+Question: You are conducting an authorized wireless security assessment in a controlled lab. How would you identify the access point, inspect its authentication and encryption configuration, assess WPA2/WPA3 deployment and document weak configurations without interfering with neighboring networks?
+
+Q1790
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: Wireless security architecture
+
+Question: How do WPA2-Personal, WPA2-Enterprise, WPA3-Personal and WPA3-Enterprise differ in authentication and security design, and what considerations influence the choice of wireless security architecture for an organization?
+
+## Topic 13: Email Security and Phishing Detection Lab
+
+Q1791
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Email Security Engineer, SOC Analyst, Security Analyst
+- Competency: Email authentication investigation
+
+Question: You receive a suspicious email in a controlled phishing-analysis lab. How would you inspect its complete headers, sender infrastructure, SPF result, DKIM signature, DMARC alignment, return path and received chain to evaluate whether the message is authenticated and potentially spoofed?
+
+Q1792
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Email Security Engineer, Security Architect, SOC Analyst
+- Competency: Enterprise email security architecture
+
+Question: How do SPF, DKIM and DMARC complement one another in email security, and why can a message pass all three checks while still containing malicious content or originating from a compromised legitimate account?
+
+Q1793
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Threat Intelligence Analyst, Email Security Engineer
+- Competency: Phishing investigation
+
+Question: An employee reports an email containing an unexpected invoice attachment and a link to an unfamiliar domain. Design an investigation that preserves the original message, analyzes headers, examines URLs and attachments in an isolated environment, identifies potential recipients and determines whether additional containment is necessary.
+
+Q1794
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Email Security Engineer, Security Architect, SOC Manager
+- Competency: Phishing defense strategy
+
+Question: How would you design a layered enterprise phishing-defense strategy that combines email authentication, attachment analysis, URL protection, identity security, user reporting, threat intelligence and incident response?
+
+## Topic 14: Endpoint Hardening and Configuration Audit Lab
+
+Q1795
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Endpoint Security Engineer, Windows Security Engineer, Security Auditor
+- Competency: Windows endpoint hardening
+
+Question: You are auditing a Windows 11 enterprise workstation. How would you assess Defender configuration, firewall profiles, local administrator membership, BitLocker status, application execution controls and security update status? Which configuration evidence would you collect for each control?
+
+Q1796
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Endpoint Security Engineer, Security Architect
+- Competency: Endpoint security baseline design
+
+Question: What is a security configuration baseline, and how does a standardized endpoint hardening baseline improve security consistency, auditability and operational management across a large fleet of Windows and Linux systems?
+
+Q1797
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Linux Security Engineer, Infrastructure Security Engineer
+- Competency: Linux endpoint hardening audit
+
+Question: You are auditing an Ubuntu server. How would you inspect SSH configuration, user privileges, sudo rules, running services, listening ports, filesystem permissions, automatic updates and security logging to identify hardening gaps?
+
+Q1798
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Endpoint Security Engineer, Security Architect, Security Manager
+- Competency: Configuration compliance strategy
+
+Question: How should an organization balance endpoint security hardening with application compatibility, employee productivity, system performance and operational availability, particularly when deploying configuration changes across thousands of devices?
+
+Q1799
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Endpoint Security Engineer, Security Auditor, DevSecOps Engineer
+- Competency: Automated configuration compliance validation
+
+Question: Design a configuration-audit automation that checks a fleet of Windows and Linux endpoints against approved security baselines, records non-compliant settings, assigns severity, preserves evidence and generates a remediation report. How would you prevent automated remediation from unintentionally disrupting critical services?
+
+Q1800
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Endpoint Security Engineer, CISO
+- Competency: Enterprise endpoint security architecture
+
+Question: How would you architect an enterprise endpoint security and configuration assurance program that combines standardized hardening, centralized policy management, continuous compliance monitoring, EDR telemetry, exception governance and independent verification of remediation effectiveness?

@@ -1,0 +1,1051 @@
+# Cybersecurity Interview Question Bank
+
+# Batch 17 — Q1601–Q1700
+
+# Section 34 — Practical Labs & Portfolio
+
+## Topic 1: Vulnerable MERN Application Lab
+
+Q1601
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Understanding vulnerable application labs
+
+Question: What is a vulnerable MERN application lab, and why is deliberately introducing security weaknesses into an isolated application useful for learning application security testing and secure development?
+
+Q1602
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Identifying application security components
+
+Question: You are examining a MERN application containing a React frontend, Express backend and MongoDB database. How would you identify the security responsibilities of each component and determine where authentication, authorization, input validation and database access controls should be implemented?
+
+Q1603
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Security Analyst
+- Competency: Understanding application trust boundaries
+
+Question: What are trust boundaries in a web application, and why should data received from a React frontend never be considered trustworthy simply because the application itself generated the request?
+
+Q1604
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Basic application reconnaissance
+
+Question: You have access to the source code of a deliberately vulnerable MERN application. Which files, routes, middleware, controllers and database models would you inspect first to identify authentication and authorization weaknesses? Explain the purpose of each inspection.
+
+Q1605
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Application Security Engineer, Developer
+- Competency: Identifying insecure backend validation
+
+Question: Consider this Express endpoint:
+
+```
+app.post("/api/users", async (req, res) => {
+  const user = await User.create(req.body);
+  res.json(user);
+});
+```
+
+Identify the security weaknesses in this implementation and explain how you would redesign the endpoint to validate input and prevent users from controlling privileged database fields.
+
+Q1606
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Understanding application vulnerabilities
+
+Question: Why can a web application have correctly implemented authentication but still expose sensitive information through insecure object access, mass assignment or missing backend authorization checks?
+
+Q1607
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Basic vulnerability identification
+
+Question: You are using browser developer tools to inspect a deliberately vulnerable MERN application. How would you identify API endpoints, request methods, authentication cookies, request parameters and response data that could reveal potential security weaknesses?
+
+Q1608
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Security Analyst
+- Competency: Secure lab methodology
+
+Question: What precautions should be taken when deploying a deliberately vulnerable MERN application so that testing activities cannot expose real users, production databases or external systems?
+
+## Topic 2: Authentication, RBAC and API Security Lab
+
+Q1609
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Testing authentication implementation
+
+Question: You are testing an Express API that uses JWT authentication. How would you verify that protected endpoints reject missing, malformed, expired and invalidly signed tokens? What HTTP status codes and response behaviors would you expect?
+
+Q1610
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Application Security Engineer, API Security Engineer
+- Competency: Authentication versus authorization
+
+Question: In a practical application security lab, how would you demonstrate the difference between authentication and authorization using two users with different permissions?
+
+Q1611
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Testing RBAC enforcement
+
+Question: An application has three roles: Admin, Teacher and Student. Design a basic authorization test matrix that verifies which roles can access user-management, examination and personal-profile endpoints.
+
+Q1612
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding API security testing
+
+Question: Why must API security testing examine the actual server-side behavior rather than relying on whether the frontend displays or hides particular buttons and pages?
+
+Q1613
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Web Application Pentester
+- Competency: Basic BOLA testing
+
+Question: A test API exposes `/api/orders/:id`. Using two authorized test accounts, how would you verify whether the backend correctly prevents one account from retrieving another account's orders?
+
+Q1614
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Testing input validation
+
+Question: You are testing an API endpoint that accepts a JSON object containing `name`, `email` and `role`. How would you verify that a normal user cannot assign themselves the `Admin` role by modifying the request body?
+
+Q1615
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Security testing methodology
+
+Question: What is the difference between functional API testing and security-focused API testing, and why can an API pass all its functional tests while still containing serious authorization vulnerabilities?
+
+Q1616
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Automated authorization testing
+
+Question: Design an automated API authorization test using two test users, one administrator and one ordinary user. The test must verify horizontal access restrictions, vertical privilege restrictions and unauthorized modification attempts. How would you organize the test data and assertions?
+
+## Topic 3: Exploit, Patch and Document Application Vulnerabilities
+
+Q1617
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Reproducing application vulnerabilities
+
+Question: You discover a reflected XSS vulnerability in an isolated MERN lab. How would you safely reproduce it, identify the vulnerable rendering location, preserve evidence and determine whether the weakness originates in frontend rendering or backend input handling?
+
+Q1618
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Developer
+- Competency: Understanding vulnerability remediation
+
+Question: What is the difference between applying a workaround and fixing the root cause of an application vulnerability? Explain why a frontend-only fix may leave the underlying security weakness exploitable.
+
+Q1619
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Secure remediation of XSS
+
+Question: A MERN application renders user-generated HTML using an unsafe React rendering mechanism. How would you patch the vulnerability using context-appropriate output handling and, where necessary, HTML sanitization? Which tests would verify that the fix works?
+
+Q1620
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, DevSecOps Engineer
+- Competency: Vulnerability remediation lifecycle
+
+Question: Explain the complete lifecycle of identifying, reproducing, fixing, testing and documenting an application vulnerability. Why should the original vulnerability reproduction test remain part of the application's regression test suite?
+
+Q1621
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: SQL and NoSQL injection remediation
+
+Question: An Express application constructs MongoDB queries directly from request parameters. How would you investigate a suspected NoSQL injection vulnerability, implement strict server-side validation and verify that the modified endpoint rejects unexpected query operators?
+
+Q1622
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Application Security Engineer, Security Auditor
+- Competency: Security regression testing
+
+Question: A developer fixes a broken access-control vulnerability in an Express middleware. Design positive and negative integration tests that verify authorized access, unauthorized access, missing authentication, invalid roles and attempts to access resources belonging to other users.
+
+Q1623
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Security Analyst, Penetration Tester
+- Competency: Documenting vulnerability remediation
+
+Question: What information should be included in a before-and-after vulnerability remediation report to demonstrate the original weakness, implemented correction, regression-test results and remaining limitations?
+
+## Topic 4: Blue Team Windows/Linux Monitoring Lab
+
+Q1624
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Security Analyst, Threat Hunter
+- Competency: Endpoint monitoring architecture
+
+Question: How would you design a basic Blue Team lab that monitors Windows and Linux endpoints, and what differences in operating-system telemetry must be considered when building a unified monitoring strategy?
+
+Q1625
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Windows Security Engineer
+- Competency: Windows security event collection
+
+Question: You have a Windows test machine and need to investigate successful and failed logon activity. Which Windows Security Event IDs would you collect, and how would you use the Event Viewer or PowerShell to retrieve recent matching records?
+
+Q1626
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Linux authentication monitoring
+
+Question: On a Linux monitoring endpoint using systemd, how would you inspect recent SSH authentication failures using Journald and the relevant authentication log files? Which fields would you extract to identify the account, source IP and timestamp?
+
+Q1627
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Threat Hunter, Security Analyst
+- Competency: Endpoint telemetry selection
+
+Question: Why should a Blue Team monitoring lab collect process, authentication, file, network and service activity rather than relying exclusively on operating-system authentication logs?
+
+Q1628
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Windows Security Engineer, SOC Analyst
+- Competency: Windows process investigation
+
+Question: A Windows endpoint contains a suspicious process named `powershell.exe`. Using PowerShell and built-in Windows utilities, how would you inspect its process ID, parent process, executable path, command line, execution account and network connections?
+
+Q1629
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Linux Security Engineer, Threat Hunter
+- Competency: Linux process investigation
+
+Question: A Linux endpoint is generating unexpected outbound connections. Explain how you would use `ps`, `ss`, `lsof` and `journalctl` to investigate the processes responsible, identify their network activity and correlate that activity with system logs.
+
+Q1630
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Security Engineer, Security Architect
+- Competency: Cross-platform log normalization
+
+Question: What challenges arise when normalizing Windows Event Logs and Linux Syslog or Journald records into a common SIEM schema, and why is preserving the original event data important for forensic investigation?
+
+## Topic 5: Sysmon + Wazuh/Elastic Lab
+
+Q1631
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, SIEM Engineer, Detection Engineer
+- Competency: Sysmon deployment
+
+Question: You are deploying Sysmon on an isolated Windows lab endpoint. Explain how you would install it with a controlled configuration, verify that the service is running and confirm that process-creation events are being recorded in the appropriate Windows Event Log channel.
+
+Q1632
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SIEM Engineer, SOC Analyst
+- Competency: Understanding Sysmon telemetry
+
+Question: How does Sysmon complement native Windows Security Event Logs, and what additional visibility can it provide into process creation, network connections, file activity and Registry modifications?
+
+Q1633
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, SOC Analyst
+- Competency: Wazuh endpoint integration
+
+Question: You have installed a Wazuh agent on a Windows test machine. How would you verify agent enrollment, connection to the manager, event collection and successful ingestion of Sysmon records? Which components would you inspect if events are missing?
+
+Q1634
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Elastic security data ingestion
+
+Question: Design an Elastic-based lab that receives Windows Sysmon events through an endpoint collection pipeline. How would you verify the ingestion path, inspect the resulting index or data stream, identify field mappings and confirm that process-creation events are searchable?
+
+Q1635
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SIEM Engineer, Detection Engineer, Security Architect
+- Competency: SIEM architecture comparison
+
+Question: Compare the architecture and operational responsibilities of Wazuh and Elastic Security in a small endpoint-monitoring lab. How would you evaluate agent management, event ingestion, normalization, detection content and investigation capabilities?
+
+Q1636
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Sysmon Event ID investigation
+
+Question: Your Sysmon lab records Event ID 1 for process creation, Event ID 3 for network connections and Event ID 11 for file creation. How would you correlate these events to investigate a process that creates an executable and subsequently communicates with an external IP address?
+
+Q1637
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SIEM Engineer, Detection Engineer, SOC Analyst
+- Competency: Telemetry collection trade-offs
+
+Question: How should a Sysmon configuration balance security visibility against event volume, endpoint performance, storage costs and false-positive noise? What risks arise from collecting either too little or too much telemetry?
+
+Q1638
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, Detection Engineer, Security Engineer
+- Competency: Troubleshooting endpoint telemetry pipelines
+
+Question: Your Windows endpoint generates Sysmon events locally, but the SIEM dashboard does not display them. Develop a troubleshooting sequence that checks the Sysmon service, event channel permissions, agent collection configuration, forwarding, ingestion pipeline, parsing and indexing.
+
+## Topic 6: Detection Engineering and Alert Investigation Lab
+
+Q1639
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SOC Analyst, Purple Team Engineer
+- Competency: Detection engineering lab methodology
+
+Question: What components should a practical detection engineering lab contain to support the complete workflow from simulated activity and telemetry generation to rule development, alert investigation and validation?
+
+Q1640
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Sigma detection development
+
+Question: Write a Sigma rule for a Windows process-creation event that identifies `powershell.exe` executing with `-EncodedCommand`. Describe how you would validate its syntax and test it against representative positive and negative event records before deployment.
+
+Q1641
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Detection query implementation
+
+Question: Your lab receives Windows process-creation events in a Microsoft Sentinel `DeviceProcessEvents` table. Write a KQL query to identify PowerShell executions with encoded commands and return the device name, account name, timestamp, process command line and initiating process.
+
+Q1642
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SOC Analyst, Threat Hunter
+- Competency: Alert investigation methodology
+
+Question: What steps should an analyst follow when investigating a detection alert, and how should they distinguish between alert validation, activity reconstruction, threat attribution and incident escalation?
+
+Q1643
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Detection Engineer, Threat Hunter
+- Competency: Investigating suspicious process trees
+
+Question: Your EDR lab generates the following process chain:
+
+```
+winword.exe
+  └── powershell.exe
+        └── cmd.exe
+              └── whoami.exe
+```
+
+How would you investigate the process ancestry, command-line arguments, execution account, timestamps, file activity and network connections to determine whether this chain represents suspicious behavior or legitimate administrative activity?
+
+Q1644
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, SOC Analyst
+- Competency: False-positive analysis
+
+Question: How would you distinguish a false positive caused by legitimate activity from a detection rule that is overly broad, and what evidence should be collected before changing the detection logic?
+
+Q1645
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter, SOC Analyst
+- Competency: End-to-end detection investigation
+
+Question: An authorized lab simulation generates suspicious PowerShell execution, a new scheduled task and an outbound network connection. Design an investigation workflow that correlates the process tree, Windows events, EDR telemetry and network records into a single incident timeline. How would you determine whether all three events belong to the same activity chain?
+
+Q1646
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Security Architect, Purple Team Engineer
+- Competency: Detection maturity assessment
+
+Question: What distinguishes a basic alert-generation lab from a mature detection engineering environment that supports automated regression testing, telemetry validation, detection versioning, performance monitoring and continuous improvement?
+
+## Topic 7: Active Directory Lab
+
+Q1647
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Security Analyst
+- Competency: Active Directory lab deployment
+
+Question: Design an isolated Active Directory lab using a Windows Server Domain Controller and two Windows client machines. Explain the steps for configuring the domain, joining the clients, creating test users and groups, and verifying that domain authentication works correctly.
+
+Q1648
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, IAM Engineer, Security Architect
+- Competency: Active Directory security architecture
+
+Question: What security benefits does a properly segmented Active Directory lab provide, and why should Domain Controllers, administrative workstations and ordinary domain-joined endpoints be separated according to their security responsibilities?
+
+Q1649
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, SOC Analyst
+- Competency: Active Directory user and group auditing
+
+Question: You are auditing a test Active Directory domain. How would you use PowerShell Active Directory cmdlets to enumerate domain users, privileged groups, disabled accounts and accounts with unusual group memberships? Which findings would require further investigation?
+
+Q1650
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Security Auditor
+- Competency: Group Policy security auditing
+
+Question: A domain GPO configures password policies, Windows Defender settings and local administrator group membership. How would you inspect the GPO configuration, identify conflicting policies and verify the effective settings applied to a test workstation?
+
+Q1651
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Security Architect
+- Competency: Active Directory privilege boundaries
+
+Question: How do organizational units, security groups, delegation and Group Policy contribute to Active Directory administration, and what security problems can arise when these mechanisms are configured without a clear privilege model?
+
+Q1652
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Active Directory access review
+
+Question: You discover that several ordinary domain users belong to nested groups that ultimately grant membership in a privileged administrative group. How would you investigate the effective group membership, trace the nested relationships and document the unnecessary privileges?
+
+Q1653
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Security Architect, Security Auditor
+- Competency: Active Directory hardening
+
+Question: How would you evaluate the security posture of an Active Directory lab, considering privileged accounts, service accounts, authentication settings, delegation, Group Policy, auditing and Domain Controller protection?
+
+## Topic 8: Kerberos, LDAP and Group Policy Lab
+
+Q1654
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Kerberos authentication investigation
+
+Question: In your Active Directory lab, a domain user cannot authenticate using Kerberos. How would you inspect the domain configuration, DNS resolution, system time synchronization, ticket acquisition and relevant Windows authentication events to identify the cause?
+
+Q1655
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Understanding Kerberos authentication flow
+
+Question: How would you explain the relationship between the Authentication Service, Ticket Granting Service, Ticket Granting Ticket and service ticket when demonstrating Kerberos authentication in an Active Directory lab?
+
+Q1656
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Security Analyst
+- Competency: LDAP directory investigation
+
+Question: You need to investigate a suspicious LDAP query against a test domain. How would you inspect the LDAP search base, filter, requested attributes, bind identity and query results, and what evidence would help distinguish legitimate directory enumeration from suspicious reconnaissance?
+
+Q1657
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Active Directory Security Engineer, Security Architect
+- Competency: LDAP and Kerberos comparison
+
+Question: Compare the roles of LDAP and Kerberos in an Active Directory environment. Why does understanding their separate responsibilities matter when investigating authentication problems and suspicious directory access?
+
+Q1658
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Security Auditor
+- Competency: Group Policy troubleshooting
+
+Question: A security setting configured through Group Policy is not taking effect on a domain-joined workstation. How would you use `gpresult`, `gpupdate`, Resultant Set of Policy and relevant Group Policy logs to determine whether the issue is caused by scope, filtering, inheritance or policy processing?
+
+Q1659
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Kerberos ticket inspection
+
+Question: In a controlled domain lab, how would you use `klist` to inspect cached Kerberos tickets, identify their associated service principals and expiration times, and determine whether the expected service ticket was successfully obtained?
+
+Q1660
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Security Architect, SOC Analyst
+- Competency: Active Directory authentication monitoring
+
+Question: What telemetry should an enterprise collect to monitor Kerberos authentication, LDAP activity and Group Policy changes, and how would these sources complement one another during an Active Directory security investigation?
+
+## Topic 9: Active Directory Attack Simulation and Detection Lab
+
+Q1661
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Purple Team Engineer
+- Competency: Authorized AD attack simulation
+
+Question: You are conducting an authorized Active Directory security exercise in an isolated lab. How would you establish rules of engagement, select safe test accounts, document the initial domain state and verify that the simulation cannot affect production identities or systems?
+
+Q1662
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Detection Engineer, Purple Team Engineer
+- Competency: AD attack-to-detection methodology
+
+Question: How does an Active Directory attack simulation help validate defensive visibility, and why should the exercise evaluate both the attacker's observable actions and the defender's ability to investigate those actions?
+
+Q1663
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Detection Engineer
+- Competency: Kerberoasting detection validation
+
+Question: In an isolated Active Directory lab, you execute an authorized Kerberoasting simulation against a test service account. Which Windows authentication events and service-ticket request patterns would you examine, and how would you distinguish the simulation from legitimate service-ticket activity?
+
+Q1664
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Threat Hunter, Detection Engineer
+- Competency: Investigating suspicious authentication
+
+Question: Your lab generates Event ID 4769 for an unusual volume of service-ticket requests from one account. How would you correlate the requesting account, client address, requested service principal names, encryption types and surrounding authentication activity to investigate possible Kerberoasting?
+
+Q1665
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Purple Team Engineer, Detection Engineer, Security Architect
+- Competency: AD detection coverage assessment
+
+Question: What is the difference between detecting suspicious Active Directory authentication behavior, identifying a successful privilege escalation and demonstrating that the underlying privilege-escalation path has been eliminated?
+
+Q1666
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer, SOC Analyst
+- Competency: AD attack simulation evidence correlation
+
+Question: An authorized lab exercise produces suspicious service-ticket requests, a privileged group membership change and a subsequent logon using the affected account. Design a correlation strategy using relevant Windows events, account identifiers, source hosts and timestamps to determine whether the events form a connected attack sequence.
+
+Q1667
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Purple Team Engineer, Detection Engineer
+- Competency: AD attack remediation validation
+
+Question: Your AD simulation identifies a service account with excessive privileges and a weak password policy. Design a remediation and retesting plan that verifies least-privilege access, credential rotation, service continuity and successful detection of future suspicious ticket-request activity.
+
+## Topic 10: Purple Team Attack-to-Detection Lab
+
+Q1668
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Purple Team Engineer, Detection Engineer, Security Architect
+- Competency: Purple Team lab architecture
+
+Question: How would you design a complete purple-team lab that connects authorized attack simulation, endpoint telemetry, network monitoring, SIEM detections, analyst investigation and remediation verification?
+
+Q1669
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer
+- Competency: Attack-to-detection workflow implementation
+
+Question: Design an end-to-end purple-team exercise for a controlled Windows endpoint in which a simulated technique generates process telemetry, a detection rule identifies the behavior and a SOC analyst investigates the alert. Define the expected artifacts and success criteria for every stage.
+
+Q1670
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Purple Team Engineer, Security Architect, Security Manager
+- Competency: Purple Team operating model
+
+Question: How should a purple-team exercise distribute responsibilities between red-team operators, detection engineers, SOC analysts and infrastructure owners to ensure that simulation findings result in measurable defensive improvements?
+
+Q1671
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer, SIEM Engineer
+- Competency: End-to-end detection validation
+
+Question: An authorized simulation generates three ATT&CK techniques, but only two appear in the SIEM. Design a structured investigation that verifies simulation execution, endpoint telemetry generation, agent collection, SIEM ingestion, parsing, rule evaluation and alert creation. How would you determine the exact stage responsible for the missing detection?
+
+Q1672
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Purple Team Engineer, Security Architect, CISO
+- Competency: Measuring purple-team effectiveness
+
+Question: What metrics would you use to evaluate a purple-team program beyond the number of simulations executed and detections generated? Explain how telemetry completeness, detection reliability, investigation quality and remediation closure contribute to an accurate assessment.
+
+Q1673
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer, Security Architect
+- Competency: Continuous purple-team validation
+
+Question: Design a repeatable workflow that executes approved simulation tests after changes to endpoint configurations, SIEM parsers or detection rules. How would you manage test dependencies, environment resets, evidence collection, result comparison and deployment approval?
+
+Q1674
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Purple Team Engineer, Security Engineering Manager
+- Competency: Enterprise purple-team program design
+
+Question: How would you establish an enterprise purple-team program that converts recurring attack simulation results into a prioritized detection improvement roadmap while maintaining operational safety, executive accountability and measurable long-term security outcomes?
+
+## Topic 11: SIEM/EDR Integration Lab
+
+Q1675
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, EDR Engineer, Detection Engineer
+- Competency: SIEM and EDR integration architecture
+
+Question: Design a lab that integrates an EDR platform with a centralized SIEM. Explain the data flow from endpoint event generation through EDR collection, API or connector ingestion, SIEM normalization, correlation and incident creation.
+
+Q1676
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SIEM Engineer, EDR Engineer, Security Architect
+- Competency: SIEM/EDR responsibility boundaries
+
+Question: What responsibilities should remain within an EDR platform and which should be centralized in a SIEM when building an integrated endpoint detection and investigation environment?
+
+Q1677
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, EDR Engineer, Detection Engineer
+- Competency: Security telemetry normalization
+
+Question: Your EDR platform reports process events using `device_id`, `process_hash` and `account_sid`, while your SIEM expects `host`, `file_hash` and `user_id`. Design a normalization mapping and explain how you would preserve original fields, handle missing values and avoid incorrect entity relationships.
+
+Q1678
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, EDR Engineer, SOC Analyst
+- Competency: Troubleshooting SIEM/EDR integration
+
+Question: Your EDR platform shows 10,000 endpoint events, but the SIEM contains only 7,500 corresponding records. How would you investigate API pagination, connector health, event filtering, ingestion limits, parsing failures and indexing delays to identify the missing 2,500 events?
+
+Q1679
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, SIEM Engineer, EDR Engineer
+- Competency: Integrated security monitoring design
+
+Question: How should an integrated SIEM/EDR architecture handle duplicate alerts, conflicting severity levels, inconsistent endpoint identities and different event-retention periods without losing investigation context?
+
+Q1680
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, EDR Engineer, Security Architect
+- Competency: Automated incident enrichment
+
+Question: Design an integration in which a high-severity EDR alert automatically triggers a SIEM enrichment workflow that retrieves endpoint details, user identity, recent authentication events and related network activity. How would you handle API failures, duplicate alert delivery and incomplete enrichment data?
+
+Q1681
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, SIEM Engineer, SOC Manager
+- Competency: Security platform integration evaluation
+
+Question: How would you evaluate whether an enterprise should use native SIEM/EDR integration, an API-based integration service or a centralized event pipeline? Discuss reliability, data fidelity, vendor lock-in, operational cost and scalability.
+
+## Topic 12: ATT&CK Mapping and Detection Validation Lab
+
+Q1682
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer
+- Competency: ATT&CK technique mapping
+
+Question: You have executed an authorized simulation and collected process-creation and network telemetry. How would you map the observed behaviors to the appropriate ATT&CK techniques and sub-techniques, recording the evidence supporting each mapping?
+
+Q1683
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, Security Architect
+- Competency: Understanding ATT&CK validation limitations
+
+Question: Why should ATT&CK technique mapping be treated as an evidence-based analytical process rather than a simple exercise of assigning technique identifiers to every security alert?
+
+Q1684
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer
+- Competency: Detection coverage validation
+
+Question: Design a validation matrix for ten ATT&CK techniques. Each technique must have fields for simulation status, telemetry status, detection-rule status, alert status, investigation status and remediation status. How would you calculate meaningful coverage without treating untested techniques as successfully detected?
+
+Q1685
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, Security Architect
+- Competency: Detection validation methodology
+
+Question: What is the difference between a detection being technically present, successfully triggered during a test and operationally useful to an analyst? How should these stages be represented in a detection validation report?
+
+Q1686
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Purple Team Engineer
+- Competency: Automated detection validation
+
+Question: Your lab contains ATT&CK-mapped Sigma rules and a collection of synthetic event records. Design an automated process that validates the rules, evaluates representative test events, records expected and actual outcomes and generates a report identifying failed or untested detections.
+
+Q1687
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, Purple Team Engineer
+- Competency: Detection assurance strategy
+
+Question: How would you distinguish detection coverage from detection resilience, particularly when attackers can modify filenames, command-line arguments, process ancestry or execution methods while preserving the same underlying behavior?
+
+Q1688
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer, Security Architect
+- Competency: ATT&CK validation reporting
+
+Question: A detection validation exercise shows that 80% of selected techniques generated telemetry, 55% generated alerts and 35% resulted in successful analyst investigations. How would you interpret these results, identify the weakest stage of the defensive workflow and propose measurable improvement targets?
+
+## Topic 13: Threat Hunting and Detection-Gap Lab
+
+Q1689
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, Detection Engineer, SOC Analyst
+- Competency: Threat hunting lab methodology
+
+Question: How does a hypothesis-driven threat hunting lab differ from an alert-driven SOC investigation, and how can hunting results be converted into repeatable detection logic?
+
+Q1690
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, Detection Engineer
+- Competency: Hypothesis-driven hunting
+
+Question: Develop a threat-hunting hypothesis that identifies potentially suspicious PowerShell activity followed by unexpected outbound connections. Specify the telemetry sources, relevant fields, investigation queries and evidence that would support or reject the hypothesis.
+
+Q1691
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, Detection Engineer, Purple Team Engineer
+- Competency: Hunt-to-detection conversion
+
+Question: What criteria should be met before converting a threat-hunting observation into a production detection rule, and why should a single unusual event not automatically become a permanent alert?
+
+Q1692
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, SIEM Engineer, Detection Engineer
+- Competency: Investigating telemetry gaps
+
+Question: Your threat-hunting query identifies suspicious process execution on several endpoints, but two endpoints have no corresponding process telemetry. How would you determine whether the missing data is caused by endpoint configuration, collection failure, ingestion delay, retention policy or deliberate tampering?
+
+Q1693
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Hunter, Security Architect, Detection Engineer
+- Competency: Threat hunting maturity
+
+Question: How would you measure the maturity of an enterprise threat-hunting capability using hypothesis quality, telemetry coverage, investigation reproducibility, detection conversion and remediation outcomes?
+
+Q1694
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Threat Hunter, Purple Team Engineer, Detection Engineer
+- Competency: Threat hunting and detection-gap reporting
+
+Question: An authorized hunting exercise identifies suspicious behavior that is not detected by existing SIEM rules. Design a complete workflow for documenting the hypothesis, query results, supporting evidence, telemetry gaps, proposed detection logic, validation tests and remediation ownership.
+
+## Topic 14: Cloud Security Lab
+
+Q1695
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect, DevSecOps Engineer
+- Competency: Cloud security lab architecture
+
+Question: How would you design an isolated cloud security lab that supports IAM testing, network security assessment, storage configuration review, cloud logging and incident investigation while minimizing unnecessary cost and exposure to production environments?
+
+Q1696
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: AWS IAM security testing
+
+Question: You have created a test AWS account for security training. How would you audit IAM users, roles, attached policies and trust relationships to identify excessive permissions and unintended cross-account access? Which AWS APIs or CLI commands would you use?
+
+Q1697
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, AWS Security Engineer
+- Competency: Cloud storage security validation
+
+Question: An S3 bucket in your lab is intended to be accessible only through a specific IAM role, but a security review suggests that public access may be possible. How would you inspect Block Public Access settings, bucket policies, access-control lists and effective permissions to determine the actual exposure?
+
+Q1698
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect, SOC Analyst
+- Competency: Cloud telemetry and monitoring
+
+Question: What are the roles of AWS CloudTrail, CloudWatch and VPC Flow Logs in a cloud security monitoring lab, and how do their different data types contribute to the investigation of suspicious cloud activity?
+
+Q1699
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Cloud Security Engineer, Incident Responder, DFIR Analyst
+- Competency: Cloud incident investigation
+
+Question: Your AWS lab records an unexpected IAM policy modification followed by the creation of an access key and unusual API activity. How would you use CloudTrail records to reconstruct the sequence, identify the principal responsible, determine affected resources and document containment actions?
+
+Q1700
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Cloud Security Engineer, Security Architect, Purple Team Engineer
+- Competency: Cloud security portfolio architecture
+
+Question: How would you design a cloud security portfolio project that demonstrates practical competency in IAM, network security, storage protection, cloud monitoring, incident response and evidence-based remediation? What measurable deliverables would distinguish a production-quality security project from a collection of disconnected configuration demonstrations?

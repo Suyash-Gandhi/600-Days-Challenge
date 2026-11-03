@@ -1,0 +1,1055 @@
+# Cybersecurity Interview Question Bank
+
+# Section 22 — API Security
+
+## Part A — API Security Fundamentals
+
+### Beginner (Q0901–Q0910)
+
+Q0901
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer, Security Analyst
+- Competency: Understanding API security fundamentals
+
+Question: What is API security, and why do APIs introduce security risks involving authentication, authorization, data exposure, input validation, rate limiting and business logic?
+
+Q0902
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding API architectures
+
+Question: What are the differences between REST APIs, GraphQL APIs and SOAP APIs from a security perspective? Explain how their request structures, data-access patterns and security requirements differ.
+
+Q0903
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Analyst, Application Security Engineer
+- Competency: Understanding API authentication and authorization
+
+Question: Explain the difference between API authentication and API authorization. Why is verifying a valid API token insufficient to establish that a user is permitted to access a particular resource?
+
+Q0904
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding BOLA
+
+Question: What is Broken Object Level Authorization (BOLA), and how can an API expose another user's information when it trusts an object identifier supplied in a request?
+
+Q0905
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding mass assignment
+
+Question: What is mass assignment in API development, and how can automatically mapping client-supplied JSON properties to database models allow unauthorized modification of sensitive fields?
+
+Q0906
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding API token types
+
+Question: Compare API keys, session cookies and bearer tokens. How are they commonly used, and what security limitations should developers consider when choosing between them?
+
+Q0907
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding JWT structure
+
+Question: What are the three main components of a JSON Web Token (JWT), and what information is commonly contained in its header, payload and signature?
+
+Q0908
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Security Analyst
+- Competency: Understanding API rate limiting
+
+Question: What is API rate limiting, and how does it help protect an application against brute-force attempts, automated abuse, resource exhaustion and excessive API consumption?
+
+Q0909
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer, Security Architect
+- Competency: Understanding API security architecture
+
+Question: What are the major components of a secure API architecture, and how do an API gateway, authentication service, authorization layer, input validation and monitoring work together?
+
+Q0910
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding API error handling
+
+Question: Why should APIs avoid returning database stack traces, internal filesystem paths, authentication details and sensitive debugging information in error responses? What information should a secure API return instead?
+
+## Part B — API Authentication, Authorization & Testing
+
+### Intermediate (Q0911–Q0925)
+
+Q0911
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Identifying BOLA vulnerabilities
+
+Question: Review the following Express.js route:
+
+```
+app.get("/api/orders/:id", authenticate, async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  res.json(order);
+});
+```
+
+Identify the authorization weakness and rewrite the route so that a user can retrieve only orders belonging to their authenticated account. What additional checks should be considered for administrative access?
+
+Q0912
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: API Security Engineer, Application Security Engineer, Security Analyst
+- Competency: Investigating mass assignment
+
+Question: A user submits an API request containing `{"name":"John","role":"admin","isVerified":true}` while updating their profile. The backend passes the entire request body directly into a database update operation. How would you investigate the vulnerability and implement property-level allowlisting?
+
+Q0913
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding JWT validation
+
+Question: Which JWT claims commonly require validation, including `iss`, `aud`, `exp`, `nbf` and `sub`? Explain what each represents and why merely decoding a JWT does not establish that it is trustworthy.
+
+Q0914
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Investigating broken API authorization
+
+Question: A student can access their own examination results using an API, but changing the student ID in the request returns another student's results. How would you investigate the authorization failure and identify the correct relationship checks required between the authenticated identity, student profile and requested record?
+
+Q0915
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, IAM Engineer, Application Security Engineer
+- Competency: Understanding API authentication mechanisms
+
+Question: Compare API key authentication, OAuth 2.0 bearer-token authentication and mutual TLS authentication. What threats does each mechanism address, and what are its limitations?
+
+Q0916
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: API Security Engineer, Web Application Pentester, Application Security Engineer
+- Competency: API testing using Burp Suite
+
+Question: You are authorized to assess a REST API using Burp Suite. Explain how you would intercept API requests, identify endpoints, inspect JSON parameters, modify HTTP methods, compare authenticated requests and investigate access-control weaknesses.
+
+Q0917
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Testing API authorization using curl
+
+Question: You have two authorized test accounts with different privileges. Write example `curl` commands to request the same protected API resource using each account's bearer token. Explain how you would compare HTTP status codes, response bodies and authorization behavior to identify a potential privilege escalation.
+
+Q0918
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding JWT algorithm weaknesses
+
+Question: What is the difference between symmetric and asymmetric JWT signing algorithms? Compare HS256 and RS256 in terms of signing keys, verification keys, key distribution and common implementation mistakes.
+
+Q0919
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Implementing secure API input validation
+
+Question: Consider an API endpoint that accepts a JSON request containing `price`, `quantity`, `discount` and `userId`. How would you design server-side validation so that clients cannot manipulate prices, assign transactions to other users or submit invalid quantities? Explain the difference between validation and authorization.
+
+Q0920
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, IAM Engineer
+- Competency: Understanding OAuth redirect URI security
+
+Question: Why must OAuth redirect URIs be validated strictly? Explain how wildcard matching, open redirects and insufficient redirect URI validation can expose authorization codes or tokens.
+
+Q0921
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Investigating rate limiting weaknesses
+
+Question: An API implements rate limiting using a client-supplied `X-Forwarded-For` header. During testing, changing that header appears to bypass the limit. How would you investigate the trusted-proxy configuration and redesign client identification to prevent this weakness?
+
+Q0922
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding API authorization models
+
+Question: Compare Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC) and object-level authorization in the context of an API. Which model is most appropriate for enforcing tenant ownership and resource-specific permissions?
+
+Q0923
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Security Analyst, Application Security Engineer
+- Competency: Investigating excessive API data exposure
+
+Question: An API returns a complete user database record containing password hashes, internal notes, account flags and personal information, even though the frontend displays only the user's name and email. How would you investigate excessive data exposure and design secure response serialization?
+
+Q0924
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Understanding API trust boundaries
+
+Question: What are trust boundaries in API architecture, and how should an API handle data received from browsers, mobile applications, third-party services, internal microservices and background workers differently?
+
+Q0925
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: API security testing with Postman
+
+Question: How would you use Postman to build a repeatable API security test collection covering authentication, authorization, request validation, token expiration, rate limiting and error handling? How would you ensure that the tests use controlled accounts and do not modify production data?
+
+### Advanced (Q0926–Q0940)
+
+Q0926
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, IAM Engineer, Application Security Engineer
+- Competency: Understanding OAuth token handling
+
+Question: What is the difference between an OAuth access token and a refresh token? Explain their lifetimes, intended uses, storage considerations and the security consequences of refresh-token theft.
+
+Q0927
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Implementing secure JWT authentication
+
+Question: Design an Express.js JWT authentication middleware that verifies the token signature, restricts accepted algorithms, validates expiration and issuer, and attaches the authenticated identity to the request. Which authorization checks must still happen after this middleware executes?
+
+Q0928
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding JWT refresh-token rotation
+
+Question: What is refresh-token rotation, and how can a backend detect reuse of an older refresh token after a new token has already been issued? Explain how token-family revocation can limit the impact of refresh-token theft.
+
+Q0929
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Investigating API business logic weaknesses
+
+Question: An e-commerce API allows customers to submit a discount amount and a final payable price as part of a checkout request. How would you investigate whether the server trusts client-controlled financial values, and how would you redesign price calculation and payment verification?
+
+Q0930
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Security Engineer
+- Competency: Investigating API gateway security
+
+Question: An organization deploys an API gateway that performs authentication, rate limiting and request routing. However, internal services remain directly accessible through separate network addresses. How would you investigate whether the gateway can be bypassed and recommend an architecture that ensures consistent security enforcement?
+
+Q0931
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Web Application Pentester, Application Security Engineer
+- Competency: Identifying broken function-level authorization
+
+Question: An API exposes `/api/admin/users`, `/api/admin/reports` and `/api/users/profile`. Ordinary users cannot see administrative buttons in the frontend, but the endpoints are still reachable. How would you test function-level authorization using controlled accounts and design consistent server-side permission enforcement?
+
+Q0932
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Identifying insecure API object updates
+
+Question: Review this Node.js code:
+
+```
+app.patch("/api/users/:id", authenticate, async (req, res) => {
+  await User.findByIdAndUpdate(req.params.id, req.body);
+  res.json({ success: true });
+});
+```
+
+Identify all relevant security weaknesses. Rewrite the logic to enforce authenticated-user ownership, allowlisted fields, server-side validation and safe database update behavior.
+
+Q0933
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, IAM Engineer, Security Analyst
+- Competency: Investigating OAuth authorization-code weaknesses
+
+Question: An application implements OAuth authorization-code flow but does not consistently validate the `state` parameter and uses loosely configured redirect URIs. How would you investigate CSRF and authorization-code interception risks, and what protections should be implemented using state validation, PKCE and strict redirect URI matching?
+
+Q0934
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, IAM Engineer, Application Security Engineer
+- Competency: Understanding OAuth grant security
+
+Question: Compare the OAuth authorization-code flow with PKCE, client-credentials flow and device-authorization flow. What types of clients or scenarios are each designed for, and why should the Resource Owner Password Credentials grant not be used in new OAuth implementations?
+
+Q0935
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Application Security Engineer, Security Engineer
+- Competency: Investigating JWT validation inconsistencies
+
+Question: An API gateway validates JWT signatures, but individual microservices perform additional JWT validation independently. Users occasionally receive inconsistent authorization results across services. How would you investigate differences in issuer, audience, algorithm, key rotation, clock synchronization and claim interpretation?
+
+Q0936
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Investigating API resource consumption attacks
+
+Question: A public search API experiences a sudden increase in expensive database queries. Rate limiting is enabled, but requests use different API accounts and complex search parameters. How would you investigate resource consumption, identify abusive request patterns and design controls using query complexity limits, quotas, pagination and workload protection?
+
+Q0937
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Securing multi-tenant API authorization
+
+Question: Design an authorization middleware for a multi-tenant SaaS API that ensures every database operation is scoped to the authenticated user's tenant. Explain how you would handle tenant selection, membership validation, administrator access, background jobs and database-level defense in depth.
+
+Q0938
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Security Analyst, Application Security Engineer
+- Competency: Investigating API token leakage
+
+Question: A production API token appears in application logs and has potentially been copied into an external monitoring platform. How would you determine the token's privileges, exposure period, usage history and affected resources? Describe the containment, rotation, revocation and monitoring process.
+
+Q0939
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Understanding API security standards
+
+Question: What is the OWASP API Security Top 10, and how does it help identify risks such as broken object-level authorization, broken authentication, unrestricted resource consumption, SSRF, security misconfiguration and unsafe API consumption? How would you use it during a structured API security assessment?
+
+Q0940
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Designing secure API authentication architecture
+
+Question: Design a secure authentication and authorization architecture for an API platform serving web applications, mobile applications and third-party integrations. Address OAuth 2.0, OpenID Connect, JWT validation, refresh-token rotation, service identities, tenant isolation and centralized authorization policies.
+
+### Advanced (Q0941–Q0960)
+
+Q0941
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Web Application Pentester, Application Security Engineer
+- Competency: Investigating API parameter pollution
+
+Question: An API accepts repeated query parameters such as `role=user&role=admin`, but its gateway, framework and application interpret duplicate parameters differently. How would you investigate HTTP parameter pollution and inconsistent parsing, and how could these differences affect authorization and validation?
+
+Q0942
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Understanding GraphQL security
+
+Question: How do GraphQL introspection, nested queries, aliases, fragments and resolver-level authorization affect API security? Explain how excessive query depth and complexity can cause resource exhaustion even when traditional request-count rate limiting is enabled.
+
+Q0943
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Automating API security testing
+
+Question: Your team maintains an OpenAPI specification for a REST API. How would you use the specification to generate automated security tests covering endpoint discovery, authentication requirements, parameter validation, response schemas and authorization boundaries? Which security properties still require manual testing?
+
+Q0944
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Application Security Engineer, Security Engineer
+- Competency: Investigating API gateway authentication bypass
+
+Question: An API gateway correctly authenticates external requests, but internal microservices also accept requests directly from other network locations. How would you investigate whether identity headers can be forged, service-to-service trust is excessive or authentication is inconsistently enforced? Design a safer service identity model.
+
+Q0945
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Understanding API security testing limitations
+
+Question: Why can conventional web application scanners miss API-specific vulnerabilities? Discuss authorization relationships, tenant isolation, workflow dependencies, token lifecycle, undocumented endpoints and business logic validation.
+
+Q0946
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Implementing secure API validation
+
+Question: Design a Zod-based request validation strategy for an API that accepts student registration data, fee information and optional administrative fields. Explain how strict schemas, unknown-field rejection, field-level validation and separate administrative operations prevent mass assignment and unauthorized property modification.
+
+Q0947
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: API Security Engineer, Security Engineer, Application Security Engineer
+- Competency: Investigating third-party API trust
+
+Question: Your application consumes a third-party API that returns user records, transaction details and callback notifications. How would you assess the security of the integration, including TLS validation, webhook signatures, replay prevention, input validation, excessive permissions and failure handling?
+
+Q0948
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Managing API security remediation
+
+Question: An API assessment identifies BOLA, weak rate limiting, excessive data exposure and an insecure OAuth redirect implementation. The development team can fix only two issues before the next release. How would you prioritize remediation using exploitability, exposed data, attack prerequisites, business impact and compensating controls?
+
+Q0949
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Evaluating API security architecture
+
+Question: Compare centralized authorization through an API gateway with decentralized authorization inside individual microservices. What are the security, scalability, consistency and operational trade-offs of each approach?
+
+Q0950
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, IAM Engineer, Security Analyst
+- Competency: Investigating OAuth token compromise
+
+Question: An organization detects suspicious use of an OAuth refresh token from an unfamiliar device. How would you investigate token issuance, application identity, refresh history, consent grants, IP information and associated user activity? How would you determine whether the token was stolen, misused by a legitimate client or exposed through insecure storage?
+
+Q0951
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: API Security Engineer, Security Architect, IAM Engineer
+- Competency: Designing enterprise API authorization
+
+Question: Design a centralized authorization service for an enterprise API ecosystem containing hundreds of microservices, multiple tenants and several user roles. Explain how you would manage policy distribution, resource-level decisions, caching, policy updates, service identities and authorization failure handling.
+
+Q0952
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Application Security Engineer, Security Analyst
+- Competency: Investigating chained API vulnerabilities
+
+Question: A multi-tenant API contains a BOLA weakness, an insecure password-reset workflow and an overly permissive administrative endpoint. How would you investigate whether these weaknesses can combine into a larger compromise? Explain how you would establish exploitability and impact using controlled test accounts and document the attack chain.
+
+Q0953
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, IAM Engineer
+- Competency: Understanding zero-trust API security
+
+Question: How would you apply Zero Trust principles to an API ecosystem in which users, mobile applications, microservices, background workers and third-party integrations communicate across multiple network boundaries? Explain identity verification, contextual authorization, least privilege and continuous trust evaluation.
+
+Q0954
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, IAM Engineer, Security Engineer
+- Competency: Investigating distributed identity failures
+
+Question: A distributed API platform experiences intermittent authorization failures after signing-key rotation. Some services accept newly issued tokens while others reject them. How would you investigate JWKS caching, key identifiers, propagation delays, token lifetime, clock skew and key rollover procedures?
+
+Q0955
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Building secure webhook verification
+
+Question: Design a secure webhook verification implementation that validates the request signature over the original request body, checks timestamp freshness, prevents replay attacks and handles duplicate event delivery. How would you ensure that webhook processing remains idempotent and resistant to forged notifications?
+
+Q0956
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Evaluating API security maturity
+
+Question: How would you assess the maturity of an enterprise API security program? Discuss API inventory completeness, authorization testing coverage, authentication consistency, vulnerability remediation time, token exposure incidents, third-party integration risk and security testing automation.
+
+Q0957
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: API Security Engineer, Security Analyst, Incident Responder
+- Competency: Investigating API abuse at scale
+
+Question: Your API gateway records millions of requests, and security monitoring identifies unusual access patterns across hundreds of user accounts. How would you correlate identities, IP addresses, user agents, token identifiers, endpoint access and response patterns to distinguish credential stuffing, account takeover, automated scraping and legitimate high-volume clients?
+
+Q0958
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Managing API compatibility and security
+
+Question: An API version used by thousands of external clients contains a critical authorization weakness. Replacing it immediately would break integrations, but leaving it available exposes customer data. How would you develop a migration and containment strategy involving temporary controls, client communication, version deprecation and measurable retirement milestones?
+
+Q0959
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Security Architect, Application Security Engineer
+- Competency: Understanding API security in distributed systems
+
+Question: What security challenges arise when authorization, authentication and business logic are distributed across multiple microservices? Discuss identity propagation, service-to-service authentication, confused-deputy risks, shared policy enforcement and transaction consistency.
+
+Q0960
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: API Security Engineer, Purple Team Engineer, Security Architect
+- Competency: Building continuous API security validation
+
+Question: Design an automated API security validation framework that combines OpenAPI specifications, Burp Suite testing, authorization test cases, JWT validation checks, webhook verification, rate-limit testing and CI/CD security gates. How would you measure whether it detects meaningful vulnerabilities rather than merely increasing automated test coverage?
+
+# Section 23 — Credentials & Password Attacks
+
+## Part A — Password Security and Credential Attack Fundamentals
+
+### Beginner (Q0961–Q0965)
+
+Q0961
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, SOC Analyst, Penetration Tester
+- Competency: Understanding credential attacks
+
+Question: What are credential-based attacks, and how do brute-force attacks, dictionary attacks, password spraying, credential stuffing and password reuse differ in their methods and objectives?
+
+Q0962
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Security Analyst, Application Security Engineer, IAM Engineer
+- Competency: Understanding password hashing
+
+Question: What is password hashing, and why should applications use dedicated password-hashing algorithms instead of storing plaintext passwords or reversible encrypted passwords?
+
+Q0963
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Security Analyst, Application Security Engineer
+- Competency: Understanding password attack methods
+
+Question: Compare brute-force attacks and dictionary attacks. How do their search strategies differ, and what factors influence their effectiveness against weak passwords?
+
+Q0964
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Security Analyst, Application Security Engineer
+- Competency: Understanding password hashing algorithms
+
+Question: What are bcrypt, scrypt and Argon2, and why are memory-hard or computationally expensive password-hashing algorithms generally preferred over fast general-purpose hashes such as SHA-256 for password storage?
+
+Q0965
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Security Analyst, IAM Engineer
+- Competency: Understanding credential protection
+
+Question: Why are credentials considered high-value targets for attackers, and how can a compromised password provide access to systems beyond the account where it was originally used?
+
+## Part B — Credential Attack Techniques and Tools
+
+### Intermediate (Q0966–Q0975)
+
+Q0966
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: SOC Analyst, Security Analyst, IAM Engineer
+- Competency: Investigating brute-force activity
+
+Question: Your SIEM detects hundreds of failed login attempts against one user account from a single source IP address. How would you investigate whether this represents a brute-force attack, identify the targeted authentication service and determine whether any attempts resulted in successful access?
+
+Q0967
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Threat Hunter, Security Analyst
+- Competency: Distinguishing credential attack patterns
+
+Question: Compare password spraying, credential stuffing and distributed brute-force attacks. What patterns distinguish them in authentication logs, and why can traditional account-level lockout policies fail to detect some of these attacks?
+
+Q0968
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Security Engineer, Security Analyst
+- Competency: Password auditing with Hashcat
+
+Question: You are conducting an authorized password audit using Hashcat and a controlled collection of test password hashes. Explain how Hashcat identifies hash formats, selects appropriate attack modes, applies wordlists and rules, and reports recovered passwords. Why must hash identification happen before selecting an attack mode?
+
+Q0969
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Security Engineer, Security Analyst
+- Competency: Password auditing with John the Ripper
+
+Question: How would you use John the Ripper to audit password hashes from an authorized lab environment? Explain how to identify supported hash formats, use wordlists and rules, inspect cracking results and compare its workflow with Hashcat.
+
+Q0970
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: SOC Analyst, Incident Responder, Security Analyst
+- Competency: Detecting credential stuffing
+
+Question: An application records successful logins from unfamiliar locations using username-password combinations previously associated with unrelated security breaches. How would you investigate credential stuffing, identify affected accounts and distinguish it from legitimate travel or VPN usage?
+
+Q0971
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Security Analyst
+- Competency: Understanding Windows credential storage
+
+Question: What are Windows Security Accounts Manager (SAM), Local Security Authority Subsystem Service (LSASS) and the Windows Credential Manager? Explain their roles in authentication and credential management, and why they are important during credential-theft investigations.
+
+Q0972
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: SOC Analyst, Windows Security Engineer, Incident Responder
+- Competency: Investigating authentication activity
+
+Question: On a Windows investigation system, which PowerShell commands and Windows Event Log queries would you use to review failed and successful logons, identify account lockouts and examine recent account activity? Explain the importance of Security Event IDs 4624, 4625 and 4740.
+
+Q0973
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Security Analyst
+- Competency: Understanding NTLM and Kerberos authentication
+
+Question: Compare NTLM and Kerberos authentication in Windows environments. Explain their fundamental authentication mechanisms, credential exposure considerations, mutual authentication capabilities and security limitations.
+
+Q0974
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: SOC Analyst, Threat Hunter, Incident Responder
+- Competency: Investigating credential dumping indicators
+
+Question: An EDR alert indicates that an unusual process attempted to access LSASS memory. How would you investigate the process identity, parent process, command line, access rights, associated user session and surrounding events to determine whether credential dumping was attempted?
+
+Q0975
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, IAM Engineer, Security Architect
+- Competency: Understanding enterprise credential defenses
+
+Question: What security controls help prevent credential theft and password attacks in an enterprise environment? Discuss MFA, password policies, password managers, privileged account separation, credential rotation and monitoring.
+
+## Part C — Advanced Credential Attacks & Active Directory Authentication
+
+### Advanced (Q0976–Q0985)
+
+Q0976
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Active Directory Security Engineer, Threat Hunter, SOC Analyst
+- Competency: Investigating Kerberoasting
+
+Question: An Active Directory environment generates unusual Kerberos service-ticket requests for several service accounts. How would you investigate potential Kerberoasting using Windows Event ID 4769, identify targeted service accounts, examine encryption types and assess whether weak service-account passwords increase the risk of offline password cracking?
+
+Q0977
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Security Analyst
+- Competency: Understanding Kerberoasting mechanics
+
+Question: How does Kerberoasting exploit the way Kerberos service tickets are issued and encrypted? Explain the relationship between Service Principal Names, service-account credentials, ticket encryption and offline password auditing.
+
+Q0978
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Active Directory Security Engineer, Threat Hunter, SOC Analyst
+- Competency: Detecting AS-REP Roasting
+
+Question: Your domain controller records unusual Kerberos authentication activity involving accounts that do not require Kerberos preauthentication. How would you investigate potential AS-REP Roasting using account configuration, Event ID 4768, authentication patterns and account-password policies?
+
+Q0979
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Security Analyst
+- Competency: Understanding AS-REP Roasting mechanics
+
+Question: How does disabling Kerberos preauthentication create an opportunity for AS-REP Roasting? Explain what authentication material an attacker can obtain and why offline password auditing becomes possible without an interactive login to the target account.
+
+Q0980
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Active Directory Security Engineer, Incident Responder, Threat Hunter
+- Competency: Investigating Pass-the-Hash activity
+
+Question: An attacker appears to authenticate to multiple Windows systems without entering the corresponding account's plaintext password. How would you investigate potential Pass-the-Hash activity, examine NTLM authentication telemetry, identify suspicious remote logons and determine whether credential reuse enabled lateral movement?
+
+Q0981
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Security Analyst
+- Competency: Distinguishing Pass-the-Hash and Pass-the-Ticket
+
+Question: Compare Pass-the-Hash and Pass-the-Ticket attacks. Explain which authentication material each technique abuses, how NTLM and Kerberos are involved and what differences defenders should look for when investigating the two techniques.
+
+Q0982
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Active Directory Security Engineer, Threat Hunter, Incident Responder
+- Competency: Investigating Pass-the-Ticket activity
+
+Question: Your EDR detects suspicious Kerberos ticket-related activity on a workstation, followed by authentication to an unfamiliar internal server. How would you investigate ticket acquisition, ticket usage, logon sessions and domain-controller telemetry to determine whether Pass-the-Ticket activity occurred?
+
+Q0983
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Active Directory Security Engineer, Penetration Tester, Threat Hunter
+- Competency: Understanding Mimikatz
+
+Question: What is Mimikatz, and how is it used in authorized Active Directory security assessments to demonstrate weaknesses in Windows credential handling? Explain its major capability categories, including credential inspection, Kerberos ticket examination and authentication-related analysis, and identify the telemetry defenders should monitor.
+
+Q0984
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Security Engineer, Detection Engineer, SOC Analyst
+- Competency: Detecting suspicious LSASS access
+
+Question: Design a Sigma detection rule for suspicious process access to `lsass.exe` using Sysmon Event ID 10. Which fields would you examine, such as `SourceImage`, `TargetImage`, `GrantedAccess` and `CallTrace`, and how would you reduce false positives from legitimate endpoint security software?
+
+Q0985
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Security Architect, Security Analyst
+- Competency: Understanding credential attack chains
+
+Question: How can an attacker combine password spraying, credential dumping, Kerberoasting and Pass-the-Hash to compromise an Active Directory environment? Explain the dependencies between these techniques and where defensive controls can interrupt the attack chain.
+
+## Part D — Expert Credential Security & Investigation
+
+### Expert (Q0986–Q0995)
+
+Q0986
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Active Directory Security Engineer, Incident Responder
+- Competency: Reconstructing credential theft
+
+Question: A domain controller, application server and employee workstation all show suspicious authentication activity within a short period. The workstation also contains evidence of LSASS access, and the application server records unusual service-ticket requests. How would you correlate these events to reconstruct a possible credential-theft and lateral-movement sequence?
+
+Q0987
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Active Directory Security Engineer, Security Engineer, Incident Responder
+- Competency: Investigating Kerberos authentication anomalies
+
+Question: An organization experiences intermittent Kerberos authentication failures after changing service-account credentials and modifying SPNs. How would you investigate SPN uniqueness, service-account password synchronization, ticket caching, encryption-type compatibility and domain-controller time synchronization?
+
+Q0988
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, Security Architect, IAM Engineer
+- Competency: Understanding enterprise credential architecture
+
+Question: How would you design an enterprise credential architecture that minimizes the impact of password theft? Discuss managed service accounts, privileged access management, credential isolation, MFA, authentication protocols, tiered administration and identity monitoring.
+
+Q0989
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Threat Hunter, DFIR Analyst, SOC Analyst
+- Competency: Investigating credential access without obvious dumping files
+
+Question: An attacker may have accessed LSASS memory using techniques that do not create an obvious dump file on disk. How would you investigate suspicious process handles, memory access telemetry, thread activity, EDR events and anomalous authentication behavior to identify credential-access attempts?
+
+Q0990
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Active Directory Security Engineer, Detection Engineer, Security Analyst
+- Competency: Hunting Kerberos attack activity
+
+Question: Using Windows Security Event Logs and a SIEM, design a hunting strategy to identify suspicious Kerberoasting and AS-REP Roasting behavior. Explain how you would correlate Event IDs 4768 and 4769 with account properties, encryption types, requesting hosts and historical baselines.
+
+Q0991
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Incident Responder, Active Directory Security Engineer, Security Architect
+- Competency: Responding to domain credential compromise
+
+Question: An attacker is confirmed to have obtained privileged domain credentials and accessed multiple domain controllers. How would you contain the incident, assess compromised accounts and authentication material, establish a recovery strategy and determine whether ordinary password resets are sufficient to restore trust in the domain?
+
+Q0992
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Active Directory Security Engineer, IAM Engineer
+- Competency: Understanding credential lifecycle risk
+
+Question: How should an enterprise manage the complete lifecycle of human credentials, service-account credentials, machine identities and application secrets? Discuss provisioning, authentication, rotation, revocation, ownership, monitoring and emergency recovery.
+
+Q0993
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Detection Engineer, SOC Analyst, Security Engineer
+- Competency: Building password-spraying detection
+
+Question: Design a KQL or SPL detection that identifies password-spraying behavior across multiple user accounts from a common source IP address within a defined time window. Explain how you would account for NAT, VPN gateways, legitimate authentication failures and distributed attack infrastructure.
+
+Q0994
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Incident Responder, Security Architect, IAM Engineer
+- Competency: Managing widespread credential exposure
+
+Question: A company discovers that a database containing thousands of password hashes has been exfiltrated. The hashes use a fast hashing algorithm with weak or missing salts. How would you prioritize password resets, evaluate account takeover risks, protect reused credentials, communicate with affected users and prevent further exploitation?
+
+Q0995
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Active Directory Security Engineer, Detection Engineer
+- Competency: Evaluating credential attack resilience
+
+Question: How would you assess an organization's resilience against credential-based attacks? Discuss password quality, hash storage, MFA coverage, privileged identity protection, Kerberos configuration, credential exposure monitoring, detection coverage and recovery capabilities.
+
+## Part E — Senior-Level Credential Security Architecture
+
+### Senior / Architect (Q0996–Q1000)
+
+Q0996
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, IAM Architect, CISO
+- Competency: Establishing enterprise identity security strategy
+
+Question: How would you establish an enterprise identity and credential security strategy for an organization with 10,000 employees, thousands of service accounts and multiple Active Directory forests? Discuss authentication standards, privileged identity management, passwordless adoption, service-account governance, monitoring and recovery.
+
+Q0997
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, IAM Engineer, Active Directory Security Engineer
+- Competency: Designing privileged credential protection
+
+Question: Design a privileged credential protection architecture for a hybrid enterprise using on-premises Active Directory and cloud identity services. Address privileged access workstations, managed service accounts, credential isolation, just-in-time access, MFA, secret rotation and privileged session monitoring.
+
+Q0998
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, CISO, Incident Response Manager
+- Competency: Leading enterprise credential compromise recovery
+
+Question: A suspected attacker has compromised multiple domain administrator accounts, several service accounts and an application secret repository. How would you lead a coordinated enterprise recovery? Establish the order of credential revocation and rotation, determine which systems can be trusted, preserve operational continuity and define criteria for declaring the identity environment recovered.
+
+Q0999
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, IAM Architect, CISO
+- Competency: Measuring enterprise identity security maturity
+
+Question: Which KPIs and KRIs would you use to measure enterprise credential security maturity? Include privileged account exposure, MFA coverage, weak-password prevalence, service-account ownership, credential rotation compliance, authentication anomalies and time to revoke compromised credentials.
+
+Q1000
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Purple Team Engineer, IAM Architect, CISO
+- Competency: Building an end-to-end credential defense program
+
+Question: Design an enterprise credential defense program connecting password security, IAM, Active Directory hardening, privileged access management, credential-theft detection, threat hunting, incident response and Purple Team validation. How would you simulate authorized credential attacks, measure defensive effectiveness and ensure that improvements remain effective as the organization's identity infrastructure evolves?

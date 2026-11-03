@@ -1,0 +1,1041 @@
+# Cybersecurity Interview Question Bank
+
+# Section 18 — Reconnaissance
+
+## Part A — Reconnaissance Fundamentals
+
+### Beginner (Q0701–Q0705)
+
+Q0701
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Understanding reconnaissance
+
+Question: What is reconnaissance in cybersecurity, and why is it performed before vulnerability assessment or penetration testing? Explain its importance in understanding a target's external attack surface.
+
+Q0702
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Red Team Operator, Threat Intelligence Analyst
+- Competency: Understanding reconnaissance methodologies
+
+Question: What is the difference between passive reconnaissance and active reconnaissance? Explain the advantages, limitations and potential risks associated with each approach.
+
+Q0703
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Understanding OSINT
+
+Question: What is Open-Source Intelligence (OSINT), and how can publicly available information help security professionals identify an organization's technologies, infrastructure, employees and potential attack surfaces?
+
+Q0704
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Understanding domain intelligence
+
+Question: What information can be obtained from a domain's WHOIS records, DNS records and certificate transparency logs? How can these sources support reconnaissance?
+
+Q0705
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Understanding attack surface discovery
+
+Question: What is an attack surface, and how do domains, subdomains, IP addresses, exposed services, web applications, APIs and third-party integrations contribute to an organization's external attack surface?
+
+## Part B — OSINT and Passive Reconnaissance
+
+### Intermediate (Q0706–Q0715)
+
+Q0706
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Red Team Operator
+- Competency: Selecting OSINT sources
+
+Question: Compare search engine reconnaissance, WHOIS lookups, DNS intelligence, certificate transparency logs and Internet-wide asset search engines. What types of information can each source reveal, and what are their limitations?
+
+Q0707
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Red Team Operator
+- Competency: DNS-based reconnaissance
+
+Question: You are authorized to investigate the domain `example.com`. Which `dig` commands would you use to retrieve its A, AAAA, MX, NS, TXT and SOA records? Explain what each record can reveal about the organization's infrastructure.
+
+Q0708
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Certificate transparency investigation
+
+Question: You are conducting passive reconnaissance against an authorized target domain. How would you use Certificate Transparency search services to identify previously issued certificates, discover associated subdomains and identify potentially forgotten external assets?
+
+Q0709
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Red Team Operator, Threat Intelligence Analyst
+- Competency: Subdomain discovery
+
+Question: Explain how you would use Subfinder to discover subdomains of an authorized target. How does passive source aggregation work, and why should discovered subdomains be validated before including them in an assessment?
+
+Q0710
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Historical asset discovery
+
+Question: You discover that an organization recently migrated its website to a new domain. How would you use the Wayback Machine and archived URL discovery tools to identify historical application paths, deprecated endpoints and potentially exposed resources?
+
+Q0711
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Identifying exposed information
+
+Question: An organization's public GitHub repositories contain configuration files, deployment scripts and references to internal infrastructure. How would you investigate these repositories for accidentally exposed secrets, internal hostnames, API endpoints and technology information without accessing unauthorized systems?
+
+Q0712
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Red Team Operator
+- Competency: Understanding DNS reconnaissance
+
+Question: What is DNS zone transfer, and how does an improperly configured AXFR transfer potentially expose an organization's DNS infrastructure? What is the difference between a successful zone transfer and ordinary DNS record resolution?
+
+Q0713
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Interpreting DNS intelligence
+
+Question: A subdomain resolves to an IP address belonging to a cloud hosting provider, but the website does not load. How would you investigate whether the issue is caused by stale DNS records, incorrect virtual-host configuration, CDN routing, TLS configuration or an inactive hosting resource?
+
+Q0714
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Technology fingerprinting
+
+Question: How would you use WhatWeb to identify technologies used by an authorized target website? Explain how HTTP headers, cookies, HTML metadata and application fingerprints contribute to technology identification, and why fingerprinting results should not be treated as definitive proof.
+
+Q0715
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Understanding subdomain takeover risks
+
+Question: What is subdomain takeover, and how can dangling DNS records pointing to deprovisioned cloud or third-party services create this vulnerability? What evidence would you require before reporting a suspected takeover?
+
+### Advanced (Q0716–Q0725)
+
+Q0716
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Automated reconnaissance
+
+Question: How would you use Amass to perform passive subdomain enumeration against an authorized domain? Explain its data-source integrations, output formats, configuration options and how its results can complement Subfinder.
+
+Q0717
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Red Team Operator
+- Competency: WHOIS and domain intelligence
+
+Question: Using the `whois` command, how would you investigate a target domain's registrar, registration dates, name servers and available organizational information? Which fields might be privacy-protected, and how would you validate the information independently?
+
+Q0718
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: External asset inventory
+
+Question: You discover 120 subdomains through multiple OSINT sources, but several resolve to the same IP address and others point to third-party providers. How would you classify, deduplicate and validate these assets before building an external attack surface inventory?
+
+Q0719
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Red Team Operator
+- Competency: Understanding reconnaissance data sources
+
+Question: Compare Amass, Subfinder and theHarvester in terms of their primary reconnaissance capabilities, information sources, typical outputs and limitations. In which situations would you use each tool?
+
+Q0720
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Red Team Operator, Security Architect
+- Competency: Understanding reconnaissance reliability
+
+Question: Why is reconnaissance data often incomplete, outdated or inaccurate? Explain how DNS caching, CDN infrastructure, shared hosting, dynamic IP addresses and third-party services can affect the accuracy of an attack surface assessment.
+
+Q0721
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Red Team Operator, Threat Intelligence Analyst
+- Competency: Combining reconnaissance sources
+
+Question: You are conducting an authorized external assessment of a company with multiple subsidiaries. Passive reconnaissance identifies several domains, hundreds of subdomains, cloud-hosted applications and publicly accessible repositories. Design a process to correlate these findings, identify relationships between assets and prioritize targets for further investigation.
+
+Q0722
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Analyst
+- Competency: Attack surface discovery with Amass
+
+Question: Explain how you would use Amass to build an external asset inventory for an authorized organization. How would you configure data sources, perform enumeration, identify relationships between domains and IP addresses, export results and distinguish verified assets from unconfirmed discoveries?
+
+Q0723
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Security Analyst, Network Security Engineer
+- Competency: Investigating DNS inconsistencies
+
+Question: Your reconnaissance tools produce conflicting results: one source identifies a subdomain's IP address as `192.0.2.10`, another reports `192.0.2.20`, and a third reports no DNS record. How would you investigate authoritative DNS responses, TTL values, split-horizon DNS, geographic routing and stale intelligence?
+
+Q0724
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Historical infrastructure analysis
+
+Question: An organization recently removed a public application, but historical DNS records, certificate transparency entries and archived URLs still reference it. How would you determine whether the application has been properly decommissioned or whether an exposed infrastructure component remains?
+
+Q0725
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Engineer
+- Competency: Automating subdomain validation
+
+Question: You have a text file containing 500 discovered subdomains. Design a Bash or Python workflow that resolves the domains, removes duplicates, identifies their IP addresses, records HTTP response information and produces a structured CSV inventory. How would you handle DNS failures, timeouts and inconsistent results?
+
+### Expert (Q0726–Q0740)
+
+Q0726
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Red Team Operator, Security Architect
+- Competency: Understanding attack surface management
+
+Question: How does continuous external attack surface management differ from a traditional point-in-time reconnaissance exercise? Explain how organizations can discover, classify, monitor and remediate assets that are introduced or exposed over time.
+
+Q0727
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Cloud asset reconnaissance
+
+Question: An organization's public DNS records reveal multiple AWS, Azure and Google Cloud-hosted services. How would you investigate the exposed cloud assets using public DNS information, certificate records, HTTP metadata and permitted cloud asset discovery techniques without accessing resources outside the assessment scope?
+
+Q0728
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Understanding DNS infrastructure
+
+Question: Explain how DNS CNAME chains, wildcard DNS records, reverse DNS lookups and DNS load balancing affect subdomain enumeration. How can these mechanisms cause false positives or hide relationships between infrastructure assets?
+
+Q0729
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Red Team Operator, Threat Intelligence Analyst
+- Competency: Advanced OSINT investigation
+
+Question: You are assessing an organization's public digital footprint. Design an OSINT workflow using theHarvester, WHOIS, DNS tools, certificate transparency services, archived URLs and public code repositories. Explain how you would correlate the findings and avoid treating unrelated third-party information as belonging to the target.
+
+Q0730
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Security Analyst, Network Security Engineer
+- Competency: Identifying virtual-hosting behavior
+
+Question: A target IP address responds to HTTP requests, but visiting it directly displays a default hosting page while the organization's domain displays a different application. Explain how virtual hosting and the HTTP `Host` header influence this behavior, and how you would investigate multiple authorized hostnames on the same IP.
+
+Q0731
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Architect
+- Competency: Identifying forgotten external assets
+
+Question: During an authorized assessment, you discover an old development subdomain, a forgotten staging application and a deprecated API endpoint. Explain how you would establish asset ownership, assess exposure, identify potential sensitive functionality and communicate the risk without disrupting production services.
+
+Q0732
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Intelligence Analyst, Penetration Tester, Security Analyst
+- Competency: Evaluating OSINT intelligence quality
+
+Question: How would you assess the reliability, freshness and attribution confidence of information collected from public intelligence sources? Explain the importance of corroboration, source reputation, collection timestamps, false attribution and confidence scoring.
+
+Q0733
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Penetration Tester, Security Engineer, Threat Intelligence Analyst
+- Competency: Developing reconnaissance automation
+
+Question: Design a Python program that accepts a list of authorized domains, queries configured passive DNS or subdomain intelligence sources, normalizes discovered hostnames, removes duplicates and saves source attribution and collection timestamps. How would you implement rate limiting, API-key protection and error handling?
+
+Q0734
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Red Team Operator, Network Security Engineer
+- Competency: Understanding certificate intelligence
+
+Question: What information is contained in the Subject Alternative Name (SAN), Subject, Issuer and validity fields of an X.509 certificate? How can certificate metadata reveal relationships between domains, applications and infrastructure?
+
+Q0735
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Identifying exposed application interfaces
+
+Question: Passive reconnaissance identifies several JavaScript files associated with an organization's public website. How would you inspect them for API endpoint references, environment-specific URLs, authentication routes, source maps and accidentally exposed configuration information? How would you distinguish legitimate public configuration from actual secret exposure?
+
+Q0736
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Penetration Tester, Red Team Operator, Security Architect
+- Competency: Reconnaissance prioritization
+
+Question: Your reconnaissance identifies 2,000 external assets, but your assessment has a limited time budget. How would you prioritize assets using business criticality, exposure, technology risk, historical vulnerabilities, ownership confidence and potential impact?
+
+Q0737
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Red Team Operator, Threat Intelligence Analyst
+- Competency: Understanding reconnaissance boundaries
+
+Question: What legal, contractual and operational considerations should govern reconnaissance during an authorized penetration test? Explain how third-party hosting, shared infrastructure, rate limits, out-of-scope domains and passive versus active techniques affect the rules of engagement.
+
+Q0738
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Analyst
+- Competency: Investigating potential cloud misconfigurations
+
+Question: A public hostname appears to point to an unclaimed cloud storage or application-hosting resource. How would you verify the suspected dangling DNS condition, establish whether the resource is genuinely associated with the target and document the risk without claiming or modifying the resource?
+
+Q0739
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Red Team Operator, Security Engineer
+- Competency: Web reconnaissance
+
+Question: You have permission to assess an organization's public web applications. Explain how you would combine WhatWeb, browser developer tools, HTTP response inspection and archived URLs to identify frameworks, server technologies, application routes and potential areas requiring further security testing.
+
+Q0740
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Intelligence Analyst, Security Architect, Penetration Tester
+- Competency: Building an attack surface intelligence program
+
+Question: What architectural components would you include in a centralized external attack surface intelligence platform? Discuss asset discovery, source aggregation, normalization, ownership attribution, historical tracking, risk scoring, deduplication and remediation workflows.
+
+### Expert (Q0741–Q0745)
+
+Q0741
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Threat Intelligence Analyst, Security Researcher
+- Competency: Correlating large-scale infrastructure intelligence
+
+Question: An organization has hundreds of domains, thousands of certificates and infrastructure distributed across multiple cloud providers and CDNs. How would you construct an asset relationship graph that distinguishes direct ownership, shared hosting, third-party dependencies and inferred relationships? How would you prevent incorrect attribution from contaminating the graph?
+
+Q0742
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Security Engineer, Threat Intelligence Analyst, Penetration Tester
+- Competency: Building scalable reconnaissance pipelines
+
+Question: Design a distributed reconnaissance pipeline that processes millions of DNS and certificate intelligence records. Explain how you would handle ingestion, normalization, deduplication, asynchronous processing, source reliability, rate limiting, historical changes and failure recovery.
+
+Q0743
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Intelligence Analyst, Security Architect, Red Team Operator
+- Competency: Understanding infrastructure attribution
+
+Question: How would you distinguish genuine infrastructure ownership from shared infrastructure, reseller relationships, reverse-proxy services and CDN hosting when conducting external reconnaissance? What confidence model would you use before assigning an asset to a particular organization?
+
+Q0744
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Penetration Tester, Security Architect, Threat Intelligence Analyst
+- Competency: Managing reconnaissance uncertainty
+
+Question: Your attack surface discovery platform reports a potentially critical internet-facing application, but ownership is uncertain and the service may belong to a third-party vendor. How would you validate the finding, escalate it and determine whether further active testing is permitted?
+
+Q0745
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Threat Intelligence Analyst, Security Architect, Penetration Tester
+- Competency: Measuring reconnaissance program maturity
+
+Question: How would you measure the completeness and effectiveness of an organization's external reconnaissance program? Discuss asset discovery coverage, ownership attribution accuracy, stale asset detection, time-to-discovery, false positives and remediation outcomes.
+
+### Senior / Architect (Q0746–Q0750)
+
+Q0746
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Threat Intelligence Analyst, Penetration Tester
+- Competency: Enterprise attack surface governance
+
+Question: How would you establish an enterprise-wide external attack surface management program for an organization operating across multiple subsidiaries, regions and cloud providers? Explain governance, asset ownership, accountability, continuous discovery and remediation responsibilities.
+
+Q0747
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Security Engineer, Threat Intelligence Analyst
+- Competency: Designing an attack surface management platform
+
+Question: Design a scalable platform that continuously discovers external assets using passive intelligence sources and authorized active verification. Address ingestion architecture, data models, relationship mapping, asset ownership, risk scoring, alerting and integration with vulnerability management systems.
+
+Q0748
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, CISO, Threat Intelligence Analyst
+- Competency: Risk-based attack surface management
+
+Question: How would you prioritize remediation when an enterprise discovers thousands of exposed assets, including critical business applications, forgotten development environments, third-party services and low-risk informational domains? Explain how business context should influence technical severity.
+
+Q0749
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Penetration Testing Manager, Red Team Lead
+- Competency: Managing external assessment operations
+
+Question: Your organization wants to conduct recurring external reconnaissance across 20 countries and multiple subsidiaries. How would you establish rules of engagement, legal approvals, asset ownership verification, regional restrictions, third-party coordination and escalation procedures?
+
+Q0750
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Purple Team Engineer, Threat Intelligence Analyst
+- Competency: Integrating reconnaissance into security operations
+
+Question: Design an end-to-end workflow that connects external reconnaissance with vulnerability management, threat intelligence, SIEM monitoring, penetration testing and Purple Team exercises. How would findings from one activity improve the effectiveness of the others?
+
+# Section 19 — Scanning & Enumeration
+
+## Part A — Scanning Fundamentals
+
+### Beginner (Q0751–Q0760)
+
+Q0751
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Understanding network scanning
+
+Question: What is network scanning, and how does it differ from reconnaissance and vulnerability assessment? Explain how scanning helps identify accessible systems, exposed services and potential security weaknesses.
+
+Q0752
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Network Security Engineer, SOC Analyst
+- Competency: Understanding scanning methodologies
+
+Question: What is the difference between TCP connect scanning, TCP SYN scanning and UDP scanning? Explain how each method interacts with network services.
+
+Q0753
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer
+- Competency: Understanding port states
+
+Question: What do the `open`, `closed`, `filtered` and `unfiltered` port states mean in Nmap? How does Nmap determine these states based on responses from the target?
+
+Q0754
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer, SOC Analyst
+- Competency: Understanding service enumeration
+
+Question: What is service and version enumeration, and why is identifying the software running behind an open port important during a security assessment?
+
+Q0755
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Security Analyst, Vulnerability Analyst
+- Competency: Understanding vulnerability scanning
+
+Question: What is vulnerability scanning, and how does it help organizations identify outdated software, insecure configurations and known security vulnerabilities?
+
+Q0756
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Auditor
+- Competency: Understanding vulnerability assessment approaches
+
+Question: What is the difference between authenticated and unauthenticated vulnerability scanning? Why can authenticated scans identify weaknesses that external unauthenticated scans may miss?
+
+Q0757
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer
+- Competency: Understanding network discovery
+
+Question: What is host discovery, and how can ICMP echo requests, TCP probes and ARP requests help identify active devices on a network?
+
+Q0758
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Security Analyst, Vulnerability Analyst
+- Competency: Understanding vulnerability databases
+
+Question: What are CVE, CVSS and CWE, and how do they differ in their purposes when identifying, describing and prioritizing software vulnerabilities?
+
+Q0759
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Understanding network enumeration
+
+Question: What is network enumeration, and how does it help security professionals discover information about hosts, users, services, shared resources and network infrastructure?
+
+Q0760
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Penetration Tester, Network Security Engineer
+- Competency: Understanding common network services
+
+Question: Which common ports are associated with HTTP, HTTPS, SSH, FTP, DNS, SMTP, SMB, LDAP, RDP and SNMP? Why should security professionals investigate unexpected services running on these ports rather than assuming that the port number accurately identifies the service?
+
+## Part B — Nmap and Service Enumeration
+
+### Intermediate (Q0761–Q0770)
+
+Q0761
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Red Team Operator
+- Competency: Performing authorized host discovery
+
+Question: You are authorized to assess the network `192.168.1.0/24`. Which Nmap command would you use to perform host discovery without conducting a full port scan? Explain the purpose of the `-sn` option and how ARP discovery can affect results on a local network.
+
+Q0762
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer
+- Competency: Identifying open TCP ports
+
+Question: You are given permission to scan the host `192.168.1.10`. Write an Nmap command that scans the 1,000 most common TCP ports and explains the output. How would you save the results in normal, XML and grepable formats?
+
+Q0763
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Red Team Operator, Network Security Engineer
+- Competency: Performing targeted service enumeration
+
+Question: How would you use Nmap's `-sV` option to identify service versions on open ports of an authorized target? Explain how version detection works and why its results may be inaccurate when services use reverse proxies, custom banners or non-standard ports.
+
+Q0764
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Operating system fingerprinting
+
+Question: You need to identify the probable operating system of an authorized test machine. Which Nmap option performs OS detection, what information does it examine, and why can firewalls, virtualization and incomplete responses reduce fingerprinting accuracy?
+
+Q0765
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Investigating scan discrepancies
+
+Question: Nmap reports that a port is filtered, but the application owner confirms that the service is running. How would you investigate firewall rules, packet filtering, routing, network ACLs and scan-source restrictions to explain the discrepancy?
+
+Q0766
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Red Team Operator
+- Competency: Understanding Netcat enumeration
+
+Question: How would you use Netcat to establish a TCP connection to an authorized test server, inspect a service banner and determine whether the service responds as expected? Explain the limitations of banner grabbing when services suppress or customize their responses.
+
+Q0767
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: UDP service discovery
+
+Question: You suspect that an authorized server exposes DNS, SNMP or another UDP service. How would you use Nmap's UDP scanning functionality to investigate the host? Explain why UDP scanning can be slower and why an `open|filtered` result does not necessarily prove that a service is running.
+
+Q0768
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Engineer
+- Competency: Comparing vulnerability scanners
+
+Question: Compare Nessus and OpenVAS in terms of vulnerability detection, scan configuration, plugin or feed management, reporting and deployment. What factors would influence your choice between them?
+
+Q0769
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Auditor
+- Competency: Conducting vulnerability assessments
+
+Question: You are responsible for assessing a Windows server using Nessus. Explain how you would create a scan policy, configure the authorized target, select appropriate assessment settings, configure credentials and interpret the resulting vulnerability report.
+
+Q0770
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: SMB enumeration
+
+Question: During an authorized internal assessment, you identify TCP port 445 open on a Windows server. How would you investigate SMB protocol versions, accessible shares, server information and authentication requirements using appropriate enumeration tools? What would indicate an unnecessarily exposed or insecure SMB configuration?
+
+## Part C — Advanced Scanning and Enumeration
+
+### Advanced (Q0771–Q0780)
+
+Q0771
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Vulnerability Analyst
+- Competency: Planning enterprise network scans
+
+Question: You are assigned to assess a network containing 2,000 workstations, 150 servers and several network devices. Design a scanning strategy that minimizes operational disruption while identifying active hosts, exposed services, operating systems and vulnerable software. How would you divide the assessment into phases?
+
+Q0772
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Command-Based
+- Job Roles: Penetration Tester, Red Team Operator, Network Security Engineer
+- Competency: Advanced Nmap scanning
+
+Question: An authorized assessment requires TCP SYN scanning, service-version detection, OS fingerprinting and default Nmap script checks against a specific target. Construct an appropriate Nmap command using `-sS`, `-sV`, `-O` and `-sC`. Explain the purpose and operational implications of each option.
+
+Q0773
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Investigating incomplete port scans
+
+Question: An Nmap scan reports most ports as filtered, while packet captures show that probes are leaving your machine but no responses are returning. How would you investigate routing problems, firewall policies, asymmetric routing, packet loss and target-side filtering?
+
+Q0774
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: SMB security assessment
+
+Question: You identify an SMB server that supports SMBv1 and allows guest access to certain shares. How would you assess the security implications, investigate accessible resources, identify signing and authentication configurations, and recommend appropriate remediation without accessing unauthorized data?
+
+Q0775
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Active Directory Security Engineer, Network Security Engineer
+- Competency: LDAP enumeration
+
+Question: During an authorized Active Directory assessment, an LDAP service is exposed on ports 389 and 636. How would you determine whether LDAP and LDAPS are correctly configured, inspect directory information within your permitted scope and evaluate anonymous binding, transport security and access-control weaknesses?
+
+Q0776
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: SNMP enumeration
+
+Question: An internal network scan identifies UDP port 161 open on several network devices. How would you use appropriate SNMP enumeration tools to identify supported SNMP versions, system information and exposed management details? What security risks are associated with SNMPv1 and SNMPv2c?
+
+Q0777
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Engineer
+- Competency: Web server vulnerability scanning
+
+Question: You have permission to assess a public web server. How would you use Nikto to identify potentially outdated software, dangerous files, insecure HTTP headers and common web-server misconfigurations? How would you validate its findings before reporting vulnerabilities?
+
+Q0778
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Analyst
+- Competency: Vulnerability validation
+
+Question: A vulnerability scanner reports a critical vulnerability in an application server, but the installed version appears to be patched by the vendor through a backported security fix. How would you validate the finding using package metadata, vendor advisories, configuration evidence and safe verification methods before assigning its final severity?
+
+Q0779
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Engineer
+- Competency: Investigating vulnerability scanner inaccuracies
+
+Question: A Nessus or OpenVAS scan produces hundreds of findings, including numerous false positives and duplicate vulnerabilities. How would you investigate plugin results, affected software versions, detection evidence, CVE references and asset configuration to improve assessment accuracy?
+
+Q0780
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Penetration Tester
+- Competency: Understanding vulnerability prioritization
+
+Question: Why should vulnerability remediation priorities not be determined by CVSS scores alone? Explain how exploit availability, internet exposure, asset criticality, known exploitation activity, compensating controls and business impact should influence prioritization.
+
+## Part D — Expert Scanning, Enumeration & Vulnerability Assessment
+
+### Expert (Q0781–Q0795)
+
+Q0781
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Security Architect
+- Competency: Assessing segmented enterprise networks
+
+Question: You are conducting an authorized assessment of a segmented enterprise network containing user VLANs, server VLANs, a DMZ and restricted management networks. How would you determine which systems are reachable from each permitted assessment point, identify segmentation weaknesses and distinguish legitimate network restrictions from accidental exposure?
+
+Q0782
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Investigating firewall and packet-filtering behavior
+
+Question: An Nmap scan produces different port states depending on whether it is performed from an internal workstation, a VPN connection or an authorized external assessment system. How would you correlate packet captures, firewall logs, routing tables and scan responses to identify the network controls responsible for these differences?
+
+Q0783
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Active Directory Security Engineer, Security Analyst
+- Competency: Advanced LDAP security assessment
+
+Question: An LDAP server exposes directory information to authenticated users who should not have access to certain organizational units. How would you investigate LDAP access controls, bind identities, search filters, directory permissions and transport security to identify the root cause and demonstrate the exposure using authorized test accounts?
+
+Q0784
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Penetration Tester
+- Competency: Understanding vulnerability assessment limitations
+
+Question: What are the fundamental limitations of network-based vulnerability scanners when assessing modern enterprise environments? Discuss authenticated versus unauthenticated visibility, containerized workloads, dynamic infrastructure, custom applications, compensating controls and vulnerabilities requiring manual validation.
+
+Q0785
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Vulnerability Analyst, Security Engineer, Penetration Tester
+- Competency: Automating vulnerability assessment
+
+Question: Design a Python workflow that imports Nmap XML results and vulnerability scanner exports, normalizes host and service information, correlates discovered assets with CVE identifiers and generates a prioritized assessment report. How would you prevent duplicate findings and handle conflicting service-version information?
+
+Q0786
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Vulnerability Analyst, Security Architect, Security Auditor
+- Competency: Managing scan-related operational risks
+
+Question: A vulnerability scan identifies potentially exploitable weaknesses on a production database server, but the scanner's intrusive checks could cause service instability. How would you determine which checks are safe, obtain approval, select an alternative validation method and balance assessment completeness against operational risk?
+
+Q0787
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Penetration Tester
+- Competency: Understanding vulnerability intelligence
+
+Question: How would you correlate CVE, CVSS, CWE, CPE and vendor security advisories when determining whether an identified software vulnerability actually affects an organization's assets? Explain why matching a product name or version alone may produce incorrect conclusions.
+
+Q0788
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Investigating exposed remote administration services
+
+Question: An external assessment identifies RDP, SSH and administrative web interfaces exposed to the internet. How would you evaluate their authentication controls, network restrictions, encryption, access policies and logging? What remediation measures would you recommend without attempting unauthorized access?
+
+Q0789
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Vulnerability Analyst, Security Engineer, Network Security Engineer
+- Competency: Investigating authenticated scan failures
+
+Question: A credentialed Nessus assessment reports that authentication failed on 35% of Windows endpoints, while the remaining endpoints return successful results. How would you investigate account permissions, SMB connectivity, administrative shares, firewall restrictions, credential formats and endpoint security controls to identify the cause?
+
+Q0790
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Security Engineer
+- Competency: Understanding continuous vulnerability management
+
+Question: How does continuous vulnerability management differ from periodic vulnerability scanning? Explain the relationship between asset discovery, scanning schedules, vulnerability intelligence, risk prioritization, remediation tracking and continuous verification.
+
+Q0791
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Network Security Engineer, Security Architect
+- Competency: Investigating inconsistent network exposure
+
+Question: A critical database service is accessible from a development subnet but not from the production subnet, even though both environments use similar firewall policies. How would you investigate routing, network ACLs, host-based firewalls, VLAN configuration and application binding to identify whether the exposure is intentional or a security misconfiguration?
+
+Q0792
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Penetration Tester, Vulnerability Analyst, Security Engineer
+- Competency: Advanced OpenVAS assessment
+
+Question: Your security team uses OpenVAS to assess Linux servers across multiple network segments. Explain how you would configure scan targets, credentials, port lists, scan configurations, schedules and result reporting. How would you ensure that authenticated checks provide meaningful coverage without overwhelming the infrastructure?
+
+Q0793
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Security Auditor
+- Competency: Evaluating scanner coverage and confidence
+
+Question: How would you measure vulnerability scanner coverage and detection confidence across an enterprise? Discuss asset inventory completeness, authenticated scan success, plugin coverage, stale scan results, false-positive rates and independently validated findings.
+
+Q0794
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Penetration Tester, Network Security Engineer, Security Analyst
+- Competency: Assessing network service exposure
+
+Question: A network scan identifies multiple services operating on unexpected ports, including HTTP on a high-numbered port, SSH on a non-standard port and a database listener exposed to several internal subnets. How would you identify the actual services, establish their business purpose and determine whether the exposure violates the organization's network security policy?
+
+Q0795
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Vulnerability Analyst, Security Architect, Penetration Tester
+- Competency: Understanding vulnerability assessment strategy
+
+Question: How would you combine network scanning, authenticated host assessments, configuration auditing, application testing and threat intelligence to produce a more complete view of enterprise vulnerability exposure? Explain the blind spots that remain when any one of these assessment methods is used independently.
+
+## Part E — Senior-Level Scanning & Vulnerability Management Architecture
+
+### Senior / Architect (Q0796–Q0800)
+
+Q0796
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Vulnerability Management Lead, CISO
+- Competency: Establishing enterprise vulnerability management strategy
+
+Question: How would you establish an enterprise vulnerability management program covering thousands of endpoints, servers, cloud workloads, network devices and business applications? Explain governance, asset ownership, scanning frequency, authentication coverage, risk-based prioritization, remediation SLAs and executive reporting.
+
+Q0797
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Security Engineer, Vulnerability Management Lead
+- Competency: Designing centralized scanning infrastructure
+
+Question: Design a centralized vulnerability scanning architecture for an organization with 10,000 endpoints across 30 geographically distributed offices, multiple cloud environments and restricted network segments. Address distributed scanners, credential management, scan scheduling, network bandwidth, result aggregation, high availability and secure communication.
+
+Q0798
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Vulnerability Management Lead, CISO
+- Competency: Risk-based remediation governance
+
+Question: Your organization has 15,000 unresolved vulnerability findings, but the infrastructure team can remediate only 500 per month. How would you establish a prioritization and exception-management framework using exploitability, business criticality, exposure, regulatory obligations, remediation cost and compensating controls?
+
+Q0799
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Vulnerability Management Lead, Security Auditor
+- Competency: Managing vulnerability management performance
+
+Question: The executive team wants evidence that the vulnerability management program is improving security, but the existing dashboard reports only the number of vulnerabilities discovered and closed. Which additional KPIs and KRIs would you introduce to measure exposure reduction, remediation effectiveness, overdue critical findings, asset coverage, recurring weaknesses and risk acceptance?
+
+Q0800
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Purple Team Engineer, Vulnerability Management Lead
+- Competency: Integrating scanning with continuous security validation
+
+Question: Design an end-to-end enterprise workflow connecting asset discovery, Nmap enumeration, Nessus or OpenVAS scanning, vulnerability intelligence, remediation management, retesting and Purple Team validation. How would you ensure that discovered vulnerabilities are not merely closed in a ticketing system but are actually remediated and independently verified?

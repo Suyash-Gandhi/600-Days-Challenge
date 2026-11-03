@@ -1,0 +1,1105 @@
+# Cybersecurity Interview Question Bank — Batch 3
+
+# Section 6 — Cryptography
+
+## Topic 1: Cryptography Fundamentals
+
+Q0201
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, Security Engineer
+- Competency: Cryptographic fundamentals
+
+Question: What is cryptography, and how does it help protect information? Explain the differences between confidentiality, integrity, authentication and non-repudiation in the context of cryptographic systems.
+
+Q0202
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, Application Security Engineer
+- Competency: Cryptographic terminology
+
+Question: Differentiate between encryption, encoding, hashing and obfuscation. Why is it incorrect to consider Base64 encoding or simple data obfuscation equivalent to encryption?
+
+## Topic 2: Symmetric Encryption and AES
+
+Q0203
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Security Engineer, Application Security Engineer
+- Competency: Symmetric encryption mechanisms
+
+Question: Explain how symmetric encryption works. How does AES use a shared secret key to encrypt and decrypt information, and what are the differences between AES-128, AES-192 and AES-256?
+
+Q0204
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Engineer, Security Architect
+- Competency: Encryption mode selection
+
+Question: Compare AES-GCM, AES-CBC and AES-CTR. Which security properties does each mode provide, and why is authenticated encryption generally preferred for protecting application data?
+
+Q0205
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Security Engineer
+- Competency: Secure encryption implementation
+
+Question: You are implementing encryption for sensitive customer records in a Node.js application. How would you use an authenticated encryption mode such as AES-256-GCM, manage nonces and authentication tags, and prevent accidental reuse of cryptographic parameters?
+
+## Topic 3: Asymmetric Encryption, RSA and ECC
+
+Q0206
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Engineer, Security Architect
+- Competency: Public-key cryptography
+
+Question: Explain the difference between symmetric and asymmetric encryption. How do public and private keys work together, and what are the advantages and disadvantages of each approach?
+
+Q0207
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Security Engineer, Cryptographic Engineer
+- Competency: RSA and ECC mechanisms
+
+Question: Explain the mathematical foundations of RSA at a high level. How does Elliptic Curve Cryptography achieve comparable security with smaller key sizes, and what practical considerations influence the choice between them?
+
+Q0208
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Security Engineer, Application Security Engineer
+- Competency: Asymmetric encryption implementation
+
+Question: An application successfully encrypts data using a public key but cannot decrypt it after a key rotation. How would you investigate key-pair mismatches, key identifiers, serialization formats and key-version management?
+
+## Topic 4: Cryptographic Hashing and SHA-256
+
+Q0209
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, Malware Analyst
+- Competency: Hashing fundamentals
+
+Question: What is a cryptographic hash function? Explain the properties of preimage resistance, second-preimage resistance and collision resistance, and why these properties matter in cybersecurity.
+
+Q0210
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Security Analyst, Security Engineer
+- Competency: SHA-256 understanding
+
+Question: Explain how SHA-256 processes input data to produce a 256-bit digest. Why does a small change in the input produce a substantially different hash value?
+
+Q0211
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Malware Analyst, DFIR Analyst, Threat Intelligence Analyst
+- Competency: File integrity verification
+
+Question: You receive two executable files with identical filenames but different SHA-256 hashes. How would you use cryptographic hashes, trusted baselines and threat intelligence sources to determine whether the files are identical, modified or potentially malicious?
+
+## Topic 5: Salts and Password Hashing
+
+Q0212
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Why Question
+- Job Roles: Application Security Engineer, IAM Engineer
+- Competency: Password storage security
+
+Question: Why should applications hash passwords instead of storing them in plaintext or encrypting them with a reversible encryption algorithm?
+
+Q0213
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Application Security Engineer, Security Engineer
+- Competency: Password hashing algorithms
+
+Question: Compare bcrypt, scrypt, PBKDF2 and Argon2id. How do salts and computational cost parameters influence password-hashing security?
+
+Q0214
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, IAM Engineer, Application Security Engineer
+- Competency: Enterprise password security
+
+Question: Your organization stores millions of user password hashes using an older password-hashing algorithm. How would you plan a migration to a stronger password-hashing scheme while preserving user experience, handling inactive accounts and minimizing the risk associated with password resets?
+
+## Topic 6: HMAC
+
+Q0215
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: API Security Engineer, Security Engineer
+- Competency: Message authentication
+
+Question: What is HMAC, and how does it combine a cryptographic hash function with a secret key to provide message authentication and integrity verification?
+
+Q0216
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Secure request signing
+
+Question: Design an HMAC-based request-signing mechanism for an API integration. How would you construct the canonical message, verify signatures, prevent replay attacks and compare signatures safely?
+
+## Topic 7: Digital Signatures
+
+Q0217
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Security Engineer, Security Architect
+- Competency: Digital signature mechanisms
+
+Question: Explain how digital signatures work. How does a sender generate a signature using a private key, and how does a recipient verify it using the corresponding public key?
+
+Q0218
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Security Engineer, Incident Responder
+- Competency: Signature verification
+
+Question: An organization receives a digitally signed software update, but signature verification fails on several endpoints. How would you investigate certificate validity, signing-key changes, timestamping, file modification and trust-chain problems?
+
+## Topic 8: Public/Private Keys and Key Exchange
+
+Q0219
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: Key exchange mechanisms
+
+Question: Explain how Diffie-Hellman key exchange allows two parties to establish a shared secret over an insecure communication channel. Why does unauthenticated key exchange remain vulnerable to man-in-the-middle attacks?
+
+Q0220
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Security Architect, Security Engineer
+- Competency: Enterprise key management
+
+Question: A company uses hundreds of cryptographic keys across applications, databases, backups and cloud services. How would you design a centralized key-management lifecycle covering generation, distribution, access, rotation, revocation, backup and destruction?
+
+## Topic 9: Certificates and PKI
+
+Q0221
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Network Security Engineer, Security Engineer
+- Competency: Public Key Infrastructure
+
+Question: What is Public Key Infrastructure? Explain the roles of Certificate Authorities, registration authorities, digital certificates and certificate revocation mechanisms.
+
+Q0222
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, Security Engineer
+- Competency: Certificate validation
+
+Question: A browser reports that a website's TLS certificate is untrusted even though the certificate has not expired. How would you investigate the certificate chain, hostname mismatch, intermediate certificates, trusted roots and revocation status?
+
+Q0223
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Incident Responder, Security Architect
+- Competency: PKI compromise investigation
+
+Question: An organization discovers that an internal Certificate Authority's private signing key may have been compromised. How would you assess the scope of exposure, identify affected certificates, establish revocation priorities and rebuild trust across the enterprise?
+
+## Topic 10: TLS and HTTPS Security
+
+Q0224
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Network Security Engineer, Web Application Security Engineer
+- Competency: TLS handshake understanding
+
+Question: Explain the major stages of a TLS 1.3 handshake. How do the client and server negotiate cryptographic parameters, establish shared keys and authenticate the server?
+
+Q0225
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: TLS security engineering
+
+Question: Your organization discovers that several internal applications still support deprecated TLS configurations and weak cipher suites. How would you identify affected services, assess compatibility risks, prioritize remediation and verify that modern TLS configurations are correctly enforced?
+
+# Section 7 — Authentication, Authorization & IAM
+
+## Topic 1: Authentication vs Authorization
+
+Q0226
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: Identity fundamentals
+
+Question: Differentiate between identification, authentication and authorization. How do these three stages work together when a user accesses an enterprise application?
+
+Q0227
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: Access control troubleshooting
+
+Question: A user can successfully authenticate into an enterprise application but receives an authorization error when accessing a particular module. How would you investigate the user's identity, assigned roles, group memberships, resource permissions and policy evaluation?
+
+## Topic 2: Sessions, Cookies and Password Authentication
+
+Q0228
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, Web Application Security Engineer
+- Competency: Authentication lifecycle
+
+Question: Explain how password-based authentication and session-based authentication work in a typical web application. What happens after a user submits valid credentials?
+
+Q0229
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: Application Security Engineer, IAM Engineer
+- Competency: Session security
+
+Question: What is session fixation? How can an attacker exploit an application that does not regenerate session identifiers after successful authentication, and how would you prevent this vulnerability?
+
+## Topic 3: Password Hashing and MFA
+
+Q0230
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: Authentication security fundamentals
+
+Question: What is Multi-Factor Authentication? Explain the difference between knowledge, possession and inherence authentication factors, with examples of each.
+
+Q0231
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Security Engineer
+- Competency: MFA mechanism evaluation
+
+Question: Compare SMS OTP, authenticator-app TOTP, push-based MFA, hardware security keys and passkeys. What are the security limitations of each method?
+
+Q0232
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: SOC Analyst, IAM Engineer, Incident Responder
+- Competency: MFA attack investigation
+
+Question: An employee reports receiving repeated MFA approval notifications despite not attempting to log in. How would you investigate possible MFA fatigue, stolen credentials, session compromise and suspicious authentication attempts?
+
+Q0233
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Enterprise MFA architecture
+
+Question: Design an MFA architecture for an enterprise with remote employees, privileged administrators, contractors and service accounts. How would you select authentication methods, enforce stronger authentication for sensitive operations and maintain secure account recovery?
+
+## Topic 4: Single Sign-On (SSO)
+
+Q0234
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: SSO fundamentals
+
+Question: What is Single Sign-On? Explain how SSO allows users to access multiple applications after authenticating with a centralized identity provider.
+
+Q0235
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Federated authentication
+
+Question: Compare centralized authentication, SSO and federated identity. How do these approaches differ in identity ownership, trust relationships and authentication flows?
+
+Q0236
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: IAM Engineer, Identity Security Engineer
+- Competency: SSO troubleshooting
+
+Question: An employee can authenticate successfully with the corporate identity provider but cannot access one particular SaaS application. How would you troubleshoot application registration, identity attributes, assertion validation, clock synchronization and access policies?
+
+## Topic 5: RBAC, ABAC and ACLs
+
+Q0237
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: Authorization models
+
+Question: Compare Role-Based Access Control, Attribute-Based Access Control and Access Control Lists. How does each model determine whether a subject can perform an operation on a resource?
+
+Q0238
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: RBAC implementation
+
+Question: Design an RBAC system for an educational management platform containing administrators, institute staff, teachers and students. How would you model roles, permissions, resource ownership and permission inheritance?
+
+Q0239
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Fine-grained authorization
+
+Question: Your organization uses RBAC, but users require different access depending on department, geographical location, resource sensitivity and working hours. How would you introduce ABAC without creating conflicting or unpredictable authorization decisions?
+
+Q0240
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: IAM Engineer, Security Analyst, Application Security Engineer
+- Competency: Authorization vulnerability investigation
+
+Question: A user with a standard employee role discovers that modifying an API parameter allows access to administrative records. How would you investigate role inheritance, permission evaluation, object ownership and missing server-side checks, and establish a consistent authorization enforcement model?
+
+## Topic 6: JWT Security
+
+Q0241
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: JWT fundamentals
+
+Question: What is a JSON Web Token? Explain its header, payload and signature, and describe how a server verifies a JWT before accepting an authenticated request.
+
+Q0242
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: JWT implementation
+
+Question: Explain the differences between JWT claims such as `iss`, `sub`, `aud`, `exp`, `iat` and `nbf`. Why should an application validate these claims instead of checking only the token signature?
+
+Q0243
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: JWT vulnerability assessment
+
+Question: An Express.js backend verifies JWT signatures but does not explicitly restrict the accepted signing algorithm or validate the intended audience. What security problems can arise, and how would you configure robust JWT verification?
+
+Q0244
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, API Security Engineer, Incident Responder
+- Competency: Token compromise response
+
+Question: A production application discovers that an attacker has obtained a valid JWT belonging to an administrator. How would you contain the incident, evaluate token expiry and revocation limitations, investigate token theft and redesign token lifecycle management?
+
+## Topic 7: OAuth 2.0
+
+Q0245
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, API Security Engineer
+- Competency: OAuth fundamentals
+
+Question: What is OAuth 2.0, and what problem does it solve? Explain the roles of the resource owner, client, authorization server and resource server.
+
+Q0246
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, API Security Engineer
+- Competency: OAuth grant mechanisms
+
+Question: Compare the Authorization Code flow with PKCE, Client Credentials flow and Device Authorization flow. What types of clients or applications are appropriate for each?
+
+Q0247
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: IAM Engineer, API Security Engineer
+- Competency: OAuth implementation troubleshooting
+
+Question: A mobile application successfully authenticates users through an OAuth provider but occasionally receives invalid authorization-code errors. How would you investigate redirect URI matching, PKCE verification, authorization-code reuse, expiration and token exchange behavior?
+
+Q0248
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: IAM Engineer, Security Analyst, Incident Responder
+- Competency: OAuth security investigation
+
+Question: An attacker exploits an OAuth integration to obtain access tokens through an improperly validated redirect URI. How would you investigate the authorization flow, identify the trust-boundary failure and implement secure redirect URI validation and token handling?
+
+## Topic 8: OpenID Connect
+
+Q0249
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: Identity protocol fundamentals
+
+Question: What is OpenID Connect, and how does it extend OAuth 2.0? Explain the purpose of the ID token and how it differs from an OAuth access token.
+
+Q0250
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: IAM Engineer, API Security Engineer
+- Competency: OIDC token validation
+
+Question: What are the `nonce`, `state` and `aud` parameters in an OpenID Connect authentication flow? How does each contribute to protecting the authentication process?
+
+## Topic 9: SAML
+
+Q0251
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, Enterprise Security Engineer
+- Competency: SAML authentication
+
+Question: Explain how SAML-based authentication works. What are the responsibilities of the Identity Provider, Service Provider and SAML assertion?
+
+Q0252
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: SAML security assessment
+
+Question: An enterprise application accepts SAML assertions containing incorrect audience information or insufficiently validated signatures. How would you investigate the assertion-validation process and determine whether an authentication bypass is possible?
+
+## Topic 10: LDAP
+
+Q0253
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Active Directory Security Engineer
+- Competency: LDAP fundamentals
+
+Question: What is LDAP, and how is it used to organize and retrieve directory information? Explain the purpose of distinguished names, organizational units and directory entries.
+
+Q0254
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: IAM Engineer, Active Directory Security Engineer
+- Competency: LDAP integration security
+
+Question: An application authenticates users through LDAP but occasionally grants access to users who have been removed from the corresponding directory group. How would you investigate group membership caching, nested groups, bind permissions and authorization synchronization?
+
+## Topic 11: Active Directory Fundamentals
+
+Q0255
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Active Directory Security Engineer, SOC Analyst
+- Competency: Directory services fundamentals
+
+Question: What is Microsoft Active Directory? Explain the purpose of domains, domain controllers, organizational units, users and groups in a Windows enterprise environment.
+
+Q0256
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Active Directory architecture
+
+Question: Explain how Group Policy Objects are processed in an Active Directory environment. What is the typical order of Local, Site, Domain and Organizational Unit policy application, and how can inheritance and enforcement affect the result?
+
+Q0257
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Active Directory Security Engineer, SOC Analyst
+- Competency: Active Directory security investigation
+
+Question: An employee account has unexpectedly been added to a privileged Active Directory group. Which directory attributes, security events and administrative changes would you examine to identify who performed the modification and determine whether the change was authorized?
+
+## Topic 12: Kerberos
+
+Q0258
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Kerberos authentication
+
+Question: Explain how Kerberos authentication works in Active Directory. What are the roles of the Key Distribution Center, Authentication Service, Ticket Granting Service, Ticket Granting Ticket and service tickets?
+
+Q0259
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Active Directory Security Engineer, SOC Analyst
+- Competency: Kerberos troubleshooting
+
+Question: Users suddenly experience Kerberos authentication failures across multiple domain services. How would you investigate clock synchronization, DNS resolution, service principal names, domain controller availability and ticket validity?
+
+Q0260
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Active Directory Security Engineer, Threat Hunter, Incident Responder
+- Competency: Kerberos attack investigation
+
+Question: Your SIEM identifies suspicious Kerberos ticket activity involving an account that has access to several sensitive services. How would you investigate unusual service ticket requests, account privileges, service principal names and authentication telemetry to determine whether the account has been targeted?
+
+## Topic 13: IAM
+
+Q0261
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: Identity and access management fundamentals
+
+Question: What is Identity and Access Management? Explain how IAM supports user identification, authentication, authorization and controlled access to enterprise resources.
+
+Q0262
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Security Architect
+- Competency: IAM architectural understanding
+
+Question: Compare centralized IAM, decentralized identity management and federated identity management. What are the operational and security trade-offs associated with each model?
+
+Q0263
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Enterprise IAM implementation
+
+Question: Design an IAM solution for an organization with employees, contractors, external partners and service accounts. How would you integrate identity provisioning, authentication, authorization, access reviews and centralized policy enforcement?
+
+## Topic 14: Privileged Access Management
+
+Q0264
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: Privileged access fundamentals
+
+Question: What is Privileged Access Management? Why should administrator accounts, service accounts and other highly privileged identities receive additional security controls?
+
+Q0265
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Privileged identity controls
+
+Question: Explain the differences between privileged account vaulting, just-in-time access, just-enough administration and privileged session monitoring. What security problems does each address?
+
+Q0266
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, Active Directory Security Engineer
+- Competency: Privileged account security
+
+Question: An administrator uses the same privileged credentials across multiple servers, and those credentials are stored in an internal script. How would you eliminate this exposure while maintaining operational access for legitimate administrative tasks?
+
+## Topic 15: Microsoft Entra ID
+
+Q0267
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Cloud identity fundamentals
+
+Question: What is Microsoft Entra ID? Explain how it provides cloud-based identity management, authentication and access control for Microsoft cloud services and integrated enterprise applications.
+
+Q0268
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Cloud identity architecture
+
+Question: Compare cloud-only identities, synchronized hybrid identities and guest identities in Microsoft Entra ID. What security and administrative considerations apply to each?
+
+## Topic 16: Azure Active Directory Security Concepts
+
+Q0269
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Azure identity security
+
+Question: Explain how Conditional Access policies work in Microsoft Entra ID. How can user identity, device compliance, location, application sensitivity and authentication strength influence access decisions?
+
+Q0270
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Conditional Access troubleshooting
+
+Question: A user who previously accessed a cloud application successfully is now blocked by a Conditional Access policy. How would you use sign-in logs, policy evaluation results, device compliance status and authentication requirements to identify the reason?
+
+## Topic 17: Identity Lifecycle Management
+
+Q0271
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, GRC Analyst
+- Competency: Identity lifecycle fundamentals
+
+Question: What is identity lifecycle management? Explain the joiner, mover and leaver processes and why each is important for maintaining appropriate access throughout an employee's lifecycle.
+
+Q0272
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, Security Analyst
+- Competency: User provisioning and deprovisioning
+
+Question: An employee transfers from the finance department to engineering but retains access to financial systems that are no longer required. How would you identify excessive permissions, coordinate access removal and prevent similar access accumulation in the future?
+
+## Topic 18: Identity Governance and Administration (IGA)
+
+Q0273
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: IAM Engineer, GRC Analyst
+- Competency: Identity governance
+
+Question: What is Identity Governance and Administration? Explain the purpose of access certification, entitlement management, segregation of duties and identity lifecycle governance.
+
+Q0274
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: IAM Engineer, GRC Analyst, Security Auditor
+- Competency: Access review and compliance
+
+Question: During an access certification exercise, a manager approves hundreds of user permissions without reviewing them individually. How would you improve the certification process, identify high-risk entitlements and produce evidence that access reviews are meaningful?
+
+## Topic 19: Conditional Access
+
+Q0275
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Adaptive access control
+
+Question: Design a Conditional Access policy strategy for a multinational enterprise. How would you handle privileged users, unmanaged devices, high-risk sign-ins, remote locations, legacy authentication and emergency access accounts?
+
+## Topic 20: Identity Federation
+
+Q0276
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Federation mechanisms
+
+Question: What is identity federation? Explain how two organizations can establish a trust relationship that allows users from one organization to access resources in another without creating separate local passwords.
+
+Q0277
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Federation trust security
+
+Question: Your organization federates authentication with multiple external identity providers. One partner's identity provider is compromised. How would you evaluate the impact on federated applications, revoke trust safely and restore secure authentication without disrupting unrelated partners?
+
+## Topic 21: SCIM Provisioning
+
+Q0278
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: Automated identity provisioning
+
+Question: What is SCIM, and how does it standardize user and group provisioning between identity providers and applications? Explain the purpose of user creation, updates, deactivation and group membership synchronization.
+
+Q0279
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: IAM Engineer, Security Engineer
+- Competency: SCIM provisioning security
+
+Question: An employee account is disabled in the corporate identity provider but remains active in several connected SaaS applications. How would you investigate SCIM synchronization, provisioning failures, retry mechanisms and application-side deactivation behavior?
+
+## Topic 22: Identity Threat Detection and Response (ITDR)
+
+Q0280
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: IAM Engineer, Threat Hunter, SOC Analyst
+- Competency: Identity threat investigation
+
+Question: An identity monitoring platform detects an unusual combination of impossible travel, new MFA registration, suspicious OAuth consent and access to sensitive resources. How would you correlate these signals and determine whether the identity has been compromised?
+
+## Topic 23: Service Accounts and Managed Identities
+
+Q0281
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Cloud Security Engineer
+- Competency: Non-human identity security
+
+Question: Compare traditional service accounts, managed service accounts and cloud managed identities. What problems do managed identities solve, and what security limitations must still be considered?
+
+Q0282
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Security Architect, Cloud Security Engineer
+- Competency: Enterprise workload identity
+
+Question: Design a secure non-human identity architecture for an enterprise operating hundreds of applications, automated pipelines and background services. How would you eliminate long-lived credentials, restrict workload permissions and monitor machine-to-machine authentication?
+
+## Topic 24: Secrets and Credential Lifecycle Management
+
+Q0283
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: DevSecOps Engineer, IAM Engineer
+- Competency: Secrets management
+
+Question: A developer discovers that database credentials and API keys have been committed to a public Git repository. How would you investigate exposure, revoke and rotate affected credentials, examine usage logs and prevent recurrence?
+
+## Topic 25: Enterprise SSO Implementation
+
+Q0284
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Enterprise SSO architecture
+
+Question: Design a centralized SSO solution for an enterprise containing legacy applications, modern web applications, mobile applications and third-party SaaS platforms. How would you handle protocol compatibility, identity synchronization, MFA, session management, account recovery and service availability?
+
+## Topic 26: PAM Implementation and Architecture
+
+Q0285
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: IAM Engineer, Security Architect, Security Manager
+- Competency: Enterprise privileged access architecture
+
+Question: An organization has thousands of privileged accounts distributed across Windows, Linux, databases, cloud environments and network devices. Design a PAM program covering credential vaulting, session recording, just-in-time access, emergency access, approval workflows and continuous monitoring. How would you measure its effectiveness?
+
+# Section 8 — Core Cybersecurity
+
+## Topic 1: CIA Triad
+
+Q0286
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, SOC Analyst
+- Competency: Core security principles
+
+Question: Explain the Confidentiality, Integrity and Availability (CIA) Triad. Give a real-world example of a security incident that violates each principle.
+
+Q0287
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Scenario-Based
+- Job Roles: Security Analyst, GRC Analyst
+- Competency: Security control selection
+
+Question: A company encrypts its customer database but has no reliable backup system. Which parts of the CIA Triad are protected, and which remain at risk if the database becomes unavailable or corrupted?
+
+## Topic 2: Threats, Vulnerabilities, Exploits and Risk
+
+Q0288
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, GRC Analyst
+- Competency: Risk terminology
+
+Question: Differentiate between a threat, vulnerability, exploit, threat actor and risk. How do these concepts relate when evaluating a potential security incident?
+
+Q0289
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Analyst, Security Architect, GRC Analyst
+- Competency: Risk-based prioritization
+
+Question: Your vulnerability management team discovers 50 vulnerabilities across production systems. Some have critical CVSS scores but are difficult to exploit, while others have moderate scores but affect internet-facing services. How would you prioritize remediation using exploitability, business impact, exposure and available threat intelligence?
+
+## Topic 3: Attack Surface and Attack Vectors
+
+Q0290
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, Penetration Tester
+- Competency: Attack surface fundamentals
+
+Question: What is an attack surface, and how does it differ from an attack vector? Explain how exposed services, user accounts, APIs, software dependencies and third-party integrations contribute to an organization's attack surface.
+
+## Topic 4: Threat Actors
+
+Q0291
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Threat Intelligence Analyst, SOC Analyst
+- Competency: Threat actor profiling
+
+Question: Compare financially motivated cybercriminals, nation-state actors, hacktivists, insiders and opportunistic attackers. How would their motivations, resources and operational objectives influence your defensive security strategy?
+
+## Topic 5: Security Controls
+
+Q0292
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, GRC Analyst
+- Competency: Security control classification
+
+Question: Explain the differences between preventive, detective, corrective, deterrent and compensating security controls. Give an example of each in an enterprise environment.
+
+## Topic 6: Defense in Depth and Least Privilege
+
+Q0293
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Security Architect, Security Analyst, IAM Engineer
+- Competency: Layered security implementation
+
+Question: A company relies primarily on perimeter firewalls to protect its internal network. How would you introduce defense in depth using endpoint security, identity controls, network segmentation, application security, monitoring and incident response? How would you ensure that each layer provides independent security value?
+
+## Topic 7: Zero Trust
+
+Q0294
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Network Security Engineer, IAM Engineer
+- Competency: Zero Trust implementation
+
+Question: An organization believes that all internal network traffic is trustworthy once a user connects through its corporate VPN. How would you challenge this assumption and introduce continuous verification of identities, devices and resource access?
+
+## Topic 8: Security by Design
+
+Q0295
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Application Security Engineer
+- Competency: Secure system design
+
+Question: Your engineering team is designing a new multi-tenant financial application. How would you incorporate security by design into architecture decisions, development workflows, identity management, data storage, logging and deployment rather than treating security as a final testing activity?
+
+## Topic 9: Attack Chains
+
+Q0296
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Threat Hunter, Incident Responder, Purple Team Engineer
+- Competency: Attack chain reconstruction
+
+Question: An attacker compromises an employee account, establishes persistence on a workstation, discovers internal servers, obtains privileged credentials and accesses a sensitive database. How would you reconstruct the attack chain, identify the initial access point, determine which security controls failed and establish the containment priorities?
+
+## Topic 10: Threat Modeling
+
+Q0297
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Application Security Engineer, Security Researcher
+- Competency: Threat modeling methodology
+
+Question: You are asked to perform a threat model for a multi-tenant SaaS platform that uses OAuth authentication, REST APIs, PostgreSQL, background workers and external payment services. How would you define trust boundaries, identify assets, enumerate threats, prioritize attack scenarios and translate findings into actionable security requirements?
+
+## Topic 11: Security Architecture and Security Posture
+
+Q0298
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, CISO, Security Manager
+- Competency: Enterprise security posture management
+
+Question: An organization has deployed firewalls, endpoint protection, SIEM and vulnerability scanning, yet continues to experience serious security incidents. As a security architect, how would you evaluate the organization's overall security posture, identify systemic weaknesses and develop a prioritized improvement roadmap?
+
+## Topic 12: Indicators of Compromise (IOCs)
+
+Q0299
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Threat Intelligence Analyst
+- Competency: Threat detection fundamentals
+
+Question: What are Indicators of Compromise? Explain the differences between file hashes, malicious IP addresses, suspicious domains, URLs, registry artifacts and behavioral indicators. Why should defenders avoid treating every IOC as definitive proof of compromise?
+
+## Topic 13: Tactics, Techniques and Procedures (TTPs)
+
+Q0300
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Threat Intelligence Analyst, Threat Hunter, Detection Engineer
+- Competency: Adversary behavior analysis
+
+Question: Your organization observes suspicious PowerShell execution, credential access attempts and lateral movement between internal systems. How would you distinguish individual IOCs from broader adversary TTPs, correlate the activity into a behavioral pattern and use that understanding to develop more resilient detections?

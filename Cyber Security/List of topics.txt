@@ -1,5 +1,5 @@
-# Cybersecurity Purple Team Roadmap
-Total - 492 topics
+# Cybersecurity Purple Team Roadmap 
+Master Roadmap — 589 Topics
 
 ## 1. Computer & OS Foundations
 1. CPU architecture and instruction execution (CPU, registers, instruction cycle)
@@ -114,6 +114,18 @@ Total - 492 topics
 12. Kerberos
 13. IAM
 14. Privileged Access Management
+15. Microsoft Entra ID
+16. Azure Active Directory security concepts
+17. Identity lifecycle management
+18. Identity Governance and Administration (IGA)
+19. Conditional Access
+20. Identity federation
+21. SCIM provisioning
+22. Identity Threat Detection and Response (ITDR)
+23. Service accounts and managed identities
+24. Secrets and credential lifecycle management
+25. Enterprise SSO implementation
+26. PAM implementation and architecture
 
 ## 8. Core Cybersecurity
 1. CIA Triad
@@ -132,7 +144,27 @@ Total - 492 topics
 14. MITRE ATT&CK
 15. Cyber Kill Chain
 
-## 9. Security Monitoring
+## 9. Governance, Risk & Compliance (GRC)
+1. Information security governance
+2. Risk management frameworks
+3. Security policies and procedures
+4. ISO 27001 and ISO 27002
+5. NIST Cybersecurity Framework
+6. NIST SP 800-53
+7. SOC 2 compliance
+8. GDPR and data protection
+9. PCI DSS
+10. HIPAA security requirements
+11. Security audits
+12. Risk assessments
+13. Vendor and third-party risk management
+14. Business continuity planning
+15. Disaster recovery planning
+16. Business impact analysis
+17. Compliance monitoring
+18. Security awareness and training
+
+## 10. Security Monitoring
 1. Security monitoring and telemetry
 2. Log collection, normalization and correlation
 3. Event analysis
@@ -145,7 +177,7 @@ Total - 492 topics
 10. Linux authentication logs, Syslog and Journald
 11. Linux process, file, SSH, user, permission, cron and service monitoring
 
-## 10. SIEM & EDR
+## 11. SIEM & EDR
 1. SIEM architecture and log ingestion
 2. Parsing, normalization and correlation
 3. SIEM search, dashboards and alerting
@@ -158,7 +190,7 @@ Total - 492 topics
 10. Behavioral detection and endpoint isolation
 11. EDR threat investigation
 
-## 11. Network Defense
+## 12. Network Defense & Infrastructure Security
 1. Firewall security
 2. IDS/IPS security
 3. WAF security
@@ -168,8 +200,23 @@ Total - 492 topics
 7. Network monitoring and packet analysis
 8. Proxy and firewall logs
 9. Network anomaly detection
+10. Wireless security
+11. Wi-Fi authentication and encryption
+12. WPA2 and WPA3
+13. Network Access Control (NAC)
+14. Email security
+15. SPF, DKIM and DMARC
+16. Phishing detection
+17. Secure DNS architecture
+18. DDoS protection
+19. Network Access Control policies
+20. Infrastructure vulnerability management
+21. Patch management
+22. Endpoint hardening
+23. Configuration management
+24. Microsoft Intune and endpoint management
 
-## 12. Threat Intelligence
+## 13. Threat Intelligence
 1. Threat intelligence fundamentals
 2. IOC types: IPs, domains and hashes
 3. Malware indicators
@@ -178,7 +225,7 @@ Total - 492 topics
 6. IOC enrichment
 7. MITRE ATT&CK intelligence
 
-## 13. Detection Engineering
+## 14. Detection Engineering
 1. Detection logic and rules
 2. Signature, behavioral and anomaly detection
 3. Sigma
@@ -192,7 +239,7 @@ Total - 492 topics
 11. Detection-as-code
 12. Detection testing
 
-## 14. Incident Response
+## 15. Incident Response
 1. Incident identification and triage
 2. Investigation
 3. Containment
@@ -202,7 +249,7 @@ Total - 492 topics
 7. Evidence preservation
 8. Incident response playbooks
 
-## 15. Threat Hunting & Digital Forensics
+## 16. Threat Hunting & Digital Forensics
 1. Hypothesis-driven threat hunting
 2. IOC, TTP and behavioral hunting
 3. Query-based hunting
@@ -217,7 +264,27 @@ Total - 492 topics
 12. Network evidence
 13. Autopsy, Volatility and Velociraptor
 
-## 16. Reconnaissance
+## 17. Malware Analysis & Reverse Engineering
+1. Malware fundamentals and classifications
+2. Static malware analysis
+3. Dynamic malware analysis
+4. PE file format
+5. ELF file format
+6. Windows API internals
+7. DLLs and executable loading
+8. Debugging fundamentals
+9. x86 and x64 assembly
+10. Ghidra
+11. IDA Free
+12. x64dbg
+13. Sandbox analysis
+14. Malware behavior analysis
+15. Anti-debugging techniques
+16. Packers and obfuscation
+17. Basic ransomware analysis
+18. Malware detection engineering
+
+## 18. Reconnaissance
 1. Passive reconnaissance
 2. Active reconnaissance
 3. OSINT
@@ -230,7 +297,7 @@ Total - 492 topics
 10. Target profiling
 11. Amass, Subfinder, WhatWeb and theHarvester
 
-## 17. Scanning & Enumeration
+## 19. Scanning & Enumeration
 1. Port scanning
 2. Service and version enumeration
 3. OS detection
@@ -243,7 +310,7 @@ Total - 492 topics
 10. Nikto
 11. Nessus/OpenVAS
 
-## 18. Web Application Security
+## 20. Web Application Security
 1. XSS: stored, reflected and DOM
 2. CSP weaknesses and XSS filter bypass
 3. SQL injection: authentication bypass, UNION, blind and time-based
@@ -270,7 +337,25 @@ Total - 492 topics
 24. XXE
 25. Cryptographic failures in web applications
 
-## 19. API Security
+## 21. Mobile Application Security
+1. Android architecture and security model
+2. Android application components
+3. APK structure and analysis
+4. Android permissions
+5. Android application storage security
+6. Android reverse engineering
+7. Frida
+8. JADX
+9. MobSF
+10. Root detection and bypass
+11. SSL pinning and bypass
+12. iOS architecture and security model
+13. iOS application security
+14. Mobile API security
+15. OWASP Mobile Application Security Testing Guide (MASTG)
+16. OWASP Mobile Top 10
+
+## 22. API Security
 1. REST API security
 2. API authentication flaws
 3. Broken API authorization and BOLA/IDOR
@@ -288,7 +373,7 @@ Total - 492 topics
 15. Server-side validation
 16. Trust boundaries
 
-## 20. Credentials & Password Attacks
+## 23. Credentials & Password Attacks
 1. Brute force and dictionary attacks
 2. Password spraying
 3. Credential stuffing
@@ -301,7 +386,7 @@ Total - 492 topics
 10. Hashcat and John the Ripper
 11. Mimikatz
 
-## 21. Privilege Escalation
+## 24. Privilege Escalation
 1. Linux SUID/SGID
 2. Linux capabilities
 3. Weak Linux permissions
@@ -321,7 +406,7 @@ Total - 492 topics
 17. PowerShell abuse
 18. Windows internals
 
-## 22. Active Directory Security
+## 25. Active Directory Security
 1. AD domains and Domain Controllers
 2. AD users, groups and OUs
 3. Group Policy
@@ -337,7 +422,7 @@ Total - 492 topics
 13. Kerberoasting and AS-REP Roasting
 14. Pass-the-Hash and Pass-the-Ticket
 
-## 23. Lateral Movement
+## 26. Lateral Movement
 1. SMB lateral movement
 2. WinRM
 3. RDP
@@ -347,7 +432,7 @@ Total - 492 topics
 7. Pass-the-Hash and Pass-the-Ticket
 8. Credential reuse
 
-## 24. Persistence & Command and Control
+## 27. Persistence & Command and Control
 1. Scheduled Task persistence
 2. Service persistence
 3. Registry persistence
@@ -364,7 +449,7 @@ Total - 492 topics
 14. C2 infrastructure
 15. Payloads and communication channels
 
-## 25. Adversary Simulation
+## 28. Adversary Simulation
 1. MITRE ATT&CK-driven adversary simulation
 2. Attack scenarios and attack chains
 3. TTP simulation
@@ -375,7 +460,7 @@ Total - 492 topics
 8. Rules of engagement
 9. Attack documentation
 
-## 26. Secure Coding & AppSec
+## 29. Secure Coding & AppSec
 1. Secure SDLC
 2. Security requirements
 3. Threat modeling for applications
@@ -401,7 +486,7 @@ Total - 492 topics
 23. Leaking stack traces
 24. Weak middleware ordering
 
-## 27. Cloud & DevSecOps Security
+## 30. Cloud & DevSecOps Security
 1. Docker fundamentals and container security
 2. Dockerfiles and image vulnerabilities
 3. Container permissions and secrets
@@ -429,8 +514,26 @@ Total - 492 topics
 25. Container scanning
 26. Secret scanning
 27. Secure DevSecOps lifecycle
+28. AWS security architecture
+29. Azure security fundamentals
+30. GCP security fundamentals
+31. Cloud IAM misconfigurations
+32. Cloud Security Posture Management (CSPM)
+33. Cloud Workload Protection Platform (CWPP)
+34. Cloud-Native Application Protection Platform (CNAPP)
+35. Kubernetes pod security
+36. Kubernetes admission controllers
+37. Kubernetes network security
+38. Kubernetes runtime security
+39. Service mesh security
+40. Serverless security
+41. Cloud incident response
+42. Cloud forensics
+43. Container runtime security
+44. Supply-chain security and Software Bill of Materials (SBOM)
+45. Software signing and artifact integrity
 
-## 28. Purple Team Core
+## 31. Purple Team Core
 1. Purple Team methodology
 2. Attack → telemetry → detection workflow
 3. Attack simulation and adversary emulation
@@ -454,7 +557,7 @@ Total - 492 topics
 21. Hunt-to-detection conversion
 22. Detection-to-hunt validation
 
-## 29. Purple Team Detection Engineering & Automation
+## 32. Purple Team Detection Engineering & Automation
 1. Sigma and YARA
 2. KQL and SPL
 3. SIEM and EDR detection rules
@@ -473,7 +576,7 @@ Total - 492 topics
 16. Docker-based security labs
 17. Terraform-based lab deployment
 
-## 30. Security Reporting
+## 33. Security Reporting
 1. Vulnerability reports
 2. Penetration testing reports
 3. Incident reports
@@ -485,7 +588,7 @@ Total - 492 topics
 9. Technical findings
 10. Evidence documentation
 
-## 31. Practical Labs & Portfolio
+## 34. Practical Labs & Portfolio
 1. Vulnerable MERN application lab
 2. Authentication/RBAC/API security lab
 3. Exploit, patch and document application vulnerabilities
@@ -502,8 +605,20 @@ Total - 492 topics
 14. Cloud security lab
 15. AWS IAM/VPC/S3/CloudTrail lab
 16. Cloud misconfiguration testing and detection
+17. GRC risk assessment and ISO 27001 implementation lab
+18. Security audit and compliance evidence lab
+19. Android application penetration testing lab
+20. Mobile application reverse engineering lab
+21. Malware static and dynamic analysis lab
+22. Malware detection and YARA rule development lab
+23. Enterprise IAM and Entra ID security lab
+24. Kubernetes security and misconfiguration lab
+25. Cloud incident response and forensic investigation lab
+26. Wireless and network security assessment lab
+27. Email security and phishing detection lab
+28. Endpoint hardening and configuration audit lab
 
-## 32. Practical Platforms & Bug Bounty
+## 35. Practical Platforms & Bug Bounty
 1. PortSwigger Web Security Academy
 2. TryHackMe
 3. Hack The Box
@@ -520,7 +635,7 @@ Total - 492 topics
 14. Vulnerability reporting
 15. Responsible disclosure
 
-## 33. Optional Blockchain Security
+## 36. Optional Blockchain Security
 1. Blockchain architecture
 2. Smart contracts and Solidity
 3. EVM
@@ -545,13 +660,13 @@ Total - 492 topics
 22. Manual smart contract auditing
 23. Audit reporting
 
-## 34. Advanced Specializations
+## 37. Advanced Specializations
 1. Cloud Security
 2. Advanced Application Security
 3. DevSecOps
 4. Advanced Threat Hunting
 5. Advanced Digital Forensics
-6. Malware Analysis
+6. Advanced Malware Analysis
 7. Reverse Engineering
 8. Exploit Development
 9. Security Research
@@ -560,3 +675,7 @@ Total - 492 topics
 12. Advanced Assembly
 13. Advanced Cryptography
 14. Security Architecture
+15. Advanced Mobile Application Security
+16. Advanced Identity Security
+17. Advanced Kubernetes Security
+18. Advanced GRC and Security Governance

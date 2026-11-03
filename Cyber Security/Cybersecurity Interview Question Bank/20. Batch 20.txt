@@ -1,0 +1,1088 @@
+# Batch 20 — Blockchain Security
+
+- Primary syllabus: Section 36 — Optional Blockchain Security
+
+The progression moves from blockchain architecture and Solidity fundamentals to EVM execution, smart contract vulnerabilities, DeFi attack chains, auditing, remediation and security architecture.
+
+All offensive exercises assume owned contracts, local testnets, explicitly authorized environments or isolated simulations.
+
+## Part 1 — Beginner (Q1901–Q1915)
+
+### Blockchain Architecture and Smart Contract Fundamentals
+
+Q1901
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Security Architect
+- Competency: Understanding blockchain architecture
+
+Question: What is a blockchain, and how do distributed ledgers, cryptographic hashing, consensus mechanisms and network participants work together to maintain a shared transaction history?
+
+Q1902
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding smart contracts
+
+Question: What is a smart contract, and how does deploying a Solidity contract to an EVM-compatible blockchain differ from executing a conventional backend application?
+
+Q1903
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Writing basic Solidity contracts
+
+Question: Write a Solidity contract named `SimpleStorage` that stores an unsigned integer, allows anyone to update it through a public function, and exposes a function to retrieve its current value. Explain the purpose of `uint256`, `public`, `function`, and `view`.
+
+Q1904
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding decentralized execution
+
+Question: What is the Ethereum Virtual Machine (EVM), and why is deterministic execution important when thousands of blockchain nodes independently process the same smart contract transaction?
+
+Q1905
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Compiling and deploying Solidity contracts
+
+Question: You have installed Hardhat and created a basic Solidity project. Describe the steps required to create a contract, compile it, deploy it to a local Hardhat network, and verify its deployed address.
+
+Q1906
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Security Architect
+- Competency: Understanding blockchain wallets
+
+Question: How do externally owned accounts (EOAs) and contract accounts differ on Ethereum, and what security responsibilities arise from controlling the private key associated with an EOA?
+
+Q1907
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Blockchain Security Engineer
+- Competency: Understanding transaction execution costs
+
+Question: You submit a transaction to an Ethereum testnet and receive a transaction receipt containing `gasUsed`, `status`, and `effectiveGasPrice`. What does each field indicate, and how would you determine whether the transaction succeeded and how much gas it consumed?
+
+Q1908
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding blockchain transaction security
+
+Question: What happens between signing a blockchain transaction and its eventual inclusion in a block, and which security risks arise if transaction details or signing requests are not properly verified?
+
+Q1909
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Security Researcher
+- Competency: Inspecting contract interfaces
+
+Question: You receive a Solidity contract ABI and deployed contract address. How would you use an Ethereum development library such as Ethers.js to instantiate the contract interface, read a public state variable, and distinguish a read-only call from a state-changing transaction?
+
+Q1910
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding smart contract immutability
+
+Question: Why are deployed smart contracts difficult to modify, and how does immutability affect the design, testing and remediation of security vulnerabilities in blockchain applications?
+
+Q1911
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Testing basic Solidity access control
+
+Question: Consider this contract:
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract Vault {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function setOwner(address newOwner) public {
+        owner = newOwner;
+    }
+}
+```
+
+Identify the security weakness, explain how an unauthorized caller could change the owner, and modify the function so that only the current owner can execute it.
+
+Q1912
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Blockchain Security Engineer
+- Competency: Understanding cryptographic guarantees in blockchain systems
+
+Question: How do cryptographic hashes and digital signatures contribute different security properties to blockchain transactions, and why can neither replace the other?
+
+Q1913
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Identifying Solidity visibility and state behavior
+
+Question: Given a Solidity contract containing `public`, `private`, `internal`, and `external` functions and variables, how would you inspect their visibility and determine which functions can be called externally? Does declaring a variable `private` make its stored value secret from blockchain observers?
+
+Q1914
+
+- Difficulty: Beginner
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Security Architect
+- Competency: Understanding blockchain consensus security
+
+Question: Why do blockchain networks require consensus mechanisms, and how can differences between Proof of Work and Proof of Stake affect the network's security assumptions?
+
+Q1915
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Security Researcher
+- Competency: Working with local blockchain development environments
+
+Question: Using Hardhat, how would you configure a local development network, deploy a simple contract, retrieve its deployment transaction hash, and inspect the resulting transaction receipt without interacting with a public production blockchain?
+
+## Part 2 — Intermediate (Q1916–Q1940)
+
+### Solidity, EVM, Wallets and Common Vulnerabilities
+
+Q1916
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding EVM storage
+
+Question: How does Solidity assign storage slots to state variables, and why can the ordering and packing of variables in a contract's storage layout affect gas consumption and upgrade compatibility?
+
+Q1917
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Developer, Security Researcher
+- Competency: Understanding Solidity execution contexts
+
+Question: Explain the differences between `storage`, `memory`, and `calldata` in Solidity, including their lifetimes, mutability characteristics, and implications for contract security.
+
+Q1918
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Implementing access control
+
+Question: Implement a Solidity `Ownable`-style access-control mechanism without importing an external library. Include owner initialization, an `onlyOwner` modifier, ownership transfer, and rejection of a zero-address owner. What additional validation would you include in production?
+
+Q1919
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding reentrancy
+
+Question: What is a reentrancy vulnerability, and how can an external contract call cause a function to be entered again before the original execution has completed?
+
+Q1920
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Identifying reentrancy in Solidity
+
+Question: Analyze this contract:
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract VulnerableVault {
+    mapping(address => uint256) public balances;
+
+    function withdraw() external {
+        uint256 amount = balances[msg.sender];
+
+        (bool success, ) = msg.sender.call{
+            value: amount
+        }("");
+
+        require(success, "Transfer failed");
+
+        balances[msg.sender] = 0;
+    }
+
+    receive() external payable {
+        balances[msg.sender] += msg.value;
+    }
+}
+```
+
+Explain the reentrancy flaw, describe the state inconsistency that enables repeated withdrawals, and propose a checks-effects-interactions remediation.
+
+Q1921
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding arithmetic vulnerabilities
+
+Question: How did integer overflow and underflow vulnerabilities affect older Solidity contracts, and what protection does Solidity 0.8.x provide by default? Under what circumstances can arithmetic operations still become unsafe?
+
+Q1922
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Validating arithmetic safety
+
+Question: Write a Solidity function that calculates a token transfer fee using a basis-point percentage. Explain how you would prevent unexpected results from multiplication overflow, invalid fee values, precision loss and division ordering.
+
+Q1923
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding EVM calls
+
+Question: How do `call`, `delegatecall`, and `staticcall` differ in EVM execution context, storage access, and state modification, and why is choosing the wrong call mechanism a security risk?
+
+Q1924
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Analyzing delegatecall behavior
+
+Question: You are reviewing a proxy-style contract that uses:
+
+```
+(bool success, bytes memory result) =
+    implementation.delegatecall(data);
+```
+
+What does `delegatecall` preserve from the calling context, which contract's storage is modified, and what checks should be performed on the implementation address and returned execution status?
+
+Q1925
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding gas economics
+
+Question: Why do EVM operations consume gas, how does gas prevent unbounded computation, and what security and availability problems can arise from inefficient contract execution?
+
+Q1926
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Security Researcher
+- Competency: Estimating and analyzing gas
+
+Question: Using Hardhat and Ethers.js, how would you estimate the gas required for a contract function, execute the function on a local network, and compare the estimated gas with the actual `gasUsed` reported in its transaction receipt?
+
+Q1927
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding oracle dependencies
+
+Question: What is a blockchain oracle, why do smart contracts depend on external data providers, and what security assumptions are introduced when an on-chain contract consumes off-chain information?
+
+Q1928
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Validating oracle response handling
+
+Question: You are reviewing a Solidity contract that obtains asset prices from an oracle interface. How would you inspect its answer validation, timestamp checks, decimal conversion, stale-price handling and behavior when the oracle returns invalid or unavailable data?
+
+Q1929
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Blockchain Security Engineer
+- Competency: Understanding transaction signing
+
+Question: How does a wallet use a private key to sign a blockchain transaction, and why must a user verify the chain, destination address, transaction value, contract interaction and signing domain before approving a request?
+
+Q1930
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Blockchain Security Engineer
+- Competency: Understanding transaction and signature verification
+
+Question: Given a signed Ethereum transaction and its transaction hash, how would you use a local Ethers.js development script to retrieve the transaction, inspect its sender, recipient, nonce, value, chain ID and input data, and identify whether the transaction represents a simple transfer or a contract interaction?
+
+Q1931
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding token approval security
+
+Question: What is the difference between granting a token allowance and transferring tokens, and why can unlimited ERC-20 approvals create long-term risks for wallet holders?
+
+Q1932
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing ERC-20 allowances
+
+Question: You are reviewing an ERC-20 integration that calls `approve(spender, type(uint256).max)`. How would you trace the spender's authority, identify where `transferFrom` can be used, and recommend a safer allowance-management approach?
+
+Q1933
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding signature vulnerabilities
+
+Question: What security properties should a smart contract verify when accepting off-chain signatures, and why are signer identity, message integrity, replay protection and domain separation important?
+
+Q1934
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Implementing signature replay protection
+
+Question: Design a Solidity-based signed-message verification workflow that includes a signer address, message nonce, chain-specific context and an expiration timestamp. How would you ensure that a previously accepted signature cannot be reused on another transaction or chain?
+
+Q1935
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Architect
+- Competency: Understanding smart contract upgradeability
+
+Question: Why do blockchain applications use upgradeable proxy patterns despite the immutability of deployed contracts, and what security trade-offs arise from separating the proxy's storage from its implementation logic?
+
+Q1936
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Inspecting proxy storage compatibility
+
+Question: You are reviewing a UUPS upgradeable contract. How would you inspect its implementation authorization function, storage layout compatibility, initialization logic and upgrade entry point to identify opportunities for unauthorized implementation replacement or storage corruption?
+
+Q1937
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding DeFi financial logic
+
+Question: What makes DeFi protocols different from conventional financial applications in terms of composability, asset custody, automated execution and reliance on other smart contracts?
+
+Q1938
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Testing DeFi accounting invariants
+
+Question: You are testing a simple liquidity pool in a local Hardhat environment. Which invariants would you define to verify that token reserves, liquidity shares, deposits, withdrawals and swap calculations remain internally consistent after a sequence of transactions?
+
+Q1939
+
+- Difficulty: Intermediate
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Blockchain Security Engineer, Security Researcher
+- Competency: Understanding wallet and frontend security
+
+Question: How can a malicious Web3 frontend mislead users into signing transactions that differ from their intended actions, even when the underlying wallet software and blockchain cryptography function correctly?
+
+Q1940
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Blockchain Security Engineer, Security Researcher
+- Competency: Auditing RPC endpoint security
+
+Question: A Web3 application uses an RPC endpoint supplied through an environment variable. How would you inspect the endpoint configuration, chain ID validation, transaction simulation behavior, response consistency and secret exposure risks, and distinguish an RPC connectivity issue from a security vulnerability?
+
+## Part 3 — Advanced (Q1941–Q1970)
+
+### Smart Contract Exploitation, DeFi and Security Testing
+
+Q1941
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding reentrancy attack variants
+
+Question: Beyond conventional single-function reentrancy, what are cross-function and cross-contract reentrancy, and how can shared state, callbacks and composable DeFi protocols create reentrancy paths that are difficult to identify through isolated function review?
+
+Q1942
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Detecting cross-function reentrancy
+
+Question: Consider a local lending protocol where `withdrawCollateral()` transfers an asset through an external callback before updating a shared collateral balance, while `borrow()` uses that same balance to calculate borrowing capacity. How would you construct a controlled Foundry test to determine whether callback execution allows inconsistent collateral accounting?
+
+Q1943
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding flash-loan attack mechanics
+
+Question: How do flash loans work, why must they normally be repaid within the same transaction, and how can the temporary availability of large amounts of capital amplify vulnerabilities in DeFi protocols?
+
+Q1944
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Testing flash-loan-sensitive protocol invariants
+
+Question: In a local DeFi simulation, a lending protocol calculates collateral requirements using a spot price from a liquidity pool. How would you construct a Foundry test that models temporary liquidity changes, invokes the lending calculation within the same transaction, and verifies whether the protocol's collateral invariant can be violated?
+
+Q1945
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding oracle manipulation
+
+Question: How does spot-price oracle manipulation differ from manipulation-resistant oracle design, and why can relying on a single decentralized exchange's current reserve ratio expose lending or liquidation logic to economic attacks?
+
+Q1946
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing price oracle integration
+
+Question: You are auditing a lending contract that consumes a Chainlink-style price feed. Write a review checklist covering `latestRoundData()`, answer validity, nonpositive prices, `updatedAt`, heartbeat expectations, decimal normalization and failure handling. How would you test these conditions using mocked oracle responses in Foundry?
+
+Q1947
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding economic attack surfaces
+
+Question: How can economic incentives, liquidity concentration, liquidation thresholds, collateral correlations and protocol dependencies create exploitable weaknesses even when the underlying Solidity code contains no obvious conventional programming vulnerability?
+
+Q1948
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing liquidation logic
+
+Question: A local lending protocol uses the following simplified liquidation condition:
+
+```
+if (debtValue > collateralValue * 80 / 100) {
+    liquidate(user);
+}
+```
+
+How would you assess precision loss, decimal normalization, stale price inputs, rounding behavior and boundary conditions, and design tests that verify liquidations occur only when the intended health-factor invariant is violated?
+
+Q1949
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding smart contract signature attacks
+
+Question: How do signature replay, cross-chain replay, signature malleability, incorrect signer recovery and missing domain separation differ, and which verification assumptions should a smart contract auditor examine for each category?
+
+Q1950
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Auditing EIP-712 signature verification
+
+Question: You are reviewing an EIP-712-based permit implementation. How would you verify its domain separator, chain ID binding, verifying contract address, nonce consumption, deadline enforcement and signer recovery, and how would you write negative tests for replayed or incorrectly scoped signatures?
+
+Q1951
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding proxy architecture risks
+
+Question: How do transparent proxies, UUPS proxies and beacon proxies differ in upgrade authorization, implementation management and execution architecture, and what classes of security failure should auditors prioritize in each pattern?
+
+Q1952
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Finding storage collision vulnerabilities
+
+Question: A proxy stores its implementation address in a dedicated storage slot, while its implementation contract declares ordinary state variables. How would you inspect the storage layout and EIP-1967 implementation slot, identify possible storage collisions, and construct a test demonstrating corruption in a controlled upgradeable-contract environment?
+
+Q1953
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Architect
+- Competency: Understanding initialization vulnerabilities
+
+Question: Why can uninitialized proxy implementations and incorrectly protected initializer functions expose upgradeable smart contracts to takeover, and how should initialization responsibilities be separated between implementation and proxy deployments?
+
+Q1954
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Testing initializer protections
+
+Question: You inherit a UUPS proxy project with an `initialize()` function and an implementation constructor. How would you use Foundry to test whether initialization can occur more than once, whether the implementation itself can be initialized, and whether an unauthorized account can invoke an upgrade operation?
+
+Q1955
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding gas denial-of-service risks
+
+Question: How can unbounded loops, expensive storage operations, attacker-controlled array growth and external calls create gas-related denial-of-service vulnerabilities in smart contracts, and what design principles reduce these risks?
+
+Q1956
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Developer, Smart Contract Security Engineer
+- Competency: Identifying gas exhaustion conditions
+
+Question: You are auditing a Solidity contract that distributes rewards to every address stored in an ever-growing array. How would you demonstrate the scalability problem using Foundry gas measurements and redesign the distribution process using bounded batches or user-initiated claims?
+
+Q1957
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding token integration assumptions
+
+Question: Why can ERC-20 integrations become unsafe when protocols assume that every token behaves identically, and how can fee-on-transfer tokens, rebasing tokens, nonstandard return values and malicious token callbacks break protocol accounting assumptions?
+
+Q1958
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing token transfer accounting
+
+Question: A DeFi contract credits a user with the requested deposit amount rather than the actual balance increase after calling `transferFrom()`. How would you construct a mock fee-on-transfer token in Foundry, demonstrate the accounting discrepancy, and implement a balance-delta-based correction?
+
+Q1959
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding DeFi composability risks
+
+Question: How does composability between lending markets, liquidity pools, staking systems, bridges and external oracles expand the attack surface of DeFi protocols, and why must security assessments consider dependencies beyond the protocol's own contracts?
+
+Q1960
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Testing protocol dependency failures
+
+Question: You are auditing a lending protocol that depends on an external staking contract and price oracle. Using Foundry mocks, how would you simulate oracle unavailability, stale pricing, staking withdrawal failure and unexpected external return values to determine whether the protocol fails safely?
+
+Q1961
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Blockchain Security Engineer, Security Researcher
+- Competency: Understanding wallet drainer threats
+
+Question: How do wallet drainer attacks exploit user authorization and transaction-signing behavior, and what distinguishes malicious approval-based asset access from an unauthorized compromise of the wallet's private key?
+
+Q1962
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Blockchain Security Engineer, Security Researcher
+- Competency: Investigating malicious wallet approvals
+
+Question: You are analyzing a suspicious wallet transaction in a forensic lab. How would you inspect the transaction input, decoded contract method, token approval events, spender address and subsequent transfer events to determine whether the user authorized a potentially malicious allowance?
+
+Q1963
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Blockchain Security Engineer, Security Architect
+- Competency: Understanding Web3 frontend trust boundaries
+
+Question: Why should a Web3 application's frontend never be treated as the authoritative source of transaction security, and how should wallet interfaces, contract code, RPC providers and on-chain authorization checks divide security responsibilities?
+
+Q1964
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Blockchain Security Engineer, Smart Contract Security Engineer
+- Competency: Validating transaction intent
+
+Question: A decentralized application displays a token swap for 100 USDC, but the wallet requests approval for an unlimited amount to an unfamiliar spender. How would you investigate the discrepancy using the decoded transaction data, contract ABI, spender address and token allowance, and what actions should a user avoid until the transaction's intent is verified?
+
+Q1965
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Blockchain Security Engineer, Security Researcher
+- Competency: Understanding private-key security
+
+Question: How do private-key compromise, seed phrase exposure, insecure key storage, signing-service compromise and malicious transaction authorization differ in their threat models, and why does protecting the signing process require more than encrypting a wallet backup?
+
+Q1966
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Blockchain Security Engineer, Security Architect
+- Competency: Designing secure key management
+
+Question: You are designing a backend transaction-signing service for an enterprise blockchain application. How would you separate application permissions from signing authority, store secrets using a dedicated key-management service, enforce transaction policies, restrict signing requests, and audit every signature operation?
+
+Q1967
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding RPC trust assumptions
+
+Question: What security assumptions does a Web3 application make when it relies on a third-party RPC provider, and how can incorrect chain responses, transaction censorship, inconsistent state data and endpoint compromise affect application behavior?
+
+Q1968
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Blockchain Security Engineer, Smart Contract Developer
+- Competency: Detecting RPC chain and response inconsistencies
+
+Question: Your Ethers.js application is configured with a JSON-RPC endpoint. Write a validation workflow that checks the returned chain ID, compares block heights from two trusted endpoints, verifies transaction receipts, and detects an application accidentally connected to the wrong network.
+
+Q1969
+
+- Difficulty: Advanced
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding smart contract threat modeling
+
+Question: How would you apply threat modeling to a DeFi smart contract system, identifying trust boundaries, privileged actors, external dependencies, asset flows, economic assumptions and potential attack paths before implementation?
+
+Q1970
+
+- Difficulty: Advanced
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Performing automated static analysis
+
+Question: You are auditing a Solidity project using Slither. Describe how you would install and run Slither, interpret findings related to reentrancy, unchecked low-level calls, access control and dangerous delegatecalls, prioritize the findings, and verify each suspected issue manually before reporting it.
+
+## Part 4 — Expert (Q1971–Q1990)
+
+### Advanced Auditing, Foundry, Hardhat and Smart Contract Research
+
+Q1971
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding advanced EVM attack surfaces
+
+Question: How would you approach auditing a complex DeFi protocol where security depends on interactions between storage state, external calls, token behavior, oracle updates, transaction ordering and economic incentives? Explain how you would move from individual function analysis to system-wide invariant analysis.
+
+Q1972
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Building invariant-based Foundry tests
+
+Question: You are auditing a vault that accepts deposits, issues shares, charges withdrawal fees and periodically updates its asset valuation. How would you write Foundry invariant tests to verify that share ownership, total supply, asset accounting and withdrawal entitlements remain consistent across randomly generated transaction sequences?
+
+Q1973
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding EVM transaction ordering
+
+Question: How can transaction ordering, front-running, sandwich attacks and back-running affect smart contract security and financial outcomes, and which application-level and protocol-level protections can reduce these risks?
+
+Q1974
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Analyzing transaction ordering vulnerabilities
+
+Question: A decentralized exchange executes swaps using a user-specified minimum output amount. In a local Foundry simulation, how would you demonstrate the effect of an inadequately restrictive minimum output, inspect the transaction sequence, and verify that slippage limits and deadline checks correctly constrain execution?
+
+Q1975
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Architect
+- Competency: Evaluating smart contract security assumptions
+
+Question: How would you evaluate the security assumptions of a protocol that depends on an administrator, an upgrade authority, multiple oracle providers, external token contracts and a decentralized governance system? Which assumptions represent single points of failure?
+
+Q1976
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing privileged contract operations
+
+Question: You are reviewing a protocol with `pause()`, `unpause()`, `setOracle()`, `setFee()` and `upgradeTo()` administrative functions. How would you construct a role-permission matrix and Foundry negative tests to verify that each function is restricted to the intended authority and that role revocation immediately removes previously granted permissions?
+
+Q1977
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher, Security Architect
+- Competency: Understanding governance attack surfaces
+
+Question: How can governance mechanisms introduce security vulnerabilities through voting-power concentration, delegated voting, proposal execution, timelock configuration and emergency privileges, and how should a protocol balance decentralized control with emergency response requirements?
+
+Q1978
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Testing governance execution controls
+
+Question: You are auditing a governance contract that allows token holders to submit proposals, vote, queue approved proposals and execute them after a timelock. How would you test proposal thresholds, voting snapshots, quorum calculations, execution authorization, timelock enforcement and replay of already executed proposals?
+
+Q1979
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Evaluating formal verification assumptions
+
+Question: What can formal verification establish about a smart contract, and what limitations remain when the correctness of external dependencies, economic assumptions, oracle inputs, compiler behavior and deployment configuration are outside the verified model?
+
+Q1980
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Applying property-based and differential testing
+
+Question: You are auditing two implementations of the same token accounting logic. How would you use Foundry fuzz testing and differential testing to generate inputs, execute equivalent operations against both implementations, compare their resulting state, and identify cases where one implementation violates the expected accounting behavior?
+
+Q1981
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Understanding compiler and dependency risks
+
+Question: How can Solidity compiler versions, optimizer settings, imported library versions and build configuration influence smart contract security, and why should an auditor reproduce the exact compilation environment before assessing deployed bytecode?
+
+Q1982
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, DevSecOps Engineer
+- Competency: Reproducing smart contract builds
+
+Question: A deployed contract's verified source code does not appear to match the bytecode produced by your local build. How would you inspect the Solidity compiler version, optimizer settings, EVM target, metadata configuration, library linking and constructor arguments to determine whether the difference is caused by build configuration or an actual source-code mismatch?
+
+Q1983
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Understanding cross-chain protocol risks
+
+Question: How do cross-chain messaging protocols and blockchain bridges expand the trust assumptions of smart contracts, and why must auditors examine validator sets, message verification, replay protection, finality and destination-chain execution?
+
+Q1984
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Auditing cross-chain message verification
+
+Question: You are reviewing a local bridge implementation that accepts a source-chain message containing a sender, recipient, amount and nonce. How would you test source-chain authentication, trusted remote contract validation, message replay prevention, nonce uniqueness, signature verification and destination-chain execution authorization?
+
+Q1985
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer
+- Competency: Evaluating protocol insolvency risks
+
+Question: How can incorrect accounting of collateral, liabilities, accrued interest, protocol fees and outstanding claims result in an insolvent DeFi protocol even when individual token transfers and smart contract functions appear to execute successfully?
+
+Q1986
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Testing financial accounting invariants
+
+Question: You are auditing a lending protocol with collateral deposits, debt shares, interest accumulation and partial repayments. How would you construct Foundry fuzz tests that compare total recorded liabilities against aggregate user debt, verify rounding behavior, and detect situations where users can collectively withdraw more assets than the protocol actually holds?
+
+Q1987
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer, Security Architect
+- Competency: Understanding smart contract incident response
+
+Question: A DeFi protocol discovers a critical vulnerability while user funds remain in its contracts. How should the security team evaluate emergency pausing, privileged intervention, user withdrawals, exploit monitoring, communication and recovery options while accounting for the risks introduced by each response?
+
+Q1988
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Reproducing smart contract incidents
+
+Question: A historical blockchain incident involved a vulnerable contract and a sequence of transactions that changed its state. How would you use an archival RPC endpoint and a local forked Foundry environment to reproduce the relevant pre-incident state, inspect the affected transactions, isolate the vulnerable execution path and validate a proposed fix without broadcasting transactions to the live network?
+
+Q1989
+
+- Difficulty: Expert
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Researcher, Smart Contract Security Engineer, Security Architect
+- Competency: Evaluating security assurance
+
+Question: How would you determine whether a smart contract has received sufficient security assurance before handling significant financial assets, considering manual audits, independent reviews, formal verification, automated testing, bug bounties, deployment controls and post-deployment monitoring?
+
+Q1990
+
+- Difficulty: Expert
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Smart Contract Security Engineer, Security Researcher
+- Competency: Producing a complete smart contract audit finding
+
+Question: During an audit, you discover that a vault permits a privileged account to replace its withdrawal implementation without a timelock, and the replacement can alter the interpretation of existing user balances. How would you produce a technically defensible finding containing the affected functions, root cause, privilege assumptions, reproducible local proof of concept, potential impact, recommended remediation and regression tests?
+
+## Part 5 — Senior/Architect (Q1991–Q2000)
+
+### Smart Contract Security Architecture and Technical Leadership
+
+Q1991
+
+- Difficulty: Senior/Architect
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Architect, Smart Contract Security Engineer
+- Competency: Designing enterprise-grade blockchain security architecture
+
+Question: You are appointed security architect for a DeFi platform managing lending, staking, governance, liquidity pools and cross-chain asset transfers. How would you establish a security architecture covering contract modularity, access control, upgradeability, oracle dependencies, asset custody, transaction monitoring, emergency controls and independent security assurance?
+
+Q1992
+
+- Difficulty: Senior/Architect
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Security Architect, Smart Contract Security Engineer, DevSecOps Engineer
+- Competency: Designing a smart contract security CI/CD pipeline
+
+Question: Design a CI/CD security pipeline for a Solidity monorepo containing 40 smart contracts. Specify how you would integrate compiler-version enforcement, dependency auditing, Slither, unit testing, Foundry fuzzing, invariant testing, coverage checks, deployment artifact verification and approval gates. Explain which checks should block a production release.
+
+Q1993
+
+- Difficulty: Senior/Architect
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Architect, Security Researcher, Smart Contract Security Engineer
+- Competency: Making risk-based protocol design decisions
+
+Question: A DeFi organization must choose between an immutable contract architecture, a fully upgradeable proxy architecture and a hybrid architecture with narrowly scoped emergency controls. How would you evaluate the alternatives based on user trust, exploit response time, governance risk, operational complexity, decentralization and long-term maintainability?
+
+Q1994
+
+- Difficulty: Senior/Architect
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Security Architect, Smart Contract Security Engineer
+- Competency: Designing privileged-access architecture
+
+Question: You are designing administrative controls for a protocol holding substantial user assets. How would you configure a multisignature wallet, role separation, timelocked upgrades, emergency pausing, key rotation and transaction-policy enforcement? Define the permissions and operational safeguards required to prevent one compromised administrator from independently taking control of the protocol.
+
+Q1995
+
+- Difficulty: Senior/Architect
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Architect, Security Researcher, GRC Analyst
+- Competency: Establishing blockchain security governance
+
+Question: How would you establish a blockchain security governance program covering secure development standards, independent contract audits, vulnerability disclosure, privileged-key management, deployment authorization, third-party dependency assessments and ongoing risk acceptance?
+
+Q1996
+
+- Difficulty: Senior/Architect
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Security Architect, Security Researcher, Smart Contract Security Engineer
+- Competency: Designing protocol-wide invariant monitoring
+
+Question: A DeFi platform operates five contracts that collectively manage deposits, lending, staking, rewards and withdrawals. Design a monitoring architecture that tracks cross-contract accounting invariants, unexpected privileged operations, oracle deviations, abnormal withdrawals and failed transactions. Specify which events and state measurements you would collect and how you would distinguish legitimate protocol activity from potential compromise.
+
+Q1997
+
+- Difficulty: Senior/Architect
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Architect, Smart Contract Security Engineer, Security Researcher
+- Competency: Managing smart contract security incidents
+
+Question: A critical vulnerability is discovered in a decentralized protocol, but pausing the affected contracts requires a multisignature quorum and some assets are held in contracts that cannot be upgraded. How would you lead the incident response, prioritize containment, coordinate stakeholders, communicate with users and decide which recovery actions are technically and ethically acceptable?
+
+Q1998
+
+- Difficulty: Senior/Architect
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Security Architect, Smart Contract Security Engineer, Security Auditor
+- Competency: Establishing audit and release assurance
+
+Question: You are responsible for approving a major DeFi protocol upgrade. What evidence would you require before authorizing deployment, including source-to-bytecode verification, storage-layout compatibility, independent audit findings, invariant-test results, deployment simulation, privileged-role verification, multisignature approvals and post-deployment validation?
+
+Q1999
+
+- Difficulty: Senior/Architect
+- Classification: Broad Conceptual
+- Practical/Theoretical: Theoretical
+- Job Roles: Security Architect, Security Researcher, Smart Contract Security Engineer
+- Competency: Evaluating blockchain security maturity
+
+Question: How would you evaluate the security maturity of a blockchain organization beyond the number of audits completed, considering vulnerability recurrence, test coverage, protocol invariants, key-management maturity, governance resilience, incident response readiness and the effectiveness of remediation?
+
+Q2000
+
+- Difficulty: Senior/Architect
+- Classification: Specific Technical
+- Practical/Theoretical: Practical
+- Job Roles: Security Architect, Smart Contract Security Engineer, Security Researcher, Purple Team Engineer
+- Competency: Architecting continuous smart contract security validation
+
+Question: You are tasked with establishing a continuous security validation program for a DeFi organization operating multiple EVM-compatible networks. Design an end-to-end operating model integrating automated Solidity analysis, Foundry fuzz and invariant testing, independent manual audits, deployment verification, on-chain monitoring, private-key protection, vulnerability disclosure and incident response. Explain how security findings from production monitoring and external researchers would feed back into contract development, regression testing and architecture decisions.

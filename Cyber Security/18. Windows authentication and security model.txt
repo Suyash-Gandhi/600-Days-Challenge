@@ -1,0 +1,1231 @@
+# 18. Windows Authentication and Security Model
+
+Domain: Cybersecurity Fundamentals → Operating Systems → Windows Security  
+Difficulty: Intermediate  
+Objective: Understand how Windows identifies users, verifies their identities, grants permissions, manages security privileges, and protects system resources.
+
+Windows authentication and its security model are essential topics for SOC Analysts, Incident Responders, Penetration Testers, Digital Forensics Analysts, and Windows Security Engineers.
+
+---
+
+# 1. What Is the Windows Security Model?
+
+The Windows security model is a collection of components and mechanisms that control access to the operating system's resources.
+
+These resources include:
+- Files and directories
+- Processes and services
+- Registry keys
+- Network shares
+- User accounts
+- System configuration
+- Administrative functions
+
+Windows must answer three fundamental questions whenever someone attempts to access a protected resource.
+
+| Question | Security concept | Example |
+|---|---|---|
+| Who are you? | Identification | Username is `suyash` |
+| Can you prove it? | Authentication | Password or Windows Hello |
+| What are you allowed to do? | Authorization | Read a file but cannot modify it |
+
+Consider this example.
+
+A user logs into Windows and attempts to modify a file inside `C:\Windows\System32`.
+
+1. Windows authenticates the user.
+2. Windows creates or establishes the user's security context.
+3. The user attempts to modify the file.
+4. Windows checks the applicable access permissions and privileges.
+5. Windows allows or denies the operation.
+
+Even if authentication succeeds, Windows may deny the operation because the user lacks the necessary permissions.
+
+Important distinction: Authentication establishes identity; authorization determines access.
+
+---
+
+# 2. Windows Security Architecture
+
+Windows uses multiple components to manage authentication, authorization, and security enforcement.
+
+
+
+The main components are:
+
+| Component | Full name | Primary responsibility |
+|---|---|---|
+| LSASS | Local Security Authority Subsystem Service | Enforces local security policies and handles important authentication-related operations |
+| SAM | Security Account Manager | Stores local account information and password verification data |
+| LSA | Local Security Authority | Manages local security policy, authentication-related operations, and security auditing |
+| Winlogon | Windows Logon Process | Coordinates interactive sign-in and secure logon interactions |
+| LogonUI | Logon User Interface | Presents the Windows sign-in interface |
+| LSA authentication packages | Authentication components | Implement or support authentication protocols |
+| Security Reference Monitor | Kernel security component | Enforces access checks against protected objects |
+| Active Directory | Directory service | Provides centralized identity and authentication infrastructure in Windows domains |
+
+These components work together, but they do not all perform the same function.
+
+For example, Winlogon coordinates the interactive sign-in process, whereas LSASS handles important security operations. The Security Reference Monitor enforces access checks within the Windows kernel.
+
+## 2.1 LSASS: Local Security Authority Subsystem Service
+
+LSASS is one of the most important Windows security processes.
+
+Its executable is:
+
+```text
+C:\Windows\System32\lsass.exe
+```
+
+LSASS supports security operations such as:
+- Processing authentication requests.
+- Enforcing local security policies.
+- Managing logon sessions.
+- Working with authentication packages.
+- Managing security-related information and credentials needed by supported authentication mechanisms.
+
+### Why is LSASS important in cybersecurity?
+
+An attacker who obtains sufficient privileges may attempt to extract credentials or authentication material from LSASS.
+
+This can potentially expose information that enables further account compromise or lateral movement.
+
+Security tools therefore monitor suspicious access to LSASS memory and attempts to dump its contents.
+
+Windows includes protections such as LSASS protection, which can run LSASS as a protected process when appropriately configured. Credential Guard provides additional isolation for certain secrets using virtualization-based security.
+
+Security principle: Protecting LSASS is important because compromising authentication infrastructure can compromise multiple accounts and systems.
+
+---
+
+## 2.2 SAM: Security Account Manager
+
+The Security Account Manager maintains local Windows account information.
+
+Its registry-backed database is associated with:
+
+```text
+C:\Windows\System32\config\SAM
+```
+
+This database contains information about local user accounts and password verification data.
+
+For example, a computer might have these local accounts:
+
+```text
+Administrator
+Guest
+suyash
+```
+
+The SAM database supports the management and authentication of these local accounts.
+
+### Important distinction
+
+A local account and a domain account are not necessarily stored in the same place.
+
+| Account type | Primary identity infrastructure |
+|---|---|
+| Local Windows account | Local SAM database |
+| Active Directory domain account | Active Directory domain controller |
+| Microsoft account | Microsoft's online identity infrastructure |
+| Microsoft Entra ID account | Microsoft Entra ID identity infrastructure |
+
+A Windows computer can use more than one authentication mechanism depending on how it is configured.
+
+Cybersecurity relevance: Attackers sometimes target SAM data to obtain local account password hashes. Access to the SAM file is restricted, and accessing it does not automatically grant an attacker usable credentials.
+
+---
+
+# 3. Windows Authentication: How Login Works
+
+Authentication verifies that a user controls an acceptable authentication factor or can otherwise satisfy the configured authentication mechanism.
+
+Windows supports several authentication methods.
+
+## 3.1 Password-based authentication
+
+A typical local Windows sign-in involves the following conceptual steps:
+
+```text
+User enters username and password
+              |
+              v
+Windows identifies the account
+              |
+              v
+Authentication components verify credentials
+              |
+              v
+Authentication succeeds
+              |
+              v
+Windows establishes a logon session
+              |
+              v
+Security token and user environment
+              |
+              v
+User accesses permitted resources
+```
+
+The exact implementation depends on the account type and authentication mechanism.
+
+For a local account, Windows can validate credentials using local account information. For a domain account, authentication may involve a domain controller.
+
+### Does Windows store passwords in plain text?
+
+Windows does not normally store local account passwords as readable plain text in the SAM database.
+
+Instead, it stores password verification data, including password hashes.
+
+A hash is a one-way transformation intended to make it impractical to recover the original password directly.
+
+However, an attacker may attempt to crack a stolen hash by guessing candidate passwords and comparing the resulting values.
+
+The security of password verification depends on the algorithm, implementation, password strength, and available protections.
+
+---
+
+# 4. NTLM Authentication
+
+NTLM stands for NT LAN Manager.
+
+NTLM is a Windows authentication protocol that can be used in certain local and network authentication scenarios.
+
+Although Kerberos is generally preferred for Active Directory domain authentication, NTLM remains relevant for legacy compatibility and other supported scenarios.
+
+## 4.1 How NTLM challenge-response works
+
+NTLM authentication commonly uses a challenge-response mechanism.
+
+A simplified conceptual sequence is:
+
+```text
+Client                         Server
+  |                               |
+  |------ Authentication Init --->|
+  |                               |
+  |<--------- Challenge ----------|
+  |                               |
+  |------ Response -------------->|
+  |                               |
+  |                         Validate response
+  |                               |
+  |<------ Result ----------------|
+```
+
+The server or authentication infrastructure issues a challenge.
+
+The client uses password-derived cryptographic material to produce a response.
+
+The response is validated without normally transmitting the user's plain-text password over the network.
+
+This does not mean NTLM is automatically secure against every attack. Its security depends on the version, configuration, surrounding protocols, and threat model.
+
+## 4.2 Common NTLM-related attacks
+
+### A. Pass-the-Hash
+
+Pass-the-Hash is an attack in which an adversary uses a stolen password hash or compatible authentication material to authenticate without first recovering the original password.
+
+For example:
+
+```text
+Compromised Workstation
+          |
+          v
+Obtain reusable authentication material
+          |
+          v
+Attempt authentication to another system
+          |
+          v
+Potential lateral movement
+```
+
+Whether this works depends on the protocol, account, system configuration, and available credentials.
+
+### B. NTLM relay
+
+In an NTLM relay attack, an attacker forwards an authentication exchange to another service rather than necessarily cracking the password.
+
+If the target accepts the relayed authentication and appropriate protections are absent, the attacker may gain unauthorized access.
+
+Defenses can include:
+- Reducing or disabling NTLM where feasible.
+- Enforcing SMB signing where appropriate.
+- Using Extended Protection for Authentication (EPA) where supported.
+- Enforcing appropriate channel-binding protections.
+- Applying network segmentation.
+- Monitoring unexpected NTLM usage.
+
+### C. Password cracking
+
+If an attacker obtains password hashes, they may attempt offline guessing.
+
+Strong, unique passwords and modern account-security controls make these attacks harder.
+
+Defensive takeaway: Investigate unexpected NTLM authentication, especially when it originates from unusual systems or involves privileged accounts.
+
+---
+
+# 5. Kerberos Authentication
+
+Kerberos is a network authentication protocol widely used in Active Directory domain environments.
+
+Kerberos uses tickets to support authentication between clients and services.
+
+Instead of repeatedly sending a password to every service, a client obtains tickets through a trusted authentication infrastructure.
+
+## 5.1 Main Kerberos components
+
+| Component | Responsibility |
+|---|---|
+| Client | User's computer requesting access |
+| KDC | Key Distribution Center |
+| AS | Authentication Service |
+| TGS | Ticket-Granting Service |
+| TGT | Ticket-Granting Ticket |
+| Service ticket | Ticket used to access a particular service |
+| Service principal | Identity representing a service in Kerberos |
+
+In Active Directory, the KDC functionality is provided by domain controllers.
+
+## 5.2 How Kerberos authentication works
+
+Consider an employee logging into a domain computer and accessing an internal file server.
+
+```text
+                 Active Directory
+                 Domain Controller
+                        |
+                        |
+Client -----------------+
+  |
+  | 1. Request authentication
+  v
+Authentication Service
+  |
+  | 2. Receive Ticket-Granting Ticket
+  v
+Client
+  |
+  | 3. Request service ticket
+  v
+Ticket-Granting Service
+  |
+  | 4. Receive service ticket
+  v
+Client
+  |
+  | 5. Present ticket
+  v
+File Server
+  |
+  | 6. Validate authentication
+  v
+Access Control Check
+```
+
+This diagram is simplified; the exact exchanges and validation steps depend on the authentication configuration.
+
+### Step 1: Initial authentication
+
+The client authenticates to the domain's Kerberos infrastructure.
+
+### Step 2: Obtain a TGT
+
+The client receives a Ticket-Granting Ticket.
+
+The TGT allows the client to request additional service tickets without repeating the complete initial authentication exchange for every service.
+
+### Step 3: Request a service ticket
+
+The client requests a ticket for the target service, such as a file server.
+
+### Step 4: Receive the service ticket
+
+The KDC issues a service ticket according to the applicable security requirements.
+
+### Step 5: Access the service
+
+The client presents the service ticket to the target service.
+
+### Step 6: Authorization
+
+The service or operating system determines whether the authenticated user is allowed to perform the requested operation.
+
+Remember: Kerberos authentication does not automatically grant permission to access a file. Authentication and authorization remain separate.
+
+---
+
+# 6. NTLM vs. Kerberos
+
+This comparison is important for Windows security interviews and incident investigations.
+
+| Feature | NTLM | Kerberos |
+|---|---|---|
+| Authentication approach | Challenge-response | Ticket-based |
+| Common environment | Legacy and compatibility scenarios | Active Directory domain environments |
+| Central KDC required | Not in the same manner as Kerberos | Yes, for the usual domain ticket workflow |
+| Mutual authentication | Depends on protocol usage and configuration | Supported by Kerberos mechanisms |
+| Single sign-on | Possible in supported configurations | Commonly used for domain SSO |
+| Delegation | More limited | Supports several delegation models |
+| Common security concerns | Relay attacks, credential reuse, hash-related attacks | Ticket theft, Kerberoasting, delegation abuse |
+| General preference | Reduce where feasible | Prefer for supported domain authentication scenarios |
+
+Neither protocol should be assessed in isolation. Correct configuration, endpoint security, credential protection, and network controls remain essential.
+
+---
+
+# 7. Windows Security Tokens
+
+A security token represents the security identity and privileges associated with a Windows process or thread.
+
+When a user logs in, Windows establishes a logon session and creates security context information, including an access token used to evaluate access.
+
+A token may contain information such as:
+
+- User security identifier (SID).
+- Group SIDs.
+- Privileges.
+- Integrity level.
+- Restrictions and other security attributes.
+
+## 7.1 What is a SID?
+
+A Security Identifier (SID) uniquely identifies a security principal within its applicable security authority.
+
+Examples of security principals include:
+- Users.
+- Groups.
+- Computers.
+- Certain service identities.
+
+A SID may look like this:
+
+```text
+S-1-5-21-111111111-222222222-333333333-1001
+```
+
+This is an illustrative example, not a real account identifier.
+
+Windows uses SIDs in access-control decisions rather than relying solely on account names.
+
+For example, a user can be renamed while retaining the same SID.
+
+## 7.2 How a token is used
+
+Suppose a user attempts to open a protected file.
+
+```text
+User Process
+     |
+     v
+Access Token
+     |
+     +---- User SID
+     |
+     +---- Group SIDs
+     |
+     +---- Privileges
+     |
+     v
+Windows Access Check
+     |
+     v
+Target File's Security Descriptor
+     |
+     v
+Allow or Deny
+```
+
+The operating system evaluates the security context against the target object's access-control information.
+
+A valid token does not mean the user can access every resource.
+
+### Inspecting your token
+
+Open Command Prompt and run:
+
+```cmd
+whoami
+```
+
+This displays your current account identity.
+
+To display your SID:
+
+```cmd
+whoami /user
+```
+
+To display group memberships:
+
+```cmd
+whoami /groups
+```
+
+To display the privileges in your current security token:
+
+```cmd
+whoami /priv
+```
+
+These commands are useful for examining the security context under which your processes operate.
+
+---
+
+# 8. Windows Access Control: ACL, DACL and SACL
+
+Windows protects resources using security descriptors.
+
+A security descriptor can contain:
+- Owner information.
+- A primary group field.
+- A Discretionary Access Control List (DACL).
+- A System Access Control List (SACL).
+- Control flags.
+
+Not every security descriptor contains every field.
+
+## 8.1 ACL: Access Control List
+
+An Access Control List contains access-control entries.
+
+An access-control entry specifies information such as which security principal an entry applies to and what permissions or auditing conditions it represents.
+
+There are two particularly important types.
+
+### DACL: Discretionary Access Control List
+
+The DACL controls which principals are allowed or denied access to an object.
+
+For example:
+
+| Principal | Permission |
+|---|---|
+| SYSTEM | Full control |
+| Administrators | Full control |
+| Regular users | Read and execute |
+| Unlisted users | Depends on the effective access rules and applicable security context |
+
+A DACL can contain allow and deny entries.
+
+Important: An empty DACL and a DACL containing no access-control entries are not equivalent to a missing DACL. A missing or null DACL can permit unrestricted discretionary access, whereas an empty DACL denies access through that DACL.
+
+### SACL: System Access Control List
+
+The SACL specifies auditing rules and can also support mandatory integrity labeling in Windows security descriptors.
+
+For example, an administrator might configure auditing for attempts to access a sensitive file.
+
+The resulting events may be recorded in the Windows Security event log if the appropriate audit policy is enabled.
+
+## 8.2 Inspect file permissions
+
+Open PowerShell or Command Prompt and run:
+
+```cmd
+icacls C:\Windows\System32
+```
+
+This displays the configured permissions for the directory.
+
+You can also inspect a specific file:
+
+```cmd
+icacls C:\Windows\System32\drivers\etc\hosts
+```
+
+An illustrative output might contain entries resembling:
+
+```text
+NT AUTHORITY\SYSTEM:(F)
+BUILTIN\Administrators:(F)
+BUILTIN\Users:(RX)
+```
+
+The abbreviations commonly include:
+
+| Abbreviation | Meaning |
+|---|---|
+| F | Full control |
+| M | Modify |
+| RX | Read and execute |
+| R | Read |
+| W | Write |
+
+The exact permissions depend on the object's ACL.
+
+### Why this matters in cybersecurity
+
+Misconfigured permissions can allow an unprivileged user to modify files that are executed by a privileged process.
+
+This can create opportunities for privilege escalation.
+
+Security assessments therefore examine:
+- Writable executable directories.
+- Service executable permissions.
+- Sensitive configuration files.
+- Insecure registry permissions.
+- Permissions on scheduled-task scripts.
+
+---
+
+# 9. User Account Control (UAC)
+
+User Account Control (UAC) is a Windows security mechanism designed to reduce unintended administrative changes.
+
+It is important to understand that UAC is not a replacement for authentication or access control.
+
+## 9.1 Why UAC exists
+
+Consider a user who belongs to the local Administrators group.
+
+Without appropriate restrictions, routinely running applications with full administrative privileges increases the impact of malicious software and accidental changes.
+
+UAC supports a model in which an administrator can run applications using a filtered token and elevate privileges when necessary.
+
+For many interactive administrators, Windows uses two related tokens:
+- A filtered token for ordinary activity.
+- A full administrative token for elevated activity.
+
+The exact behavior depends on account type and security configuration.
+
+## 9.2 Example
+
+Suppose you open a browser normally and later launch an administrative system tool.
+
+```text
+Administrator signs in
+        |
+        v
+Windows creates logon security context
+        |
+        v
+Browser runs with filtered token
+        |
+        v
+Administrative operation requested
+        |
+        v
+UAC elevation process
+        |
+        v
+Elevated process runs with
+the required administrative token
+```
+
+The elevation prompt depends on the configured UAC policy and the type of account.
+
+### Important distinction
+
+UAC does not mean every administrator runs every process with unrestricted privileges.
+
+It helps separate ordinary activity from elevated operations, reducing the risk of accidental or unauthorized system changes.
+
+### Cybersecurity relevance
+
+An attacker who compromises a standard user account may need to overcome additional controls to perform administrative actions.
+
+However, UAC should not be treated as a complete security boundary against every attacker who already has substantial privileges.
+
+---
+
+# 10. Windows Privileges
+
+Permissions and privileges are related but different concepts.
+
+Permissions govern access to individual objects, such as files and registry keys.
+
+Privileges authorize specific system-level operations.
+
+For example, a file ACL might allow a user to read a document, while a system privilege may permit a particular security-sensitive operation.
+
+Windows associates privileges with security tokens.
+
+## 10.1 Important Windows privileges
+
+| Privilege | Security significance |
+|---|---|
+| `SeDebugPrivilege` | Allows debugging and access operations that can bypass certain process security restrictions |
+| `SeBackupPrivilege` | Supports backup operations that can bypass some file access checks under defined conditions |
+| `SeRestorePrivilege` | Supports restoration operations that can bypass some security checks |
+| `SeImpersonatePrivilege` | Allows a process to impersonate a client under supported conditions |
+| `SeTakeOwnershipPrivilege` | Allows taking ownership of securable objects |
+| `SeLoadDriverPrivilege` | Allows loading and unloading device drivers |
+| `SeSecurityPrivilege` | Allows managing auditing and viewing certain security information |
+| `SeTcbPrivilege` | Grants highly sensitive authority associated with acting as part of the operating system |
+
+These privileges are not interchangeable, and having one does not automatically provide unrestricted access to every system resource.
+
+Some privileges can be especially dangerous when assigned to inappropriate accounts or exposed to vulnerable services.
+
+## 10.2 Inspect privileges
+
+Run:
+
+```cmd
+whoami /priv
+```
+
+You may see entries similar to:
+
+```text
+Privilege Name                 State
+-----------------------------  -----------
+SeChangeNotifyPrivilege        Enabled
+SeShutdownPrivilege            Disabled
+SeDebugPrivilege               Disabled
+```
+
+This is an illustrative example; the actual output depends on your account and security context.
+
+A privilege listed as disabled may still be present in the token. Whether it can be enabled and used depends on the privilege, the token, and applicable restrictions.
+
+Blue Team lesson: Investigate unexpected privileges, especially powerful privileges granted to ordinary users or exposed to compromised services.
+
+---
+
+# 11. Local Accounts vs. Domain Accounts
+
+Windows can operate as a standalone machine or as part of a centrally managed identity environment.
+
+## 11.1 Local accounts
+
+A local account is managed by an individual Windows computer.
+
+For example:
+
+```text
+WORKSTATION-01\suyash
+```
+
+Its identity and local permissions are managed by that machine.
+
+Local accounts are commonly used for:
+- Standalone computers.
+- Local administration.
+- Certain service and maintenance tasks.
+
+## 11.2 Domain accounts
+
+A domain account is managed through an Active Directory domain.
+
+For example:
+
+```text
+CORP\suyash
+```
+
+Here, `CORP` is an illustrative domain name.
+
+A domain account enables centralized identity management and can be used to access authorized resources across multiple domain-joined computers.
+
+Domain administrators can centrally manage:
+- Account policies.
+- Group membership.
+- Authentication requirements.
+- Group Policy.
+- Access to domain resources.
+- Account disablement and lifecycle management.
+
+## 11.3 Why domain accounts matter to attackers
+
+In an enterprise environment, a compromised account may have access to several systems.
+
+For example:
+
+```text
+Employee Workstation
+        |
+        v
+Compromised Domain Account
+        |
+        v
+File Server
+        |
+        v
+Application Server
+        |
+        v
+Sensitive Business Data
+```
+
+This is not automatic. The attacker must still overcome the relevant authentication, authorization, and security controls.
+
+However, excessive privileges and reusable credentials can make lateral movement easier.
+
+Defensive principle: Minimize privileges, separate administrative identities from ordinary user accounts, and restrict privileged accounts from logging into unnecessary systems.
+
+---
+
+# 12. Active Directory and Group Policy
+
+Active Directory Domain Services (AD DS) provides centralized directory and identity management for traditional Windows domain environments.
+
+It stores information about objects such as:
+- Users.
+- Groups.
+- Computers.
+- Organizational units.
+- Service accounts.
+
+Domain controllers provide directory services and commonly support Kerberos authentication.
+
+## 12.1 Organizational Units
+
+Organizational units (OUs) organize directory objects and can serve as scopes for applying Group Policy.
+
+For example:
+
+```text
+CORP
+ |
+ +--- Employees
+ |      |
+ |      +--- Finance
+ |      +--- HR
+ |      +--- Engineering
+ |
+ +--- Servers
+ |
+ +--- Workstations
+```
+
+This is an illustrative structure, not a required Active Directory layout.
+
+## 12.2 Group Policy
+
+Group Policy allows administrators to configure supported Windows settings centrally.
+
+Examples include:
+- Password and account policies.
+- Windows Defender settings.
+- Firewall configuration.
+- Audit policies.
+- User restrictions.
+- Certain security configuration settings.
+
+Group Policy is important because an organization can enforce consistent security controls across many machines.
+
+### Security relevance
+
+A weak domain policy can create organization-wide risks.
+
+For example:
+- Excessively permissive local administrator access.
+- Inadequate auditing.
+- Poorly configured security settings.
+- Weak controls over legacy authentication.
+- Unnecessary privileges.
+
+Defenders should regularly review effective policy settings and verify that critical systems receive the intended configurations.
+
+---
+
+# 13. Windows Authentication Attacks
+
+Understanding the security model helps explain how common Windows attacks work.
+
+The following techniques are important for defensive cybersecurity.
+
+## 13.1 Pass-the-Hash
+
+Concept: An attacker attempts to use stolen password-hash material to authenticate without recovering the plain-text password.
+
+Risk: Unauthorized access to other systems and potential lateral movement.
+
+Defenses:
+- Reduce unnecessary NTLM usage.
+- Protect credential material.
+- Restrict privileged logons.
+- Use Microsoft Defender and other endpoint monitoring controls.
+- Investigate unusual authentication activity.
+
+## 13.2 Pass-the-Ticket
+
+Concept: An attacker steals or abuses Kerberos ticket material to access services as an authenticated principal.
+
+Risk: Unauthorized access to services within the ticket's scope and validity.
+
+Defenses:
+- Protect endpoints and domain controllers.
+- Reduce privileged logons on ordinary workstations.
+- Monitor unusual Kerberos activity.
+- Investigate suspicious logon sessions.
+- Apply appropriate credential isolation protections.
+
+## 13.3 Kerberoasting
+
+Concept: An attacker requests service tickets for accounts associated with service principal names (SPNs), then attempts offline password cracking against eligible ticket material.
+
+The key concern is often a service account whose password is weak or has been configured insecurely.
+
+Defenses:
+- Use long, random service-account passwords.
+- Prefer appropriately managed group Managed Service Accounts where supported.
+- Reduce excessive service-account privileges.
+- Monitor unusual patterns of service-ticket requests.
+- Review SPNs and service-account configuration.
+
+## 13.4 Credential Dumping
+
+Concept: An attacker attempts to extract credentials or reusable authentication material from a system.
+
+Targets can include:
+- LSASS memory.
+- Local account databases.
+- Cached credential material.
+- Other credential stores.
+
+Defenses:
+- Enable appropriate credential protections.
+- Restrict administrative access.
+- Use endpoint detection and response.
+- Investigate suspicious process access.
+- Protect backups and offline copies of sensitive account data.
+
+## 13.5 Privilege Escalation
+
+Concept: An attacker with limited access attempts to obtain greater privileges.
+
+Potential weaknesses include:
+- Misconfigured service permissions.
+- Writable privileged executables or scripts.
+- Excessive user privileges.
+- Insecure registry permissions.
+- Vulnerable software.
+- Weak service-account configuration.
+
+Defenses:
+- Audit permissions and privileges.
+- Patch vulnerable software.
+- Apply least privilege.
+- Review service configurations.
+- Monitor unexpected changes to privileged resources.
+
+---
+
+# 14. Windows Security Event Logs
+
+Windows records many authentication and security events in the Security event log.
+
+The logs are useful for detecting suspicious sign-ins, account changes, privilege assignment, and other security-relevant activity.
+
+Open Event Viewer:
+
+```cmd
+eventvwr.msc
+```
+
+Navigate to:
+
+```text
+Windows Logs
+    |
+    +--- Security
+```
+
+The events recorded depend on the system configuration and enabled audit policies.
+
+## 14.1 Important Security Event IDs
+
+| Event ID | Meaning | Why it matters |
+|---|---|---|
+| 4624 | Successful logon | Identify account logons and their context |
+| 4625 | Failed logon | Investigate repeated failures or suspicious sources |
+| 4634 | Logoff | Review session termination |
+| 4648 | Logon attempted using explicit credentials | Investigate unusual use of alternate credentials |
+| 4672 | Special privileges assigned to a new logon | Review logons with sensitive privileges |
+| 4688 | New process created | Investigate suspicious process execution if process auditing is enabled |
+| 4697 | A service was installed | Investigate unexpected service creation |
+| 4720 | User account created | Detect unauthorized account creation |
+| 4722 | User account enabled | Review unexpected account activation |
+| 4728 | Member added to a security-enabled global group | Investigate changes to privileged or sensitive global groups |
+| 4732 | Member added to a security-enabled local group | Investigate local group membership changes |
+| 4740 | User account locked out | Investigate repeated failed authentication |
+| 4768 | Kerberos authentication ticket (TGT) requested | Review domain authentication activity |
+| 4769 | Kerberos service ticket requested | Investigate unusual service-ticket requests |
+| 4776 | NTLM credential validation | Review relevant NTLM authentication activity |
+
+Important: The availability and details of events depend on the Windows version, audit policy, authentication type, and where the event is generated. For example, domain-controller events and workstation events provide different perspectives.
+
+## 14.2 Example: Investigating failed logons
+
+Suppose a user reports that their account keeps getting locked.
+
+A defender might investigate:
+1. Event ID 4625 for failed logons.
+2. Event ID 4740 for account lockout.
+3. The affected username and time window.
+4. The source workstation or network address, where recorded.
+5. Whether the failures are caused by a legitimate service, an outdated saved password, or suspicious activity.
+
+Repeated failures alone do not prove an attack. The investigator should correlate events with account behavior, endpoint telemetry, and network context.
+
+## 14.3 PowerShell: Search for failed logons
+
+Open PowerShell and run:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Security'
+    Id      = 4625
+} -MaxEvents 20 |
+Select-Object TimeCreated, Id, ProviderName, Message
+```
+
+This retrieves recent failed-logon events if you have the necessary permissions and the events are present in the log.
+
+To examine successful logons:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Security'
+    Id      = 4624
+} -MaxEvents 20 |
+Select-Object TimeCreated, Id, Message
+```
+
+For meaningful investigations, examine the structured event fields instead of relying exclusively on the rendered message.
+
+---
+
+# 15. Practical Lab: Explore Your Windows Security Model
+
+You can perform the following exercises on your own Windows computer without modifying security settings.
+
+## Lab 1: Identify your current account
+
+Run:
+
+```cmd
+whoami
+```
+
+Then:
+
+```cmd
+whoami /user
+```
+
+Observe:
+- Your current username.
+- Your account's SID.
+- Whether your account is local or domain-based.
+
+## Lab 2: Examine group membership
+
+Run:
+
+```cmd
+whoami /groups
+```
+
+Observe:
+- Which groups appear in your token.
+- Whether groups associated with administration are present.
+- Whether group attributes indicate enabled or restricted membership.
+
+Do not assume that group membership alone proves a process has full administrative privileges.
+
+## Lab 3: Inspect your privileges
+
+Run:
+
+```cmd
+whoami /priv
+```
+
+Observe:
+- Which privileges are present.
+- Which privileges are enabled.
+- Whether the token contains sensitive privileges.
+
+Compare the output from an ordinary terminal with a terminal launched using Run as administrator, if your account is authorized to elevate.
+
+The outputs may differ.
+
+## Lab 4: Inspect filesystem permissions
+
+Run:
+
+```cmd
+icacls "%USERPROFILE%"
+```
+
+Then:
+
+```cmd
+icacls "C:\Windows\System32"
+```
+
+Observe:
+- The permissions granted to your user.
+- The permissions granted to groups.
+- Differences between a user-profile directory and a protected system directory.
+
+Do not change permissions on protected system directories as part of this introductory lab.
+
+## Lab 5: Examine authentication logs
+
+Open:
+
+```cmd
+eventvwr.msc
+```
+
+Navigate to:
+
+```text
+Windows Logs → Security
+```
+
+Look for Event IDs 4624 and 4625.
+
+If events are unavailable, you may lack the necessary permissions or the relevant auditing may not be enabled. Do not enable additional auditing or alter security settings on a managed computer without authorization.
+
+## Lab 6: Explore the current logon session
+
+Run:
+
+```cmd
+query user
+```
+
+Then:
+
+```cmd
+klist
+```
+
+`query user` displays user-session information. `klist` displays Kerberos tickets in the relevant logon session when available.
+
+If you use a standalone Windows machine without an Active Directory domain session, the Kerberos output may be empty or limited.
+
+Learning objective: Connect account identity, security tokens, authentication sessions, and permissions to the actual operating system.
+
+---
+
+# 16. How a SOC Analyst Uses This Knowledge
+
+A Security Operations Center analyst often needs to determine whether an authentication event represents normal activity or a potential compromise.
+
+Consider the following hypothetical alert:
+
+> A standard employee account authenticated to a server at an unusual time, followed by access to a sensitive resource.
+
+A structured investigation might proceed as follows.
+
+### Step 1: Identify the account
+
+Review the username, SID, account type, and group memberships.
+
+### Step 2: Examine the authentication event
+
+Review successful and failed logons, authentication protocols, timestamps, source addresses, and logon types.
+
+### Step 3: Establish the security context
+
+Determine whether the account had administrative privileges or belonged to sensitive groups.
+
+### Step 4: Investigate the destination
+
+Determine whether the destination server and requested resource are appropriate for the user.
+
+### Step 5: Correlate related activity
+
+Look for:
+- Unexpected service-ticket requests.
+- Unusual explicit-credential usage.
+- Privileged logons.
+- New services or processes.
+- Group membership changes.
+- Suspicious credential-access activity.
+
+### Step 6: Assess the evidence
+
+Determine whether the activity is legitimate, misconfigured, suspicious, or confirmed malicious.
+
+### Step 7: Respond according to evidence
+
+Depending on the investigation, actions may include escalating the alert, disabling a compromised account, revoking relevant sessions or credentials, isolating a compromised endpoint, and preserving evidence.
+
+These actions should follow organizational incident-response procedures.
+
+---
+
+# 17. Important Concepts to Memorize
+
+| Concept | Remember this |
+|---|---|
+| Authentication | Verifies identity or possession of acceptable credentials |
+| Authorization | Determines which operations are permitted |
+| LSASS | Core Windows security process involved in important authentication operations |
+| SAM | Stores local account information and password verification data |
+| NTLM | Challenge-response authentication protocol used in supported Windows scenarios |
+| Kerberos | Ticket-based network authentication protocol |
+| SID | Security identifier for a security principal |
+| Access token | Represents the security context of a process or thread |
+| DACL | Controls discretionary access to an object |
+| SACL | Specifies auditing rules and can support integrity labeling |
+| UAC | Helps separate ordinary activity from elevated administrative operations |
+| Privilege | Authorizes a particular system-level operation |
+| Local account | Account managed by an individual computer |
+| Domain account | Account managed through a domain identity infrastructure |
+| Group Policy | Centrally manages supported Windows configuration settings |
+| Pass-the-Hash | Uses stolen hash-related authentication material |
+| Pass-the-Ticket | Abuses stolen or compromised Kerberos ticket material |
+| Kerberoasting | Attempts offline cracking of eligible Kerberos service-ticket material |
+| Credential dumping | Attempts to extract credentials or authentication material |
+
+---
+
+# 18. Self-Assessment Questions
+
+Try answering these without looking at the explanations above.
+
+### Basic
+
+1. What is the difference between authentication and authorization?
+2. What is LSASS, and why is it a security-sensitive process?
+3. What information does a Windows security token contain?
+4. What is the purpose of a SID?
+5. What is the difference between a DACL and a SACL?
+
+### Intermediate
+
+6. How does NTLM challenge-response authentication work?
+7. Why is Kerberos commonly preferred for Active Directory domain authentication?
+8. What is the difference between a permission and a privilege?
+9. How does UAC reduce the risk associated with administrative accounts?
+10. How do local accounts differ from domain accounts?
+11. What can an attacker accomplish through Pass-the-Hash if the target environment permits it?
+12. Why can excessive service-account privileges increase the impact of Kerberoasting?
+
+### Practical and SOC-focused
+
+13. How would you investigate repeated Event ID 4625 failures?
+14. Which event would you examine to investigate a successful Windows logon?
+15. How would you use `whoami /groups` and `whoami /priv` during an investigation?
+16. What security risks arise when a service executable is writable by an unprivileged user?
+17. How would you investigate a suspicious Kerberos service-ticket request?
+18. Why should defenders correlate authentication logs with endpoint and network telemetry?
+
+---
+
+## Final Takeaway
+
+The Windows security model can be understood through five connected layers:
+
+1. Identity: Users, groups, accounts, and SIDs.
+2. Authentication: Passwords, NTLM, Kerberos, and other sign-in mechanisms.
+3. Security context: Logon sessions, access tokens, groups, and privileges.
+4. Authorization: ACLs, security descriptors, UAC, and privilege checks.
+5. Monitoring and response: Windows Security logs, endpoint telemetry, and incident investigation.
+
+For your cybersecurity roadmap, focus first on understanding LSASS, SAM, NTLM versus Kerberos, security tokens, SIDs, DACLs, UAC, Windows privileges, and Event IDs 4624/4625/4672/4768/4769. These concepts form a foundation for Windows endpoint security, Active Directory security, threat hunting, and incident response.

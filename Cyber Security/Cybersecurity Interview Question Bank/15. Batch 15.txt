@@ -1,0 +1,1044 @@
+# Cybersecurity Interview Question Bank
+
+# Batch 15 — Q1401–Q1500
+
+# Section 32 — Purple Team Detection Engineering & Automation
+
+## Topic 1: Sigma and YARA
+
+Q1401
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SOC Analyst, Purple Team Engineer
+- Competency: Understanding detection-rule formats
+
+Question: What are Sigma and YARA, and what fundamental differences exist between their intended use cases in security detection?
+
+Q1402
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Basic Sigma rule interpretation
+
+Question: Examine the following Sigma rule:
+
+```
+title: Suspicious PowerShell Execution
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains: '-EncodedCommand'
+  condition: selection
+level: medium
+```
+
+Which process activity does this rule identify, and which fields must the logging environment provide for the rule to work correctly?
+
+Q1403
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Purple Team Engineer
+- Competency: Sigma rule development
+
+Question: Write a Sigma rule that detects the execution of `rundll32.exe` with a command line referencing a DLL loaded from a user's temporary directory. Include an appropriate Windows process-creation log source, selection conditions and severity level.
+
+Q1404
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Malware Analyst, Detection Engineer, Threat Hunter
+- Competency: Understanding YARA detection logic
+
+Question: How does YARA combine string matching and Boolean conditions to identify files with particular characteristics, and why is matching multiple independent indicators generally more reliable than matching a single string?
+
+Q1405
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer, Reverse Engineer
+- Competency: YARA rule development
+
+Question: Create a YARA rule for an authorized malware-analysis lab that identifies a suspicious Windows executable containing all three of the following ASCII strings: `CreateRemoteThread`, `VirtualAllocEx` and `WriteProcessMemory`. Require at least two strings to match, and explain how you would reduce false positives.
+
+Q1406
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Purple Team Engineer
+- Competency: Sigma backend conversion
+
+Question: You have a Sigma rule using `Image|endswith` and `CommandLine|contains|all`. Your SIEM supports KQL, but the Sigma conversion produces an unexpected query. How would you inspect the backend configuration, field mappings and generated query to identify whether the problem originates in the rule or the conversion pipeline?
+
+Q1407
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Malware Analyst, Security Architect
+- Competency: Detection strategy and rule reliability
+
+Question: How would you decide whether a detection should be implemented as a Sigma rule, a YARA rule or a combination of both when investigating a threat that involves suspicious files and abnormal endpoint execution?
+
+Q1408
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Malware Analyst, Detection Engineer, Threat Hunter
+- Competency: YARA rule optimization
+
+Question: A YARA rule designed to identify a malware family generates thousands of matches against legitimate software because it relies on common API strings. How would you redesign its string conditions, file constraints, metadata and testing corpus to improve precision without losing important malware variants?
+
+Q1409
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Architect, Detection Engineer, Purple Team Engineer
+- Competency: Enterprise detection-rule governance
+
+Question: Design a centralized rule-management process for an enterprise using Sigma and YARA across multiple SIEM and endpoint platforms. How would you manage rule portability, backend-specific differences, versioning, approvals, testing, deployment and rollback?
+
+Q1410
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, Malware Analyst
+- Competency: Enterprise detection architecture
+
+Question: What architectural trade-offs arise when standardizing detection content across multiple security platforms, particularly when the platforms differ in telemetry availability, query capabilities, execution environments and detection semantics?
+
+## Topic 2: KQL and SPL
+
+Q1411
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, SIEM Engineer, Detection Engineer
+- Competency: Understanding SIEM query languages
+
+Question: What are KQL and SPL, and how do they help security analysts transform raw telemetry into useful security findings?
+
+Q1412
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, SIEM Engineer
+- Competency: Basic KQL querying
+
+Question: Given a Microsoft Sentinel `DeviceProcessEvents` table, write a KQL query that returns events where `FileName` equals `powershell.exe` and `ProcessCommandLine` contains `-EncodedCommand`. Display the timestamp, device name, account name and process command line.
+
+Q1413
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, SOC Analyst, Detection Engineer
+- Competency: SPL aggregation
+
+Question: Given a Splunk index named `windows` containing process-creation events, write an SPL query that identifies the ten most frequently executed process names during the last 24 hours and displays their event counts in descending order.
+
+Q1414
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Query-language comparison
+
+Question: Compare the approaches used by KQL and SPL for filtering, aggregation, field extraction and multi-event correlation. What considerations would influence your choice when developing detections for a particular SIEM?
+
+Q1415
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Threat Hunter, Detection Engineer
+- Competency: Time-based event analysis
+
+Question: In Microsoft Sentinel, you need to identify accounts that authenticate from more than five distinct IP addresses within a 30-minute window. Write a KQL query using `SigninLogs`, `summarize`, `dcount()` and time-based binning to identify the accounts.
+
+Q1416
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, Detection Engineer, Threat Hunter
+- Competency: Multi-source correlation queries
+
+Question: You have the following data sources in Microsoft Sentinel: `DeviceProcessEvents`, `DeviceNetworkEvents` and `DeviceLogonEvents`. How would you construct a KQL investigation query that correlates a suspicious process execution with outbound network connections from the same device and user within a defined time window? Explain the join keys and limitations of timestamp-based correlation.
+
+Q1417
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: SPL event correlation
+
+Question: A Splunk environment records process execution and authentication events in separate sourcetypes. Develop an SPL approach to identify a successful authentication followed by suspicious PowerShell execution by the same account within ten minutes. Explain how you would handle missing usernames, time ordering and duplicate events.
+
+Q1418
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SIEM Engineer, Threat Hunter
+- Competency: Query performance engineering
+
+Question: Why can an analytically correct SIEM query still be unsuitable for production detection? Discuss data volume, query execution cost, time windows, cardinality, field extraction and scheduling frequency.
+
+Q1419
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Threat Hunter
+- Competency: Stateful detection implementation
+
+Question: You need to detect repeated failed logins followed by a successful login from the same source IP and against the same account within 15 minutes. Design a KQL-based detection that handles event ordering, aggregation, duplicate records and missing values. Explain how you would distinguish this behavior from legitimate authentication retries.
+
+Q1420
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SIEM Engineer, Security Architect
+- Competency: Detection query architecture
+
+Question: How would you design a common detection-query framework that supports both KQL and SPL without forcing every platform-specific capability into an artificial common denominator?
+
+## Topic 3: SIEM and EDR Detection Rules
+
+Q1421
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, EDR Engineer, Detection Engineer
+- Competency: Detection-rule fundamentals
+
+Question: What is a security detection rule, and how does it transform observable security activity into an actionable alert?
+
+Q1422
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, EDR Engineer
+- Competency: Understanding process-based detection
+
+Question: An EDR alert identifies `cmd.exe` launching `whoami.exe` under an administrative account. Which additional process, parent-process, user, command-line and host-context fields would you examine before deciding whether the activity is suspicious?
+
+Q1423
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, EDR Engineer, SOC Analyst
+- Competency: Parent-child process detection
+
+Question: Design a detection rule that identifies Microsoft Office applications launching command interpreters such as `powershell.exe`, `cmd.exe` or `wscript.exe`. Specify the parent-child relationship, required telemetry and at least two contextual conditions that could improve alert quality.
+
+Q1424
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: EDR Engineer, Detection Engineer, SOC Analyst
+- Competency: SIEM versus EDR detection logic
+
+Question: How does a detection rule implemented directly in an EDR platform differ from one implemented in a SIEM that consumes endpoint telemetry? Explain the operational consequences of each approach.
+
+Q1425
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Correlation rule construction
+
+Question: A SIEM receives events showing a new Windows service installation and a subsequent service-start event. How would you construct a correlation rule that identifies suspicious service creation followed by execution, using a common host identifier and a five-minute time window?
+
+Q1426
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: EDR Engineer, Detection Engineer, Threat Hunter
+- Competency: Behavioral detection development
+
+Question: Your EDR platform records process ancestry, file writes, registry modifications and outbound network connections. Design a behavioral detection for a process that creates an executable in a user-writable directory, establishes persistence through a Run key and initiates an external connection. How would you correlate these activities while accounting for legitimate software installers?
+
+Q1427
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, EDR Engineer, Purple Team Engineer
+- Competency: Behavioral detection engineering
+
+Question: What is the difference between detecting a specific malicious indicator and detecting a sequence of suspicious behaviors? Under what circumstances can behavioral detection improve resilience against changing attacker tooling?
+
+Q1428
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, EDR Engineer, Threat Hunter
+- Competency: Cross-endpoint behavioral correlation
+
+Question: An adversary simulation produces activity across three endpoints, including remote service creation, credential access indicators and subsequent outbound communication. Design a detection strategy that correlates endpoint-level observations into a single investigation without incorrectly merging unrelated activities occurring on the same network.
+
+Q1429
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, EDR Engineer
+- Competency: Production detection troubleshooting
+
+Question: A production detection correctly identifies malicious behavior during testing but stops generating alerts after an EDR platform update. How would you determine whether the failure is caused by telemetry schema changes, event loss, field renaming, query compatibility, rule execution or alert-routing configuration?
+
+Q1430
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, EDR Engineer, Detection Engineer
+- Competency: Enterprise detection architecture
+
+Question: How would you architect an enterprise detection ecosystem that distributes responsibilities between endpoint-native detections, centralized SIEM correlation and dedicated behavioral analytics while minimizing duplicated alerts and inconsistent incident severity?
+
+## Topic 4: Behavioral and Correlation Detection
+
+Q1431
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Detection Engineer
+- Competency: Understanding behavioral detection
+
+Question: What makes a security detection behavioral rather than purely signature-based, and what types of observable activity can be used to identify suspicious behavior?
+
+Q1432
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Threat Hunter
+- Competency: Basic event-sequence analysis
+
+Question: A host records the following events in chronological order: a user downloads an executable, launches it, creates a scheduled task and initiates an outbound connection. What relationships would you examine to determine whether these events represent one suspicious activity chain or unrelated legitimate operations?
+
+Q1433
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst, SIEM Engineer
+- Competency: Temporal correlation
+
+Question: How would you construct a detection for an account that creates several new user accounts and then adds one of them to a privileged group within 20 minutes? Identify the relevant event categories, correlation keys and conditions needed to distinguish this sequence from authorized administration.
+
+Q1434
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Threat Hunter, Purple Team Engineer
+- Competency: Event correlation principles
+
+Question: Explain the difference between temporal correlation, entity-based correlation and causal correlation. Why can treating two events that merely occur close together as causally related create unreliable detections?
+
+Q1435
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter
+- Competency: Detecting anomalous behavior
+
+Question: An employee normally authenticates from one corporate network but suddenly authenticates from a new geographic location and accesses several sensitive resources. Which baseline features and contextual signals would you use to build an anomaly detection, and how would you account for VPN usage and legitimate travel?
+
+Q1436
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter, Purple Team Engineer
+- Competency: Multi-stage attack detection
+
+Question: A controlled adversary simulation produces this sequence: unusual script execution, credential-access-related process activity, remote authentication and scheduled-task creation on another endpoint. Design a correlation approach that identifies the sequence across hosts and maps its individual stages to ATT&CK techniques. How would you prevent unrelated events from being grouped into the same chain?
+
+Q1437
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Threat Hunter, Security Architect
+- Competency: Detection model selection
+
+Question: Compare deterministic rule-based correlation with statistical anomaly detection and entity-behavior analytics. What operational conditions make each approach appropriate, and how should their results be combined in an investigation workflow?
+
+Q1438
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Threat Hunter
+- Competency: Entity resolution and correlation
+
+Question: Your SIEM receives authentication events using usernames, endpoint events using device IDs and network events using IP addresses. Some devices have dynamic IP addresses and users have multiple aliases. How would you implement entity resolution to correlate these records without introducing incorrect identity relationships?
+
+Q1439
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter, Purple Team Engineer
+- Competency: Complex detection correlation
+
+Question: Design a detection that identifies a possible account-compromise sequence involving unusual authentication, access to a sensitive resource, suspicious process execution and subsequent data transfer. Explain your correlation model, time windows, entity relationships, confidence scoring and the evidence required before escalating the incident.
+
+Q1440
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, Threat Hunter
+- Competency: Enterprise behavioral analytics architecture
+
+Question: How would you design an enterprise-wide behavioral analytics architecture that correlates endpoint, identity, network and cloud telemetry while addressing identity resolution, data quality, privacy, scalability, explainability and alert fatigue?
+
+## Topic 5: Detection-as-Code
+
+Q1441
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Understanding detection-as-code
+
+Question: What is detection-as-code, and why is treating detection rules as version-controlled software beneficial to a security engineering team?
+
+Q1442
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Basic detection repository management
+
+Question: You are creating a Git repository for Sigma detection rules. What directory structure, naming conventions and metadata would you establish to organize rules by platform, telemetry source, threat behavior and maturity?
+
+Q1443
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Git-based detection version control
+
+Question: A detection engineer accidentally modifies a production Sigma rule and commits the change directly to the main branch. How would you use Git history, branches and pull requests to identify the modification, review its impact and restore the previously approved version if necessary?
+
+Q1444
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, DevSecOps Engineer, Security Architect
+- Competency: Software engineering principles for detections
+
+Question: How do software engineering practices such as modularity, code review, automated testing and semantic versioning apply to detection content, and what makes detection engineering different from conventional application development?
+
+Q1445
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Detection-rule CI validation
+
+Question: Design a GitHub Actions workflow that runs whenever a Sigma rule changes. The workflow must validate YAML syntax, check required metadata fields and execute a rule-linting step before allowing the change to proceed. Which stages would you include, and which failures should block merging?
+
+Q1446
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer, SIEM Engineer
+- Competency: Detection deployment automation
+
+Question: You maintain 200 Sigma rules and deploy them to multiple SIEM environments. Design a CI/CD pipeline that validates rule syntax, converts rules into target query languages, runs automated tests, obtains approval and deploys the resulting detection content. How would you prevent an incompatible rule from reaching production?
+
+Q1447
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, DevSecOps Engineer, Purple Team Engineer
+- Competency: Detection lifecycle management
+
+Question: What lifecycle stages should a detection rule pass through from initial hypothesis to production retirement? Explain how version control, ownership, test evidence, review and performance monitoring support long-term detection quality.
+
+Q1448
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Configuration and deployment management
+
+Question: Your detection repository contains a common Sigma rule and separate environment-specific configurations for two SIEM platforms. How would you structure the repository and deployment pipeline so that shared detection logic remains consistent while platform-specific field mappings and exclusions can be maintained independently?
+
+Q1449
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer, Security Architect
+- Competency: Secure detection pipeline design
+
+Question: A malicious contributor attempts to modify a detection rule so that it silently excludes events from a privileged account. Design security controls for the detection-as-code pipeline that would expose or prevent this change. Include branch protection, code ownership, review requirements, test cases, auditability and deployment authorization.
+
+Q1450
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, DevSecOps Engineer
+- Competency: Enterprise detection-as-code governance
+
+Question: How would you establish an enterprise detection-as-code program across multiple security teams, business units and SIEM platforms? Discuss ownership, reusable detection libraries, release governance, environment promotion, risk acceptance, rollback and measurement of engineering maturity.
+
+## Topic 6: Detection Testing
+
+Q1451
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, SOC Analyst
+- Competency: Detection testing fundamentals
+
+Question: Why must a detection rule be tested before production deployment, and how is validating that a rule executes different from validating that it correctly detects the intended behavior?
+
+Q1452
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer
+- Competency: Basic positive and negative testing
+
+Question: You have written a detection for suspicious PowerShell execution. Describe one positive test and two negative tests you would perform in an isolated Windows lab to determine whether the rule behaves as intended.
+
+Q1453
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, SIEM Engineer
+- Competency: Automated detection testing
+
+Question: A Sigma rule is expected to detect a process-creation event containing `-EncodedCommand`. How would you build an automated test that supplies representative matching and non-matching event records, executes the rule against them and verifies the expected detection results?
+
+Q1454
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer
+- Competency: Test coverage and validation
+
+Question: Explain the difference between unit testing, integration testing, regression testing and end-to-end testing in the context of a detection engineering pipeline.
+
+Q1455
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, SOC Analyst
+- Competency: Detection regression testing
+
+Question: A previously validated detection begins missing test events after a change to the SIEM normalization pipeline. How would you create a regression test that verifies the expected field names, data types, event counts and alert outcome before and after the change?
+
+Q1456
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, Threat Hunter
+- Competency: Detection test-case design
+
+Question: Design a test suite for a detection that identifies suspicious scheduled-task creation. Include multiple positive test cases, legitimate administrative scenarios, missing telemetry cases, variations in command-line arguments and tests for events arriving out of order.
+
+Q1457
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, Security Architect
+- Competency: Detection effectiveness measurement
+
+Question: Why is successful execution of an adversary simulation insufficient evidence that an enterprise detection is effective? Discuss telemetry completeness, alert generation, alert quality, investigation context and response readiness.
+
+Q1458
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, SIEM Engineer
+- Competency: Detection regression framework implementation
+
+Question: You maintain a collection of 150 detection rules. Design an automated regression framework that executes test events against the rules whenever a rule, parser or field mapping changes. Explain test isolation, expected outcomes, failure reporting and how you would prevent an unrelated rule failure from blocking every deployment.
+
+Q1459
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, EDR Engineer
+- Competency: Detection robustness testing
+
+Question: During an authorized simulation, a detection succeeds when a suspicious executable uses its original filename but fails when the same behavior is performed using a renamed binary. How would you evaluate whether the detection depends excessively on static indicators and design controlled test variations to assess behavioral robustness?
+
+Q1460
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Purple Team Engineer, Security Architect
+- Competency: Detection assurance methodology
+
+Question: How would you establish a continuous detection assurance program that measures not only whether individual rules fire, but also whether telemetry, correlation, alert routing and analyst workflows remain effective as the enterprise environment changes?
+
+## Topic 7: Detection Automation
+
+Q1461
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SOC Analyst, SIEM Engineer
+- Competency: Detection automation fundamentals
+
+Question: What activities in a detection engineering workflow can be automated, and which activities should still require human review or security judgment?
+
+Q1462
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Basic alert automation
+
+Question: A SIEM sends a JSON alert containing an alert ID, severity, hostname and username. How would you write a simple automation that validates the required fields and routes complete alerts to the appropriate investigation queue while recording malformed alerts?
+
+Q1463
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst, SIEM Engineer
+- Competency: Event-driven automation
+
+Question: Design an event-driven workflow that receives a high-severity SIEM alert, enriches it with hostname and user information, checks whether the associated asset is critical and creates an incident with the enrichment results. What should happen if an enrichment service is unavailable?
+
+Q1464
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SOC Analyst, Security Architect
+- Competency: Automation reliability principles
+
+Question: What are idempotency, retries, timeout handling and dead-letter queues in security automation, and why are these mechanisms essential when processing alerts that may be delivered more than once?
+
+Q1465
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, DevSecOps Engineer
+- Competency: Automated detection inventory
+
+Question: Write a Python script that reads a directory of Sigma YAML files, extracts each rule's title, ID, description and severity, and generates a JSON inventory. How would you handle invalid YAML files without silently losing information about failed records?
+
+Q1466
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, DevSecOps Engineer
+- Competency: Automated detection deployment
+
+Question: You need to deploy approved detection rules through a SIEM REST API. Design an automation that authenticates securely, checks whether a rule already exists, creates or updates it, verifies the deployed configuration and records the resulting deployment status. How would you handle API rate limits and partial deployment failures?
+
+Q1467
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Security Architect, Purple Team Engineer
+- Competency: Automation governance
+
+Question: What risks arise when security automation is allowed to disable detections, isolate endpoints or modify identity permissions without human approval? How would you design approval boundaries based on action impact and confidence?
+
+Q1468
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, SOC Analyst
+- Competency: Automated alert deduplication
+
+Question: Your SIEM generates 500 alerts for the same suspicious process because multiple endpoint events satisfy the same rule. Design an alert-deduplication mechanism using event fingerprints, host identity, detection ID and time windows. How would you ensure that genuinely distinct attack activity is not suppressed?
+
+Q1469
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOAR Engineer, Security Architect
+- Competency: Resilient automation architecture
+
+Question: Design a distributed detection automation service that consumes events from multiple SIEM platforms, performs enrichment, applies correlation logic and creates incidents. Address event ordering, duplicate delivery, retry storms, API outages, state persistence and recovery after worker failure.
+
+Q1470
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, SOC Manager
+- Competency: Enterprise automation strategy
+
+Question: How would you decide which security detection and response workflows should be fully automated, partially automated or remain analyst-driven across an enterprise? Explain how risk, confidence, reversibility, business impact, accountability and operational maturity influence the decision.
+
+## Topic 8: Python Security Automation
+
+Q1471
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SOC Analyst, Security Analyst
+- Competency: Basic security data processing
+
+Question: Write a Python script that reads a JSON file containing security events and prints the total number of events grouped by their `event_type` field. How would you handle missing or malformed JSON records?
+
+Q1472
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter, Security Analyst
+- Competency: Security log automation
+
+Question: Develop a Python program that parses Windows security events exported as JSON and identifies all events associated with a specified username during a given time interval. Include timestamp parsing, timezone handling and invalid-record reporting.
+
+Q1473
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Security Engineer, DevSecOps Engineer
+- Competency: Secure automation development
+
+Question: What security considerations should be addressed when writing Python automation that handles SIEM credentials, API tokens, untrusted event data and external enrichment responses?
+
+Q1474
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Threat Hunter
+- Competency: Python API integration
+
+Question: Write a Python automation that retrieves alerts from a SIEM REST API using pagination, processes each alert's severity and hostname, and writes the results to a JSON report. Include handling for HTTP errors, timeouts, rate limits and expired authentication tokens.
+
+Q1475
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, DevSecOps Engineer
+- Competency: Automated detection validation
+
+Question: Design a Python-based detection validation tool that accepts a Sigma rule and a collection of synthetic Windows event records, evaluates whether the records satisfy the rule's selection conditions and reports matching event IDs. Which Sigma features would require a proper parsing or conversion library rather than a simplistic custom evaluator?
+
+Q1476
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Threat Hunter, SIEM Engineer
+- Competency: High-volume security event processing
+
+Question: Your Python-based telemetry processor must handle 10 million security events per day. How would you design its ingestion, parsing, normalization, batching and output pipeline to manage memory usage and processing latency? Discuss when asynchronous I/O, multiprocessing or distributed processing would be appropriate.
+
+Q1477
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Security Architect, DevSecOps Engineer
+- Competency: Security automation engineering trade-offs
+
+Question: How do you determine whether a security automation should be implemented as a scheduled script, an event-driven service, a background worker or a distributed processing system? Discuss reliability, operational complexity, scalability and maintainability.
+
+Q1478
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, SIEM Engineer
+- Competency: Detection telemetry pipeline debugging
+
+Question: A Python automation receives 100,000 events from a SIEM API but reports only 72,000 processed events. How would you instrument the pipeline to identify pagination gaps, parsing failures, duplicate suppression, dropped messages and downstream write errors? What reconciliation metrics would you introduce?
+
+Q1479
+
+- Difficulty: Senior/Architect
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Security Architect, Detection Engineer, DevSecOps Engineer
+- Competency: Enterprise Python automation architecture
+
+Question: Design a reusable Python security automation platform for multiple detection teams. It must support shared API clients, authentication providers, structured logging, configuration management, plugin-based enrichment, testable detection modules and centralized error handling. How would you isolate team-specific extensions and protect shared credentials?
+
+Q1480
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Detection Engineer, Security Engineering Manager
+- Competency: Automation platform governance
+
+Question: How would you establish engineering standards for an organization operating dozens of Python-based security automations? Address code ownership, dependency management, software supply-chain security, observability, secrets management, release governance and deprecation.
+
+## Topic 9: PowerShell and Bash Automation
+
+Q1481
+
+- Difficulty: Beginner
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SOC Analyst, Detection Engineer, Windows Security Engineer
+- Competency: Basic PowerShell automation
+
+Question: Write a PowerShell command that retrieves the latest 50 Windows Security event records and displays their event IDs, timestamps and machine names. How would you modify it to filter for a specific event ID?
+
+Q1482
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Linux Security Engineer, Detection Engineer, SOC Analyst
+- Competency: Bash log processing
+
+Question: Write a Bash pipeline that extracts unique source IP addresses from an authentication log containing failed SSH login attempts, counts the occurrences of each address and displays the results in descending order. Explain how you would avoid accidentally matching unrelated log fields.
+
+Q1483
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Windows Security Engineer, Linux Security Engineer
+- Competency: Cross-platform automation design
+
+Question: Compare PowerShell and Bash for endpoint security automation. How do their object-handling models, text-processing approaches, execution environments and error-handling mechanisms influence the design of reliable security scripts?
+
+Q1484
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Windows Security Engineer, SOC Analyst
+- Competency: Automated Windows telemetry collection
+
+Question: Design a PowerShell script that collects Windows process-creation, service-installation and scheduled-task information from a test endpoint, normalizes the records into structured objects and exports them to JSON for SIEM ingestion. How would you handle permissions and collection failures?
+
+Q1485
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Linux Security Engineer, SOC Analyst
+- Competency: Automated Linux telemetry collection
+
+Question: Create a Bash-based collection workflow that retrieves recent SSH authentication failures, currently running processes and recently modified files in selected monitored directories. How would you timestamp the results, preserve their provenance and avoid changing the endpoint during collection?
+
+## Topic 10: REST, SIEM and EDR APIs
+
+Q1486
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, SIEM Engineer, EDR Engineer
+- Competency: Understanding security APIs
+
+Question: What role do REST APIs play in detection engineering, and how can they be used to retrieve telemetry, manage detection content and integrate security platforms?
+
+Q1487
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: API-based alert retrieval
+
+Question: A SIEM exposes a REST endpoint that returns alerts as paginated JSON records. Describe how you would use Python's `requests` library to retrieve all pages, validate HTTP responses and extract the alert ID, severity and creation timestamp without exposing API credentials in the source code.
+
+Q1488
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: EDR Engineer, Detection Engineer, SIEM Engineer
+- Competency: Cross-platform API integration
+
+Question: You must integrate an EDR platform with a SIEM. The EDR API provides endpoint detections, while the SIEM API accepts normalized security events. Design the integration process, including authentication, field mapping, pagination, checkpointing, retry handling and duplicate prevention.
+
+Q1489
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, EDR Engineer, Security Architect
+- Competency: API integration reliability and security
+
+Question: An EDR API uses short-lived OAuth access tokens, enforces rate limits and occasionally returns partial responses. Design a reliable ingestion service that manages token renewal, backoff, checkpoint recovery, pagination consistency and audit logging. How would you prove that no alerts were silently lost during a prolonged outage?
+
+Q1490
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, SIEM Engineer, EDR Engineer, Detection Engineer
+- Competency: Enterprise security integration architecture
+
+Question: How would you design a vendor-independent integration architecture connecting multiple SIEM and EDR products through REST APIs while preserving platform-specific capabilities, supporting schema evolution and preventing one failing integration from disrupting the entire security monitoring environment?
+
+## Topic 11: MITRE ATT&CK Data and Automated Attack Simulation
+
+Q1491
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Purple Team Engineer, Detection Engineer, Threat Intelligence Analyst
+- Competency: ATT&CK data interpretation
+
+Question: How can the MITRE ATT&CK knowledge base be used programmatically to enrich detection engineering workflows, and why is it important to distinguish tactics, techniques, sub-techniques and data components?
+
+Q1492
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, Threat Intelligence Analyst
+- Competency: ATT&CK data automation
+
+Question: Using the official MITRE ATT&CK STIX data in an authorized development environment, how would you write a Python program to extract technique IDs, technique names, descriptions and associated tactics into a structured JSON file? How would you handle deprecated and revoked technique records?
+
+Q1493
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer
+- Competency: Automated attack simulation
+
+Question: You are building a controlled attack-simulation pipeline using Atomic Red Team tests in an isolated lab. How would you select a test, verify its prerequisites, execute it safely, collect the resulting telemetry and compare the observed events against the expected detection?
+
+Q1494
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Purple Team Engineer, Detection Engineer, Threat Hunter
+- Competency: Automated ATT&CK coverage validation
+
+Question: Design an automated workflow that retrieves ATT&CK technique metadata, associates detection rules with technique IDs, executes approved simulation tests and produces a report showing which techniques have successful telemetry collection, detection and alert generation. How would you distinguish an untested technique from a tested technique with no detection?
+
+Q1495
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Purple Team Engineer, Detection Engineer
+- Competency: Enterprise purple-team automation strategy
+
+Question: How would you architect an enterprise purple-team automation program that continuously connects ATT&CK intelligence, authorized adversary simulation, telemetry collection, detection testing and remediation tracking without turning ATT&CK coverage percentages into misleading measures of actual security effectiveness?
+
+## Topic 12: Automated Reporting and Security Dashboards
+
+Q1496
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, SIEM Engineer, Security Analyst
+- Competency: Automated detection reporting
+
+Question: Write a Python workflow that reads a JSON export of detection test results and produces a summary containing total tests, passed tests, failed tests and pass percentage. How would you ensure that missing or invalid test statuses are reported rather than counted as successful?
+
+Q1497
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Security Analyst, Security Architect
+- Competency: Security dashboard development
+
+Question: You need to build a dashboard showing detection coverage by ATT&CK technique, detection severity, test status and last validation date. Which data model and visualizations would you use, and how would you distinguish deployed detections from detections that have actually passed recent validation?
+
+Q1498
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Specific Technical
+- Job Roles: Detection Engineer, Purple Team Engineer, Security Architect
+- Competency: Detection program measurement
+
+Question: A security dashboard reports 95% ATT&CK technique coverage, but only 40% of mapped detections have been tested in the previous 90 days. Design a more meaningful measurement model that incorporates telemetry availability, detection validation, alert quality, ownership and remediation status. Which metrics would you present to technical leadership?
+
+Q1499
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Detection Engineer, Security Architect, SOC Manager
+- Competency: Security metrics and reporting judgment
+
+Question: Why can metrics such as the number of detection rules, total alerts and ATT&CK techniques mapped create a misleading picture of detection maturity? What complementary measures would better demonstrate the operational effectiveness of a detection program?
+
+Q1500
+
+- Difficulty: Senior/Architect
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Purple Team Engineer, CISO, Detection Engineering Manager
+- Competency: Enterprise detection performance strategy
+
+Question: You are presenting the effectiveness of an enterprise detection engineering program to the CISO and technical leadership. How would you design an executive reporting framework that connects detection investment, validated attack coverage, telemetry gaps, incident outcomes, operational costs and remediation progress to business risk and strategic decisions?

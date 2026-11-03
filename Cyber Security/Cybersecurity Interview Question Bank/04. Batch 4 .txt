@@ -1,0 +1,1009 @@
+# Cybersecurity Interview Question Bank — Batch 4
+
+## Section 8 — Core Cybersecurity (Q0301–Q0310)
+
+Q0301
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: Security Analyst, Security Architect
+- Competency: Threat modeling fundamentals
+- Question Type: Broad Conceptual
+
+Question: What are the main stages of a threat modeling process, and how do assets, trust boundaries, threats, and mitigations relate to one another?
+
+Q0302
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: Application Security Engineer, Security Architect
+- Competency: Threat identification
+- Question Type: Specific Technical
+
+Question: You are reviewing a web application with a browser frontend, an API server, a PostgreSQL database, and an external payment provider. How would you identify trust boundaries and enumerate threats before deployment?
+
+Q0303
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Security Analyst, Security Architect
+- Competency: Security architecture evaluation
+- Question Type: Broad Conceptual
+
+Question: How would you distinguish an organization's security architecture from its security posture, and what evidence would you use to evaluate whether the architecture is effective?
+
+Q0304
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Threat Intelligence Analyst
+- Competency: IOC interpretation
+- Question Type: Specific Technical
+
+Question: What are the differences between file hashes, IP addresses, domain names, URLs, registry keys, and mutex names as Indicators of Compromise? Which are generally more vulnerable to becoming outdated?
+
+Q0305
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: Threat Intelligence Analyst, SOC Analyst
+- Competency: IOC validation and enrichment
+- Question Type: Specific Technical
+
+Question: An endpoint alert contains a suspicious SHA-256 hash and an outbound connection to an unfamiliar domain. How would you validate, enrich, and correlate these indicators before deciding whether to escalate the alert?
+
+Q0306
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: Threat Intelligence Analyst, Threat Hunter
+- Competency: Adversary behavior analysis
+- Question Type: Broad Conceptual
+
+Question: How do tactics, techniques, and procedures (TTPs) differ, and why can behavioral indicators remain useful even after an attacker changes their infrastructure?
+
+Q0307
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: Detection Engineer, Threat Hunter, Purple Team Engineer
+- Competency: ATT&CK mapping
+- Question Type: Specific Technical
+
+Question: During an authorized simulation, an operator executes a suspicious PowerShell command, creates a scheduled task, and establishes outbound communication. How would you map the observed behaviors to MITRE ATT&CK techniques without assuming that every action represents a separate intrusion?
+
+Q0308
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Attack-chain analysis
+- Question Type: Broad Conceptual
+
+Question: How does the Cyber Kill Chain model differ from MITRE ATT&CK, and what are the limitations of using either model alone to describe a modern intrusion?
+
+Q0309
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Security Architect, Purple Team Engineer
+- Competency: Threat-model prioritization
+- Question Type: Specific Technical
+
+Question: A threat model identifies 40 potential threats across an application, but the engineering team can address only 10 before release. How would you prioritize them using attack feasibility, business impact, exposure, existing controls, and residual risk?
+
+Q0310
+
+- Difficulty: Senior / Architect
+- Classification: Practical
+- Job Roles: Security Architect, Security Manager
+- Competency: Enterprise security design
+- Question Type: Broad Conceptual
+
+Question: How would you establish a repeatable threat-modeling program across multiple engineering teams so that threat models remain current as systems, dependencies, and business risks change?
+
+## Section 9 — Governance, Risk & Compliance (Q0311–Q0340)
+
+Q0311
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Analyst
+- Competency: Governance fundamentals
+- Question Type: Broad Conceptual
+
+Question: What is information security governance, and how does it differ from day-to-day security operations?
+
+Q0312
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Policy hierarchy
+- Question Type: Specific Technical
+
+Question: What is the difference between an information security policy, a standard, a procedure, and a guideline? Give an example of how an organization might use each.
+
+Q0313
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Risk framework understanding
+- Question Type: Broad Conceptual
+
+Question: How do qualitative and quantitative information security risk assessments differ, and under what circumstances would you choose one over the other?
+
+Q0314
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Risk calculation
+- Question Type: Specific Technical
+
+Question: A business application has an estimated annual loss of ₹12 lakh if a particular incident occurs. The estimated annual probability of that incident is 20%. Calculate the annualized loss expectancy and explain how you would use it when comparing security investments.
+
+Q0315
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect
+- Competency: Risk treatment
+- Question Type: Broad Conceptual
+
+Question: Explain the differences between risk avoidance, risk mitigation, risk transfer, and risk acceptance. What documentation and approval should accompany each treatment decision?
+
+Q0316
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: ISO 27001 understanding
+- Question Type: Specific Technical
+
+Question: What is the purpose of an ISO/IEC 27001 Information Security Management System (ISMS), and how does ISO/IEC 27002 complement it?
+
+Q0317
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: ISMS implementation
+- Question Type: Specific Technical
+
+Question: An organization wants to become ISO 27001 certified but has no formal asset inventory, risk register, or security policies. What sequence of activities would you recommend to establish its ISMS?
+
+Q0318
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect
+- Competency: NIST CSF understanding
+- Question Type: Broad Conceptual
+
+Question: Explain the purpose of the NIST Cybersecurity Framework and how its core functions help an organization manage cybersecurity risk.
+
+Q0319
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Control-framework interpretation
+- Question Type: Specific Technical
+
+Question: How does NIST SP 800-53 organize security and privacy controls, and why should an organization select and tailor controls instead of blindly implementing the entire catalog?
+
+Q0320
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: SOC 2 fundamentals
+- Question Type: Broad Conceptual
+
+Question: What is a SOC 2 examination, and how do the Trust Services Criteria relate to the controls and evidence an organization must maintain?
+
+Q0321
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: SOC 2 readiness
+- Question Type: Specific Technical
+
+Question: A SaaS company is preparing for a SOC 2 Type II examination. It has access-control policies but cannot demonstrate periodic access reviews or employee offboarding evidence. How would you identify and remediate these control gaps?
+
+Q0322
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Privacy Analyst
+- Competency: GDPR principles
+- Question Type: Broad Conceptual
+
+Question: What are the core principles of GDPR data protection, and how do data minimization, purpose limitation, and storage limitation affect application design?
+
+Q0323
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Privacy Analyst, Security Architect
+- Competency: Data protection assessment
+- Question Type: Specific Technical
+
+Question: A company collects user names, email addresses, device identifiers, and location data but retains all records indefinitely. How would you assess this design against data minimization, retention, deletion, and access-control requirements under GDPR?
+
+Q0324
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: PCI DSS understanding
+- Question Type: Specific Technical
+
+Question: What types of systems and data can bring an organization into PCI DSS scope, and why is defining the cardholder data environment important?
+
+Q0325
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Compliance scoping
+- Question Type: Specific Technical
+
+Question: A payment application stores transaction references in one database and cardholder data in a separate payment provider. How would you determine which components, network connections, and operational processes may remain in PCI DSS scope?
+
+Q0326
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: HIPAA security understanding
+- Question Type: Broad Conceptual
+
+Question: What is the purpose of the HIPAA Security Rule, and how do its administrative, physical, and technical safeguards address the protection of electronic protected health information?
+
+Q0327
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Audit methodology
+- Question Type: Broad Conceptual
+
+Question: How do internal security audits, external audits, compliance assessments, and technical security assessments differ in their objectives and evidence requirements?
+
+Q0328
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Audit evidence collection
+- Question Type: Specific Technical
+
+Question: During an access-control audit, management claims that all employees have appropriate permissions, but no access-review records exist. What evidence would you request, how would you sample accounts, and how would you document the finding?
+
+Q0329
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Analyst
+- Competency: Risk assessment execution
+- Question Type: Specific Technical
+
+Question: A public-facing application has an unpatched critical vulnerability, weak administrator MFA enforcement, and incomplete backups. How would you record these risks, estimate their likelihood and impact, and recommend treatment priorities?
+
+Q0330
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect
+- Competency: Enterprise risk management
+- Question Type: Broad Conceptual
+
+Question: How would you aggregate technical risks from multiple business units into an enterprise risk register without losing important differences in business impact, threat exposure, and risk ownership?
+
+Q0331
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor
+- Competency: Third-party risk management
+- Question Type: Broad Conceptual
+
+Question: What is third-party security risk management, and how should vendor criticality, data access, service dependency, and concentration risk influence the depth of an assessment?
+
+Q0332
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Architect
+- Competency: Vendor assessment
+- Question Type: Specific Technical
+
+Question: A cloud vendor refuses to provide a recent independent audit report but offers a security questionnaire and contractual commitments. How would you evaluate the remaining assurance gap and decide whether the vendor can be approved?
+
+Q0333
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Business continuity
+- Question Type: Broad Conceptual
+
+Question: What is the purpose of a Business Continuity Plan, and how does it differ from an IT-focused Disaster Recovery Plan?
+
+Q0334
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect
+- Competency: Disaster recovery metrics
+- Question Type: Specific Technical
+
+Question: Explain Recovery Time Objective (RTO) and Recovery Point Objective (RPO). How do these metrics influence backup frequency, replication design, and recovery architecture?
+
+Q0335
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Business impact analysis
+- Question Type: Specific Technical
+
+Question: A college management platform supports admissions, fee collection, attendance, and examination results. How would you conduct a Business Impact Analysis to determine the criticality and recovery priorities of these services?
+
+Q0336
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Security Auditor, GRC Analyst
+- Competency: Compliance monitoring
+- Question Type: Specific Technical
+
+Question: An organization has implemented a control requiring quarterly privileged-access reviews. How would you design ongoing monitoring to detect missed reviews, incomplete approvals, and privileged accounts that remain active after employee termination?
+
+Q0337
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Manager
+- Competency: Security awareness
+- Question Type: Broad Conceptual
+
+Question: How should an organization measure the effectiveness of security awareness training beyond attendance records and course-completion percentages?
+
+Q0338
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: GRC Analyst, Security Analyst
+- Competency: Awareness program evaluation
+- Question Type: Specific Technical
+
+Question: After a phishing-awareness campaign, the organization observes that 18% of employees clicked a simulated malicious link and 6% submitted credentials. How would you interpret these results and design a follow-up program without treating the figures as the only measure of security maturity?
+
+Q0339
+
+- Difficulty: Senior / Architect
+- Classification: Practical
+- Job Roles: Security Manager, Security Architect, GRC Analyst
+- Competency: Governance operating model
+- Question Type: Broad Conceptual
+
+Question: How would you design an enterprise security governance operating model that defines accountability across the board, executive leadership, business owners, IT operations, engineering, and the security team?
+
+Q0340
+
+- Difficulty: Senior / Architect
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst
+- Competency: Regulatory and control strategy
+- Question Type: Broad Conceptual
+
+Question: An international SaaS organization must address ISO 27001, SOC 2, GDPR, and PCI DSS obligations. How would you build a unified control framework that reduces duplicated work while preserving framework-specific requirements and evidence?
+
+## Section 10 — Security Monitoring (Q0341–Q0370)
+
+Q0341
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Monitoring fundamentals
+- Question Type: Broad Conceptual
+
+Question: What is security telemetry, and how does it differ from a security alert or a confirmed incident?
+
+Q0342
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: SOC Analyst, SIEM Engineer
+- Competency: Log management fundamentals
+- Question Type: Broad Conceptual
+
+Question: Why do security teams collect logs from multiple sources instead of relying only on endpoint or firewall logs?
+
+Q0343
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SIEM Engineer, Security Analyst
+- Competency: Log normalization
+- Question Type: Specific Technical
+
+Question: What problems can occur when different systems record timestamps in different time zones or formats, and how should a centralized logging system handle event time and ingestion time?
+
+Q0344
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Log pipeline troubleshooting
+- Question Type: Specific Technical
+
+Question: A log collector receives 100,000 events per minute, but the SIEM indexes only 65,000. How would you investigate ingestion delays, dropped events, parsing failures, queue saturation, and source-side forwarding limits?
+
+Q0345
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Threat Hunter
+- Competency: Event correlation
+- Question Type: Broad Conceptual
+
+Question: How does correlating authentication, endpoint, DNS, and network events provide more investigative context than analyzing each event independently?
+
+Q0346
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Threat Hunter
+- Competency: Cross-source investigation
+- Question Type: Specific Technical
+
+Question: A user signs in from a new geographic location, launches PowerShell, resolves an unfamiliar domain, and establishes an outbound connection within five minutes. How would you correlate these events and determine what additional evidence is needed before declaring an incident?
+
+Q0347
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Security Analyst, Detection Engineer
+- Competency: Telemetry source selection
+- Question Type: Broad Conceptual
+
+Question: What are the strengths and limitations of network, endpoint, authentication, and DNS telemetry when investigating an intrusion that uses legitimate administrative tools?
+
+Q0348
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Windows event interpretation
+- Question Type: Specific Technical
+
+Question: What information is recorded by Windows Security Event ID 4624, and how would you distinguish the logon type, account identity, and source information during an investigation?
+
+Q0349
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Windows authentication investigation
+- Question Type: Specific Technical
+
+Question: You find Event ID 4625 failures followed by Event ID 4624 success for the same account. Which fields and surrounding events would you examine to determine whether this represents a password-guessing attempt, a legitimate user mistake, or another activity?
+
+Q0350
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Sysmon telemetry
+- Question Type: Specific Technical
+
+Question: What additional visibility can Sysmon provide compared with standard Windows Security logs, and what investigative value do process creation, network connection, image loading, and file creation events offer?
+
+Q0351
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Detection Engineer, Threat Hunter
+- Competency: Sysmon event analysis
+- Question Type: Specific Technical
+
+Question: A Sysmon Event ID 1 record shows `winword.exe` launching `powershell.exe` with an encoded command, followed by Event ID 3 network activity from the child process. How would you investigate the process ancestry, command line, destination, user context, and related telemetry?
+
+Q0352
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Detection Engineer
+- Competency: PowerShell logging
+- Question Type: Specific Technical
+
+Question: What are the differences between PowerShell Module Logging, Script Block Logging, and Transcription, and what security visibility does each provide?
+
+Q0353
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Threat Hunter
+- Competency: Windows process monitoring
+- Question Type: Specific Technical
+
+Question: A Windows service unexpectedly launches `cmd.exe`, which then creates a scheduled task. What Windows and Sysmon telemetry would you collect to establish the initiating service, parent-child process relationship, task creation, and execution history?
+
+Q0354
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Detection Engineer, Incident Responder
+- Competency: Persistence investigation
+- Question Type: Specific Technical
+
+Question: During an endpoint investigation, a new Registry Run key, a modified service configuration, and a newly created scheduled task appear within the same time window. How would you reconstruct the sequence of changes and determine which mechanism is responsible for persistence?
+
+Q0355
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Windows account monitoring
+- Question Type: Specific Technical
+
+Question: What security significance do Windows Event IDs 4720, 4728, and 4732 have, and what account or group changes should trigger further investigation?
+
+Q0356
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Account activity investigation
+- Question Type: Specific Technical
+
+Question: An employee account is added to a privileged group outside the normal change window. How would you use Windows security events to identify who performed the change, which account was modified, and whether the change was followed by privileged activity?
+
+Q0357
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: SOC Analyst, EDR Engineer
+- Competency: Defender telemetry interpretation
+- Question Type: Broad Conceptual
+
+Question: How does Microsoft Defender Antivirus telemetry differ from Microsoft Defender for Endpoint telemetry, and why is it important to understand which product or data source generated an alert?
+
+Q0358
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Endpoint alert investigation
+- Question Type: Specific Technical
+
+Question: Microsoft Defender reports that a suspicious executable was blocked, but the user reports that the application still behaves abnormally. How would you investigate the alert, remediation status, related process activity, quarantine records, and possible secondary payloads?
+
+Q0359
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Linux Security Analyst
+- Competency: Linux authentication logging
+- Question Type: Specific Technical
+
+Question: What is the purpose of Linux authentication logs, Syslog, and systemd Journald, and how do their collection and retention behaviors differ?
+
+Q0360
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Linux SSH investigation
+- Question Type: Specific Technical
+
+Question: A Linux server shows repeated SSH authentication failures followed by a successful login for an unusual account. Which log sources and fields would you inspect to establish the source IP, authentication method, account, session time, and subsequent commands?
+
+Q0361
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: Threat Hunter, Linux Security Analyst
+- Competency: Linux process investigation
+- Question Type: Specific Technical
+
+Question: On a Linux server, an unfamiliar process consumes high CPU, runs under a service account, and creates outbound connections. How would you use `ps`, `top`, `pstree`, `/proc`, `ss`, and system logs to investigate it?
+
+Q0362
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Incident Responder, DFIR Analyst
+- Competency: Linux file activity investigation
+- Question Type: Specific Technical
+
+Question: A Linux web server contains a newly modified executable in `/tmp`, an unexpected cron entry, and changes to a sensitive configuration file. How would you establish file ownership, timestamps, permissions, process relationships, and persistence while preserving evidence?
+
+Q0363
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Telemetry quality assessment
+- Question Type: Broad Conceptual
+
+Question: What is the difference between missing telemetry, delayed telemetry, malformed telemetry, and telemetry that is present but lacks the fields required for detection?
+
+Q0364
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: SIEM Engineer, Security Architect
+- Competency: Monitoring coverage design
+- Question Type: Broad Conceptual
+
+Question: An enterprise has 5,000 Windows endpoints, 800 Linux servers, multiple network devices, and several cloud workloads. How would you design a telemetry coverage strategy that balances detection value, ingestion cost, retention, privacy, and operational reliability?
+
+Q0365
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Monitoring blind spots
+- Question Type: Broad Conceptual
+
+Question: How can endpoint logging configurations, audit-policy changes, clock drift, log rotation, and agent outages create security monitoring blind spots? Which controls help identify these conditions?
+
+Q0366
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Threat Hunter, Detection Engineer
+- Competency: Cross-platform behavior analysis
+- Question Type: Specific Technical
+
+Question: You suspect an attacker used a compromised account on both Windows and Linux systems. How would you build a unified timeline from Windows Event Logs, Linux authentication records, process telemetry, and network events when the systems have different logging formats?
+
+Q0367
+
+- Difficulty: Senior / Architect
+- Classification: Theoretical
+- Job Roles: Security Architect, SIEM Engineer
+- Competency: Enterprise monitoring architecture
+- Question Type: Broad Conceptual
+
+Question: How would you define enterprise-wide logging standards covering event selection, field consistency, time synchronization, data classification, retention, access control, and monitoring ownership?
+
+Q0368
+
+- Difficulty: Senior / Architect
+- Classification: Practical
+- Job Roles: Security Architect, Security Manager
+- Competency: Monitoring resilience
+- Question Type: Specific Technical
+
+Question: How would you design monitoring resilience so that an attacker or infrastructure failure cannot silently disable security telemetry across critical systems? Include health checks, independent alerting, buffering, access controls, and recovery procedures.
+
+Q0369
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Detection Engineer, SOC Analyst
+- Competency: Detection evidence validation
+- Question Type: Specific Technical
+
+Question: A detection rule stops generating alerts after a Windows logging policy change, but endpoint agents still appear healthy. How would you trace the issue through event generation, forwarding, parsing, field mapping, indexing, and rule execution?
+
+Q0370
+
+- Difficulty: Senior / Architect
+- Classification: Theoretical
+- Job Roles: Security Architect, SOC Manager
+- Competency: Monitoring strategy
+- Question Type: Broad Conceptual
+
+Question: How would you measure the effectiveness of an organization's security monitoring program using coverage, data quality, detection latency, investigation readiness, and telemetry availability rather than simply counting collected events?
+
+## Section 11 — SIEM & EDR (Q0371–Q0400)
+
+Q0371
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: SOC Analyst, SIEM Engineer
+- Competency: SIEM fundamentals
+- Question Type: Broad Conceptual
+
+Question: What is a SIEM platform, and how do log collection, analysis, correlation, alerting, and incident management fit into its overall workflow?
+
+Q0372
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Job Roles: SOC Analyst, EDR Engineer
+- Competency: SIEM and EDR distinction
+- Question Type: Broad Conceptual
+
+Question: What is the difference between SIEM and EDR in terms of data collection, visibility, detection, investigation, and response capabilities?
+
+Q0373
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SIEM Engineer, Security Analyst
+- Competency: SIEM architecture
+- Question Type: Specific Technical
+
+Question: What are the responsibilities of log forwarders, collectors, parsers, indexers, search heads, and correlation engines in a typical SIEM architecture?
+
+Q0374
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Log ingestion design
+- Question Type: Specific Technical
+
+Question: You need to onboard Windows Security logs, Linux authentication logs, firewall logs, and cloud audit events into a SIEM. How would you design the ingestion pipeline, validate source completeness, and handle parsing failures?
+
+Q0375
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Data normalization
+- Question Type: Specific Technical
+
+Question: What is the purpose of a common event schema in a SIEM, and how can inconsistent field names, data types, and entity identifiers affect cross-source correlation?
+
+Q0376
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SIEM Engineer, SOC Analyst
+- Competency: Event parsing
+- Question Type: Specific Technical
+
+Question: A firewall log records the source address as `src_ip`, while an endpoint source uses `SourceAddress` and a cloud source uses `client.ip`. How would you normalize these fields and validate that searches and correlation rules return consistent results?
+
+Q0377
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Correlation logic
+- Question Type: Broad Conceptual
+
+Question: How do time-based, sequence-based, threshold-based, and entity-based correlation rules differ, and what kinds of attacker behavior are each suited to identifying?
+
+Q0378
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, Detection Engineer
+- Competency: SIEM investigation
+- Question Type: Specific Technical
+
+Question: A SIEM shows 25 failed logins for one account from three IP addresses within two minutes, followed by a successful login. How would you query the events, group them by account and source, and determine whether the pattern warrants an alert?
+
+Q0379
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: SOC Analyst, SIEM Engineer
+- Competency: SIEM dashboard design
+- Question Type: Broad Conceptual
+
+Question: What makes a security dashboard useful to a SOC analyst, and how should dashboards differ for an analyst, SOC manager, and security executive?
+
+Q0380
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Alert lifecycle design
+- Question Type: Specific Technical
+
+Question: A SIEM rule creates a new incident for every event in a repeated brute-force pattern, producing hundreds of duplicate cases. How would you redesign alert grouping, suppression, deduplication, severity assignment, and incident creation without hiding separate attacks?
+
+Q0381
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: SIEM Engineer, SOC Analyst
+- Competency: SIEM platform comparison
+- Question Type: Broad Conceptual
+
+Question: What architectural and operational differences should be considered when evaluating Wazuh, Elastic Security, and Splunk for a security monitoring deployment?
+
+Q0382
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SIEM Engineer, SOC Analyst
+- Competency: SPL query construction
+- Question Type: Specific Technical
+
+Question: In Splunk, assume an index named `windows` contains fields `EventCode`, `user`, and `src_ip`. How would you write a search that finds EventCode 4625 events, counts failures by user and source IP over 10-minute intervals, and returns only groups with more than 10 failures?
+
+Q0383
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: KQL query construction
+- Question Type: Specific Technical
+
+Question: In a Microsoft Sentinel table named `SigninLogs`, how would you use KQL to find accounts with at least five failed sign-in attempts followed by a successful sign-in from the same IP address within a 15-minute window?
+
+Q0384
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Query optimization
+- Question Type: Broad Conceptual
+
+Question: What factors affect SIEM query performance, and how would you optimize expensive searches involving large time ranges, high-cardinality fields, joins, and repeated aggregations without sacrificing detection accuracy?
+
+Q0385
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Detection Engineer, Threat Hunter
+- Competency: Behavioral detection design
+- Question Type: Specific Technical
+
+Question: You want to detect suspicious execution where an Office application launches a scripting interpreter, which then creates a network connection. How would you design a correlation rule using process ancestry and network telemetry, and what exclusions or contextual checks would reduce false positives?
+
+Q0386
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Job Roles: EDR Engineer, SOC Analyst
+- Competency: EDR architecture
+- Question Type: Broad Conceptual
+
+Question: How does an EDR agent collect endpoint telemetry, and what are the roles of the endpoint sensor, management console, analytics engine, and response component?
+
+Q0387
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: EDR Engineer, Incident Responder
+- Competency: Process-tree investigation
+- Question Type: Specific Technical
+
+Question: An EDR process tree shows `explorer.exe` launching `winword.exe`, which launches `powershell.exe`, followed by an unfamiliar executable in a user-writable directory. How would you investigate the parent-child relationships, command lines, file reputation, user context, and subsequent activity?
+
+Q0388
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: EDR Engineer, Detection Engineer
+- Competency: Endpoint behavioral analysis
+- Question Type: Broad Conceptual
+
+Question: Why can behavioral EDR detections identify suspicious activity that signature-based antivirus misses, and what limitations can arise from legitimate administrative tools and dual-use software?
+
+Q0389
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: EDR Engineer, Threat Hunter
+- Competency: File and network activity investigation
+- Question Type: Specific Technical
+
+Question: An endpoint creates an executable in `%AppData%`, launches it, and connects to an unfamiliar external IP over HTTPS. How would you correlate file creation, file hash, process execution, signer information, DNS resolution, and network connection evidence?
+
+Q0390
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Job Roles: EDR Engineer, Incident Responder
+- Competency: Endpoint containment
+- Question Type: Broad Conceptual
+
+Question: What happens when an endpoint is isolated through an EDR platform, and what operational risks should be considered before isolating a critical production server?
+
+Q0391
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: EDR Engineer, Incident Responder
+- Competency: Endpoint response decision-making
+- Question Type: Specific Technical
+
+Question: An EDR alert identifies suspected ransomware activity on a file server that supports critical business operations. How would you decide whether to isolate the host immediately, preserve evidence, protect connected systems, and coordinate business continuity?
+
+Q0392
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Job Roles: EDR Engineer, Detection Engineer
+- Competency: EDR detection limitations
+- Question Type: Broad Conceptual
+
+Question: How can attackers reduce endpoint visibility by abusing trusted processes, disabling security services, or operating in memory, and what complementary telemetry and defensive controls can help address these blind spots?
+
+Q0393
+
+- Difficulty: Advanced
+- Classification: Practical
+- Job Roles: SOC Analyst, EDR Engineer
+- Competency: EDR alert triage
+- Question Type: Specific Technical
+
+Question: An EDR alert is classified as high severity because a process attempted to modify many files. What evidence would you review to distinguish ransomware behavior from a legitimate backup, synchronization, or software-update process?
+
+Q0394
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: SIEM Engineer, EDR Engineer, Detection Engineer
+- Competency: SIEM–EDR integration
+- Question Type: Specific Technical
+
+Question: How would you integrate EDR alerts and endpoint response actions with SIEM incidents so that analysts can correlate endpoint detections with identity, DNS, firewall, and cloud activity while avoiding duplicate incidents?
+
+Q0395
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Job Roles: SIEM Engineer, Security Architect
+- Competency: Detection data architecture
+- Question Type: Broad Conceptual
+
+Question: What trade-offs arise when choosing between centralized SIEM ingestion, endpoint-native analytics, and a hybrid architecture for security detection and investigation?
+
+Q0396
+
+- Difficulty: Senior / Architect
+- Classification: Practical
+- Job Roles: Security Architect, SIEM Engineer, EDR Engineer
+- Competency: Enterprise SIEM/EDR architecture
+- Question Type: Broad Conceptual
+
+Question: Design a SIEM and EDR architecture for an organization with 5,000 endpoints, remote employees, on-premises infrastructure, and cloud workloads. Address telemetry coverage, ingestion resilience, identity correlation, retention, response permissions, and operational ownership.
+
+Q0397
+
+- Difficulty: Senior / Architect
+- Classification: Theoretical
+- Job Roles: Security Architect, SOC Manager
+- Competency: Security operations strategy
+- Question Type: Broad Conceptual
+
+Question: How would you define the responsibilities and escalation boundaries between SOC analysts, SIEM engineers, EDR engineers, detection engineers, and incident responders in a mature security operations function?
+
+Q0398
+
+- Difficulty: Senior / Architect
+- Classification: Practical
+- Job Roles: Security Architect, Detection Engineer, SIEM Engineer
+- Competency: Detection lifecycle governance
+- Question Type: Specific Technical
+
+Question: How would you establish a controlled lifecycle for SIEM and EDR detection rules covering development, peer review, testing, deployment, versioning, tuning, rollback, and retirement?
+
+Q0399
+
+- Difficulty: Expert
+- Classification: Practical
+- Job Roles: Threat Hunter, Detection Engineer, Purple Team Engineer
+- Competency: Detection validation
+- Question Type: Specific Technical
+
+Question: During an authorized purple-team exercise, an operator performs a controlled sequence of suspicious process execution, scheduled-task creation, and outbound communication. How would you validate whether the EDR and SIEM detect each stage, identify telemetry gaps, and document detection failures?
+
+Q0400
+
+- Difficulty: Senior / Architect
+- Classification: Theoretical
+- Job Roles: Security Architect, SOC Manager, SIEM Engineer
+- Competency: Security monitoring maturity
+- Question Type: Broad Conceptual
+
+Question: How would you assess and mature an organization's SIEM and EDR capabilities across data quality, detection coverage, investigation speed, response automation, resilience, analyst effectiveness, and measurable business risk reduction?

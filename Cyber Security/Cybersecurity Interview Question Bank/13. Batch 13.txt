@@ -1,0 +1,925 @@
+# Cybersecurity Interview Question Bank — Batch 13
+
+# Section 28 — Adversary Simulation
+
+## Beginner — Q1201–Q1208
+
+Q1201. What is adversary simulation, and how does it differ from a traditional penetration test?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Penetration Tester, Red Team Operator, Purple Team Engineer
+- Competency: Adversary simulation fundamentals
+- Format: Comparison
+
+Q1202. What are the differences between Red Team, Blue Team and Purple Team operations?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Red Team Operator, SOC Analyst, Purple Team Engineer
+- Competency: Security team operating models
+- Format: Comparison
+
+Q1203. What is the MITRE ATT&CK framework, and how does it help security teams understand adversary behavior?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Threat Hunter, Detection Engineer, Purple Team Engineer
+- Competency: ATT&CK fundamentals
+- Format: Direct
+
+Q1204. What is the difference between an ATT&CK tactic, technique and sub-technique? Give an example of each from an authorized adversary simulation.
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Threat Hunter, Purple Team Engineer
+- Competency: ATT&CK taxonomy
+- Format: Comparison
+
+Q1205. What is the purpose of defining rules of engagement before conducting a Red Team or adversary simulation exercise?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Red Team Operator, Security Consultant
+- Competency: Engagement governance
+- Format: Why
+
+Q1206. In an isolated lab, how would you use a benign test file or controlled simulation tool to verify that an endpoint security product generates an alert?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Analyst, Purple Team Engineer
+- Competency: Basic security control validation
+- Format: Practical/command
+
+Q1207. What is the difference between a vulnerability assessment, penetration test and Red Team engagement in terms of objectives and expected outcomes?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Penetration Tester, Security Consultant, Security Manager
+- Competency: Security assessment methodologies
+- Format: Comparison
+
+Q1208. What is an attack simulation plan, and which information should it contain before a controlled exercise begins?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Red Team Operator, Purple Team Engineer
+- Competency: Exercise planning
+- Format: Direct
+
+## Intermediate — Q1209–Q1220
+
+Q1209. How would you map an adversary simulation scenario to MITRE ATT&CK techniques while ensuring that the selected techniques are relevant to the organization's actual threat model?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Engineer, Threat Intelligence Analyst
+- Competency: ATT&CK scenario mapping
+- Format: Design/architecture
+
+Q1210. What is the difference between threat emulation and threat simulation? Explain how each approach supports defensive validation.
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Red Team Operator, Purple Team Engineer
+- Competency: Adversary testing methodologies
+- Format: Comparison
+
+Q1211. An organization wants to test whether its SOC detects suspicious PowerShell execution. How would you define a safe test case, execute it in an approved environment and determine whether the expected telemetry was generated?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Engineer, Detection Engineer
+- Competency: Endpoint detection validation
+- Format: Scenario
+
+Q1212. What is the purpose of a threat model in adversary simulation, and how does it influence the choice of attack scenarios?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Red Team Lead
+- Competency: Threat modeling
+- Format: Why
+
+Q1213. What are Atomic Red Team tests, and how can small, repeatable tests help validate individual security detections?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Purple Team Engineer, Detection Engineer
+- Competency: Atomic testing
+- Format: How-it-works
+
+Q1214. You execute an approved test for suspicious scheduled-task creation, but the SIEM generates no alert. How would you determine whether the failure occurred at the endpoint, telemetry collection, ingestion, correlation or alerting stage?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Analyst, Detection Engineer
+- Competency: Detection pipeline troubleshooting
+- Format: Troubleshooting
+
+Q1215. What is the difference between a detection gap and a prevention gap? Why should a Purple Team report distinguish between them?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Purple Team Engineer, SOC Manager
+- Competency: Defensive control evaluation
+- Format: Comparison
+
+Q1216. How would you select representative endpoints, servers and identity systems for a controlled adversary simulation in a large enterprise?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Red Team Lead, Security Architect
+- Competency: Test-scope selection
+- Format: Decision-making
+
+Q1217. What is the difference between an adversary's objective and the individual techniques used to achieve it? Explain why testing only isolated techniques can provide an incomplete picture of security readiness.
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Threat Hunter, Purple Team Engineer
+- Competency: Adversary behavior modeling
+- Format: Comparison
+
+Q1218. During an exercise, how would you correlate an executed ATT&CK technique with endpoint events, network telemetry and SIEM alerts to establish whether the control worked?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Detection Engineer, Purple Team Engineer
+- Competency: Cross-source detection validation
+- Format: Investigation
+
+Q1219. What are the differences between a tabletop exercise, a technical simulation and a full Red Team engagement?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Manager, Incident Response Lead
+- Competency: Exercise formats
+- Format: Comparison
+
+Q1220. An organization wants to test phishing detection without sending harmful messages or collecting real employee passwords. How would you design an ethical and measurable simulation?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Security Awareness Lead, Purple Team Engineer
+- Competency: Safe phishing simulation
+- Format: Design/architecture
+
+## Advanced — Q1221–Q1235
+
+Q1221. How would you build an adversary emulation plan using a threat group's publicly documented behaviors without copying its infrastructure or deploying uncontrolled malware?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Red Team Operator, Threat Intelligence Analyst
+- Competency: Threat-informed emulation
+- Format: Design/architecture
+
+Q1222. Explain the differences between ATT&CK coverage, detection coverage and defensive effectiveness. Why does mapping a detection to a technique not automatically prove that the technique is reliably detected?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Detection Engineer, Purple Team Lead
+- Competency: Detection maturity assessment
+- Format: Comparison
+
+Q1223. A Red Team exercise demonstrates that an endpoint can execute a suspicious script, but the SOC receives an alert only after several minutes. How would you evaluate detection latency, event ordering, enrichment delays and response effectiveness?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Engineer, SOC Analyst
+- Competency: Detection latency analysis
+- Format: Troubleshooting
+
+Q1224. What is the role of operational security (OPSEC) during adversary simulation, and how can poor OPSEC invalidate exercise results or create unnecessary organizational risk?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Red Team Lead, Security Consultant
+- Competency: Adversary simulation OPSEC
+- Format: Why
+
+Q1225. How would you construct a multi-stage simulation covering initial access, execution, persistence, privilege escalation and lateral movement while preserving clear evidence of each stage?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Red Team Operator, Purple Team Engineer
+- Competency: Attack-chain simulation
+- Format: Design/architecture
+
+Q1226. What is the difference between a control being present, a control being configured correctly and a control being effective against a realistic adversary behavior?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Security Auditor
+- Competency: Control effectiveness
+- Format: Comparison
+
+Q1227. You are asked to validate whether an organization can detect credential-access behavior. How would you select safe test cases, identify expected endpoint and identity telemetry, and measure detection quality without extracting real credentials?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Engineer, Detection Engineer
+- Competency: Credential-access simulation
+- Format: Scenario
+
+Q1228. How can ATT&CK Navigator help identify coverage gaps across adversary techniques, security controls and business-critical systems? What limitations should analysts understand when interpreting its coverage matrix?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Threat Hunter, Security Architect
+- Competency: ATT&CK coverage analysis
+- Format: How-it-works
+
+Q1229. A simulation produces a large number of alerts, but analysts cannot identify the most important events. How would you evaluate alert quality, prioritization, investigation context and analyst workload?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Lead, Purple Team Engineer
+- Competency: Alert quality assessment
+- Format: Scenario
+
+Q1230. Why can a technically successful Red Team exercise still fail to provide meaningful assurance about an organization's defensive capabilities?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Red Team Lead, CISO
+- Competency: Exercise validity
+- Format: Why
+
+Q1231. Design a controlled test for validating detection of suspicious remote service creation on Windows endpoints. Specify prerequisites, test actions, expected telemetry, detection logic and cleanup verification.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Detection Engineer, Purple Team Engineer
+- Competency: Remote execution detection validation
+- Format: Design/architecture
+
+Q1232. What is the difference between an adversary emulation plan and a detection engineering test plan? Explain how the two artifacts should connect without becoming interchangeable.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Purple Team Lead, Detection Engineering Lead
+- Competency: Security testing methodology
+- Format: Comparison
+
+Q1233. During a simulation, the endpoint agent blocks an action before execution, but no SOC alert is generated. How should the result be classified, and what additional tests would establish whether prevention and monitoring both function correctly?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Engineer, SOC Analyst
+- Competency: Prevention and detection validation
+- Format: Decision-making
+
+Q1234. How would you measure the repeatability and reliability of adversary simulation results across different operating systems, endpoint configurations and security product versions?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Security Test Engineer, Purple Team Engineer
+- Competency: Test reproducibility
+- Format: Design/architecture
+
+Q1235. How should a Purple Team distinguish between an absent detection, an ineffective detection, a telemetry collection failure and an analyst triage failure?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Purple Team Lead, SOC Manager
+- Competency: Defensive failure classification
+- Format: Comparison
+
+## Expert — Q1236–Q1245
+
+Q1236. Design an adversary emulation exercise for a financial organization that tests identity compromise, endpoint execution, internal discovery and attempted access to sensitive data. Define safety boundaries, assumptions, test stages and measurable outcomes.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Red Team Lead, Purple Team Lead
+- Competency: Enterprise threat emulation
+- Format: Design/architecture
+
+Q1237. How would you assess whether an organization's detection coverage is resilient to changes in adversary tools, command syntax, infrastructure and execution methods?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Detection Engineering Lead, Security Architect
+- Competency: Detection resilience
+- Format: How-it-works
+
+Q1238. A simulation shows that a detection rule works only when a specific command-line argument is present. How would you redesign the analytic to detect the underlying behavior while reducing false positives and avoiding brittle string matching?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Detection Engineer, Purple Team Engineer
+- Competency: Behavior-based detection engineering
+- Format: Troubleshooting
+
+Q1239. Explain how threat intelligence confidence, adversary attribution uncertainty and intelligence freshness should influence the design and interpretation of a threat-informed Purple Team exercise.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Threat Intelligence Lead, Purple Team Lead
+- Competency: Intelligence-driven testing
+- Format: Decision-making
+
+Q1240. An enterprise has separate teams responsible for Red Team operations, SOC monitoring, endpoint engineering and incident response. Design a collaboration workflow that turns simulation findings into verified defensive improvements.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Lead, SOC Manager
+- Competency: Cross-functional improvement workflow
+- Format: Design/architecture
+
+Q1241. How would you determine whether a detection gap is caused by an architectural limitation rather than an individual analytic rule? Discuss sensor placement, data retention, identity context and network visibility.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Detection Engineering Lead
+- Competency: Detection architecture diagnosis
+- Format: Troubleshooting
+
+Q1242. Design a measurement framework that evaluates adversary simulation outcomes using prevention rate, detection rate, detection latency, investigation completeness, containment time and residual risk. Explain the limitations of each metric.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Purple Team Director, Security Analytics Lead
+- Competency: Security validation metrics
+- Format: Design/architecture
+
+Q1243. During a multi-week exercise, the Blue Team changes detection rules after each test. How would you distinguish genuine defensive improvement from overfitting detections to the exact simulation artifacts?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Purple Team Lead, Detection Engineering Lead
+- Competency: Detection generalization
+- Format: Decision-making
+
+Q1244. How would you safely simulate an attack path involving identity infrastructure, privileged access and sensitive data without changing production permissions or accessing actual confidential information?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Red Team Lead, Purple Team Engineer
+- Competency: Safe identity attack-path validation
+- Format: Scenario
+
+Q1245. An organization has strong endpoint detections but poor visibility into cloud control-plane activity. How would you design an adversary simulation to test the combined effectiveness of endpoint, identity and cloud security controls?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Cloud Security Architect, Purple Team Lead
+- Competency: Cross-domain defensive validation
+- Format: Design/architecture
+
+## Senior/Architect — Q1246–Q1250
+
+Q1246. Design an enterprise-wide Purple Team operating model that integrates threat intelligence, Red Team testing, detection engineering, SOC operations, incident response and security architecture. Define governance, ownership and continuous improvement mechanisms.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: CISO, Purple Team Director, Security Architect
+- Competency: Enterprise Purple Team governance
+- Format: Design/architecture
+
+Q1247. A board wants evidence that cybersecurity investments are improving the organization's ability to withstand realistic attacks. How would you translate adversary simulation results into business-risk indicators, investment priorities and executive reporting?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Security Program Director
+- Competency: Security assurance and business communication
+- Format: Decision-making
+
+Q1248. How would you establish a continuous adversary validation program that remains useful as the organization's infrastructure, applications, threat landscape and security tooling evolve?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Purple Team Director
+- Competency: Continuous security validation
+- Format: Design/architecture
+
+Q1249. Your organization wants to outsource adversary simulation. What technical, contractual, operational and evidence-handling requirements would you establish to ensure that the engagement is safe, repeatable and independently verifiable?
+
+- Difficulty: Senior/Architect
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: CISO, Security Procurement Lead, Red Team Director
+- Competency: Adversary simulation governance
+- Format: Decision-making
+
+Q1250. Design a three-year roadmap for maturing an organization's adversary simulation capability from occasional penetration testing to continuous, threat-informed Purple Team validation. Include staffing, tooling, governance, metrics and expected maturity milestones.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Security Architect, Purple Team Director
+- Competency: Adversary simulation strategy
+- Format: Design/architecture
+
+# Section 29 — Secure Coding & Application Security (AppSec)
+
+## Beginner — Q1251–Q1257
+
+Q1251. What is application security, and why must security be considered throughout the software development lifecycle rather than only before deployment?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Application Security Analyst, Software Developer, Security Engineer
+- Competency: AppSec fundamentals
+- Format: Why
+
+Q1252. What is the difference between authentication, authorization and input validation in a web application?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: Application security fundamentals
+- Format: Comparison
+
+Q1253. What is SQL injection, and how can unsafe construction of database queries allow user input to alter a query's intended behavior?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: AppSec Engineer, Backend Developer, Penetration Tester
+- Competency: SQL injection fundamentals
+- Format: How-it-works
+
+Q1254. What is cross-site scripting (XSS), and how do stored, reflected and DOM-based XSS differ?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Web Security Analyst, AppSec Engineer
+- Competency: XSS fundamentals
+- Format: Comparison
+
+Q1255. What is cross-site request forgery (CSRF), and why can a browser automatically attaching authentication cookies create a security risk?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Web Developer, AppSec Engineer
+- Competency: CSRF fundamentals
+- Format: Why
+
+Q1256. In a local development application, how would you identify whether an input field is reflected in the HTML response without appropriate output encoding? What browser tools would help you investigate it?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Analyst, Web Developer
+- Competency: Output encoding inspection
+- Format: Practical/investigation
+
+Q1257. What is the purpose of security headers such as Content-Security-Policy, Strict-Transport-Security and X-Content-Type-Options?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Web Security Engineer, AppSec Engineer
+- Competency: HTTP security headers
+- Format: Direct
+
+## Intermediate — Q1258–Q1270
+
+Q1258. Explain the difference between parameterized queries, prepared statements and input sanitization. Why should input sanitization not be treated as the primary defense against SQL injection?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: SQL injection prevention
+- Format: Comparison
+
+Q1259. A Node.js application builds SQL queries by concatenating user-supplied search terms. How would you reproduce the vulnerability in a local test environment and rewrite the query securely using parameter binding?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: Secure database query implementation
+- Format: Code analysis
+
+Q1260. What is the principle of least privilege in application development, and how should it influence database accounts, API permissions and application service identities?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, Backend Developer
+- Competency: Application privilege design
+- Format: How-it-works
+
+Q1261. What is insecure direct object reference (IDOR), and how can an application expose another user's data when it relies only on object identifiers supplied by the client?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Web Penetration Tester, AppSec Engineer
+- Competency: Broken object-level authorization
+- Format: How-it-works
+
+Q1262. An API endpoint accepts `/api/orders/1042` and returns an order to the authenticated user. How would you test whether changing the identifier allows access to another user's order, and what server-side authorization checks should be implemented?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: API Security Tester, Backend Developer
+- Competency: Object-level authorization testing
+- Format: Scenario
+
+Q1263. What is the difference between vertical and horizontal privilege escalation in web applications? Give an example of each.
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, Web Penetration Tester
+- Competency: Authorization vulnerabilities
+- Format: Comparison
+
+Q1264. How do session cookies, session identifiers and server-side session storage work together to maintain an authenticated web session?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: Session management
+- Format: How-it-works
+
+Q1265. You are reviewing an authentication cookie configured with `HttpOnly`, `Secure` and `SameSite=Lax`. Explain the purpose of each attribute and identify what security guarantees they do not provide by themselves.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Engineer, Web Security Analyst
+- Competency: Cookie security
+- Format: Configuration analysis
+
+Q1266. What is insecure deserialization, and why can accepting serialized objects from untrusted sources create risks beyond ordinary input validation failures?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Application Security Engineer, Software Developer
+- Competency: Deserialization security
+- Format: Why
+
+Q1267. What is the difference between server-side request forgery (SSRF) and client-side request forgery? Explain why SSRF is particularly dangerous in cloud-hosted applications.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: AppSec Engineer, Cloud Security Engineer
+- Competency: SSRF fundamentals
+- Format: Comparison
+
+Q1268. A web application allows users to submit a URL that the server fetches to generate a preview. Design a safe local test to determine whether the feature can access unintended internal services, and explain the controls needed to prevent SSRF.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Web Penetration Tester, AppSec Engineer
+- Competency: SSRF validation and prevention
+- Format: Scenario
+
+Q1269. What is the difference between encryption, hashing and encoding in application security? Why is confusing these operations dangerous when implementing authentication or data protection?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: Secure data handling
+- Format: Comparison
+
+Q1270. How would you inspect a web application's dependency manifest and lockfile to identify outdated or potentially vulnerable third-party packages? Which additional information is needed before declaring a dependency exploitable?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Engineer, DevSecOps Engineer
+- Competency: Software dependency assessment
+- Format: Practical/command
+
+## Advanced — Q1271–Q1285
+
+Q1271. How do browser same-origin policy, CORS and preflight requests interact? Explain why CORS is not a substitute for server-side authorization.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Web Security Engineer, AppSec Engineer
+- Competency: Browser security model
+- Format: How-it-works
+
+Q1272. An API uses JWT access tokens and refresh tokens. How would you assess token validation, expiration, audience, issuer, signature verification, refresh-token rotation and revocation behavior?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: API Security Engineer, IAM Engineer
+- Competency: Token-based authentication security
+- Format: Investigation
+
+Q1273. Explain the difference between authentication bypass, broken function-level authorization and broken object-level authorization. How can these weaknesses appear together in one API?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: API Security Tester, AppSec Engineer
+- Competency: API authorization architecture
+- Format: Comparison
+
+Q1274. A REST API accepts a JSON object containing `userId`, `role`, `email` and `status`. The backend passes the complete object directly into an ORM update operation. Identify the potential mass-assignment vulnerability and propose a secure implementation.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Backend Developer, AppSec Engineer
+- Competency: Mass-assignment prevention
+- Format: Code analysis
+
+Q1275. What is a race condition in application security, and how can concurrent requests produce authorization, payment or inventory inconsistencies?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, Backend Developer
+- Competency: Concurrency security
+- Format: How-it-works
+
+Q1276. A payment endpoint checks the order status, charges a customer and then updates the order as paid. How would you investigate whether simultaneous requests can cause duplicate charges or inconsistent order states?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Backend Developer, Application Security Engineer
+- Competency: Race-condition testing
+- Format: Scenario
+
+Q1277. Explain how a Content Security Policy can reduce the impact of XSS. Discuss nonce-based policies, hashes, `strict-dynamic`, reporting and common configuration mistakes.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Web Security Engineer, AppSec Engineer
+- Competency: CSP design
+- Format: How-it-works
+
+Q1278. What is the difference between command injection, code injection and template injection? Explain how each vulnerability arises and why their remediation strategies differ.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, Secure Software Developer
+- Competency: Injection vulnerability classification
+- Format: Comparison
+
+Q1279. A Node.js application uses a template engine to render user-provided content. How would you determine whether the content is treated as data or evaluated as a template, and how would you remediate server-side template injection safely?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Web Penetration Tester, AppSec Engineer
+- Competency: Server-side template injection
+- Format: Investigation
+
+Q1280. How can path traversal vulnerabilities occur in file upload, download and document-processing functionality? Explain the role of canonicalization, allowlisting and filesystem boundaries in preventing them.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, Backend Developer
+- Competency: File path security
+- Format: How-it-works
+
+Q1281. An application accepts uploaded PDF and image files. Design a secure upload pipeline covering file validation, content-type verification, storage isolation, malware scanning, filename handling and access control.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Engineer, Backend Developer
+- Competency: Secure file upload architecture
+- Format: Design/architecture
+
+Q1282. What is the difference between security testing with static application security testing (SAST), dynamic application security testing (DAST) and interactive application security testing (IAST)? Explain which classes of defects each approach can and cannot reliably identify.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Engineer, DevSecOps Engineer
+- Competency: Application security testing methods
+- Format: Comparison
+
+Q1283. A SAST tool reports a SQL injection finding in a backend service. How would you trace the reported source-to-sink path, assess exploitability and distinguish a true vulnerability from a false positive?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Engineer, Secure Code Reviewer
+- Competency: SAST finding validation
+- Format: Investigation
+
+Q1284. How do threat modeling, secure design reviews and security requirements differ from code-level vulnerability scanning? Why are all of them necessary in a mature AppSec program?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Application Security Architect, Software Architect
+- Competency: Secure software lifecycle
+- Format: Comparison
+
+Q1285. A multi-tenant application uses shared database tables and a tenant identifier supplied by the client. Design an authorization and data-isolation assessment that checks whether users can access or modify records belonging to other tenants.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AppSec Engineer, Backend Architect
+- Competency: Multi-tenant authorization security
+- Format: Design/architecture
+
+## Expert — Q1286–Q1295
+
+Q1286. How would you design a secure authentication architecture for a modern web application that supports password login, MFA, social identity providers, session management, account recovery and privileged administration?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Architect, Application Security Architect
+- Competency: Authentication architecture
+- Format: Design/architecture
+
+Q1287. A production application has an SSRF vulnerability in a document-preview service. The service runs in a cloud environment with access to internal APIs and workload identity credentials. Develop an incident and remediation plan that addresses immediate containment, credential exposure, network restrictions and architectural redesign.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Cloud Security Engineer, AppSec Lead, Incident Responder
+- Competency: Cloud SSRF incident response
+- Format: Scenario
+
+Q1288. Compare traditional monolithic application security with microservices security. Discuss service-to-service authentication, trust boundaries, API gateways, secrets, authorization and distributed observability.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Application Security Architect, Cloud Security Architect
+- Competency: Distributed application security
+- Format: Comparison
+
+Q1289. A microservices platform uses JWTs for user authentication and internal service communication. How would you evaluate token audience restrictions, service identity, key rotation, authorization propagation and the risk of one compromised service impersonating another?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: API Security Architect, IAM Engineer
+- Competency: Microservice identity security
+- Format: Design/architecture
+
+Q1290. How can business logic vulnerabilities evade conventional SAST, DAST and dependency scanning? Explain why application security requires understanding intended workflows and business invariants.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Architect, Product Security Engineer
+- Competency: Business logic security
+- Format: Why
+
+Q1291. A SaaS platform allows institute administrators to manage students, staff, payments and documents. Design a threat model that addresses tenant isolation, role-based access control, object-level authorization, audit logging, payment integrity and privileged support access.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Application Security Architect, SaaS Security Engineer
+- Competency: Enterprise SaaS threat modeling
+- Format: Design/architecture
+
+Q1292. What are software supply-chain attacks, and how do dependency confusion, compromised maintainers, malicious packages and build-pipeline compromise differ?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Product Security Engineer, DevSecOps Architect
+- Competency: Software supply-chain security
+- Format: Comparison
+
+Q1293. Your CI/CD pipeline downloads dependencies, builds container images and deploys to production. Design controls for dependency provenance, lockfile integrity, secret isolation, artifact signing, build permissions and deployment authorization.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: DevSecOps Engineer, Product Security Architect
+- Competency: Secure software delivery pipeline
+- Format: Design/architecture
+
+Q1294. How would you prioritize application vulnerabilities when CVSS severity, exploitability, business impact, exposure and compensating controls produce conflicting risk signals?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AppSec Lead, Vulnerability Management Lead
+- Competency: Application risk prioritization
+- Format: Decision-making
+
+Q1295. A critical API has passed automated security scans but has not undergone a manual authorization review. Design a focused assessment that tests privilege boundaries, tenant isolation, workflow abuse, rate limiting and sensitive data exposure.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: API Security Lead, AppSec Engineer
+- Competency: Manual API security assessment
+- Format: Design/architecture
+
+## Senior/Architect — Q1296–Q1300
+
+Q1296. Design an enterprise AppSec program for an organization with multiple development teams, microservices, public APIs and legacy applications. Explain governance, secure development standards, security tooling, ownership and remediation accountability.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: CISO, Application Security Director, Security Architect
+- Competency: Enterprise AppSec strategy
+- Format: Design/architecture
+
+Q1297. A company wants to introduce security gates into every stage of its software delivery lifecycle without slowing development unnecessarily. Design a risk-based DevSecOps operating model that includes developer feedback, automated testing, exception handling and release decisions.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: DevSecOps Director, AppSec Architect
+- Competency: Secure SDLC governance
+- Format: Design/architecture
+
+Q1298. How would you measure the maturity and business effectiveness of an AppSec program? Define metrics for vulnerability recurrence, remediation time, security test coverage, production exposure and developer adoption, while avoiding misleading vanity metrics.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: CISO, AppSec Director
+- Competency: AppSec program measurement
+- Format: Decision-making
+
+Q1299. Your organization is acquiring a SaaS product whose source code, infrastructure and security testing processes are managed by a third party. What technical evidence, architectural information and contractual assurances would you require before approving integration?
+
+- Difficulty: Senior/Architect
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Security Architect, Third-Party Risk Lead
+- Competency: Third-party application security assessment
+- Format: Investigation
+
+Q1300. Design a three-year application security strategy that integrates secure architecture, developer education, threat modeling, automated testing, API security, software supply-chain protection, vulnerability management and continuous assurance. How would you align the strategy with business objectives?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Application Security Director, Enterprise Architect
+- Competency: Long-term AppSec strategy
+- Format: Design/architecture

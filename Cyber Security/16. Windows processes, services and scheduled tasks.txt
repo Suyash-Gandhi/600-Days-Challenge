@@ -1,0 +1,1273 @@
+# 16. Windows Processes, Services and Scheduled Tasks
+Domain: Operating Systems & Cybersecurity  
+Level: Beginner to Intermediate  
+Objective: Understand how Windows executes programs, manages background services, schedules automated tasks, and how security professionals investigate suspicious activity.
+
+This topic is important for SOC analysis, incident response, digital forensics, malware analysis, threat hunting, and Windows system administration.
+
+---
+
+# 1. Windows Processes
+
+## 1.1 What Is a Process?
+
+A process is an instance of a running program.
+
+When you execute a program, Windows creates a process that receives resources such as memory, handles, and access to system objects.
+
+For example, when you open Google Chrome, Windows starts one or more processes to run the browser.
+
+Consider these examples:
+
+| Program | Typical Process Name | Purpose |
+|---|---|---|
+| Google Chrome | `chrome.exe` | Web browsing |
+| Notepad | `notepad.exe` | Text editing |
+| Windows Explorer | `explorer.exe` | Desktop and file management |
+| Windows Command Prompt | `cmd.exe` | Command-line execution |
+| PowerShell | `powershell.exe` | Administration and scripting |
+| Windows Task Manager | `Taskmgr.exe` | Process monitoring |
+| Windows Service Control Manager | `services.exe` | Manages Windows services |
+| Local Security Authority Subsystem Service | `lsass.exe` | Security policy enforcement and authentication-related functions |
+
+Important: A process name alone does not establish whether a program is legitimate or malicious. Malware can imitate legitimate process names.
+
+For example, a legitimate `svchost.exe` normally runs from:
+
+`C:\Windows\System32\svchost.exe`
+
+A file named `svchost.exe` running from an unexpected directory deserves investigation, but its location alone does not prove that it is malicious.
+
+## 1.2 How Does Windows Create a Process?
+
+A simplified process-creation sequence is:
+
+1. A user launches a program.
+2. Windows validates the executable and checks applicable security policies.
+3. Windows creates a process object and establishes its initial execution environment.
+4. The process receives a virtual address space and other resources.
+5. Windows creates an initial thread.
+6. The thread begins executing the program's instructions.
+
+For example, when you execute:
+
+```powershell
+notepad.exe
+```
+
+Windows starts Notepad, creates its process, and schedules its threads for execution.
+
+Applications can also create child processes.
+
+For example:
+
+```text
+explorer.exe
+      |
+      | User opens Command Prompt
+      v
+    cmd.exe
+      |
+      | User launches PowerShell
+      v
+  powershell.exe
+```
+
+This is a simplified illustration. The actual parent process depends on how the application is launched.
+
+### Parent and child processes
+
+A parent process is associated with the creation of another process, called its child.
+
+Security analysts examine parent-child relationships because unusual process chains can indicate suspicious activity.
+
+For example:
+
+```text
+winword.exe
+     |
+     v
+powershell.exe
+     |
+     v
+  unknown.exe
+```
+
+If a Microsoft Word document launches PowerShell, which then launches an unknown executable, the chain may indicate malicious document activity.
+
+However, a suspicious process relationship is an investigation lead, not conclusive evidence of malware.
+
+---
+
+## 1.3 Process IDs (PID)
+
+Windows assigns a numeric identifier to each running process. This is called a Process ID (PID).
+
+Example:
+
+```text
+Image Name       PID
+---------------------
+explorer.exe     4820
+chrome.exe       6156
+notepad.exe      7284
+powershell.exe   8112
+```
+
+PIDs help you identify individual processes when investigating a system.
+
+A PID is not a permanent identity. Windows can reuse a PID after the original process terminates.
+
+Therefore, when investigating historical events, correlate PIDs with timestamps and other available identifiers.
+
+### View processes using PowerShell
+
+List running processes:
+
+```powershell
+Get-Process
+```
+
+Find a specific process:
+
+```powershell
+Get-Process -Name chrome
+```
+
+Display selected properties:
+
+```powershell
+Get-Process |
+    Select-Object ProcessName, Id, CPU, WorkingSet64
+```
+
+Here:
+
+- `ProcessName`: Process name.
+- `Id`: Process ID.
+- `CPU`: Cumulative processor time, in seconds, for the process.
+- `WorkingSet64`: Amount of physical memory currently in the process's working set, measured in bytes.
+
+Display a process by PID:
+
+```powershell
+Get-Process -Id 8112
+```
+
+Cybersecurity application: Analysts use process information to identify unusual resource consumption, investigate unexpected processes, and correlate a process with other system events.
+
+---
+
+## 1.4 Process Memory
+
+Every normal Windows process operates within a virtual address space.
+
+The operating system manages mappings between virtual memory and physical memory, while enforcing access restrictions.
+
+A simplified process memory layout includes:
+
+| Memory region | Purpose |
+|---|---|
+| Code or text | Contains executable instructions |
+| Data | Contains global and static program data |
+| Heap | Supports dynamic memory allocation |
+| Stack | Stores function-call information and local variables |
+| Mapped regions | Includes mapped files, libraries, and other memory mappings |
+
+Modern Windows processes do not necessarily have one fixed, simple memory layout. Address-space layout randomization (ASLR), memory mappings, and other protections affect the actual arrangement.
+
+### Why does process memory matter in cybersecurity?
+
+Malware may execute code in memory, load malicious libraries, or manipulate the execution of another process.
+
+Memory analysis can help investigators identify:
+
+- Injected code.
+- Unusual executable memory regions.
+- Malicious modules.
+- Process hollowing.
+- Reflective loading.
+- Evidence of credential theft.
+
+These techniques require more advanced tools and investigation methods. You do not need to perform memory analysis to understand the fundamentals of Windows processes.
+
+---
+
+# 2. Threads and Process Execution
+
+A thread is an execution unit within a process.
+
+A process provides a resource and isolation boundary, while its threads execute instructions.
+
+A process can contain one or multiple threads.
+
+For example:
+
+```text
+chrome.exe (Process)
+|
++-- Thread 1: Main application work
++-- Thread 2: Rendering-related work
++-- Thread 3: Network-related work
++-- Thread 4: Background processing
+```
+
+This is illustrative rather than a precise description of Chrome's internal thread architecture.
+
+### Process vs. thread
+
+| Feature | Process | Thread |
+|---|---|---|
+| Meaning | Running program instance | Execution unit |
+| Memory | Has its own virtual address space | Shares its process's address space |
+| Resources | Owns or references process resources | Uses process resources and has thread-specific state |
+| Isolation | Generally isolated from other processes | Threads within the same process share memory |
+| Failure impact | A crash can terminate the process | A thread failure can affect the entire process, depending on the failure |
+| Security relevance | Process identity, privileges, executable path | Thread execution, start addresses, and suspicious execution behavior |
+
+### Why threads matter in security
+
+Some malicious techniques operate at the thread level.
+
+For example, an attacker may attempt to execute code inside a legitimate process by creating or manipulating a thread.
+
+Consequently, advanced endpoint detection and response (EDR) tools may examine thread creation, execution behavior, memory permissions, and cross-process activity.
+
+---
+
+# 3. Windows Process Management Tools
+
+Windows provides several ways to inspect and manage processes.
+
+## 3.1 Task Manager
+
+Open Task Manager using:
+
+```text
+Ctrl + Shift + Esc
+```
+
+The Processes tab displays applications and background processes.
+
+The Details tab provides more detailed process information, including PIDs.
+
+The Services tab shows Windows services and their states.
+
+Task Manager is useful for:
+
+- Identifying processes consuming excessive CPU or memory.
+- Finding unresponsive applications.
+- Viewing process IDs.
+- Inspecting application relationships where supported.
+- Ending unresponsive applications.
+
+Security note: Do not terminate an unfamiliar system process simply because its name looks suspicious. Investigate its path, publisher, process relationships, and function first.
+
+## 3.2 PowerShell
+
+PowerShell provides more detailed process inspection.
+
+### List processes
+
+```powershell
+Get-Process
+```
+
+### Display executable paths
+
+```powershell
+Get-Process -Name notepad |
+    Select-Object ProcessName, Id, Path
+```
+
+The `Path` property may be unavailable for certain processes because of permissions or process characteristics.
+
+### Inspect process creation information
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath
+```
+
+This command is especially useful because it can show the process ID, parent process ID, and executable path.
+
+Example output:
+
+```text
+ProcessId  ParentProcessId  Name             ExecutablePath
+---------  ---------------  ----             --------------
+4820       920              explorer.exe      C:\Windows\explorer.exe
+8112       4820             powershell.exe    C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+```
+
+The values above are illustrative.
+
+You can use the output to investigate process relationships and unexpected executable locations.
+
+### Stop a process
+
+```powershell
+Stop-Process -Name notepad
+```
+
+Or by PID:
+
+```powershell
+Stop-Process -Id 8112
+```
+
+These commands terminate processes. Use them carefully because unsaved work may be lost, and terminating critical processes can destabilize applications or the operating system.
+
+## 3.3 Command Prompt
+
+Windows also provides process-management utilities through Command Prompt.
+
+List processes:
+
+```cmd
+tasklist
+```
+
+Find a particular process:
+
+```cmd
+tasklist /FI "IMAGENAME eq notepad.exe"
+```
+
+Terminate a process by PID:
+
+```cmd
+taskkill /PID 8112
+```
+
+Force termination:
+
+```cmd
+taskkill /F /PID 8112
+```
+
+Use `/F` only when necessary. Forced termination may prevent an application from saving data or performing cleanup.
+
+### Which tool should you learn?
+
+| Tool | Best use |
+|---|---|
+| Task Manager | Quick visual inspection |
+| PowerShell `Get-Process` | Process properties and resource usage |
+| PowerShell `Get-CimInstance` | Process IDs, parent IDs, and executable paths |
+| `tasklist` | Command-line process listing |
+| `taskkill` | Process termination |
+| Process Explorer | Advanced process investigation |
+
+For advanced inspection, Microsoft provides the [Sysinternals Process Explorer](https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer) utility.
+
+---
+
+# 4. Windows Services
+
+## 4.1 What Is a Windows Service?
+
+A Windows service is a program or component designed to perform functions in the background under the control of the Windows Service Control Manager (SCM).
+
+Services commonly operate without requiring an interactive user session.
+
+Examples include services responsible for:
+
+- Windows Update.
+- Networking.
+- Event logging.
+- Security functions.
+- Time synchronization.
+- Remote access.
+- Application-specific background work.
+
+Examples of Windows services include:
+
+| Service | Purpose |
+|---|---|
+| Windows Event Log | Manages Windows event logging |
+| Windows Update | Supports Windows updating |
+| Task Scheduler | Supports scheduled task execution |
+| DHCP Client | Supports obtaining and maintaining DHCP network configuration |
+| Windows Defender Antivirus Service | Provides core Microsoft Defender Antivirus functionality |
+| Remote Procedure Call (RPC) | Supports essential Windows interprocess communication mechanisms |
+
+Service display names and internal service names can differ.
+
+For example, the Windows Event Log service has the internal name:
+
+```text
+EventLog
+```
+
+The Task Scheduler service uses:
+
+```text
+Schedule
+```
+
+---
+
+## 4.2 How Windows Services Work
+
+The Windows Service Control Manager coordinates service management.
+
+A simplified architecture looks like this:
+
+```text
+           Windows
+              |
+              v
+   Service Control Manager
+              |
+       +------+------+
+       |      |      |
+       v      v      v
+   Service A  B      C
+       |      |      |
+       v      v      v
+   Background operations
+```
+
+The SCM maintains service configuration and coordinates service startup, control requests, and status reporting.
+
+Many services run inside shared or dedicated `svchost.exe` processes. Other services run in their own executable processes.
+
+### What is svchost.exe?
+
+`svchost.exe` is the Service Host executable used to host services implemented as DLLs.
+
+For example:
+
+```text
+svchost.exe
+   |
+   +-- Windows service
+   +-- Windows service
+```
+
+The exact arrangement depends on the Windows version and service configuration. Many modern Windows configurations use separate host processes for at least some services.
+
+Multiple `svchost.exe` processes are normal.
+
+However, attackers sometimes imitate the filename or abuse legitimate service-hosting mechanisms. Analysts should examine:
+
+- Executable path.
+- Digital signature.
+- Command-line arguments.
+- Hosted services.
+- Parent process and related activity.
+- Network connections.
+- Associated security events.
+
+Never classify a process as malicious based only on its filename.
+
+---
+
+## 4.3 Service Startup Types
+
+Windows service configuration determines when a service can start.
+
+Common startup configurations include:
+
+| Startup configuration | Meaning |
+|---|---|
+| Automatic | Windows attempts to start the service during system startup |
+| Automatic (Delayed Start) | Windows delays the service's automatic startup |
+| Manual | The service is not configured for ordinary automatic startup, but may be started when requested or triggered |
+| Disabled | The service cannot ordinarily be started until its configuration is changed |
+
+Modern Windows also supports trigger-based service startup.
+
+Important distinction: A service's startup type and its current state are different properties.
+
+For example, a service can be configured for automatic startup but currently be stopped.
+
+Likewise, a manually configured service may currently be running.
+
+## 4.4 Service States
+
+Common service states include:
+
+- Running.
+- Stopped.
+- Start Pending.
+- Stop Pending.
+- Paused, where supported.
+
+For example:
+
+```text
+Service: Windows Update
+Startup Type: Manual
+Current State: Stopped
+```
+
+This does not automatically mean something is wrong. Services can be stopped when they are not needed.
+
+---
+
+# 5. Managing Windows Services
+
+## 5.1 Services Console
+
+Press:
+
+```text
+Win + R
+```
+
+Enter:
+
+```text
+services.msc
+```
+
+This opens the Services management console.
+
+You can inspect:
+
+- Service name.
+- Description.
+- Status.
+- Startup type.
+- Logon account.
+- Dependencies.
+
+You can also start, stop, restart, or configure services, depending on your permissions.
+
+Be careful when modifying system services. Disabling an essential service can break networking, authentication, updating, or other operating-system functions.
+
+## 5.2 PowerShell Service Commands
+
+### List services
+
+```powershell
+Get-Service
+```
+
+### Find a particular service
+
+```powershell
+Get-Service -Name EventLog
+```
+
+### Display running services
+
+```powershell
+Get-Service |
+    Where-Object Status -eq 'Running'
+```
+
+### Display service details
+
+```powershell
+Get-CimInstance Win32_Service |
+    Select-Object Name, DisplayName, State, StartMode, PathName
+```
+
+This is particularly useful for cybersecurity investigations because it exposes service configuration and executable paths.
+
+### Start a service
+
+```powershell
+Start-Service -Name Spooler
+```
+
+### Stop a service
+
+```powershell
+Stop-Service -Name Spooler
+```
+
+The `Spooler` service supports printing. Do not stop it unless you understand the operational impact.
+
+### Check service configuration
+
+```cmd
+sc.exe qc Spooler
+```
+
+This displays configuration details, including the service's binary path and startup configuration.
+
+Note that in PowerShell, `sc` may be an alias for `Set-Content`. Use `sc.exe` to explicitly invoke the Windows Service Control utility.
+
+---
+
+# 6. Windows Services from a Cybersecurity Perspective
+
+Services are important because they can provide long-running execution and, in some configurations, elevated privileges.
+
+Attackers may abuse services to maintain access to a compromised machine.
+
+This is associated with the MITRE ATT&CK technique [System Services: Service Execution (T1569.002)](https://attack.mitre.org/techniques/T1569/002/) and other service-related techniques.
+
+### Suspicious service indicators
+
+Look for combinations of indicators such as:
+
+1. A newly installed service with no documented business purpose.
+2. An executable running from an unusual user-writable directory.
+3. An unexpected service configured to run with powerful privileges.
+4. An unfamiliar binary without a valid or expected signature.
+5. A service created shortly after a suspicious login.
+6. A service whose executable path or configuration changed unexpectedly.
+7. Unusual network connections from the service process.
+
+Example:
+
+```text
+Service Name: WindowsUpdateHelper
+Executable:
+C:\Users\Public\update.exe
+```
+
+This hypothetical example deserves investigation because the executable is located in a broadly writable directory and the service name resembles a legitimate Windows component.
+
+However, neither the name nor the path proves maliciousness.
+
+### Inspect service executable paths
+
+```powershell
+Get-CimInstance Win32_Service |
+    Select-Object Name, StartName, State, StartMode, PathName
+```
+
+The fields show:
+
+- `Name`: Internal service name.
+- `StartName`: Account used to run the service.
+- `State`: Current state.
+- `StartMode`: Startup configuration.
+- `PathName`: Configured service executable and any associated arguments.
+
+Review unexpected service configurations and verify the executable's publisher and provenance.
+
+### Inspect a binary's digital signature
+
+```powershell
+Get-AuthenticodeSignature "C:\Path\To\program.exe"
+```
+
+A valid signature helps establish that a binary was signed by a particular publisher and has not been altered since signing.
+
+An unsigned binary is not necessarily malicious, and a signed binary is not necessarily safe.
+
+---
+
+# 7. Windows Scheduled Tasks
+
+## 7.1 What Is a Scheduled Task?
+
+A scheduled task is an action configured to run automatically when a specified trigger occurs.
+
+Windows Scheduled Tasks can execute programs or scripts based on time, system events, logon activity, and other conditions.
+
+Examples include:
+
+- Running maintenance scripts every night.
+- Checking for updates.
+- Starting a program when a user logs in.
+- Performing a periodic backup.
+- Running administrative scripts.
+- Launching monitoring tools.
+
+Windows uses Task Scheduler to manage these tasks.
+
+Open the Task Scheduler interface by pressing `Win + R` and entering:
+
+```text
+taskschd.msc
+```
+
+## 7.2 Task Triggers
+
+A task trigger determines when the task should run.
+
+Common trigger types include:
+
+| Trigger | Example |
+|---|---|
+| At startup | Run a maintenance script when Windows starts |
+| At logon | Launch an application when a user signs in |
+| On a schedule | Run a backup every night |
+| On an event | Respond to a specified Windows event |
+| On idle | Perform an action when the system meets configured idle conditions |
+| On workstation unlock | Run an action after a user unlocks the computer |
+
+A task can have multiple triggers.
+
+A trigger does not necessarily guarantee execution: conditions, task settings, permissions, and system availability can affect whether the action runs.
+
+## 7.3 Task Actions
+
+An action specifies what the task does when triggered.
+
+Common examples include:
+
+- Start a program.
+- Execute a script through an interpreter.
+- Send an email in configurations that support the relevant legacy action.
+- Display a message in configurations that support the relevant legacy action.
+
+For example, a scheduled task might launch PowerShell to run a maintenance script.
+
+```text
+Task:
+  Daily Maintenance
+
+Trigger:
+  Every day at 2:00 AM
+
+Action:
+  Run maintenance.ps1
+```
+
+This is a conceptual example, not an actual task configuration.
+
+---
+
+# 8. Managing Scheduled Tasks with PowerShell
+
+## 8.1 List Scheduled Tasks
+
+```powershell
+Get-ScheduledTask
+```
+
+This returns registered tasks, including many built-in Windows tasks.
+
+### Filter by task state
+
+```powershell
+Get-ScheduledTask |
+    Where-Object State -eq 'Ready'
+```
+
+A `Ready` task is registered and ready to run when its trigger and conditions are satisfied. It does not mean the task is currently executing.
+
+### Inspect task details
+
+```powershell
+Get-ScheduledTask |
+    Select-Object TaskName, TaskPath, State
+```
+
+### Inspect the action associated with a task
+
+```powershell
+Get-ScheduledTask |
+    Select-Object TaskName, TaskPath, Actions
+```
+
+### Inspect recent task execution information
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "ExampleTask"
+```
+
+Replace `ExampleTask` with an actual task name.
+
+This command provides information such as the last run time, last result, and next scheduled run time when applicable.
+
+The task's last result should be interpreted in context rather than assumed to indicate success or failure without examining the result code.
+
+## 8.2 Command-Line Task Management
+
+Windows provides the `schtasks.exe` utility.
+
+List tasks:
+
+```cmd
+schtasks /query
+```
+
+Display verbose task information:
+
+```cmd
+schtasks /query /fo LIST /v
+```
+
+Query a particular task:
+
+```cmd
+schtasks /query /tn "\Microsoft\Windows\Defrag\ScheduledDefrag" /v
+```
+
+The example refers to a Windows task path that may vary by operating-system version or configuration.
+
+For routine investigation, Task Scheduler's graphical interface and PowerShell often provide a more convenient starting point.
+
+---
+
+# 9. Scheduled Tasks and Persistence
+
+One reason scheduled tasks matter in cybersecurity is that they can be used to maintain execution across time or system events.
+
+Persistence means maintaining access to a system despite events such as a restart or a user logging off.
+
+For example, malware could attempt to configure a task that launches an unauthorized program at user logon.
+
+This behavior is associated with MITRE ATT&CK's [Scheduled Task/Job: Scheduled Task (T1053.005)](https://attack.mitre.org/techniques/T1053/005/).
+
+Consider the following hypothetical task:
+
+```text
+Task Name:
+  BrowserUpdate
+
+Trigger:
+  At user logon
+
+Action:
+  C:\Users\Public\browser.exe
+```
+
+The task deserves investigation if `browser.exe` is unfamiliar, its location is unexpected, or its creation coincides with other suspicious activity.
+
+However, legitimate applications also create scheduled tasks. Names alone are insufficient for classification.
+
+### What should a security analyst inspect?
+
+For a suspicious task, investigate:
+
+1. Task name and path: Does the task resemble a legitimate application or a system component?
+2. Trigger: Does it run at startup, logon, or another unusual time?
+3. Action: Which executable or script does it launch?
+4. Executable path: Is the target located in an unexpected directory?
+5. Execution account: Under which account does the task run?
+6. Privileges: Does it run with elevated privileges?
+7. Creation time: When was the task registered?
+8. Task history: What happened when the task was triggered?
+9. Related processes: What processes did the task launch?
+10. Network activity: Did the resulting process communicate with suspicious destinations?
+
+The goal is to establish whether the task is expected, authorized, and consistent with the machine's normal behavior.
+
+---
+
+# 10. Windows Process, Service, and Task Persistence Compared
+
+These mechanisms are related, but they serve different purposes.
+
+| Feature | Process | Service | Scheduled task |
+|---|---|---|---|
+| Primary purpose | Execute a program | Provide background functionality under service management | Execute an action when a trigger occurs |
+| Execution | While the process is running | According to service configuration and control | When its trigger and conditions permit |
+| Managed by | Windows process and thread mechanisms | Service Control Manager | Task Scheduler |
+| Common administration tools | Task Manager, PowerShell | `services.msc`, PowerShell, `sc.exe` | `taskschd.msc`, PowerShell, `schtasks.exe` |
+| Can run without an interactive user? | Yes, depending on how it is launched | Commonly | Yes, depending on task configuration and account |
+| Can be abused for persistence? | A process alone is generally temporary | Yes | Yes |
+| Typical investigation | Process tree and executable path | Service configuration and binary path | Task triggers and action details |
+
+### Important distinction
+
+A service or scheduled task often launches a process.
+
+For example:
+
+```text
+Windows Task Scheduler
+          |
+          v
+   Scheduled task
+          |
+          v
+     powershell.exe
+          |
+          v
+     Script execution
+```
+
+The task is the configured job, while PowerShell is the process executing its action.
+
+Similarly:
+
+```text
+Service Control Manager
+          |
+          v
+     Windows service
+          |
+          v
+      Service process
+```
+
+These are conceptual relationships. Actual implementations vary.
+
+---
+
+# 11. Windows Event Logs for Investigation
+
+Inspecting current processes, services, and tasks is useful, but cybersecurity investigations often require historical evidence.
+
+Windows records many system and security events in event logs.
+
+Open Event Viewer:
+
+```text
+Win + R
+eventvwr.msc
+```
+
+Important logs include:
+
+- Security: Security-related events, depending on audit policy.
+- System: System and service-related events.
+- Application: Application events.
+- Microsoft-Windows-TaskScheduler/Operational: Task Scheduler activity, when the relevant logging is enabled.
+
+## 11.1 Important Event IDs
+
+| Event ID | Log | Meaning |
+|---|---|---|
+| 4688 | Security | A new process was created, if the relevant auditing is enabled |
+| 4697 | Security | A service was installed, when the relevant auditing is enabled |
+| 7045 | System | A service was installed |
+| 4698 | Security | A scheduled task was created, when the relevant auditing is enabled |
+| 4702 | Security | A scheduled task was updated, when the relevant auditing is enabled |
+
+Important: These events are not guaranteed to be present on every system. Their availability depends on Windows version, audit policy, logging configuration, permissions, and retention. Task Scheduler also records additional events in its operational log.
+
+### Why is Event ID 4688 important?
+
+Event ID 4688 records process creation when the relevant security auditing is configured.
+
+Depending on the configuration, the event may contain information such as:
+
+- New process name.
+- New process ID.
+- Creator process information.
+- Subject account.
+- Command-line information, if the applicable policy is enabled.
+
+Command-line logging is especially useful because it can reveal what arguments were passed to an executable.
+
+For example, two PowerShell processes may have the same executable path but perform very different actions because they were launched with different arguments.
+
+### Investigating a service installation
+
+Suppose a service appears on a machine and you want to establish when it was installed.
+
+A useful investigation sequence is:
+
+1. Inspect the current service configuration.
+2. Identify the executable path.
+3. Check the service's creation or installation evidence.
+4. Examine the surrounding process-creation events.
+5. Review account activity near the same time.
+6. Determine whether the service was authorized.
+
+This approach is more reliable than judging a service by its name alone.
+
+---
+
+# 12. Practical Cybersecurity Lab
+
+You can practise the concepts in your own Windows environment without installing malware or making destructive changes.
+
+## Lab 1: Process Investigation
+
+Objective: Identify running processes and examine their properties.
+
+### Step 1: Open PowerShell
+
+Use a normal PowerShell session for basic inspection.
+
+### Step 2: List processes
+
+```powershell
+Get-Process
+```
+
+### Step 3: Inspect process relationships
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath |
+    Format-Table -AutoSize
+```
+
+### Step 4: Investigate a process
+
+Choose a familiar process and inspect its path and properties.
+
+Questions to answer:
+
+- What is its PID?
+- What is its executable path?
+- Which process launched it, if that information is available?
+- Is the executable located where you would expect?
+- Is the process consuming an unusual amount of CPU or memory?
+
+Expected learning: Understand process enumeration, process identity, executable paths, and parent-child relationships.
+
+---
+
+## Lab 2: Service Investigation
+
+Objective: Understand Windows service configuration.
+
+### Step 1: List services
+
+```powershell
+Get-Service
+```
+
+### Step 2: Inspect service configuration
+
+```powershell
+Get-CimInstance Win32_Service |
+    Select-Object Name, DisplayName, State, StartMode, StartName, PathName
+```
+
+### Step 3: Examine a familiar service
+
+For example:
+
+```powershell
+Get-CimInstance Win32_Service |
+    Where-Object Name -eq 'EventLog' |
+    Format-List 
+```
+
+### Step 4: Document your findings
+
+Record:
+
+- Service name.
+- Current state.
+- Startup mode.
+- Account used to run it.
+- Executable path.
+- Whether the configuration is consistent with the service's purpose.
+
+Do not disable or reconfigure system services for this exercise.
+
+Expected learning: Understand service discovery and how security analysts identify unexpected service configurations.
+
+---
+
+## Lab 3: Scheduled Task Investigation
+
+Objective: Inspect registered tasks and their actions.
+
+### Step 1: List tasks
+
+```powershell
+Get-ScheduledTask |
+    Select-Object TaskName, TaskPath, State
+```
+
+### Step 2: Inspect task actions
+
+```powershell
+Get-ScheduledTask |
+    Select-Object TaskName, TaskPath, Actions
+```
+
+### Step 3: Examine a specific task
+
+```powershell
+Get-ScheduledTaskInfo -TaskName "ExampleTask"
+```
+
+Replace the example name with a task that exists on your system.
+
+### Step 4: Evaluate a suspicious-task scenario
+
+Imagine you discover a task that:
+
+- Has an unfamiliar name.
+- Runs at user logon.
+- Launches an executable from a user-writable directory.
+- Was created shortly after an unexpected login.
+
+Write down what additional evidence you would collect before deciding whether the task is malicious.
+
+Expected learning: Understand task enumeration, triggers, actions, execution history, and persistence investigation.
+
+---
+
+## Lab 4: Windows Event Investigation
+
+Objective: Learn how to correlate current system state with historical events.
+
+1. Open Event Viewer.
+2. Navigate to Windows Logs → System.
+3. Look for service-related events, including Event ID 7045 where available.
+4. Inspect the Task Scheduler operational log.
+5. Review relevant events around a specific timestamp.
+6. Compare those events with the current service and task configuration.
+
+You can also query the System log using PowerShell:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'System'
+    Id      = 7045
+} -MaxEvents 20 |
+    Select-Object TimeCreated, Id, ProviderName, Message
+```
+
+If no results are returned, that does not necessarily indicate a problem. The log may not contain matching events, or relevant entries may have been cleared or aged out.
+
+Expected learning: Understand event-based investigation and timeline correlation.
+
+---
+
+# 13. How a SOC Analyst Uses These Concepts
+
+A Security Operations Center (SOC) analyst may investigate an alert involving suspicious PowerShell execution.
+
+Consider this hypothetical alert:
+
+```text
+Alert:
+Suspicious process execution
+
+Process:
+powershell.exe
+
+Parent:
+winword.exe
+
+Related activity:
+A scheduled task was created.
+
+Task action:
+An unfamiliar executable in a user-writable directory.
+```
+
+The analyst should not immediately assume the computer is compromised. Instead, they collect evidence and build a timeline.
+
+### Investigation workflow
+
+Step 1: Examine the process
+
+Determine the executable path, PID, command line, account, and available parent-process information.
+
+Step 2: Examine the process tree
+
+Determine what launched PowerShell and whether the process relationships are consistent with expected activity.
+
+Step 3: Investigate the scheduled task
+
+Inspect its name, trigger, action, execution account, creation time, and history.
+
+Step 4: Inspect the executable
+
+Review its location, signature, hash, file metadata, and reputation using approved security tools.
+
+Step 5: Correlate event logs
+
+Look for process-creation events, task registration events, service changes, and related authentication activity.
+
+Step 6: Check network activity
+
+Determine whether the relevant processes communicated with unexpected external systems.
+
+Step 7: Assess the evidence
+
+Classify the activity as benign, suspicious, or malicious based on the evidence and organizational criteria.
+
+Step 8: Respond according to procedure
+
+If compromise is confirmed or sufficiently suspected, follow the organization's incident-response process. This may include containment, evidence preservation, eradication, and recovery.
+
+The key lesson is that a process, service, or scheduled task is not inherently suspicious. The combination of execution behavior, configuration, timing, account context, and supporting evidence determines whether further investigation is warranted.
+
+---
+
+# 14. Important Commands Cheat Sheet
+
+Keep this reference for practical work.
+
+| Task | Command |
+|---|---|
+| List processes | `Get-Process` |
+| Inspect a process | `Get-Process -Name notepad` |
+| List process IDs and parent IDs | `Get-CimInstance Win32_Process` |
+| List processes in CMD | `tasklist` |
+| Stop a process | `Stop-Process -Id <PID>` |
+| List services | `Get-Service` |
+| Inspect service configuration | `Get-CimInstance Win32_Service` |
+| Start a service | `Start-Service -Name <ServiceName>` |
+| Stop a service | `Stop-Service -Name <ServiceName>` |
+| Query service configuration | `sc.exe qc <ServiceName>` |
+| List scheduled tasks | `Get-ScheduledTask` |
+| Inspect task execution information | `Get-ScheduledTaskInfo -TaskName "<TaskName>"` |
+| Query tasks using CMD | `schtasks /query` |
+| Open Task Manager | `taskmgr` |
+| Open Services | `services.msc` |
+| Open Task Scheduler | `taskschd.msc` |
+| Open Event Viewer | `eventvwr.msc` |
+| Read recent service-installation events | `Get-WinEvent -FilterHashtable @{LogName='System'; Id=7045} -MaxEvents 20` |
+| Inspect executable signature | `Get-AuthenticodeSignature "<FilePath>"` |
+
+For commands that modify system state, verify the target and understand the impact before execution.
+
+---
+
+# 15. Key Concepts You Must Remember
+
+By the end of this topic, you should be able to explain the following concepts without referring to notes.
+
+### Processes
+- What is a process?
+- What are PID and parent PID?
+- What is the difference between a process and a thread?
+- How do you identify an executable's path?
+- Why do process trees matter during malware investigations?
+
+### Services
+- What is a Windows service?
+- What does the Service Control Manager do?
+- What is the purpose of `svchost.exe`?
+- What is the difference between startup type and current state?
+- How can a malicious service be used for persistence?
+
+### Scheduled tasks
+- What is Task Scheduler?
+- What is the difference between a trigger and an action?
+- How can a scheduled task maintain persistence?
+- How do you inspect task actions and execution history?
+- Which indicators make a task suspicious?
+
+### Investigation
+- What is Event ID 4688?
+- What do Event IDs 4697 and 7045 indicate?
+- What do Event IDs 4698 and 4702 indicate?
+- Why is correlating multiple events more reliable than inspecting a single artifact?
+- Why does an unfamiliar executable not automatically mean malware?
+
+---
+
+# 16. Recommended Learning Resources
+
+Use official Microsoft documentation for commands and system behavior, and MITRE ATT&CK to understand how attackers abuse Windows mechanisms.
+
+1. [Microsoft Process Explorer](https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer) — Advanced process inspection.
+2. [Microsoft Sysinternals Suite](https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite) — A collection of Windows investigation and troubleshooting tools.
+3. [Microsoft Windows Services documentation](https://learn.microsoft.com/en-us/windows/win32/services/services) — Windows service architecture and management.
+4. [Microsoft Task Scheduler documentation](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page) — Scheduled-task concepts and interfaces.
+5. [Microsoft Windows Security Auditing documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-process-creation) — Process-creation auditing.
+6. [MITRE ATT&CK](https://attack.mitre.org/) — Adversary techniques involving processes, services, and scheduled tasks.
+
+---
+
+## What Comes Next in Your Cybersecurity Roadmap?
+
+After learning Windows processes, services, and scheduled tasks, the next useful step is Windows security internals and authentication.
+
+That topic builds on your understanding of running processes and introduces:
+
+- Windows users, groups, and security identifiers (SIDs).
+- Access tokens and privileges.
+- User Account Control (UAC).
+- Windows authentication and LSASS.
+- NTLM and Kerberos fundamentals.
+- Windows Security Event Logs.
+- Common credential-theft and privilege-escalation techniques.
+
+These concepts are particularly valuable if your goal is to progress toward SOC Analyst, Incident Responder, Threat Hunter, or Malware Analyst roles.

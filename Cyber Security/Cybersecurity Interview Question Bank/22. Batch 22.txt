@@ -1,0 +1,1068 @@
+# Batch 22 — Cross-Domain Cybersecurity Interview Progression
+
+
+### Beginner (Q2101–Q2115)
+
+Q2101
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Cloud Security Engineer, IAM Engineer, Security Analyst
+- Competency: Understanding cloud identity boundaries
+
+Question: Explain the difference between a human identity, a workload identity and a service identity in a cloud environment. Why should they have separate security policies?
+
+Q2102
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, DevSecOps Engineer
+- Competency: Identifying exposed cloud credentials
+
+Question: You discover an AWS access key inside a publicly accessible Git repository. Describe the immediate steps you would take to determine whether it was abused, revoke or rotate the credential, and identify resources accessed with it.
+
+Q2103
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Understanding authorization boundaries
+
+Question: Explain the difference between object-level authorization, function-level authorization and property-level authorization in an API. How can a system enforce one correctly while remaining vulnerable in the other two?
+
+Q2104
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SOC Analyst, Security Analyst, Threat Hunter
+- Competency: Interpreting authentication telemetry
+
+Question: A Windows authentication log records Event ID 4624 with Logon Type 3. What does this indicate, and what additional fields would you examine to determine whether the network logon was legitimate?
+
+Q2105
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Analyst
+- Competency: Understanding executable analysis
+
+Question: Explain the difference between static analysis, dynamic analysis and behavioral analysis of malware. What distinct evidence can each approach reveal?
+
+Q2106
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Network connection investigation
+
+Question: You capture an outbound TCP connection from an employee workstation to an unfamiliar external IP address. Using Wireshark, identify the packet fields and surrounding traffic you would examine before classifying the connection as malicious.
+
+Q2107
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SIEM Engineer, Purple Team Engineer
+- Competency: Understanding detection coverage
+
+Question: What is the difference between telemetry coverage, detection coverage and response coverage? Why can an organization have extensive logging but still fail to detect an attack?
+
+Q2108
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: DevSecOps Engineer, Application Security Engineer
+- Competency: Identifying insecure container configuration
+
+Question: Consider the following Dockerfile:
+
+```
+FROM node:latest
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+```
+
+Identify at least four security or reproducibility weaknesses and explain how you would improve them.
+
+Q2109
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, DFIR Analyst, Security Analyst
+- Competency: Evidence integrity
+
+Question: Explain why forensic evidence must maintain chain of custody. What problems can arise if evidence is collected, transferred or analyzed without adequate integrity documentation?
+
+Q2110
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, SOC Analyst
+- Competency: Investigating account privilege changes
+
+Question: An employee reports that they unexpectedly became a member of a privileged Active Directory group. Which Windows security events and directory attributes would you examine to establish who made the change, when it occurred and whether the membership is still active?
+
+Q2111
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor, Security Analyst
+- Competency: Understanding vulnerability risk
+
+Question: Why should an organization not prioritize vulnerabilities using CVSS severity alone? Explain how asset criticality, exploitability, exposure and business impact influence remediation priority.
+
+Q2112
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Cloud Security Engineer
+- Competency: Inspecting Kubernetes workload privileges
+
+Question: You receive a Kubernetes pod specification containing `privileged: true`, `hostNetwork: true` and a mounted host directory. Which risks do these settings introduce, and what commands or configuration files would you inspect to determine whether the deployment is justified?
+
+Q2113
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Threat Intelligence Analyst, Threat Hunter, SOC Analyst
+- Competency: Evaluating threat intelligence
+
+Question: Explain the difference between an indicator of compromise, an indicator of attack and a behavioral detection. Why can relying exclusively on known malicious IP addresses produce weak detection coverage?
+
+Q2114
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Mobile Security Engineer, Application Security Engineer
+- Competency: Android application storage assessment
+
+Question: During an authorized Android application assessment, you discover authentication tokens stored in an application preferences XML file. How would you locate the storage, determine whether the tokens are protected, and assess the impact if the device is compromised?
+
+Q2115
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, Security Analyst
+- Competency: Understanding shared responsibility
+
+Question: Explain how the shared responsibility model changes across IaaS, PaaS and SaaS. Why can an organization remain responsible for identity, data access and configuration security even when its provider manages the underlying infrastructure?
+
+### Intermediate (Q2116–Q2140)
+
+Q2116
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, IAM Engineer
+- Competency: Analyzing excessive AWS permissions
+
+Question: An AWS IAM policy grants `s3:*` on `Resource: "*"`. The role is used by a reporting application that only needs to read reports from one bucket. How would you redesign the policy, account for required object-level permissions and verify that unrelated buckets cannot be accessed?
+
+Q2117
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Understanding identity attack paths
+
+Question: How can apparently low-privileged Active Directory permissions combine to create a path toward domain compromise? Explain why analyzing relationships between users, groups, computers, ACLs and delegated rights is more effective than reviewing privileged group membership alone.
+
+Q2118
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Detecting property-level authorization flaws
+
+Question: Consider this Express.js endpoint:
+
+```
+app.patch("/api/users/:id", authenticate, async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.json(user);
+});
+```
+
+Identify the authorization and mass-assignment weaknesses. Rewrite the security validation approach so users can modify permitted profile fields but cannot change roles, account ownership or administrative flags.
+
+Q2119
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, SOC Analyst, Threat Hunter
+- Competency: Understanding detection correlation
+
+Question: Why is correlating process creation, authentication, network activity and file modifications often more effective than creating independent alerts for each event? Explain the role of time windows, entity relationships and behavioral context.
+
+Q2120
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Building cross-event detections using KQL
+
+Question: Your Microsoft Sentinel workspace contains the following tables:
+
+- `DeviceProcessEvents`
+- `DeviceNetworkEvents`
+- `DeviceFileEvents`
+
+Design a KQL investigation that identifies a process launched from a user-writable directory, followed by an external network connection and executable file creation on the same device within ten minutes. Explain how you would correlate the events and handle missing telemetry.
+
+Q2121
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, DFIR Analyst, Threat Hunter
+- Competency: Understanding forensic timeline reconstruction
+
+Question: Explain why timestamps from endpoint logs, cloud audit records, network devices and application databases may not align. How would time-zone differences, clock drift, event ingestion delays and timestamp semantics affect an incident timeline?
+
+Q2122
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Analyzing Windows executable imports
+
+Question: You examine a suspicious PE executable in Ghidra and discover imports associated with `VirtualAlloc`, `VirtualProtect`, `WriteProcessMemory`, `CreateRemoteThread` and `LoadLibrary`. Explain what each API can indicate, what additional evidence you would seek, and why the imports alone are insufficient to establish malicious behavior.
+
+Q2123
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: DevSecOps Engineer, Application Security Engineer
+- Competency: Understanding software supply-chain trust
+
+Question: Explain the difference between dependency integrity, artifact provenance and software authenticity. How do lockfiles, cryptographic signatures, build attestations and a software bill of materials contribute to a trustworthy software supply chain?
+
+Q2124
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Incident Responder
+- Competency: Investigating AWS credential misuse
+
+Question: An AWS CloudTrail record shows an unexpected `AssumeRole` event followed by `ListBuckets`, `GetObject` and `CreateAccessKey` API calls. Which CloudTrail fields would you correlate to identify the originating principal, source session, account, IP address and role chain? How would you determine whether the activity indicates credential compromise?
+
+Q2125
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: IAM Engineer, Security Architect
+- Competency: Evaluating federation trust
+
+Question: Explain the security differences between SAML-based federation and OpenID Connect federation. How can incorrect audience validation, issuer validation or trust configuration allow an identity provider integration to authenticate the wrong principal?
+
+Q2126
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Cloud Security Engineer
+- Competency: Investigating Kubernetes admission-control failures
+
+Question: A Kubernetes deployment is rejected by an admission controller because its container requests privileged execution and an unrestricted hostPath mount. Describe how you would investigate the rejection, identify the responsible policy and propose a compliant workload configuration without weakening cluster-wide admission controls.
+
+Q2127
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Penetration Tester, API Security Engineer, Application Security Engineer
+- Competency: Understanding race-condition vulnerabilities
+
+Question: Explain the difference between a time-of-check-to-time-of-use vulnerability and a general concurrency bug. Why can payment processing, coupon redemption and inventory reservation systems become vulnerable when security checks and database updates are not atomic?
+
+Q2128
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Threat Hunter, SOC Analyst, Detection Engineer
+- Competency: Detecting suspicious PowerShell execution
+
+Question: Your Windows environment records Sysmon Event ID 1 and PowerShell Script Block Logging Event ID 4104. You observe `powershell.exe` launched with an encoded command, followed by a script accessing LSASS-related information. Which fields and correlated events would you examine to distinguish legitimate administration from credential-access activity?
+
+Q2129
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, IAM Engineer
+- Competency: Designing workload identity controls
+
+Question: Why are short-lived workload credentials generally preferable to static access keys? Discuss token issuance, identity binding, rotation, audience restrictions and the risks of allowing workloads to obtain credentials belonging to more privileged identities.
+
+Q2130
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Detecting DNS tunneling indicators
+
+Question: A workstation generates thousands of DNS queries containing unusually long, high-entropy subdomains. Using Zeek DNS logs or equivalent DNS telemetry, identify the fields you would analyze to distinguish DNS tunneling from legitimate content delivery networks, security software and other high-volume DNS activity.
+
+Q2131
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Malware Analyst, Incident Responder
+- Competency: Understanding malware execution environments
+
+Question: Explain how sandbox detection, environment fingerprinting and delayed execution can reduce the effectiveness of automated malware analysis. What limitations do these techniques introduce when interpreting apparently benign sandbox results?
+
+Q2132
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, DevSecOps Engineer
+- Competency: Identifying SSRF in cloud deployments
+
+Question: An application accepts a user-supplied URL and retrieves its contents from the backend. During an authorized assessment, you discover that requests can reach internal services. Describe how you would validate the SSRF vulnerability safely, assess potential cloud metadata exposure and implement defenses against DNS rebinding and redirect-based bypasses.
+
+Q2133
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect, Security Auditor
+- Competency: Connecting technical controls to business risk
+
+Question: Explain how an organization can translate a technical security finding into a business risk statement. Why should remediation recommendations identify affected business processes, potential consequences, existing compensating controls and residual risk?
+
+Q2134
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Digital Forensics Analyst, DFIR Analyst
+- Competency: Investigating Windows execution artifacts
+
+Question: A Windows endpoint has been isolated after suspected malware execution. Explain how you would use Prefetch files, Amcache, Shimcache and Windows event logs to investigate program execution. What are the limitations of each artifact when establishing whether a particular executable actually ran?
+
+Q2135
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Mobile Security Engineer, API Security Engineer
+- Competency: Understanding mobile-to-backend trust
+
+Question: Why should a mobile application's local authentication state never be treated as authoritative by the backend? Explain how certificate validation, token binding, server-side authorization and device compromise influence the overall mobile application security model.
+
+Q2136
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: DevSecOps Engineer, Cloud Security Engineer
+- Competency: Identifying CI/CD secret exposure
+
+Question: A GitHub Actions workflow prints environment variables during a failed deployment. Some variables contain cloud credentials and deployment tokens. How would you determine whether secrets were exposed in workflow logs, artifacts or pull-request execution contexts, and what changes would prevent recurrence?
+
+Q2137
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Purple Team Engineer, Detection Engineer, Security Architect
+- Competency: Measuring security-control effectiveness
+
+Question: Explain the difference between control existence, control effectiveness and control resilience. How can a Purple Team establish whether an endpoint detection control continues to work after an attacker changes execution methods or introduces evasion techniques?
+
+Q2138
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cryptography Engineer, Application Security Engineer
+- Competency: Investigating cryptographic implementation errors
+
+Question: A web application uses AES-GCM but accidentally reuses the same nonce with the same encryption key for multiple messages. Explain how you would verify the implementation error, determine which encrypted records are affected and plan key rotation and data-protection remediation.
+
+Q2139
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer
+- Competency: Understanding cloud segmentation architecture
+
+Question: Explain how network segmentation, identity boundaries and resource-level authorization complement one another in a multi-account cloud architecture. Why is network isolation alone insufficient to prevent unauthorized access to cloud resources?
+
+Q2140
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, SIEM Engineer, Purple Team Engineer
+- Competency: Validating Sigma rule portability
+
+Question: You have written a Sigma detection rule for suspicious process execution. It works in one SIEM backend but produces different results after conversion to another backend. Explain how you would investigate field mappings, log-source definitions, backend-specific query translation and unsupported Sigma modifiers to establish whether the discrepancy is caused by the rule or the ingestion pipeline.
+
+### Advanced (Q2141–Q2170)
+
+Q2141
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, IAM Engineer, Threat Hunter
+- Competency: Reconstructing chained cloud identity abuse
+
+Question: An attacker compromises a developer's cloud identity, obtains permission to assume a deployment role and then accesses a production workload identity. Design an investigation using cloud audit logs, identity-provider events and workload telemetry to reconstruct the complete identity chain. How would you distinguish legitimate role assumption from attacker-controlled privilege escalation?
+
+Q2142
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, IAM Engineer, Cloud Security Engineer
+- Competency: Designing identity-centric Zero Trust
+
+Question: How would you design a Zero Trust identity architecture for an enterprise operating across multiple cloud providers, on-premises Active Directory and SaaS applications? Explain how device trust, identity assurance, workload identity, session risk and continuous authorization should interact without creating a single point of identity failure.
+
+Q2143
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Analyzing multi-tenant authorization failures
+
+Question: A multi-tenant SaaS API uses PostgreSQL and Prisma. Most queries filter by `tenantId`, but a background export worker retrieves records using only their database IDs. Design a security review that identifies every tenant-boundary failure across API handlers, ORM queries, background jobs, caching and asynchronous event processing. How would you enforce tenant isolation at both the application and database layers?
+
+Q2144
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Active Directory Security Engineer, Incident Responder, Threat Hunter
+- Competency: Understanding enterprise identity compromise
+
+Question: Why can a compromised synchronization account, federation service or identity-management platform create a broader enterprise compromise than an individual administrator account? Explain the security implications of identity synchronization, delegated authority, federation trust and downstream application access.
+
+Q2145
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Threat Hunter, Detection Engineer, DFIR Analyst
+- Competency: Reconstructing an endpoint intrusion
+
+Question: You receive the following sequence from a Windows endpoint:
+
+- `winword.exe` creates an unusual child process.
+- The child process loads a DLL from a user-writable directory.
+- A new scheduled task appears.
+- The endpoint establishes outbound HTTPS connections.
+- A new executable is written to a temporary directory.
+
+Construct an investigation workflow that correlates Sysmon, Windows Task Scheduler logs, Defender telemetry and network records. Identify the evidence required to establish execution order, persistence and potential command-and-control activity.
+
+Q2146
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, Threat Hunter, Purple Team Engineer
+- Competency: Understanding behavioral detection engineering
+
+Question: How would you distinguish an adversary's underlying behavior from the specific tools used to perform it when designing detections? Explain how abstraction, behavioral invariants, telemetry dependencies and adversary variation affect detection durability.
+
+Q2147
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Kubernetes Security Engineer
+- Competency: Investigating container-to-cloud privilege escalation
+
+Question: A Kubernetes workload has access to a cloud workload identity that can read sensitive object storage. During an authorized security investigation, you suspect that a compromised container obtained access to this identity. Explain how you would examine service-account configuration, token projection, workload identity federation, cloud audit records and object-storage access logs to reconstruct the access path.
+
+Q2148
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Reverse Engineer, Malware Analyst, Security Researcher
+- Competency: Understanding control-flow obfuscation
+
+Question: Explain how control-flow flattening, opaque predicates and indirect branching complicate malware reverse engineering. What approaches can an analyst use to reconstruct the original program logic without relying exclusively on decompilation output?
+
+Q2149
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Reverse Engineer, Malware Analyst
+- Competency: Analyzing process injection behavior
+
+Question: In an isolated malware-analysis lab, you observe a process allocating executable memory inside another process and subsequently changing its memory protections. Explain how you would use Ghidra, a debugger and memory inspection to investigate the operation. What evidence would distinguish legitimate instrumentation from suspicious process injection?
+
+Q2150
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Cryptography Engineer, Security Architect
+- Competency: Understanding cryptographic protocol composition
+
+Question: Why can combining individually secure cryptographic algorithms into a protocol still produce an insecure system? Discuss key separation, nonce management, authentication, downgrade resistance, protocol state and the dangers of incorrect composition.
+
+Q2151
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Analyzing HTTP request desynchronization
+
+Question: During an authorized web assessment, a reverse proxy and backend application disagree about HTTP message boundaries because of inconsistent handling of `Content-Length` and `Transfer-Encoding`. Explain how you would safely validate the request-smuggling condition, identify affected request paths and determine whether cache poisoning or request misrouting is possible.
+
+Q2152
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: DFIR Analyst, Incident Responder, Security Architect
+- Competency: Understanding forensic evidence reliability
+
+Question: How should an investigation team evaluate the reliability of evidence when endpoint telemetry is incomplete, attacker-controlled logs may have been modified and cloud records are delayed? Explain the use of independent evidence sources, confidence levels, corroboration and documented investigative assumptions.
+
+Q2153
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SIEM Engineer, Detection Engineer
+- Competency: Building multi-source attack-chain correlation
+
+Question: Your SIEM receives the following telemetry:
+
+- Identity provider: suspicious MFA approval.
+- VPN: successful login from an unusual region.
+- EDR: PowerShell execution on a corporate laptop.
+- Cloud audit: new access key creation.
+- DLP: unusual bulk file downloads.
+
+Design a correlation strategy that associates these events with the same incident while handling different user identifiers, device identifiers, time zones and incomplete event fields.
+
+Q2154
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: DevSecOps Engineer, Security Architect, Application Security Engineer
+- Competency: Designing secure build architectures
+
+Question: How would you establish trust in a software artifact when the source repository, build infrastructure, dependency registry and deployment environment have different trust levels? Discuss isolated builders, reproducible builds, provenance attestations, signing identities and verification at deployment time.
+
+Q2155
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, Threat Hunter
+- Competency: Investigating Kerberos delegation abuse
+
+Question: During an authorized Active Directory assessment, you discover a service account with unconstrained delegation and suspicious authentication activity involving a Domain Controller. Which Kerberos ticket artifacts, Windows security events, account attributes and network telemetry would you investigate to determine whether delegation was abused?
+
+Q2156
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Mobile Security Engineer, Reverse Engineer, Application Security Engineer
+- Competency: Understanding mobile runtime trust boundaries
+
+Question: Explain why mobile application security cannot depend solely on root detection, jailbreak detection or certificate pinning. How would you design layered defenses that account for runtime instrumentation, compromised devices, API abuse and the possibility that client-side controls can be bypassed?
+
+Q2157
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Detection Engineer
+- Competency: Investigating Kubernetes control-plane abuse
+
+Question: Your Kubernetes audit logs show an unexpected `create` operation for a privileged pod, followed by a `create` operation for a cluster-wide RoleBinding. Explain how you would correlate the requesting identity, source address, user agent, admission decisions, RBAC permissions and workload events to determine whether a control-plane compromise occurred.
+
+Q2158
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst, Security Auditor
+- Competency: Evaluating systemic third-party risk
+
+Question: How should an enterprise assess the security implications of a critical third-party software provider whose products are deployed across identity, endpoint management and cloud infrastructure? Explain concentration risk, transitive dependencies, shared blast radius, contractual controls and contingency planning.
+
+Q2159
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Threat Hunter, Detection Engineer, Network Security Engineer
+- Competency: Detecting covert command-and-control channels
+
+Question: A compromised endpoint communicates through legitimate cloud-hosted services using HTTPS, with no obvious malicious destination IP. Design a hunting approach that combines DNS history, TLS metadata, proxy logs, process-to-socket relationships and periodicity analysis to identify potential covert C2 communication.
+
+Q2160
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, Incident Responder
+- Competency: Understanding multi-cloud incident containment
+
+Question: How would you approach containment when a compromised identity has access to several cloud accounts, shared identity providers, federated workloads and production automation systems? Explain why indiscriminate account suspension or credential rotation may create operational failures or destroy investigative opportunities.
+
+Q2161
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Investigating memory corruption vulnerabilities
+
+Question: You are analyzing a native application that crashes after processing an oversized input. Using GDB and AddressSanitizer in an isolated test environment, describe how you would determine whether the crash involves an out-of-bounds write, use-after-free or stack-based buffer overflow. What evidence would you collect before assessing exploitability?
+
+Q2162
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Detection Engineer, SOC Manager
+- Competency: Designing resilient security monitoring
+
+Question: How would you design a monitoring architecture that remains useful during a compromise of the primary SIEM, identity provider or central log-management platform? Discuss independent telemetry retention, administrative isolation, alternate alerting paths, integrity protection and recovery objectives.
+
+Q2163
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, DevSecOps Engineer
+- Competency: Reviewing infrastructure-as-code security
+
+Question: A Terraform configuration creates a public object-storage bucket, attaches an unrestricted security-group ingress rule and stores a database password in a resource variable. Describe how you would use static analysis, Terraform plan inspection and cloud configuration validation to identify the weaknesses and verify the corrected deployment.
+
+Q2164
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Threat Intelligence Analyst, Security Architect, Threat Hunter
+- Competency: Evaluating attribution confidence
+
+Question: During an investigation, several indicators resemble techniques associated with a known threat group, but the infrastructure and malware samples are inconclusive. How would you distinguish technical attribution, behavioral similarity and intelligence confidence? Why should incident response decisions not depend on definitive actor attribution?
+
+Q2165
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cryptography Engineer, Security Researcher
+- Competency: Detecting cryptographic side-channel leakage
+
+Question: You are reviewing an authentication service that performs private-key operations. Design a controlled timing-analysis experiment to determine whether response time correlates with secret-dependent processing. Explain how you would account for noise, network latency, sample size, statistical significance and mitigation through constant-time implementation.
+
+Q2166
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Purple Team Engineer, Detection Engineer, Red Team Operator
+- Competency: Understanding adversary emulation fidelity
+
+Question: Explain the difference between testing an individual security control, validating a detection use case and conducting a full adversary-emulation exercise. How does test fidelity influence the conclusions an organization can legitimately draw about its security posture?
+
+Q2167
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Investigating distributed authorization failures
+
+Question: A distributed application validates user permissions in its API gateway, but internal microservices also process messages from a shared event broker. An attacker causes an unauthorized operation by publishing a crafted message through an indirectly accessible service. How would you investigate trust propagation, message integrity, service identity and authorization enforcement across the entire request path?
+
+Q2168
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, DFIR Analyst, Security Architect
+- Competency: Understanding enterprise-wide recovery
+
+Question: How should an incident response leader determine the order in which identity services, network infrastructure, endpoint management, business applications and security monitoring systems are recovered after a widespread compromise? Explain dependency mapping, trust restoration and the risk of restoring compromised administrative infrastructure.
+
+Q2169
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Malware Analyst, Detection Engineer
+- Competency: Developing memory-based malware detections
+
+Question: A suspected fileless malware sample leaves no persistent executable on disk but creates suspicious executable memory regions and modifies process behavior. Using Volatility memory analysis and endpoint telemetry, explain how you would investigate process injection, suspicious memory mappings and execution artifacts. How would you translate the findings into a defensible detection strategy?
+
+Q2170
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, GRC Analyst
+- Competency: Evaluating enterprise security architecture trade-offs
+
+Question: An organization wants to centralize identity, logging and policy enforcement across multiple business units but must preserve regulatory isolation and regional data residency. How would you evaluate centralized versus federated security architecture, considering operational efficiency, blast radius, governance and failure isolation?
+
+### Expert (Q2171–Q2190)
+
+Q2171
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, IAM Engineer, Incident Responder
+- Competency: Reconstructing cross-account identity compromise
+
+Question: An attacker obtains a federated session in one AWS account, assumes a cross-account role, modifies a trust policy in a second account and creates a persistent credential in a third account. Design a forensic reconstruction using CloudTrail, IAM configuration history, STS session attributes and identity-provider logs. Explain how you would establish the original compromise point, privilege-escalation path, persistence mechanism and complete scope of access.
+
+Q2172
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, IAM Engineer, Security Researcher
+- Competency: Analyzing identity control-plane compromise
+
+Question: What makes compromise of an enterprise identity control plane fundamentally different from compromise of an individual workload or endpoint? Explain how you would assess the integrity of authentication, authorization, federation, provisioning and recovery mechanisms after suspected control-plane compromise.
+
+Q2173
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, DFIR Analyst, Threat Hunter
+- Competency: Investigating directory replication abuse
+
+Question: During a domain compromise investigation, you identify unexpected directory replication activity originating from a non-Domain Controller system. Explain how you would investigate replication permissions, relevant directory changes, authentication evidence and Domain Controller telemetry to determine whether replication rights were abused to obtain credential material. How would you assess persistence and verify that unauthorized replication privileges have been removed?
+
+Q2174
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Reverse Engineer, Malware Analyst, Security Researcher
+- Competency: Understanding advanced malware analysis limitations
+
+Question: How would you reason about a malware sample that uses dynamic API resolution, encrypted configuration, control-flow obfuscation, anti-debugging and environment-dependent execution? Explain how static analysis, dynamic analysis, symbolic reasoning and memory inspection can complement one another when no individual method reveals the complete behavior.
+
+Q2175
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, SIEM Engineer, Security Architect
+- Competency: Designing reliable multi-tenant detection pipelines
+
+Question: A managed security platform processes telemetry from hundreds of customer tenants. A parsing defect causes some events to lose their tenant identifier, while a correlation rule joins events using usernames alone. Design a remediation strategy covering schema validation, tenant-aware entity resolution, data isolation, rule testing, backfill and incident impact assessment. How would you prove that one customer's activity cannot contaminate another customer's alerts?
+
+Q2176
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cryptography Engineer, Security Researcher
+- Competency: Evaluating cryptographic migration risk
+
+Question: An enterprise must migrate from legacy cryptographic algorithms to stronger alternatives while maintaining compatibility with external systems and historical encrypted records. How would you approach cryptographic agility, key hierarchy migration, downgrade prevention, algorithm negotiation, data re-encryption and long-term recoverability?
+
+Q2177
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Cloud Security Engineer, Incident Responder
+- Competency: Investigating container escape and host compromise
+
+Question: An application container unexpectedly accesses host filesystem resources and establishes network connections outside its expected namespace. Design an investigation using container runtime events, Linux audit telemetry, process namespaces, mount information, kernel logs and Kubernetes audit records. How would you distinguish an application-level privilege problem from a container escape or host-level compromise?
+
+Q2178
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst, Security Auditor
+- Competency: Evaluating security assurance evidence
+
+Question: How should an enterprise evaluate whether security controls are operating effectively rather than merely existing in policies and compliance documentation? Discuss independent testing, control-owner evidence, sampling, automated assurance, exceptions and the relationship between compliance maturity and actual security resilience.
+
+Q2179
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Evaluating exploitability under modern mitigations
+
+Question: You discover an out-of-bounds write in a 64-bit Linux application compiled with stack canaries, ASLR, NX and PIE enabled. Using a controlled lab, explain how you would determine the affected memory region, assess whether the corruption is controllable, evaluate the impact of each mitigation and establish the realistic exploitability of the vulnerability without assuming that a crash implies code execution.
+
+Q2180
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, DFIR Analyst, Security Architect
+- Competency: Managing investigations under evidence uncertainty
+
+Question: During a major enterprise incident, the investigation team discovers that endpoint logs are incomplete, the attacker may have modified local artifacts and some cloud audit records are unavailable. How should the incident commander balance containment urgency, evidence preservation, uncertainty communication and business continuity when deciding whether to isolate critical infrastructure?
+
+Q2181
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, Security Researcher, API Security Engineer
+- Competency: Investigating cryptographic protocol implementation flaws
+
+Question: A custom authentication protocol uses signed JSON messages, timestamps, nonces and AES-GCM encryption. During a review, you discover inconsistent canonicalization of JSON fields, weak replay protection and ambiguous key identifiers. Design a test plan to identify signature-validation inconsistencies, replay acceptance, nonce misuse and cross-protocol confusion. Explain how you would redesign the protocol using established cryptographic constructions.
+
+Q2182
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Purple Team Engineer, Security Architect, Detection Engineer
+- Competency: Evaluating adaptive defense effectiveness
+
+Question: How would you determine whether an enterprise detection program is resilient against an adaptive adversary who changes tools, infrastructure, execution methods and identity abuse techniques after each failed attempt? Discuss behavior-based coverage, adversary emulation, detection dependencies and continuous validation.
+
+Q2183
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Threat Hunter, DFIR Analyst, Malware Analyst
+- Competency: Reconstructing cross-platform intrusion activity
+
+Question: An attacker uses a compromised Windows workstation, an exposed Linux application server and a cloud-hosted workload during a single intrusion. Design a unified investigation that correlates Windows Event Logs, Linux authentication and process records, application logs, cloud audit trails and network telemetry. How would you resolve identity differences, reconstruct lateral movement and identify gaps in the evidence chain?
+
+Q2184
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, DevSecOps Engineer
+- Competency: Designing secure software delivery governance
+
+Question: How would you design a software delivery security model in which source code, dependencies, build infrastructure, signing identities and deployment permissions are independently verifiable? Explain how separation of duties, workload identity, artifact attestations, policy enforcement and emergency release procedures affect the architecture.
+
+Q2185
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, Threat Hunter, SOC Engineer
+- Competency: Engineering detections against telemetry manipulation
+
+Question: A sophisticated attacker attempts to evade endpoint monitoring by disabling a logging service, modifying local configurations and generating misleading process activity. Design a detection strategy that correlates service-state changes, configuration modifications, telemetry gaps, endpoint health signals and independent network observations. How would you detect intentional suppression without generating excessive alerts during legitimate maintenance?
+
+Q2186
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, IAM Engineer, Incident Responder
+- Competency: Understanding identity recovery and trust re-establishment
+
+Question: Following an enterprise identity compromise, why is resetting administrator passwords insufficient to establish trust? Explain the broader recovery requirements involving federation secrets, signing certificates, synchronization accounts, service principals, application credentials, privileged sessions and authentication infrastructure.
+
+Q2187
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Mobile Security Engineer, Reverse Engineer
+- Competency: Investigating runtime instrumentation bypasses
+
+Question: During an authorized Android application assessment, you find that certificate pinning and root-detection checks are implemented in native libraries and dynamically loaded modules. Design an analysis workflow using JADX, Frida and native debugging to locate the enforcement points, understand control flow and validate whether the backend independently enforces the required security properties.
+
+Q2188
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst, Security Director
+- Competency: Prioritizing enterprise security investment
+
+Question: An organization has limited security funding and competing risks involving identity compromise, cloud misconfiguration, ransomware resilience, software supply-chain exposure and detection capability. How would you develop an investment strategy that accounts for risk reduction, implementation cost, control dependencies, business criticality and measurable security outcomes?
+
+Q2189
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Kubernetes Security Engineer, Threat Hunter
+- Competency: Investigating service mesh identity abuse
+
+Question: An organization uses a Kubernetes service mesh with mutual TLS between microservices. You discover that a compromised workload can successfully authenticate to a service outside its expected authorization scope. Explain how you would investigate workload certificates, service identities, authorization policies, sidecar configuration and control-plane telemetry. How would you identify whether the weakness originates from identity issuance, policy enforcement or trust-domain configuration?
+
+Q2190
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, Security Architect, SOC Manager
+- Competency: Leading complex incident response
+
+Question: During a simultaneous identity, cloud and endpoint compromise, how should an incident commander coordinate technical investigations, containment decisions, legal requirements, executive communications and business continuity? Explain how you would establish decision authority, communicate confidence levels and prevent parallel response teams from taking conflicting actions.
+
+### Senior/Architect (Q2191–Q2200)
+
+Q2191
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Cloud Security Architect
+- Competency: Enterprise-wide security architecture strategy
+
+Question: You are appointed to redesign security architecture for an enterprise with multiple business units, acquisitions, hybrid infrastructure, three cloud providers and decentralized application teams. How would you establish a common security architecture while preserving business autonomy? Explain your approach to identity governance, security boundaries, control ownership, telemetry standards, architecture exceptions and measurable security maturity.
+
+Q2192
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, IAM Engineer, Cloud Security Engineer
+- Competency: Designing enterprise identity containment architecture
+
+Question: Design an enterprise identity containment mechanism capable of responding to a compromised privileged identity across on-premises Active Directory, Microsoft Entra ID, AWS, Azure, GCP and critical SaaS applications. Specify the identity relationships, revocation mechanisms, session invalidation controls, emergency access procedures and audit evidence required. How would you test that containment is effective without accidentally locking the organization out of its recovery infrastructure?
+
+Q2193
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Security Director, GRC Analyst
+- Competency: Establishing enterprise security governance
+
+Question: How would you establish an enterprise security governance model that connects technical risk, business accountability, regulatory requirements and engineering execution? Explain how you would assign control ownership, manage exceptions, measure residual risk and ensure that security architecture decisions remain enforceable across independently operated business units.
+
+Q2194
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SIEM Engineer, Security Architect, SOC Manager
+- Competency: Architecting large-scale security telemetry
+
+Question: Design a security telemetry architecture for 50,000 endpoints, multiple cloud environments, geographically distributed networks and several thousand business applications. Specify ingestion boundaries, normalization, entity resolution, tenant and regional isolation, retention tiers, detection processing, data integrity and failure recovery. How would you balance detection latency, storage costs, regulatory restrictions and the risk of losing critical evidence during an incident?
+
+Q2195
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Purple Team Engineer, Security Director
+- Competency: Building an enterprise Purple Team program
+
+Question: You must establish a Purple Team program in an organization where Red Team, Blue Team, infrastructure and application-security teams operate independently. How would you define the operating model, testing priorities, authorization boundaries, success criteria, detection ownership and remediation accountability? How would you demonstrate measurable improvement in defensive capability rather than simply counting exercises performed?
+
+Q2196
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: DevSecOps Engineer, Security Architect, Cloud Security Architect
+- Competency: Designing an enterprise software supply-chain trust framework
+
+Question: An enterprise discovers that a compromised build service could produce malicious artifacts that are subsequently signed and deployed through trusted CI/CD pipelines. Design an end-to-end trust framework covering isolated build identities, source verification, build provenance, artifact signing, signing-key protection, deployment admission policies and independent verification. How would you prevent a compromised build administrator from silently bypassing the controls?
+
+Q2197
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Incident Responder, CISO
+- Competency: Defining enterprise cyber-resilience strategy
+
+Question: How would you define a cyber-resilience strategy for an enterprise that assumes preventative controls can fail? Explain how prevention, detection, containment, recovery, independent backups, crisis governance and business continuity should be connected. Which measurable indicators would you present to the board to demonstrate actual resilience?
+
+Q2198
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, Cloud Security Engineer, GRC Analyst
+- Competency: Evaluating systemic cloud architecture risk
+
+Question: An enterprise uses a central cloud management account to administer production environments, deploy security policies, manage encryption keys and collect audit logs across multiple business units. A security review identifies that compromise of this account could affect every environment. Design a target architecture that reduces this concentration risk while preserving centralized governance. Specify account boundaries, delegated administration, break-glass access, key-management separation, logging isolation and recovery validation.
+
+Q2199
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Security Director, GRC Analyst, CISO
+- Competency: Managing systemic cyber risk and technical debt
+
+Question: An enterprise has accumulated years of security exceptions, unsupported systems, duplicated identity platforms, unpatched legacy applications and fragmented monitoring. How would you construct a multi-year security transformation strategy that prioritizes systemic risk rather than isolated findings? Explain how you would handle competing business priorities, technical debt, ownership disputes, investment constraints and executive accountability.
+
+Q2200
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, Incident Responder, SOC Manager, CISO
+- Competency: Leading an enterprise-wide compromise assessment
+
+Question: You are the senior security leader responding to a suspected coordinated compromise involving enterprise identity infrastructure, cloud control planes, CI/CD pipelines, endpoint management and production applications. You have 72 hours to establish the likely scope, prevent further compromise and provide an executive decision brief.
+
+Develop an investigation and response framework specifying:
+
+1. The order in which you assess potentially compromised trust anchors.
+2. The independent evidence sources required to validate attacker access.
+3. How you identify persistence across identity, cloud, endpoint and application layers.
+4. How you decide which systems to isolate and which services must remain operational.
+5. How you establish a trustworthy recovery environment.
+6. How you communicate uncertainty, business impact and residual risk.
+7. Which technical and executive decisions must be documented before declaring the incident contained.

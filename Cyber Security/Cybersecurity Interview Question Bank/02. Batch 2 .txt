@@ -1,0 +1,1140 @@
+# Cybersecurity Interview Question Bank — Batch 2
+
+
+# Section 3 — Programming & Security Scripting
+
+## Topic 1: Python Programming Fundamentals
+
+Q0101
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, Security Automation Engineer
+- Competency: Programming fundamentals
+
+Question: Explain Python's fundamental data types, including strings, integers, floats, lists, tuples, dictionaries and sets. How would you choose the appropriate data structure when developing a security automation script?
+
+Q0102
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Security Automation Engineer, Malware Analyst
+- Competency: Python execution and exception handling
+
+Question: Explain how Python handles exceptions using `try`, `except`, `else` and `finally`. Why is proper exception handling particularly important when developing automated security tools?
+
+Q0103
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Security Automation Engineer, SOC Analyst
+- Competency: Secure Python programming
+
+Question: Consider a Python script that accepts a filename from an external user and reads its contents. What security risks could arise from unsanitized file paths, unexpected input types and unrestricted file access? How would you redesign the script to address these risks?
+
+Q0104
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Security Automation Engineer, Detection Engineer
+- Competency: Python performance and reliability
+
+Question: Your Python-based security monitoring application processes millions of events but experiences high memory consumption and increasing processing delays. How would you investigate memory usage, algorithmic complexity, object allocation and concurrency before deciding whether to introduce asynchronous processing or multiprocessing?
+
+## Topic 2: Python Automation, File Handling, JSON and APIs
+
+Q0105
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Security Automation Engineer
+- Competency: File handling and data processing
+
+Question: Write a Python script that reads a text file containing IP addresses, removes duplicate entries and saves the unique addresses to another file. Explain how you would handle missing files and permission errors.
+
+Q0106
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: SOC Analyst, Security Automation Engineer
+- Competency: JSON processing
+
+Question: Given a JSON file containing security alerts with fields such as `timestamp`, `source_ip`, `severity` and `event_type`, how would you use Python to extract all high-severity alerts and group them by source IP?
+
+Q0107
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Security Automation Engineer, SOC Analyst, SIEM Engineer
+- Competency: API integration and automation
+
+Question: You need to integrate a threat intelligence API into a Python-based SOC tool. How would you implement authentication, pagination, rate-limit handling, timeouts, response validation and secure API-key storage?
+
+Q0108
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Automation Engineer, Security Architect, SIEM Engineer
+- Competency: Security automation architecture
+
+Question: Design a Python-based security automation service that receives alerts from multiple SIEM platforms, enriches them using external threat intelligence APIs and forwards prioritized incidents to an incident management system. How would you ensure scalability, fault tolerance, idempotency and secure handling of sensitive information?
+
+## Topic 3: Python Networking and Sockets
+
+Q0109
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Network Security Engineer, Security Analyst
+- Competency: Socket programming fundamentals
+
+Question: What are sockets in Python? Explain the difference between TCP and UDP sockets and describe how a client and server establish communication using the `socket` module.
+
+Q0110
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: Network Security Engineer, Security Automation Engineer
+- Competency: Network programming
+
+Question: Describe how you would implement a basic TCP client in Python that connects to an authorized test server, sends a message and receives a response. Which socket functions are involved, and how would you handle connection timeouts?
+
+Q0111
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Network Security Engineer, Security Researcher
+- Competency: Secure socket implementation
+
+Question: You are developing a Python service that accepts incoming TCP connections. How would you prevent resource exhaustion caused by excessive simultaneous connections, slow clients and clients that never complete their requests?
+
+Q0112
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Threat Hunter, Network Security Engineer, Malware Analyst
+- Competency: Network behavior analysis
+
+Question: A suspicious Python process establishes repeated outbound socket connections to an unfamiliar server at regular intervals. How would you analyze its destination addresses, connection timing, payload characteristics and retry behavior to determine whether it is performing beaconing or legitimate API communication?
+
+## Topic 4: Log Parsing and Regular Expressions
+
+Q0113
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Log analysis fundamentals
+
+Question: What are regular expressions, and how can they be used to extract IP addresses, timestamps, usernames and error messages from security logs?
+
+Q0114
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: SOC Analyst, Security Automation Engineer
+- Competency: Log parsing
+
+Question: Write a Python regular expression that extracts IPv4 addresses from a text log. How would you validate the extracted values to avoid accepting invalid addresses such as `999.999.999.999`?
+
+Q0115
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: SIEM Engineer, Security Automation Engineer
+- Competency: Log normalization
+
+Question: A log parser works correctly with normal authentication records but fails when timestamps, optional fields or message formats differ between systems. How would you redesign the parser to handle inconsistent log formats without silently losing security-relevant information?
+
+## Topic 5: Bash Scripting and Automation
+
+Q0116
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Bash fundamentals
+
+Question: Explain the purpose of Bash variables, conditional statements, loops, functions and exit codes. How would you use them to automate a repetitive Linux security administration task?
+
+Q0117
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Bash security automation
+
+Question: Write a Bash script that checks whether a specified Linux service is running. If it is not running, the script should record the event with a timestamp and return an appropriate exit code.
+
+Q0118
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Linux Security Engineer, DevSecOps Engineer
+- Competency: Secure shell scripting
+
+Question: A security automation script accepts user-supplied filenames and executes shell commands using those values. What risks arise from unsafe variable expansion, command substitution and shell injection? How would you rewrite the script to avoid these vulnerabilities?
+
+## Topic 6: PowerShell Scripting, Objects, Pipelines and Administration
+
+Q0119
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Windows Security Engineer
+- Competency: PowerShell fundamentals
+
+Question: How does PowerShell differ from traditional command-line shells such as CMD and Bash? Explain its object-based pipeline and why passing structured objects is useful for system administration.
+
+Q0120
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Windows Security Engineer
+- Competency: PowerShell administration
+
+Question: Write a PowerShell command that retrieves all local Windows users, their enabled or disabled status and their last logon information where available. Explain which cmdlets or system interfaces you would use.
+
+Q0121
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Detection Engineer, Incident Responder
+- Competency: PowerShell activity investigation
+
+Question: An endpoint executes a PowerShell command containing encoded content, downloads a remote script and launches another process. How would you investigate the command, decode its content safely, examine script-block logging and correlate the activity with process creation telemetry?
+
+Q0122
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Detection Engineer, Threat Hunter, Incident Responder
+- Competency: PowerShell abuse detection
+
+Question: Your organization detects suspicious PowerShell activity that uses legitimate administrative cmdlets, dynamically generated scripts and unusual execution parameters. How would you develop behavioral detections that identify malicious execution without generating excessive alerts for normal IT administration?
+
+## Topic 7: JavaScript Execution, DOM, Cookies and Browser Storage
+
+Q0123
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: JavaScript and browser fundamentals
+
+Question: Explain how JavaScript executes inside a browser. What are the roles of the JavaScript engine, DOM, event loop and browser APIs?
+
+Q0124
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Browser storage security
+
+Question: Compare cookies, localStorage, sessionStorage and IndexedDB. How do their lifetimes, access mechanisms and security properties differ?
+
+Q0125
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Client-side injection vulnerabilities
+
+Question: Consider the following JavaScript code:
+
+```
+const params = new URLSearchParams(window.location.search);
+const message = params.get("message");
+
+document.getElementById("output").innerHTML = message;
+```
+
+What vulnerability could occur if an attacker controls the `message` parameter? Explain how you would validate the vulnerability in an authorized test environment and correct the implementation.
+
+## Topic 8: Fetch, CORS and Browser Security
+
+Q0126
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: Browser security mechanisms
+
+Question: Explain how the Fetch API works and how browser CORS enforcement affects cross-origin HTTP requests. What is the purpose of a preflight request?
+
+Q0127
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: CORS troubleshooting
+
+Question: A frontend application hosted at `https://app.example.com` cannot access an API hosted at `https://api.example.com`. The browser reports a CORS error, although direct API requests work in an API testing tool. How would you diagnose the issue and determine whether it is caused by response headers, preflight handling, credentials or allowed methods?
+
+## Topic 9: Node.js and Express Security
+
+Q0128
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Node.js application security
+
+Question: Explain the Node.js event loop and its asynchronous execution model. What security and availability problems can occur when untrusted input triggers expensive synchronous operations?
+
+Q0129
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Express.js security review
+
+Question: Review the following Express.js endpoint:
+
+```
+app.post("/users", async (req, res) => {
+  const user = await User.create(req.body);
+  res.json(user);
+});
+```
+
+Identify the security weaknesses in this implementation. How would you introduce input validation, field allowlisting, authorization checks, error handling and safe response serialization?
+
+## Topic 10: Prototype Pollution, JavaScript Injection and Unsafe Rendering
+
+Q0130
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Application Security Engineer, Web Application Security Engineer
+- Competency: JavaScript vulnerability mechanisms
+
+Question: Explain JavaScript prototype pollution. How can unsafe recursive object merging or assignment of attacker-controlled properties affect application behavior, and what defensive coding practices prevent it?
+
+# Section 4 — Web & Application Foundations
+
+## Topic 1: HTTP Fundamentals
+
+Q0131
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, SOC Analyst
+- Competency: HTTP fundamentals
+
+Question: Explain the structure of an HTTP request and response. What information is carried in the request line, headers, body, status line and response body?
+
+Q0132
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Comparison
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: HTTP methods and semantics
+
+Question: Compare GET, POST, PUT, PATCH, DELETE, HEAD and OPTIONS. Which methods are generally considered safe or idempotent, and why do these properties matter for API security?
+
+Q0133
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Web Application Security Engineer
+- Competency: HTTP request analysis
+
+Question: You receive a suspicious HTTP request containing unusual headers, encoded parameters and an unexpected content type. How would you inspect the request using browser developer tools or Burp Suite and determine whether it is attempting injection, request smuggling or authentication manipulation?
+
+## Topic 2: HTTP/1.1, HTTP/2 and HTTP/3
+
+Q0134
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Web Application Security Engineer
+- Competency: HTTP protocol architecture
+
+Question: Compare HTTP/1.1, HTTP/2 and HTTP/3 in terms of connection establishment, multiplexing, header compression and transport-layer behavior.
+
+Q0135
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Network Security Engineer, Security Researcher, Web Application Security Engineer
+- Competency: Protocol-level attack investigation
+
+Question: A reverse proxy and backend server interpret an HTTP request differently, resulting in unexpected request boundaries. How would you investigate potential HTTP request smuggling, identify parser discrepancies and validate the effectiveness of remediation?
+
+## Topic 3: Cookies and Sessions
+
+Q0136
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Session management fundamentals
+
+Question: What are HTTP cookies and application sessions? Explain how a web application uses a session identifier to maintain user authentication across multiple HTTP requests.
+
+Q0137
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: Session lifecycle management
+
+Question: Explain the lifecycle of an authenticated session, including session creation, validation, expiration, renewal and logout. What can happen if a session identifier is predictable or reused insecurely?
+
+Q0138
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Security Engineer, Penetration Tester
+- Competency: Session security testing
+
+Question: During an authorized application assessment, you discover that a user's session remains valid after they change their password and log out from another device. How would you investigate session invalidation, token rotation and server-side session storage, and what corrections would you recommend?
+
+## Topic 4: Same-Origin Policy and CORS
+
+Q0139
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Browser security fundamentals
+
+Question: What is the Same-Origin Policy? Explain how browsers determine whether two URLs share the same origin using scheme, hostname and port.
+
+Q0140
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: Cross-origin security
+
+Question: Compare the Same-Origin Policy and Cross-Origin Resource Sharing. Does CORS prevent all cross-origin requests, or does it primarily control whether browser scripts can access cross-origin responses?
+
+Q0141
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: CORS misconfiguration analysis
+
+Question: Consider an API configured with the following response headers:
+
+```
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+```
+
+What is incorrect about this configuration? Explain how you would implement a secure origin allowlist for an authenticated API.
+
+## Topic 5: CSP and Browser Security Headers
+
+Q0142
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Browser security controls
+
+Question: What is Content Security Policy? Explain how directives such as `default-src`, `script-src`, `style-src`, `img-src` and `connect-src` help restrict browser resource loading.
+
+Q0143
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: CSP implementation
+
+Question: A production application introduces a strict Content Security Policy and several legitimate frontend features stop working. How would you inspect browser CSP violation reports, identify unsafe dependencies and redesign the policy without unnecessarily introducing `unsafe-inline` or `unsafe-eval`?
+
+## Topic 6: SameSite, Secure and HttpOnly Cookies
+
+Q0144
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: Cookie security configuration
+
+Question: Explain the purpose of the `SameSite`, `Secure` and `HttpOnly` cookie attributes. How does each attribute reduce a different category of browser-based security risk?
+
+Q0145
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Security Engineer, API Security Engineer
+- Competency: Cookie configuration troubleshooting
+
+Question: Your application uses a cross-site authentication flow, but users intermittently lose their sessions after login. How would you investigate cookie `SameSite` behavior, HTTPS requirements, credentialed requests and browser restrictions before changing the cookie configuration?
+
+## Topic 7: Browser Storage Security
+
+Q0146
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Application Security Engineer, Web Application Security Engineer
+- Competency: Browser-side credential protection
+
+Question: Compare storing authentication tokens in localStorage, sessionStorage and HttpOnly cookies. What are the security trade-offs associated with XSS exposure, CSRF and token persistence?
+
+## Topic 8: Frontend, Backend and Web Application Architecture
+
+Q0147
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Web Application Security Engineer
+- Competency: Web application architecture
+
+Question: Explain the responsibilities of the frontend, backend and database layers in a web application. Why should security-sensitive business logic and authorization checks reside on the server rather than exclusively in the frontend?
+
+Q0148
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Application Security Engineer, Security Architect
+- Competency: Application architecture security
+
+Question: Compare monolithic and microservices architectures from a security perspective. How do their authentication, authorization, communication, secret management and attack-surface requirements differ?
+
+Q0149
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Application Security Engineer, Security Architect
+- Competency: Multi-tier application security
+
+Question: A web application consists of a React frontend, Node.js backend, PostgreSQL database and third-party payment integration. How would you establish trust boundaries and protect sensitive information as it moves between these components?
+
+Q0150
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Application Security Engineer
+- Competency: Secure application architecture
+
+Question: Design a secure architecture for a multi-tenant SaaS application with separate customer dashboards, shared backend services and a shared database. How would you prevent cross-tenant data access, enforce authorization consistently and ensure tenant isolation across background jobs and external integrations?
+
+## Topic 9: APIs and API Architecture
+
+Q0151
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: API fundamentals
+
+Question: What is an API, and how does it allow different software components to communicate? Explain the differences between an API, an API endpoint and an API request.
+
+Q0152
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, Security Architect
+- Competency: API architecture
+
+Question: Compare REST, SOAP, GraphQL and gRPC. What are their communication models, common use cases and major security considerations?
+
+Q0153
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: Secure API architecture
+
+Question: Design a versioned REST API for a financial application that exposes account information and transaction operations. How would you handle authentication, authorization, input validation, rate limiting, error responses and backward compatibility?
+
+## Topic 10: Databases in Web Applications
+
+Q0154
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Database Security Engineer
+- Competency: Database integration fundamentals
+
+Question: Explain how a backend application communicates with a database. What are the responsibilities of a database driver, connection pool, query layer and transaction manager?
+
+Q0155
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Application Security Engineer, Database Security Engineer
+- Competency: Database connection security
+
+Question: A production backend intermittently exposes database connection errors and experiences connection exhaustion during traffic spikes. How would you investigate connection pooling, transaction duration, connection leaks and database resource limits?
+
+## Topic 11: Reverse Proxies, CDNs and Load Balancing
+
+Q0156
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: Web infrastructure security
+
+Question: Explain the differences between reverse proxies, Content Delivery Networks and load balancers. How can each contribute to application availability, performance and security?
+
+Q0157
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Security Architect, Web Application Security Engineer
+- Competency: Edge security architecture
+
+Question: A company places its web application behind a CDN and reverse proxy. Attackers discover that the origin server can still be accessed directly, bypassing some edge security controls. How would you eliminate this exposure and verify that the origin only accepts authorized traffic?
+
+## Topic 12: Authentication and Authorization
+
+Q0158
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Application Security Engineer
+- Competency: Identity security fundamentals
+
+Question: Differentiate between authentication and authorization. Give an example showing how a user can successfully authenticate but still be denied access to a particular resource.
+
+Q0159
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: IAM Engineer, API Security Engineer
+- Competency: Access control implementation
+
+Question: Explain how a typical web application authenticates a user and subsequently authorizes individual API requests. Where should the user's identity and permissions be verified?
+
+Q0160
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Broken access control detection
+
+Question: An application hides administrative buttons from regular users, but its backend API does not independently validate user permissions. How would you demonstrate the security impact in an authorized assessment and redesign the authorization enforcement?
+
+## Topic 13: REST and JSON
+
+Q0161
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: REST and JSON fundamentals
+
+Question: Explain REST architectural principles and the role of JSON in API communication. What makes an API RESTful, and how are resources commonly represented?
+
+Q0162
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Code and Configuration
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: JSON input validation
+
+Question: A REST API accepts the following JSON body:
+
+```
+{
+  "name": "Alex",
+  "email": "alex@example.com",
+  "role": "admin",
+  "isVerified": true
+}
+```
+
+The endpoint is intended only to allow users to update their own names and email addresses. How would you enforce a strict input schema and prevent unauthorized fields from being modified?
+
+## Topic 14: GraphQL Basics
+
+Q0163
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: API Security Engineer, Application Security Engineer
+- Competency: GraphQL architecture
+
+Question: Explain how GraphQL queries, mutations, subscriptions, schemas and resolvers work together. How does its client-driven data selection differ from conventional REST APIs?
+
+Q0164
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: API Security Engineer, Web Application Security Engineer
+- Competency: GraphQL security assessment
+
+Question: A GraphQL endpoint allows deeply nested queries and unrestricted field selection. How could this create resource-exhaustion risks, and what controls would you implement using query depth limits, complexity analysis, pagination and authorization?
+
+## Topic 15: API Authentication and Authorization
+
+Q0165
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: API Security Engineer, IAM Engineer
+- Competency: API identity mechanisms
+
+Question: Compare API keys, bearer tokens, session cookies and mutual TLS authentication. What types of applications are appropriate for each mechanism, and what are their limitations?
+
+Q0166
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: API Security Engineer, Security Analyst
+- Competency: API authorization testing
+
+Question: An API allows a user to access another customer's invoice by modifying the invoice ID in the request URL. How would you investigate this vulnerability, identify the missing authorization check and implement object-level access control?
+
+## Topic 16: Rate Limiting and API Gateways
+
+Q0167
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: API Security Engineer, Security Architect
+- Competency: API abuse prevention
+
+Question: Explain how API rate limiting works. Compare fixed-window, sliding-window and token-bucket algorithms, including the advantages and limitations of each.
+
+Q0168
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: API Security Engineer, Security Architect
+- Competency: API traffic control
+
+Question: Your API gateway applies a rate limit based only on client IP addresses. Users behind a corporate NAT are incorrectly throttled, while attackers distribute requests across many IP addresses. How would you redesign rate limiting using authenticated identities, endpoint sensitivity and adaptive thresholds?
+
+Q0169
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: API Security Engineer, Security Architect
+- Competency: Enterprise API gateway architecture
+
+Question: Design a centralized API gateway architecture for an organization operating dozens of backend services. How would you implement authentication, authorization, rate limiting, request validation, TLS termination, observability and service-to-service trust while avoiding the gateway becoming a single point of failure?
+
+Q0170
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, API Security Engineer, Application Security Engineer
+- Competency: Enterprise API security strategy
+
+Question: Your organization has hundreds of APIs developed by different teams, with inconsistent authentication mechanisms, incomplete documentation and varying authorization controls. How would you establish an enterprise API security program, prioritize remediation and measure improvements without unnecessarily slowing development?
+
+# Section 5 — Database Security
+
+## Topic 1: SQL Fundamentals
+
+Q0171
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: SQL fundamentals
+
+Question: Explain the purpose of SQL and differentiate between DDL, DML, DCL and TCL commands. Give examples of common commands belonging to each category.
+
+Q0172
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: SQL query understanding
+
+Question: Explain the differences between INNER JOIN, LEFT JOIN, RIGHT JOIN and FULL OUTER JOIN. How can incorrect join conditions unintentionally expose records that should not be accessible?
+
+Q0173
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Database Security Engineer
+- Competency: SQL injection prevention
+
+Question: Consider this Node.js code:
+
+```
+const query =
+  `SELECT * FROM users WHERE email = '${req.body.email}'`;
+
+const result = await db.query(query);
+```
+
+Identify the vulnerability and explain how parameterized queries prevent SQL injection. How would you handle cases where table names or sorting columns must be dynamically selected?
+
+## Topic 2: PostgreSQL and MySQL
+
+Q0174
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Relational database fundamentals
+
+Question: Compare PostgreSQL and MySQL in terms of architecture, data types, transaction support, indexing and common application use cases.
+
+Q0175
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Database transactions and isolation
+
+Question: Explain ACID properties in relational databases. How do PostgreSQL and MySQL use transaction isolation levels to manage concurrent database operations?
+
+Q0176
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Database Security Engineer, Security Engineer
+- Competency: Database performance and security
+
+Question: A PostgreSQL application experiences slow queries, frequent lock contention and unusually long-running transactions. How would you use database statistics, execution plans, connection information and lock monitoring to identify the root cause?
+
+## Topic 3: NoSQL and MongoDB
+
+Q0177
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Database architecture fundamentals
+
+Question: Compare relational databases and NoSQL databases. Explain how document-oriented databases such as MongoDB organize data differently from relational systems.
+
+Q0178
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Application Security Engineer, Database Security Engineer
+- Competency: MongoDB architecture
+
+Question: Explain how MongoDB documents, collections, indexes, aggregation pipelines and replica sets work. What security considerations arise when designing a MongoDB-backed application?
+
+Q0179
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: NoSQL injection prevention
+
+Question: Consider the following Express.js code:
+
+```
+app.post("/login", async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+    password: req.body.password
+  });
+
+  if (user) {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
+```
+
+What security vulnerabilities could arise from accepting unvalidated MongoDB query values directly from request bodies? How would you implement schema validation, password hashing and safe query construction?
+
+## Topic 4: CRUD, Joins and Indexes
+
+Q0180
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Database operations
+
+Question: Explain CRUD operations and their corresponding SQL commands. How do these operations relate to the basic functionality of a typical web application?
+
+Q0181
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Database indexing
+
+Question: What is a database index? Explain how B-tree indexes improve query performance and discuss the trade-offs associated with maintaining indexes during INSERT, UPDATE and DELETE operations.
+
+Q0182
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Query performance analysis
+
+Question: A database query that previously executed in milliseconds now takes several seconds after the dataset grows substantially. How would you use `EXPLAIN` and `EXPLAIN ANALYZE` to investigate table scans, index selection, join operations and query execution costs?
+
+## Topic 5: Database Transactions
+
+Q0183
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Transaction management
+
+Question: What is a database transaction? Explain how commit, rollback and transaction isolation help maintain data consistency when multiple users perform operations simultaneously.
+
+Q0184
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Database Security Engineer, Application Security Engineer
+- Competency: Transaction integrity
+
+Question: A payment application deducts money from one account but fails before crediting the recipient's account. How would you use database transactions and appropriate isolation mechanisms to prevent inconsistent financial records?
+
+Q0185
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Database Security Engineer, Security Architect
+- Competency: Concurrent transaction security
+
+Question: Your application experiences duplicate financial transactions when multiple requests arrive simultaneously. How would you investigate race conditions, transaction isolation, unique constraints, idempotency keys and locking strategies to ensure exactly-once business processing?
+
+## Topic 6: Database Permissions and Connection Security
+
+Q0186
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Database Security Engineer, Security Analyst
+- Competency: Database access control
+
+Question: What are database users, roles and privileges? Explain the principle of least privilege and why an application should not connect to its database using an administrative account.
+
+Q0187
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: Database Security Engineer, PostgreSQL Security Engineer
+- Competency: Database permission configuration
+
+Question: In PostgreSQL, how would you create a dedicated application role that can read and modify records in a particular schema but cannot create new databases, manage other users or access unrelated schemas?
+
+Q0188
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Database Security Engineer, Security Architect
+- Competency: Secure database connectivity
+
+Question: An organization allows database connections from developer laptops, application servers and third-party services. How would you redesign database network access, authentication, TLS configuration and privilege boundaries to reduce the attack surface?
+
+## Topic 7: Database Encryption
+
+Q0189
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Database Security Engineer, Security Architect
+- Competency: Database encryption fundamentals
+
+Question: Differentiate between encryption at rest and encryption in transit. Why is enabling database disk encryption insufficient to protect data from every database-related security threat?
+
+Q0190
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Database Security Engineer, Security Architect
+- Competency: Database key management
+
+Question: Explain how encryption keys are used to protect database information. What are the roles of key rotation, key storage, access restrictions and centralized key management systems?
+
+Q0191
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Database Security Engineer, Security Architect
+- Competency: Enterprise database encryption architecture
+
+Question: Design a database encryption strategy for a healthcare application containing personally identifiable information and sensitive records. How would you decide between transparent data encryption, application-level encryption and field-level encryption while maintaining search functionality, backups and controlled access?
+
+## Topic 8: SQL Injection
+
+Q0192
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Web Application Security Engineer, Application Security Engineer
+- Competency: SQL injection mechanisms
+
+Question: Explain how SQL injection occurs when applications construct database queries using untrusted input. What is the difference between error-based, UNION-based, blind and time-based SQL injection?
+
+Q0193
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Penetration Tester, Application Security Engineer
+- Competency: SQL injection testing
+
+Question: During an authorized web application assessment, a search endpoint returns database errors when certain inputs are supplied. How would you determine whether the issue is SQL injection, identify the affected query construction and validate the finding without extracting unrelated production data?
+
+Q0194
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Application Security Engineer, Security Architect
+- Competency: SQL injection remediation strategy
+
+Question: A critical SQL injection vulnerability is discovered in a production application that handles sensitive customer records. The affected endpoint cannot immediately be taken offline. How would you coordinate containment, temporary mitigations, patch development, database monitoring and post-remediation verification?
+
+## Topic 9: NoSQL Injection
+
+Q0195
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: NoSQL security fundamentals
+
+Question: Compare SQL injection and NoSQL injection. Why can applications using document databases still be vulnerable to query manipulation even when they do not use conventional SQL statements?
+
+Q0196
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: MongoDB query security
+
+Question: A MongoDB-backed login endpoint accepts JSON input directly and passes it into a database query. How would you test whether an attacker can manipulate query operators, bypass expected filters or alter query behavior? What defensive controls would you implement?
+
+Q0197
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Application Security Engineer, Database Security Engineer
+- Competency: NoSQL attack investigation
+
+Question: Your application logs reveal unexpected MongoDB aggregation pipelines containing operators that normal application requests should never generate. How would you investigate whether the activity represents NoSQL injection, compromised application credentials or an internal application defect?
+
+Q0198
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Application Security Engineer, Database Security Engineer
+- Competency: Secure database application architecture
+
+Question: Design a secure data access architecture for an application that uses PostgreSQL for transactional records and MongoDB for document storage. How would you establish consistent authentication, authorization, validation, tenant isolation, audit logging and secret management across both database systems?
+
+Q0199
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Database Security Engineer
+- Competency: Database security governance
+
+Question: Your organization operates multiple production databases with inconsistent access controls, weak credential rotation and incomplete audit logging. How would you establish a database security baseline, prioritize the highest-risk systems and introduce measurable compliance and monitoring requirements?
+
+Q0200
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Database Security Engineer, Incident Response Lead
+- Competency: Enterprise database security architecture
+
+Question: Design an enterprise database security architecture for a multi-tenant SaaS platform processing millions of customer records. Explain how you would address tenant isolation, encryption, privileged access, backup security, database auditing, vulnerability management, disaster recovery and detection of unauthorized data access.

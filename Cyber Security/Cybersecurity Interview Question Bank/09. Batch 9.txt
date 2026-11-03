@@ -1,0 +1,1057 @@
+# Cybersecurity Interview Question Bank
+
+# Section 20 — Web Application Security
+
+## Part A — Web Application Vulnerability Fundamentals
+
+### Beginner (Q0801–Q0810)
+
+Q0801
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Understanding web application security
+
+Question: What is web application security, and why are web applications particularly exposed to security risks involving user input, authentication, authorization, session management and server-side processing?
+
+Q0802
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding injection vulnerabilities
+
+Question: What is an injection vulnerability, and how can untrusted input become executable SQL, JavaScript, operating-system commands or other unintended instructions?
+
+Q0803
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Distinguishing XSS vulnerability types
+
+Question: Compare stored XSS, reflected XSS and DOM-based XSS. Explain where the malicious input is introduced, processed and executed in each case.
+
+Q0804
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding SQL injection
+
+Question: What is SQL injection, and how can unsafe string concatenation in a SQL query allow an attacker to alter the intended database operation?
+
+Q0805
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Understanding access-control vulnerabilities
+
+Question: What is Insecure Direct Object Reference (IDOR), and how can changing an object identifier in a URL or API request expose another user's data?
+
+Q0806
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding CSRF
+
+Question: What is Cross-Site Request Forgery (CSRF), and how can an attacker cause an authenticated user's browser to perform an unintended action on a vulnerable application?
+
+Q0807
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Understanding SSRF
+
+Question: What is Server-Side Request Forgery (SSRF), and why can an application that fetches user-supplied URLs unintentionally expose internal services or infrastructure?
+
+Q0808
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding file upload vulnerabilities
+
+Question: What security risks arise when a web application accepts uploaded files without validating their content, type, size, storage location and execution permissions?
+
+Q0809
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding path traversal and file inclusion
+
+Question: What is the difference between path traversal, Local File Inclusion (LFI) and Remote File Inclusion (RFI)? Explain how improper file-path handling can expose sensitive resources.
+
+Q0810
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Understanding web security misconfigurations
+
+Question: What are common web application security misconfigurations, and how can verbose error messages, default credentials, exposed administrative interfaces, debug modes and insecure HTTP headers increase an application's attack surface?
+
+### Intermediate (Q0811–Q0815)
+
+Q0811
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Identifying reflected XSS
+
+Question: A search page displays the value of a query parameter in its response without appropriate output encoding. How would you investigate whether the behavior creates reflected XSS, identify the relevant output context and determine the correct remediation?
+
+Q0812
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Engineer
+- Competency: Identifying unsafe SQL construction
+
+Question: Review the following Node.js code and explain the vulnerability and its remediation:
+
+```
+app.get("/user", async (req, res) => {
+  const query =
+    `SELECT * FROM users WHERE email = '${req.query.email}'`;
+
+  const result = await db.query(query);
+  res.json(result.rows);
+});
+```
+
+How would you rewrite the database interaction using parameterized queries, and what additional authorization checks should be considered?
+
+Q0813
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Testing broken object-level authorization
+
+Question: An authenticated user can retrieve their own invoice using `GET /api/invoices/1001`, but changing the identifier to `1002` returns another user's invoice. How would you investigate the authorization failure, establish its impact and identify the server-side control required to prevent it?
+
+Q0814
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating CSRF defenses
+
+Question: A banking application uses session cookies with `SameSite=Lax`, but a security assessment still identifies a potentially exploitable state-changing request. How would you investigate the request method, navigation context, cookie behavior, CSRF token validation and application design before determining whether the issue is exploitable?
+
+Q0815
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding security response headers
+
+Question: What are Content-Security-Policy directives such as `default-src`, `script-src`, `object-src`, `base-uri` and `frame-ancestors`? How can an incorrectly configured CSP weaken protection against XSS and clickjacking?
+
+## Part B — Web Application Security Testing
+
+### Intermediate (Q0816–Q0840)
+
+Q0816
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Using Burp Suite for vulnerability discovery
+
+Question: You are authorized to test a web application using Burp Suite. Explain how you would configure the browser proxy, intercept HTTP requests, inspect parameters, modify request data using Repeater and identify potential security weaknesses without affecting production data.
+
+Q0817
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding blind SQL injection
+
+Question: What is blind SQL injection, and how do boolean-based and time-based techniques allow an attacker to infer database information when the application does not directly display query results?
+
+Q0818
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating authentication weaknesses
+
+Question: A password reset feature sends a reset link to the user's registered email address, but the token never expires and can be reused. How would you assess the security implications and redesign the reset-token lifecycle?
+
+Q0819
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding session attacks
+
+Question: Compare session fixation and session hijacking. Explain how an attacker could exploit each weakness and which server-side session-management controls help prevent them.
+
+Q0820
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Web Application Pentester, Security Engineer
+- Competency: Identifying unsafe command execution
+
+Question: Review this Express.js code:
+
+```
+const { exec } = require("child_process");
+
+app.get("/ping", (req, res) => {
+  exec(`ping -c 1 ${req.query.host}`, (error, stdout) => {
+    res.send(stdout);
+  });
+});
+```
+
+Identify the security risks, explain how untrusted input reaches the operating system and propose a safer implementation using input validation and appropriate process-execution APIs.
+
+Q0821
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating SSRF
+
+Question: A web application provides a feature that retrieves profile images from user-supplied URLs. How would you investigate whether the feature is vulnerable to SSRF, and what server-side protections would you recommend against internal network access and unsafe redirects?
+
+Q0822
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding file upload validation
+
+Question: Why is checking only the uploaded filename extension insufficient for securing file uploads? Explain the roles of MIME-type inspection, file signatures, content validation, randomized filenames and isolated storage.
+
+Q0823
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Investigating directory traversal
+
+Question: A download endpoint accepts a filename parameter and reads files from a server directory. How would you determine whether path traversal is possible, identify the application's canonicalization weaknesses and recommend a secure file-access design?
+
+Q0824
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding browser-side security controls
+
+Question: Compare Same-Origin Policy, CORS and Content Security Policy. What security problems does each mechanism address, and why does enabling CORS not automatically make an application secure against cross-site attacks?
+
+Q0825
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Testing authentication and authorization
+
+Question: How would you use Burp Suite to compare requests made by users with different privilege levels? Explain how you would test for horizontal and vertical privilege escalation while ensuring that each test uses accounts and resources within the authorized assessment scope.
+
+Q0826
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding XXE
+
+Question: What is XML External Entity (XXE) injection, and how can unsafe XML parser configurations allow an application to access local files, perform unintended network requests or expose sensitive information?
+
+Q0827
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating CORS misconfiguration
+
+Question: A web application returns `Access-Control-Allow-Origin` dynamically based on the incoming `Origin` header and also enables credentials. How would you determine whether the configuration creates a cross-origin data exposure risk and what changes would you recommend?
+
+Q0828
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding clickjacking
+
+Question: How does clickjacking work, and how do the `X-Frame-Options` header and CSP `frame-ancestors` directive help prevent unauthorized embedding of sensitive application pages?
+
+Q0829
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating race conditions
+
+Question: An e-commerce application allows a customer to redeem the same discount voucher multiple times by submitting simultaneous requests. How would you investigate the race condition and identify whether database transactions, locking or atomic operations are required to prevent the issue?
+
+Q0830
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding open redirects
+
+Question: What is an open redirect vulnerability, and how can unsafe handling of user-controlled redirect destinations create phishing, authentication-flow and token-leakage risks?
+
+Q0831
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Identifying business logic vulnerabilities
+
+Question: An online booking application checks seat availability when a customer opens the booking page but does not revalidate availability when payment is completed. How would you investigate the resulting business logic weakness and design a secure booking workflow?
+
+Q0832
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Performing web vulnerability discovery
+
+Question: How would you use Burp Suite's site map, Proxy, Repeater, Intruder and Scanner capabilities during an authorized web application assessment? Which tasks should be performed manually, and which can be supported by automation?
+
+Q0833
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding application vulnerabilities
+
+Question: Compare server-side request forgery, cross-site scripting and SQL injection in terms of the vulnerable trust boundary, execution location, potential impact and primary remediation strategy.
+
+Q0834
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Web Application Pentester, Security Engineer
+- Competency: Secure file handling
+
+Question: An Express.js application saves uploaded files using the original filename and stores them inside the public directory. Identify the security weaknesses and design a safer upload workflow covering validation, storage isolation, file access authorization and malware scanning.
+
+Q0835
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding request smuggling fundamentals
+
+Question: What is HTTP request smuggling, and how can inconsistent parsing of `Content-Length` and `Transfer-Encoding` headers between a frontend proxy and backend server create security vulnerabilities?
+
+Q0836
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Engineer
+- Competency: Investigating server-side template injection
+
+Question: A web application generates email templates using user-provided template content. How would you investigate whether the template engine evaluates untrusted expressions, distinguish server-side template injection from ordinary output rendering and recommend appropriate protections?
+
+Q0837
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding insecure deserialization
+
+Question: What is insecure deserialization, and how can processing untrusted serialized objects lead to authentication bypass, data manipulation, denial of service or potentially code execution?
+
+Q0838
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating authorization design flaws
+
+Question: A multi-tenant SaaS application checks whether a user is authenticated but does not verify whether the requested resource belongs to the user's organization. How would you identify the missing tenant-level authorization checks and design a consistent server-side authorization strategy?
+
+Q0839
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Web Application Pentester, Security Architect
+- Competency: Understanding application security testing
+
+Question: What are the differences between black-box, gray-box and white-box web application security testing? How do the availability of source code, architecture documentation, credentials and internal access affect testing depth?
+
+Q0840
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Application Security Engineer, Web Application Pentester, Security Auditor
+- Competency: Prioritizing web vulnerabilities
+
+Question: A web application assessment identifies a medium-severity reflected XSS, a high-severity IDOR and an SSRF issue whose impact is not yet confirmed. How would you prioritize further investigation and reporting using exploitability, affected data, reachable systems and business impact?
+
+## Part C — Advanced Web Application Security
+
+### Advanced (Q0841–Q0860)
+
+Q0841
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Advanced DOM-based XSS analysis
+
+Question: A single-page application reads values from `location.hash`, processes them using JavaScript and inserts the resulting content through `innerHTML`. How would you trace the source-to-sink data flow, identify exploitable contexts and determine whether sanitization or contextual output encoding is required?
+
+Q0842
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Identifying stored XSS in modern applications
+
+Question: Review a React application that renders user-generated content using `dangerouslySetInnerHTML`. Explain the security risks, discuss safe sanitization approaches and describe how you would test whether malicious content can execute in different user roles.
+
+Q0843
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating advanced SQL injection
+
+Question: An application uses parameterized SQL queries for most database operations, but a reporting feature dynamically constructs `ORDER BY`, table and column names from request parameters. How would you assess whether the feature remains vulnerable to SQL injection and redesign the query construction safely?
+
+Q0844
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Analyzing SSRF impact
+
+Question: A URL preview service performs server-side requests and follows redirects. Explain how you would investigate DNS resolution, redirect handling, IP address validation, private network restrictions and DNS rebinding risks in an authorized environment. What architectural controls would prevent access to internal services?
+
+Q0845
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating authentication bypass
+
+Question: A web application validates user permissions in its frontend and includes a role field in client-submitted requests. How would you determine whether the backend independently enforces authorization, identify possible privilege escalation and recommend a server-side identity and permission model?
+
+Q0846
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Investigating authentication and MFA weaknesses
+
+Question: An application allows users to reset their passwords using an email OTP, but it does not invalidate earlier OTPs after a successful reset. How would you investigate replay possibilities, rate limiting, token binding, expiration and concurrent reset attempts? Design a secure reset workflow.
+
+Q0847
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating session security
+
+Question: During an assessment, you discover that a session cookie remains valid after logout and password change. How would you determine whether the backend properly invalidates sessions, assess token reuse risk and design server-side session revocation and rotation mechanisms?
+
+Q0848
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Understanding HTTP request smuggling variants
+
+Question: Explain the fundamental differences between CL.TE, TE.CL and TE.TE HTTP request smuggling conditions. How do inconsistent request parsing and intermediary behavior create desynchronization between frontend and backend servers?
+
+Q0849
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Web Application Pentester, Security Engineer, Application Security Engineer
+- Competency: Investigating HTTP request smuggling
+
+Question: Your organization's reverse proxy and backend application server use different HTTP parsing implementations. Security monitoring identifies suspicious requests containing conflicting message-length headers. How would you investigate the potential desynchronization, collect evidence and determine whether the proxy-backend architecture needs changes?
+
+Q0850
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Identifying prototype pollution
+
+Question: Consider a JavaScript application that recursively merges user-supplied JSON into configuration objects. Explain how prototype pollution could affect object behavior, identify unsafe merge patterns and recommend safe implementation strategies.
+
+Q0851
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating XML and XXE weaknesses
+
+Question: A Java application processes XML documents uploaded by users. How would you determine whether its parser allows external entity resolution, identify the consequences of unsafe parser configuration and recommend secure parser settings for both external entities and DTD processing?
+
+Q0852
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating file upload attack chains
+
+Question: An application accepts image uploads, processes them using a third-party image library and makes them accessible through public URLs. How would you investigate MIME-type confusion, polyglot files, metadata handling, path manipulation and vulnerabilities in image-processing dependencies? What controls would you introduce?
+
+Q0853
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Architect
+- Competency: Understanding business logic vulnerabilities
+
+Question: Why are business logic vulnerabilities difficult to identify using traditional automated scanners? Explain how multi-step workflows, transaction states, authorization assumptions, concurrency and application-specific rules create weaknesses that require contextual testing.
+
+Q0854
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Investigating transaction race conditions
+
+Question: A payment application creates a pending transaction, calls an external payment provider and updates the database after receiving a callback. How would you investigate race conditions, duplicate callbacks, replayed notifications and inconsistent transaction states? Design a reliable transaction-processing workflow.
+
+Q0855
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Application Security Engineer, Web Application Pentester
+- Competency: Secure Express.js application design
+
+Question: An Express.js application uses authentication middleware, role checks and request validation, but the middleware order differs across routes. How would you identify weaknesses caused by incorrect middleware ordering, missing authorization checks, unsafe error handling and inconsistent validation?
+
+Q0856
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Web Application Pentester, Application Security Engineer
+- Competency: Advanced Burp Suite testing
+
+Question: You are testing a multi-step application workflow involving registration, email verification, login, profile modification and payment. How would you use Burp Suite to maintain session state, compare requests, identify trust-boundary weaknesses and test whether individual workflow steps can be bypassed?
+
+Q0857
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Architect
+- Competency: Understanding browser-side security weaknesses
+
+Question: How can weaknesses in CSP nonce generation, unsafe inline script allowances, permissive `script-src` policies and trusted third-party scripts undermine browser-side XSS protections? What characteristics define a robust CSP deployment?
+
+Q0858
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Web Application Pentester, Application Security Engineer, Security Analyst
+- Competency: Investigating open redirect and token leakage
+
+Question: An OAuth-enabled web application accepts user-controlled redirect destinations and returns authorization information through browser redirects. How would you investigate redirect validation, token exposure, state handling and referer leakage, and what changes would prevent authorization data from reaching untrusted destinations?
+
+Q0859
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Application Security Engineer, Security Architect, Web Application Pentester
+- Competency: Designing secure multi-tenant applications
+
+Question: Design an authorization architecture for a multi-tenant web application where administrators, staff and ordinary users have different permissions over tenant-owned resources. Explain how you would enforce tenant isolation, object-level authorization, role hierarchy, permission inheritance and audit logging consistently across backend routes.
+
+Q0860
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Application Security Engineer, Security Architect, Web Application Pentester
+- Competency: Integrating web application security controls
+
+Question: How would you combine secure coding, threat modeling, SAST, DAST, dependency scanning, penetration testing and runtime monitoring to establish defense in depth for a modern web application? Which weaknesses are likely to remain undetected by any individual testing method?
+
+# Section 21 — Mobile Application Security
+
+## Part A — Android and iOS Security Fundamentals
+
+### Advanced (Q0861–Q0870)
+
+Q0861
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester, Security Analyst
+- Competency: Understanding Android security architecture
+
+Question: Explain the Android security architecture, including the Linux kernel, application sandboxing, application signing, permissions, Binder IPC and SELinux. How do these mechanisms isolate applications and restrict access to sensitive operating-system resources?
+
+Q0862
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Android APK analysis
+
+Question: You receive an Android APK for an authorized security assessment. Explain how you would use JADX and APKTool to inspect its manifest, activities, services, broadcast receivers, permissions, resources and application code. What security weaknesses would you look for first?
+
+Q0863
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating Android data storage
+
+Question: A mobile application stores authentication tokens and user profile information locally. How would you investigate SharedPreferences, SQLite databases, internal storage, external storage and application backups to determine whether sensitive data is exposed?
+
+Q0864
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Mobile Application Security Engineer, Android Developer
+- Competency: Identifying Android permission weaknesses
+
+Question: Review an Android application's manifest that requests camera, microphone, contacts, location and storage permissions even though the application only provides a basic messaging feature. How would you assess excessive permissions, runtime permission handling and the principle of least privilege?
+
+Q0865
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Understanding mobile security models
+
+Question: Compare Android and iOS application security architectures in terms of sandboxing, application signing, permission enforcement, inter-process communication, secure storage and operating-system security boundaries.
+
+Q0866
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Dynamic Android application analysis
+
+Question: You need to inspect an Android application during execution. How would you use an Android emulator, ADB and logcat to install the application, inspect its package information, observe application logs, examine runtime behavior and identify potentially sensitive information exposed through debugging output?
+
+Q0867
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating insecure mobile API communication
+
+Question: A mobile application communicates with its backend over HTTPS, but its API requests include authentication tokens and sensitive user information. How would you investigate TLS configuration, certificate validation, token handling, request logging and local storage to identify weaknesses in the communication lifecycle?
+
+Q0868
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Mobile application security testing with MobSF
+
+Question: Explain how you would use MobSF to perform static and dynamic security analysis of an Android application. Which findings would you investigate manually, and why should automated security scores not be treated as definitive proof of exploitability?
+
+Q0869
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating certificate pinning
+
+Question: A mobile application works normally in production but refuses to connect when traffic is routed through an authorized testing proxy. How would you determine whether certificate pinning, custom trust managers, TLS configuration or another networking restriction is responsible?
+
+Q0870
+
+- Difficulty: Advanced
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Understanding mobile application components
+
+Question: What are Android activities, services, broadcast receivers and content providers? Explain how improperly exported components, weak intent validation and inadequate permission enforcement can expose sensitive application functionality.
+
+## Part B — Advanced Mobile Reverse Engineering
+
+### Expert (Q0871–Q0885)
+
+Q0871
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester, Reverse Engineer
+- Competency: Android runtime instrumentation with Frida
+
+Question: You are assessing an Android application that performs sensitive operations inside Java methods. Explain how Frida's runtime instrumentation works and how you would use it in an authorized test environment to observe method calls, inspect arguments and understand application behavior without modifying the original APK.
+
+Q0872
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating hardcoded secrets
+
+Question: An APK contains hardcoded API keys, internal URLs and authentication-related strings. How would you determine which values are actual credentials, whether they provide meaningful access, whether they are environment-specific and what remediation is necessary? Explain why moving secrets into another client-side configuration file does not make them confidential.
+
+Q0873
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Mobile Application Security Engineer, Android Developer
+- Competency: Investigating insecure Android deep links
+
+Question: An Android application defines an exported activity that accepts deep-link parameters and uses them to navigate to authenticated application content. How would you investigate intent validation, URI matching, parameter trust and authentication-state enforcement? Design a secure deep-link handling strategy.
+
+Q0874
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating Android root detection
+
+Question: A mobile banking application refuses to operate on rooted devices. During an authorized security assessment, how would you investigate the root-detection implementation, distinguish client-side checks from server-side enforcement and evaluate whether sensitive operations remain adequately protected?
+
+Q0875
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Reverse Engineer
+- Competency: Advanced JADX and APKTool analysis
+
+Question: An Android APK contains obfuscated classes, dynamically loaded code and native libraries. How would you combine JADX, APKTool, ELF inspection tools and runtime observation to reconstruct the application's execution flow and identify security-sensitive functionality?
+
+Q0876
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Mobile Application Security Engineer, Android Developer, Reverse Engineer
+- Competency: Understanding Android IPC security
+
+Question: How does Android Binder IPC facilitate communication between application processes and system services? What security risks can arise from improperly protected exported components, intent filters, content providers and custom permission declarations?
+
+Q0877
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating insecure cryptographic storage
+
+Question: A mobile application encrypts sensitive information before storing it locally, but its encryption key is embedded in the APK. How would you investigate the encryption implementation, key lifecycle, Android Keystore usage, initialization vectors and authentication mechanisms? What would a secure key-management design look like?
+
+Q0878
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating insecure inter-application communication
+
+Question: Two Android applications communicate using an exported content provider. One application can retrieve records that should only be accessible to authenticated users of the other application. How would you investigate provider permissions, URI-level access controls, caller identity and data leakage?
+
+Q0879
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, Reverse Engineer, Mobile Application Pentester
+- Competency: Native mobile library analysis
+
+Question: An Android application relies on a native `.so` library for cryptographic operations and authentication checks. Explain how you would inspect the library's ELF structure, exported symbols, JNI interfaces and native execution behavior to identify security weaknesses.
+
+Q0880
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating SSL pinning implementation
+
+Question: An Android application implements certificate pinning through a custom network security configuration and a custom certificate validation class. How would you examine both mechanisms, identify incorrect trust decisions and evaluate whether the application can be tricked into trusting an unauthorized certificate?
+
+Q0881
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Security Architect, Mobile Application Pentester
+- Competency: Understanding mobile threat modeling
+
+Question: How would you threat-model a mobile application that processes sensitive financial information, uses biometric authentication, communicates with remote APIs and stores data locally? Explain the importance of device trust, application trust boundaries, backend authorization and compromised-device scenarios.
+
+Q0882
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating biometric authentication weaknesses
+
+Question: A mobile application allows users to unlock sensitive functionality using fingerprint or facial authentication. How would you assess the implementation's reliance on platform biometric APIs, cryptographic key protection, authentication fallback mechanisms and server-side authorization? Why should a successful biometric check not automatically grant unrestricted backend privileges?
+
+Q0883
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Code and Configuration
+- Job Roles: Mobile Application Security Engineer, iOS Developer
+- Competency: Identifying iOS insecure storage
+
+Question: An iOS application stores authentication tokens in `UserDefaults` and caches sensitive API responses in application files. How would you assess the exposure risk and redesign storage using Keychain Services, appropriate file-protection classes and secure data lifecycle management?
+
+Q0884
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Tool-Based
+- Job Roles: Mobile Application Security Engineer, iOS Developer, Mobile Application Pentester
+- Competency: iOS application reverse engineering
+
+Question: You receive an iOS application package for an authorized security assessment. Explain how you would inspect its application bundle, `Info.plist`, entitlements, provisioning information, embedded frameworks and executable using appropriate iOS analysis tools. What security-relevant configuration issues would you investigate?
+
+Q0885
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Mobile Application Security Engineer, iOS Developer, Security Architect
+- Competency: Understanding iOS security architecture
+
+Question: Compare iOS Keychain Services, Secure Enclave and Data Protection. What security guarantees does each provide, and how do they contribute to protecting application secrets, cryptographic keys and sensitive files?
+
+### Expert (Q0886–Q0890)
+
+Q0886
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester, Security Analyst
+- Competency: Investigating mobile API trust boundaries
+
+Question: A mobile application hides administrative functionality in its interface based on the user's role, but its backend API accepts the corresponding administrative requests from ordinary accounts. How would you investigate the issue and demonstrate that frontend restrictions do not replace server-side authorization?
+
+Q0887
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester
+- Competency: Investigating application integrity checks
+
+Question: An Android application verifies its signing certificate and package integrity before allowing sensitive operations. How would you investigate the integrity-verification design, identify what is checked locally versus remotely and determine whether the backend independently verifies application and device integrity?
+
+Q0888
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Security Architect
+- Competency: Understanding mobile security testing frameworks
+
+Question: What is the OWASP Mobile Application Security Testing Guide (MASTG), and how does it help structure mobile security assessments? Explain how its testing methodology relates to mobile platform security controls, application weaknesses and verification evidence.
+
+Q0889
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Mobile Application Security Engineer, Mobile Application Pentester, Security Analyst
+- Competency: Investigating mobile application data leakage
+
+Question: A mobile application appears to log authentication tokens and sensitive user information during normal operation. How would you investigate logcat output, crash reports, analytics events, clipboard usage, screenshots and backup mechanisms to identify unintended data exposure and recommend appropriate protections?
+
+Q0890
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Security Architect, Mobile Application Pentester
+- Competency: Understanding mobile application resilience
+
+Question: What is the role of anti-tampering, obfuscation, root or jailbreak detection, certificate pinning and runtime integrity checks in mobile application security? Which threats can these mechanisms reduce, and why must they not replace secure backend architecture and authorization?
+
+## Part C — Senior Mobile Security Architecture
+
+### Senior / Architect (Q0891–Q0900)
+
+Q0891
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Security Architect, CISO
+- Competency: Designing enterprise mobile application security strategy
+
+Question: How would you establish an enterprise mobile application security strategy covering Android and iOS applications, mobile APIs, device management, authentication, secure storage, application integrity and backend authorization? Explain how responsibilities should be divided between application developers, security teams and infrastructure teams.
+
+Q0892
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Mobile Application Security Engineer, Security Architect, Application Security Engineer
+- Competency: Designing secure mobile authentication
+
+Question: Design a secure authentication architecture for a mobile banking application supporting passwordless authentication, biometrics, MFA, OAuth 2.0, token refresh and device registration. Address token storage, session revocation, compromised devices, authentication recovery and backend authorization.
+
+Q0893
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Mobile Application Security Engineer, Security Architect, Security Auditor
+- Competency: Establishing mobile security governance
+
+Question: How would you establish mobile application security standards for an organization developing multiple Android and iOS applications? Discuss secure development requirements, platform-specific security baselines, dependency management, security reviews, release approvals and ongoing vulnerability management.
+
+Q0894
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Mobile Application Security Engineer, Security Architect, Mobile Application Pentester
+- Competency: Designing a mobile application testing program
+
+Question: Design a mobile application security testing program for an organization maintaining 30 applications across Android and iOS. Explain how you would combine static analysis, dynamic analysis, API testing, reverse engineering, automated testing, manual assessments and release-gate enforcement.
+
+Q0895
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Mobile Application Security Engineer, CISO
+- Competency: Evaluating mobile security trade-offs
+
+Question: How would you balance application security controls such as certificate pinning, root detection, jailbreak detection, obfuscation and device attestation against usability, accessibility, application compatibility and maintenance costs? Under what circumstances might a security control introduce more operational risk than security value?
+
+Q0896
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Mobile Application Security Engineer, Incident Responder, Security Architect
+- Competency: Managing mobile application compromise
+
+Question: Your organization discovers that a mobile application has exposed authentication tokens through application logs and insecure local storage. Approximately 20,000 users may have been affected. How would you coordinate incident response, assess token exposure, revoke compromised sessions, release a security update and communicate the incident to affected users?
+
+Q0897
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Mobile Application Security Engineer, Security Architect, Application Security Engineer
+- Competency: Designing secure mobile API architecture
+
+Question: Design a secure mobile-to-backend architecture for a multi-tenant SaaS platform. Address user authentication, device identity, API authorization, tenant isolation, certificate validation, token lifecycle, request integrity, rate limiting and security monitoring. Which security decisions must remain exclusively server-side?
+
+Q0898
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Architect, Mobile Application Security Engineer, Security Auditor
+- Competency: Measuring mobile application security maturity
+
+Question: How would you measure the maturity of an organization's mobile application security program? Define measurable indicators covering vulnerability discovery, remediation time, secure storage compliance, dependency risk, penetration testing coverage, release security gates and recurring vulnerability rates.
+
+Q0899
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Mobile Application Security Engineer, Security Architect, CISO
+- Competency: Managing mobile security risks across platforms
+
+Question: Your organization supports an older Android application, a newer iOS application and a shared backend. A critical vulnerability affects the Android application, but the required remediation may break compatibility with older devices. How would you assess the risk, establish compensating controls, prioritize supported versions and determine whether a forced upgrade or service restriction is justified?
+
+Q0900
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Mobile Application Security Engineer, Purple Team Engineer, Security Architect
+- Competency: Building an end-to-end mobile security program
+
+Question: Design an end-to-end mobile application security program connecting secure development, Android and iOS testing, reverse engineering, API security, threat modeling, mobile threat intelligence, incident response and Purple Team validation. How would you ensure that vulnerabilities discovered during assessments lead to permanent architectural improvements rather than repeated individual fixes?

@@ -1,0 +1,937 @@
+# Cybersecurity Interview Question Bank — Batch 11
+
+## Section 24 — Privilege Escalation
+
+### Beginner — Q1001–Q1010
+
+Q1001. What is privilege escalation in cybersecurity, and how does it differ from initial access?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: SOC Analyst, Security Analyst, Penetration Tester
+- Competency: Privilege escalation fundamentals
+- Format: Direct
+
+Q1002. What are the differences between Linux SUID and SGID permissions? Explain how each affects process execution.
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: Linux file permissions
+- Format: Comparison
+
+Q1003. On a Linux system, you find a file with the following permissions:
+
+```
+-rwsr-xr-x 1 root root 12345 /usr/local/bin/example
+```
+
+What does the `s` permission indicate, and what security risks should you investigate before determining whether this file creates a privilege-escalation opportunity?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Linux Security Analyst
+- Competency: SUID enumeration
+- Format: Command analysis
+
+Q1004. What are Linux capabilities, and why were they introduced as an alternative to granting processes full root privileges?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Security Analyst
+- Competency: Linux privilege model
+- Format: How-it-works
+
+Q1005. What is the purpose of the Linux `sudo` mechanism, and how does it differ from directly logging in as root?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Administrator, Security Engineer
+- Competency: Linux access control
+- Format: Comparison
+
+Q1006. What is a cron job, and why can an incorrectly configured scheduled task introduce a privilege-escalation vulnerability?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Administrator, Penetration Tester
+- Competency: Linux scheduled tasks
+- Format: Why
+
+Q1007. What is a Windows service, and which security properties determine whether a user can modify or influence its execution?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Engineer, Penetration Tester
+- Competency: Windows services
+- Format: How-it-works
+
+Q1008. What is the Windows Registry, and how can excessive write permissions on sensitive registry keys affect system security?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Administrator, Security Analyst
+- Competency: Windows Registry security
+- Format: Direct
+
+Q1009. What is User Account Control (UAC), and what security problem is it designed to reduce?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Engineer, SOC Analyst
+- Competency: Windows privilege boundaries
+- Format: Direct
+
+Q1010. On a Windows test machine, how would you inspect the identity and privileges of your current process using built-in commands?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Windows Security Analyst
+- Competency: Windows token inspection
+- Format: Practical/command
+
+### Intermediate — Q1011–Q1025
+
+Q1011. How can an insecure Linux `sudoers` rule allow a user to execute commands with excessive privileges? What characteristics make a rule dangerous?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: Sudo configuration auditing
+- Format: Why
+
+Q1012. You discover the following sudo configuration on an authorized assessment machine:
+
+```
+analyst ALL=(root) NOPASSWD: /usr/bin/find
+```
+
+Explain why this configuration deserves investigation. What factors determine whether the permitted executable can be abused to execute unintended commands?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Linux Security Auditor
+- Competency: Sudo misconfiguration analysis
+- Format: Scenario
+
+Q1013. How can an insecure PATH environment variable create a privilege-escalation risk when a privileged script executes commands without absolute paths?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: PATH manipulation
+- Format: How-it-works
+
+Q1014. A root-owned cron job executes a script located in a directory writable by an ordinary user. Explain the vulnerability, the conditions required for exploitation, and the appropriate remediation.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: Scheduled task security
+- Format: Scenario
+
+Q1015. How do weak file and directory permissions differ as security problems? Explain how ownership, group membership, ACLs and directory write permissions influence risk.
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Administrator, Security Auditor
+- Competency: Filesystem access control
+- Format: Comparison
+
+Q1016. What is the difference between a Linux kernel vulnerability and a user-space privilege-escalation vulnerability? How would you determine which category a finding belongs to?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Vulnerability Analyst, Penetration Tester
+- Competency: Privilege-escalation vulnerability classification
+- Format: Comparison
+
+Q1017. During a Linux assessment, how would you enumerate file capabilities and investigate whether any assigned capability gives a process more authority than it needs?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: Capability enumeration
+- Format: Practical/command
+
+Q1018. What makes a Linux service vulnerable to privilege escalation? Discuss service configuration, executable permissions, environment variables, dependencies and execution identity.
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Penetration Tester
+- Competency: Linux service security
+- Format: How-it-works
+
+Q1019. A Windows service runs as `LocalSystem`, and an ordinary user has permission to modify its executable file. Explain the security impact and how you would validate the issue safely.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Windows Penetration Tester, Security Auditor
+- Competency: Windows service permissions
+- Format: Scenario
+
+Q1020. What is the difference between a Windows service's configuration permissions and the permissions on the executable it launches? Why must both be examined?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Engineer, Penetration Tester
+- Competency: Service security model
+- Format: Comparison
+
+Q1021. How can weak permissions on Windows scheduled tasks create privilege-escalation opportunities? Which task properties should an auditor inspect?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Windows Security Analyst, Penetration Tester
+- Competency: Scheduled task auditing
+- Format: How-it-works
+
+Q1022. On a Windows assessment machine, how would you inspect service configurations, service accounts and executable paths using built-in tools?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Windows Administrator
+- Competency: Windows service enumeration
+- Format: Practical/command
+
+Q1023. What are Windows access tokens, and how do user identity, group membership, privileges and integrity levels influence authorization decisions?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Engineer, SOC Analyst
+- Competency: Windows access-token fundamentals
+- Format: How-it-works
+
+Q1024. What is DLL hijacking, and how can an application loading a DLL from an unsafe search location create a security vulnerability?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Penetration Tester, Application Security Engineer
+- Competency: DLL loading security
+- Format: How-it-works
+
+Q1025. An application running with elevated privileges loads a DLL from a directory writable by standard users. Describe how you would investigate the loading behavior and determine the actual security impact.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Windows Penetration Tester, Security Researcher
+- Competency: DLL search-order investigation
+- Format: Investigation
+
+### Advanced — Q1026–Q1040
+
+Q1026. How do Linux file capabilities reduce the need for SUID-root binaries, and what limitations or risks remain when capabilities are assigned incorrectly?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Security Engineer, Security Architect
+- Competency: Linux capability security
+- Format: Comparison
+
+Q1027. During an authorized Linux assessment, you identify a privileged service that invokes a helper executable using a relative path. Design a validation procedure to establish whether the service is vulnerable to PATH manipulation without disrupting the host.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Linux Security Engineer
+- Competency: Privileged process environment analysis
+- Format: Troubleshooting
+
+Q1028. A Linux server has multiple SUID binaries, several custom capabilities and a collection of root-owned scripts. How would you prioritize these findings to distinguish genuine privilege-escalation paths from harmless configuration anomalies?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Penetration Tester, Security Auditor
+- Competency: Privilege-escalation path prioritization
+- Format: Decision-making
+
+Q1029. Explain how Linux kernel privilege-escalation vulnerabilities can cross security boundaries. Discuss kernel attack surface, local access requirements, exploit reliability, kernel versions and mitigation mechanisms.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Vulnerability Researcher, Linux Security Engineer
+- Competency: Kernel vulnerability analysis
+- Format: How-it-works
+
+Q1030. A Linux host has a vulnerable kernel version, but the relevant exploit fails in a controlled lab. What environmental factors would you investigate before concluding that the host is not vulnerable?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Vulnerability Researcher, Penetration Tester
+- Competency: Kernel exploitability assessment
+- Format: Troubleshooting
+
+Q1031. How can Linux PAM configuration, authentication modules and cached credentials influence local privilege boundaries? Explain the difference between an authentication weakness and a privilege-escalation weakness.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Linux Security Engineer, IAM Engineer
+- Competency: Linux authentication and privilege boundaries
+- Format: Comparison
+
+Q1032. A Windows service has an unquoted executable path containing spaces. Explain the conditions under which this configuration may become exploitable and how to assess the risk without assuming every unquoted path is vulnerable.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Windows Penetration Tester, Security Auditor
+- Competency: Unquoted service path analysis
+- Format: Scenario
+
+Q1033. What is the relationship between Windows privileges such as `SeImpersonatePrivilege`, `SeAssignPrimaryTokenPrivilege` and `SeDebugPrivilege` and the security boundaries enforced by Windows?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Windows Security Engineer, Penetration Tester
+- Competency: Windows token privileges
+- Format: Comparison
+
+Q1034. You are reviewing a Windows host where a service account has `SeImpersonatePrivilege`. How would you establish whether the privilege is expected, excessive or associated with a realistic escalation path?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Windows Penetration Tester, Windows Security Engineer
+- Competency: Token privilege assessment
+- Format: Investigation
+
+Q1035. Explain how Windows integrity levels interact with access control lists and access tokens. Why does a high-integrity process not automatically have unrestricted access to every protected resource?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Engineer, Security Researcher
+- Competency: Windows mandatory integrity control
+- Format: How-it-works
+
+Q1036. What is the difference between UAC bypass, privilege escalation and obtaining a fully elevated administrative token? How can these concepts be confused during penetration-test reporting?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Penetration Tester, Security Consultant
+- Competency: Windows elevation concepts
+- Format: Comparison
+
+Q1037. An endpoint detection platform records an elevated PowerShell process spawned by an unusual parent process. Which process, token, command-line and script-execution details would you correlate to determine whether this represents legitimate administration or suspicious privilege escalation?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Analyst, Threat Hunter, DFIR Analyst
+- Competency: PowerShell privilege-escalation investigation
+- Format: Investigation
+
+Q1038. How can Windows credential material be exposed through process memory, LSASS access, registry locations or application configuration? Compare the security implications and appropriate defensive controls.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: DFIR Analyst, Windows Security Engineer
+- Competency: Windows credential exposure
+- Format: Comparison
+
+Q1039. A Windows host contains a service running as a privileged account, a writable service directory and a suspicious DLL load. Build an evidence-driven investigation plan to determine whether these conditions form one exploitable privilege-escalation chain.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, Threat Hunter, DFIR Analyst
+- Competency: Multi-stage privilege-escalation analysis
+- Format: Scenario
+
+Q1040. How would you distinguish a genuine local privilege-escalation vulnerability from a configuration that is technically weak but cannot be reached by an attacker under the tested conditions?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Consultant, Vulnerability Analyst
+- Competency: Exploitability and risk validation
+- Format: Decision-making
+
+### Expert — Q1041–Q1048
+
+Q1041. You are assessing a Linux server with several privileged execution paths: a custom SUID program, a capability-enabled binary, a writable systemd unit and a root cron job. Design a systematic methodology to identify the highest-risk path, validate it safely and explain the root cause.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Senior Penetration Tester, Linux Security Engineer
+- Competency: Multi-vector Linux privilege-escalation assessment
+- Format: Design/architecture
+
+Q1042. How would you investigate a Linux privilege-escalation finding where the apparent vulnerable binary is protected by AppArmor or SELinux? Explain how mandatory access controls change exploitability and how to distinguish policy restrictions from application-level permissions.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Linux Security Engineer, Security Researcher
+- Competency: Mandatory access control and exploitability
+- Format: Troubleshooting
+
+Q1043. A Windows endpoint has a suspicious service configuration, unusual token privileges and evidence of a recent UAC-related process chain. Develop an investigation approach that reconstructs the sequence of events and identifies the effective security context at each stage.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: DFIR Analyst, Windows Security Researcher
+- Competency: Windows process and token forensics
+- Format: Investigation
+
+Q1044. Explain how Windows object security descriptors, discretionary access control lists, owner rights and inherited permissions interact. How can incorrect assumptions about inheritance lead to missed privilege-escalation paths?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Security Architect, Security Researcher
+- Competency: Windows object security model
+- Format: How-it-works
+
+Q1045. In a controlled assessment, a privileged Windows application loads several third-party DLLs. Design a methodology for identifying unsafe DLL search paths, validating load behavior, documenting impact and recommending mitigations without deploying a persistent payload.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Senior Penetration Tester, Application Security Engineer
+- Competency: DLL hijacking validation
+- Format: Design/architecture
+
+Q1046. How would you assess the combined risk of local privilege-escalation vulnerabilities across a fleet of Linux and Windows endpoints? Discuss exploitability, privilege boundaries, compensating controls, exposure and business criticality.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Vulnerability Management Lead
+- Competency: Cross-platform vulnerability risk
+- Format: Decision-making
+
+Q1047. An incident investigation reveals that a compromised low-privilege account eventually executed code as SYSTEM. What evidence sources would you use to reconstruct the escalation chain, and how would you distinguish the initial vulnerability from subsequent attacker actions?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: DFIR Analyst, Threat Hunter
+- Competency: Privilege-escalation incident reconstruction
+- Format: Scenario
+
+Q1048. Compare the security implications of Linux root, Windows SYSTEM, Windows local administrator and domain administrator contexts. Why is treating these identities as equivalent a mistake in enterprise security design?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Senior Security Engineer
+- Competency: Cross-platform privilege models
+- Format: Comparison
+
+### Senior/Architect — Q1049–Q1050
+
+Q1049. You are designing an enterprise endpoint privilege-management strategy for a mixed Linux and Windows environment. How would you reduce local administrator and root exposure while preserving operational requirements for developers, IT administrators and production workloads?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Security Architect, Endpoint Security Lead, CISO
+- Competency: Least-privilege architecture
+- Format: Design/architecture
+
+Q1050. A company has experienced repeated endpoint compromises involving local privilege escalation. Design a measurable security improvement program covering secure configuration baselines, patch prioritization, privileged access management, endpoint telemetry, detection engineering, validation exercises and remediation ownership.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Security Architect, Purple Team Lead, Security Engineering Manager
+- Competency: Enterprise privilege-escalation risk reduction
+- Format: Design/architecture
+
+## Section 25 — Active Directory Security
+
+### Beginner — Q1051–Q1055
+
+Q1051. What is Active Directory, and what problems does it solve in a Windows enterprise environment?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Administrator, SOC Analyst, IAM Analyst
+- Competency: Active Directory fundamentals
+- Format: Direct
+
+Q1052. What is the difference between an Active Directory domain, forest and organizational unit (OU)?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Administrator, IAM Engineer
+- Competency: AD logical structure
+- Format: Comparison
+
+Q1053. What is a Domain Controller, and which critical authentication and directory services does it provide?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Administrator, SOC Analyst
+- Competency: Domain Controller architecture
+- Format: How-it-works
+
+Q1054. What is the difference between an Active Directory user, security group and computer account? How are these objects represented and used in access control?
+
+- Difficulty: Beginner
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Analyst, Windows Administrator
+- Competency: AD directory objects
+- Format: Comparison
+
+Q1055. On an authorized Windows domain lab, how would you identify the currently logged-in domain user, domain name and available domain information using built-in commands?
+
+- Difficulty: Beginner
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Analyst, Windows Administrator, Penetration Tester
+- Competency: Basic AD enumeration
+- Format: Practical/command
+
+### Intermediate — Q1056–Q1065
+
+Q1056. What is Group Policy, and how does it allow administrators to centrally manage security settings across domain-joined Windows systems?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Windows Administrator, Security Engineer
+- Competency: Group Policy fundamentals
+- Format: How-it-works
+
+Q1057. Explain the order in which Local, Site, Domain and OU Group Policies are processed. What is the significance of inheritance, enforcement and block inheritance?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Windows Administrator, AD Security Engineer
+- Competency: Group Policy processing
+- Format: How-it-works
+
+Q1058. What is LDAP, and how does Active Directory use LDAP for directory queries, object discovery and administrative operations?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Engineer, Security Analyst
+- Competency: LDAP fundamentals
+- Format: Direct
+
+Q1059. You are given an authorized domain account and need to enumerate domain users, groups and computers. Which built-in Windows tools or LDAP query methods could you use, and how would you limit collection to the information required?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, AD Administrator, Security Analyst
+- Competency: Directory enumeration
+- Format: Practical/command
+
+Q1060. What is Kerberos authentication, and why is it generally preferred over NTLM for domain authentication in modern Windows environments?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Engineer, SOC Analyst
+- Competency: Windows authentication protocols
+- Format: Comparison
+
+Q1061. Explain the roles of the Authentication Service Exchange (AS-REQ/AS-REP) and Ticket-Granting Service Exchange (TGS-REQ/TGS-REP) in Kerberos authentication.
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: IAM Engineer, Security Analyst
+- Competency: Kerberos protocol flow
+- Format: How-it-works
+
+Q1062. What is a Service Principal Name (SPN), and why must it be correctly registered to the account running a service?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Administrator, IAM Engineer
+- Competency: SPN fundamentals
+- Format: Direct
+
+Q1063. During an authorized Active Directory assessment, how would you enumerate registered SPNs and identify service accounts that may require additional security review?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, AD Security Analyst
+- Competency: SPN enumeration
+- Format: Practical/command
+
+Q1064. What is the difference between NTLM and Kerberos in terms of authentication flow, credential exposure, mutual authentication and common enterprise security risks?
+
+- Difficulty: Intermediate
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Engineer, Security Architect
+- Competency: Authentication protocol comparison
+- Format: Comparison
+
+Q1065. A Windows workstation unexpectedly authenticates to a server using NTLM even though both systems belong to the same domain. What configuration, connectivity, naming or application factors would you investigate?
+
+- Difficulty: Intermediate
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Windows Administrator, SOC Analyst
+- Competency: NTLM fallback investigation
+- Format: Troubleshooting
+
+### Advanced — Q1066–Q1080
+
+Q1066. What are Active Directory trusts, and how do external, forest and domain trusts differ in scope and security implications?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Engineer, Security Architect
+- Competency: AD trust architecture
+- Format: Comparison
+
+Q1067. An organization has two forests connected through a trust. How would you evaluate whether the trust configuration exposes sensitive resources across forest boundaries?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: AD Security Engineer, Penetration Tester
+- Competency: Trust security assessment
+- Format: Scenario
+
+Q1068. Explain the differences between unconstrained delegation, constrained delegation and resource-based constrained delegation (RBCD). What security assumptions does each model introduce?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Engineer, IAM Architect
+- Competency: Kerberos delegation
+- Format: Comparison
+
+Q1069. In an authorized lab, how would you identify accounts and computers configured for Kerberos delegation, and what attributes would you inspect to classify the delegation type?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, AD Security Analyst
+- Competency: Delegation enumeration
+- Format: Practical/command
+
+Q1070. What is the security significance of the Domain Admins group? Explain how its membership, nested group relationships and delegated permissions affect the domain's security boundary.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Engineer, IAM Architect
+- Competency: Privileged AD groups
+- Format: How-it-works
+
+Q1071. How can misconfigured Group Policy permissions create an attack path to privileged domain systems? Explain the relationship between GPO objects, SYSVOL contents, security filtering and linked OUs.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: AD Security Engineer, Penetration Tester
+- Competency: Group Policy security
+- Format: How-it-works
+
+Q1072. You discover that a low-privilege domain user can modify a Group Policy Object linked to an OU containing privileged workstations. How would you validate the exposure, determine its scope and recommend remediation?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, AD Security Engineer
+- Competency: GPO abuse assessment
+- Format: Scenario
+
+Q1073. What is BloodHound, and how does graph-based analysis help identify relationships and potential attack paths that are difficult to recognize through ordinary directory listings?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Analyst, Purple Team Engineer
+- Competency: AD attack-path analysis
+- Format: How-it-works
+
+Q1074. An authorized BloodHound collection shows that a standard user has control over a group that can modify another group containing privileged users. How would you validate the relationship, assess its impact and identify the underlying permissions?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Penetration Tester, AD Security Engineer
+- Competency: AD graph relationship validation
+- Format: Investigation
+
+Q1075. How do nested groups, group scope and security-enabled groups influence effective access in Active Directory? Why can direct membership checks produce an incomplete security assessment?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Engineer, AD Security Auditor
+- Competency: Effective group membership
+- Format: Comparison
+
+Q1076. What is the relationship between Kerberos service tickets, service accounts, SPNs and account password strength? Explain why service-account lifecycle management is an important AD security control.
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Engineer, AD Security Engineer
+- Competency: Service-account security
+- Format: How-it-works
+
+Q1077. An organization discovers that several legacy applications use domain service accounts with non-expiring passwords. Design an assessment to determine the risk, identify dependencies and migrate the accounts without causing service outages.
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: IAM Engineer, AD Security Engineer
+- Competency: Service-account remediation
+- Format: Design/architecture
+
+Q1078. Explain how LDAP signing, channel binding and LDAP over TLS protect directory communications. What attack surfaces remain if clients and servers are configured inconsistently?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Engineer, Infrastructure Security Engineer
+- Competency: LDAP transport security
+- Format: Comparison
+
+Q1079. During an investigation, you observe an unusual sequence of LDAP queries, Kerberos service-ticket requests and privileged group membership changes. How would you correlate these events to distinguish normal directory administration from suspicious domain reconnaissance and privilege manipulation?
+
+- Difficulty: Advanced
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: SOC Analyst, Threat Hunter, DFIR Analyst
+- Competency: Active Directory event correlation
+- Format: Investigation
+
+Q1080. How do Active Directory replication, domain controller roles and directory synchronization influence the security of a multi-domain enterprise? What risks arise when administrative boundaries are poorly defined?
+
+- Difficulty: Advanced
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Architect, Security Architect
+- Competency: AD infrastructure security
+- Format: Design/architecture
+
+### Expert — Q1081–Q1092
+
+Q1081. An enterprise has multiple domains, several forests, external trusts and legacy applications. Design a methodology for mapping the trust relationships and identifying paths through which a compromise in one domain could affect another.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Senior AD Security Engineer, Red Team Operator, Security Architect
+- Competency: Enterprise trust-path analysis
+- Format: Design/architecture
+
+Q1082. Explain how Kerberos delegation can create privilege-boundary weaknesses even when passwords are strong and privileged accounts are protected by MFA. Discuss service identity, ticket handling and delegation scope.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Architect, IAM Architect
+- Competency: Kerberos delegation risk
+- Format: Why
+
+Q1083. You are reviewing an Active Directory environment with unconstrained delegation, constrained delegation and RBCD configurations. How would you prioritize the findings based on reachable principals, service exposure, privilege relationships and potential impact?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Senior Penetration Tester, AD Security Engineer
+- Competency: Delegation risk prioritization
+- Format: Decision-making
+
+Q1084. How would you investigate a suspected compromise of a Domain Admin account when the available evidence includes domain controller logs, endpoint telemetry, Kerberos events and changes to directory objects?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: DFIR Analyst, Incident Response Lead
+- Competency: Domain compromise investigation
+- Format: Investigation
+
+Q1085. What are the security implications of SID history in Active Directory? Explain how legitimate migrations use it and how improper control or validation can undermine domain security boundaries.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Engineer, IAM Architect
+- Competency: SID history security
+- Format: How-it-works
+
+Q1086. An enterprise uses legacy applications that require NTLM authentication. Design a staged strategy to reduce NTLM exposure while identifying dependencies, measuring usage and avoiding service disruption.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Security Architect, IAM Engineer, Infrastructure Security Lead
+- Competency: NTLM reduction program
+- Format: Design/architecture
+
+Q1087. How would you use BloodHound findings to distinguish theoretical attack paths from practically reachable paths? Discuss edge permissions, principal reachability, session data, trust boundaries and environmental constraints.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Theoretical
+- Roles: Senior Penetration Tester, Purple Team Engineer
+- Competency: Attack-path validation
+- Format: Decision-making
+
+Q1088. A domain controller shows suspicious replication-related activity from an account that is not normally used for directory synchronization. What does this suggest, which permissions and events would you examine, and how would you scope possible directory compromise?
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Threat Hunter, DFIR Analyst, AD Security Engineer
+- Competency: Directory replication abuse investigation
+- Format: Scenario
+
+Q1089. Explain the security role of the KRBTGT account and why protecting and rotating its credentials requires careful planning. What operational risks arise from an incorrect rotation procedure?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: AD Security Architect, Incident Response Lead
+- Competency: Kerberos domain key management
+- Format: How-it-works
+
+Q1090. How would you design detections for suspicious changes to privileged AD groups, delegation settings, GPO permissions, SPN registrations and domain trust configurations? Explain the telemetry and baseline requirements for each detection family.
+
+- Difficulty: Expert
+- Question Type: Specific Technical
+- Classification: Practical
+- Roles: Detection Engineer, Purple Team Engineer, SOC Lead
+- Competency: Active Directory detection engineering
+- Format: Design/architecture
+
+Q1091. An organization suspects that an attacker has obtained persistent control over parts of its Active Directory environment. Design an investigation and recovery strategy that addresses identity compromise, domain controller integrity, trust relationships, privileged credentials, endpoint re-entry and verification of recovery.
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Incident Response Lead, AD Security Architect
+- Competency: Enterprise AD compromise recovery
+- Format: Design/architecture
+
+Q1092. You are asked to assess whether an Active Directory environment is resilient against identity-based attacks. How would you combine configuration auditing, attack-path analysis, authentication telemetry, privilege reviews and controlled adversary simulation into a defensible assessment?
+
+- Difficulty: Expert
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Purple Team Lead, AD Security Architect
+- Competency: Active Directory security assessment
+- Format: Design/architecture
+
+### Senior/Architect — Q1093–Q1100
+
+Q1093. Design a tiered Active Directory administration model that separates domain controllers, privileged administrative workstations, servers and ordinary endpoints. Explain how authentication paths, administrative accounts and access policies should enforce the boundaries.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Enterprise Security Architect, IAM Architect
+- Competency: Tiered AD architecture
+- Format: Design/architecture
+
+Q1094. A global enterprise has acquired several companies, each with its own Active Directory forest and security policies. How would you design the target identity architecture, considering forest consolidation, trust reduction, identity lifecycle, privileged access and business continuity?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: Enterprise Architect, IAM Director, Security Architect
+- Competency: Multi-forest identity architecture
+- Format: Design/architecture
+
+Q1095. How would you establish an enterprise-wide Active Directory attack-path management program? Define the data sources, ownership model, risk scoring, remediation workflow, exception process and metrics needed to keep the program effective.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Security Architect, Purple Team Lead, Security Engineering Manager
+- Competency: Continuous AD attack-path management
+- Format: Design/architecture
+
+Q1096. Following a confirmed domain compromise, senior leadership asks whether the organization can safely resume business operations. How would you define recovery criteria, validate identity trustworthiness, prioritize restoration and communicate residual risk?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Incident Response Director, Enterprise Security Architect
+- Competency: Domain recovery governance
+- Format: Decision-making
+
+Q1097. Design a Purple Team program to continuously validate Active Directory defenses against identity-based attack techniques. Explain how you would select test cases, map them to detection coverage, measure prevention and detection, and ensure that testing does not endanger production identity infrastructure.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: Purple Team Lead, Detection Engineering Manager
+- Competency: Identity-focused Purple Team program
+- Format: Design/architecture
+
+Q1098. An organization is migrating from traditional on-premises Active Directory toward a hybrid identity architecture. What security principles should guide the design of synchronization, authentication, privileged access, conditional access, recovery and monitoring?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Theoretical
+- Roles: IAM Architect, Cloud Security Architect
+- Competency: Hybrid identity security
+- Format: Design/architecture
+
+Q1099. You are responsible for reducing the risk of domain-wide compromise over a three-year security roadmap. How would you prioritize technical controls, identity governance, legacy-system modernization, monitoring maturity and workforce processes under a constrained budget?
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Security Architect, Security Program Manager
+- Competency: Long-term identity security strategy
+- Format: Decision-making
+
+Q1100. An enterprise wants to know whether its Active Directory environment is secure enough to support critical business operations. Develop a risk-based assurance framework that combines architecture review, configuration assessment, attack-path analysis, adversary simulation, incident readiness, recovery testing and measurable security outcomes.
+
+- Difficulty: Senior/Architect
+- Question Type: Broad Conceptual
+- Classification: Practical
+- Roles: CISO, Enterprise Security Architect, Purple Team Director
+- Competency: Enterprise identity security assurance
+- Format: Design/architecture

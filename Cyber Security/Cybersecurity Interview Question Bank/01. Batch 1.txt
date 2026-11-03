@@ -1,0 +1,1077 @@
+# Cybersecurity Interview Question Bank — Batch 1
+
+# Section 1 — Computer & OS Foundations
+
+## Topic 1: CPU Architecture and Instruction Execution
+
+Q0001
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Security Analyst, SOC Analyst, Malware Analyst
+- Competency: Computer architecture fundamentals
+
+Question: Explain the primary components of a CPU, including the ALU, Control Unit, registers and cache. How do they work together during instruction execution?
+
+Q0002
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Instruction execution mechanisms
+
+Question: Describe the fetch-decode-execute cycle. What happens internally when a CPU executes a machine instruction that reads data from memory?
+
+Q0003
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Malware Analyst, Reverse Engineer, Incident Responder
+- Competency: Process execution analysis
+
+Question: While analyzing a suspicious executable in a debugger, you observe repeated memory reads, conditional jumps and indirect function calls. How would you use register values, instruction pointers and stack inspection to reconstruct its execution flow?
+
+Q0004
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Low-level execution analysis
+
+Question: A malware sample executes differently depending on CPU features and instruction timing. How would you investigate whether it is using CPU-specific instructions, timing checks or execution-environment detection to evade analysis?
+
+## Topic 2: RAM, Memory Hierarchy and Virtual Memory
+
+Q0005
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, SOC Analyst
+- Competency: Memory architecture fundamentals
+
+Question: Differentiate between RAM, CPU cache, registers and secondary storage. Why does a computer use multiple levels of memory instead of relying entirely on RAM?
+
+Q0006
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Digital Forensics Analyst, Malware Analyst
+- Competency: Virtual memory mechanisms
+
+Question: Explain how virtual memory works. How does an operating system translate a process's virtual memory address into a physical memory address?
+
+Q0007
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: SOC Analyst, Security Analyst, DFIR Analyst
+- Competency: Memory troubleshooting and investigation
+
+Question: A Windows endpoint experiences unusually high memory consumption, but no single application appears to account for it. How would you investigate memory usage, identify suspicious processes and determine whether memory exhaustion is caused by legitimate activity or malicious code?
+
+Q0008
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Digital Forensics Analyst, Malware Analyst
+- Competency: Memory forensics
+
+Question: You receive a memory dump from a compromised Windows machine. How would you identify hidden processes, injected code, suspicious memory regions and evidence of credential theft using memory forensic techniques?
+
+## Topic 3: Storage, Disks and I/O
+
+Q0009
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, Digital Forensics Analyst
+- Competency: Storage fundamentals
+
+Question: Compare HDDs and SSDs in terms of storage mechanisms, performance, data persistence and forensic implications.
+
+Q0010
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Digital Forensics Analyst, Incident Responder
+- Competency: Storage and file deletion mechanisms
+
+Question: What happens internally when a user deletes a file from an NTFS-formatted drive? Why might the file remain recoverable after deletion?
+
+Q0011
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Incident Responder
+- Competency: Disk forensics
+
+Question: You receive a disk image from an employee's workstation suspected of data exfiltration. How would you preserve the evidence, identify recently deleted files and reconstruct relevant file activity without modifying the original evidence?
+
+Q0012
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Digital Forensics Analyst, Security Researcher
+- Competency: Advanced storage forensics
+
+Question: An attacker uses a combination of file deletion, timestamp manipulation and encrypted storage to conceal their activity. How would you distinguish legitimate filesystem operations from deliberate evidence tampering?
+
+## Topic 4: Processes and Threads
+
+Q0013
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Operating system fundamentals
+
+Question: What is a process, and how does it differ from a thread? Explain why applications commonly use multiple threads.
+
+Q0014
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: SOC Analyst, EDR Engineer, Malware Analyst
+- Competency: Process lifecycle understanding
+
+Question: What information does an operating system typically maintain for each process? Explain the purpose of a Process Control Block and how process scheduling works.
+
+Q0015
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, EDR Engineer, Incident Responder
+- Competency: Process investigation
+
+Question: A process named `svchost.exe` is consuming unusually high CPU resources and establishing connections to an unfamiliar external IP address. How would you determine whether the activity is legitimate or malicious?
+
+Q0016
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: Malware Analyst, EDR Engineer, DFIR Analyst
+- Competency: Process injection investigation
+
+Question: Your EDR reports suspicious thread creation inside a legitimate Windows process. How would you investigate possible process injection, examine the originating process and identify the injected memory region?
+
+## Topic 5: Kernel, User Space and System Calls
+
+Q0017
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, Malware Analyst
+- Competency: Operating system architecture
+
+Question: What is the difference between kernel mode and user mode? Why do modern operating systems separate these execution privileges?
+
+Q0018
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: System call mechanisms
+
+Question: What is a system call? Describe how a user-mode application requests a privileged operation from the operating system kernel.
+
+Q0019
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Malware Analyst, Incident Responder, Security Researcher
+- Competency: System call monitoring
+
+Question: You suspect malware is abusing legitimate system calls to access sensitive files and manipulate processes. How would you investigate its system call activity and distinguish normal application behavior from suspicious operations?
+
+Q0020
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Kernel-level threat investigation
+
+Question: A rootkit attempts to conceal malicious activity by manipulating kernel-level structures. What forensic approaches would you use to identify inconsistencies between kernel-reported information and independently collected system observations?
+
+## Topic 6: Filesystems
+
+Q0021
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Security Analyst, DFIR Analyst
+- Competency: Filesystem fundamentals
+
+Question: Compare NTFS, FAT32 and ext4 in terms of file organization, permissions, metadata and security capabilities.
+
+Q0022
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: DFIR Analyst, Security Analyst
+- Competency: Filesystem metadata analysis
+
+Question: What information is stored in an NTFS Master File Table (MFT) record? How can MFT metadata assist an investigator in reconstructing file activity?
+
+Q0023
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Incident Responder
+- Competency: Filesystem forensic analysis
+
+Question: An attacker creates a malicious executable, runs it and subsequently deletes it. How would you use filesystem metadata, journal records and unallocated space to investigate the file's previous existence and activity?
+
+## Topic 7: Memory Management
+
+Q0024
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Direct Question
+- Job Roles: Security Analyst, Malware Analyst
+- Competency: Memory management fundamentals
+
+Question: What is memory management in an operating system? Explain the roles of allocation, deallocation, paging and memory protection.
+
+Q0025
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Comparison
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Memory allocation mechanisms
+
+Question: Compare stack and heap memory allocation. How can stack overflows, heap overflows and use-after-free vulnerabilities arise from incorrect memory management?
+
+Q0026
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Malware Analyst, Security Researcher, Application Security Engineer
+- Competency: Memory corruption analysis
+
+Question: A native application crashes when processing a specially crafted input file. How would you use a debugger and memory inspection to determine whether the crash results from an out-of-bounds write, use-after-free or stack corruption?
+
+## Topic 8: Linux Architecture and Filesystem
+
+Q0027
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Security Analyst, Penetration Tester
+- Competency: Linux architecture fundamentals
+
+Question: Explain the major components of Linux architecture, including the kernel, shell, system libraries, system utilities and filesystem.
+
+Q0028
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Linux system administration
+
+Question: On a Linux machine, how would you use `ls`, `find`, `stat`, `df` and `du` to investigate filesystem structure, file metadata, disk capacity and unusually large files?
+
+Q0029
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Linux Security Engineer, Incident Responder, SOC Analyst
+- Competency: Linux filesystem investigation
+
+Question: A Linux server contains an executable in `/tmp` that was recently created and executed by an unexpected user account. How would you investigate its origin, permissions, execution history and possible persistence mechanisms?
+
+## Topic 9: Linux CLI, Bash, Pipes and Redirection
+
+Q0030
+
+- Difficulty: Beginner
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Penetration Tester, Security Analyst
+- Competency: Linux command-line proficiency
+
+Question: Explain the purpose of `grep`, `awk`, `sed`, `cut`, `sort` and `uniq`. How can these utilities be combined to analyze large Linux log files?
+
+Q0031
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Incident Responder
+- Competency: Log analysis using Bash
+
+Question: You have an authentication log containing thousands of entries. Write a Bash pipeline that extracts failed SSH login attempts, counts occurrences by source IP and displays the most frequent sources.
+
+Q0032
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Linux Security Engineer, Security Analyst
+- Competency: Shell execution and permissions
+
+Question: A Bash security monitoring script works when executed manually but fails when launched through cron. How would you investigate differences in environment variables, PATH, working directories, permissions and output redirection?
+
+## Topic 10: Linux Permissions, Ownership, Users and Groups
+
+Q0033
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Specific Technical
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Linux access control
+
+Question: Explain Linux file permission notation such as `rwxr-x---`. How do read, write and execute permissions differ for file owners, groups and other users?
+
+Q0034
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Linux Security Engineer, Penetration Tester
+- Competency: Permission troubleshooting
+
+Question: A web application runs under a dedicated Linux service account but cannot write to its upload directory. How would you diagnose and correct the permissions without granting unnecessary privileges?
+
+Q0035
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Penetration Tester, Linux Security Engineer, Security Analyst
+- Competency: Linux privilege misconfiguration analysis
+
+Question: During an authorized Linux security assessment, you discover that a service account can modify a script executed by a privileged scheduled process. Explain the security implications and how you would validate and remediate the misconfiguration.
+
+## Topic 11: Linux Processes, Services, systemd and cron
+
+Q0036
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Linux Security Engineer
+- Competency: Linux process and service management
+
+Question: Differentiate between a Linux process, daemon, service and scheduled task. What roles do systemd and cron perform?
+
+Q0037
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Linux Security Engineer
+- Competency: Linux service investigation
+
+Question: Which commands would you use to list running services, inspect a service's status, examine its logs and identify processes listening on network ports?
+
+Q0038
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Incident Responder, SOC Analyst, Linux Security Engineer
+- Competency: Linux persistence detection
+
+Question: A Linux server repeatedly launches an unknown executable every five minutes, even after the executable is terminated. How would you investigate systemd units, cron jobs, user-level scheduled tasks and other potential persistence mechanisms?
+
+## Topic 12: Linux Networking and SSH
+
+Q0039
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Network Security Engineer
+- Competency: Linux networking fundamentals
+
+Question: How does Linux handle network communication? Explain the roles of network interfaces, IP addresses, routing tables, sockets and listening ports.
+
+Q0040
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Linux Security Engineer
+- Competency: Network troubleshooting
+
+Question: A Linux server cannot reach an external API. Describe how you would use `ip`, `ss`, `ping`, `traceroute`, `dig` and `curl` to isolate whether the problem is related to routing, DNS, connectivity or application-layer communication.
+
+## Topic 13: Linux Logs and Core Troubleshooting Utilities
+
+Q0041
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: SOC Analyst, Incident Responder, DFIR Analyst
+- Competency: Linux log investigation
+
+Question: A Linux server is suspected of unauthorized SSH access. Which authentication logs, system journals and account activity records would you examine to reconstruct the login timeline and identify the source of the activity?
+
+## Topic 14: Linux Package Management and Hardening
+
+Q0042
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Linux Security Engineer, DevSecOps Engineer
+- Competency: Linux hardening
+
+Question: A production Linux server contains outdated packages with known vulnerabilities. How would you identify affected packages, evaluate patch impact, apply security updates and verify that the system remains functional?
+
+## Topic 15: Windows Architecture and Filesystem
+
+Q0043
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Windows Security Engineer
+- Competency: Windows architecture fundamentals
+
+Question: Explain the major architectural components of Windows, including the Windows kernel, Executive, HAL, user-mode subsystems and system services.
+
+Q0044
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: DFIR Analyst, Windows Security Engineer
+- Competency: Windows filesystem knowledge
+
+Question: Explain the purpose of NTFS Master File Table records, alternate data streams and filesystem journals. How can these structures be relevant during a Windows forensic investigation?
+
+Q0045
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: DFIR Analyst, Incident Responder, Malware Analyst
+- Competency: Windows forensic investigation
+
+Question: A Windows workstation is suspected of executing malware through an alternate data stream. How would you identify alternate data streams, examine their contents and correlate the findings with available execution evidence?
+
+## Topic 16: Windows Processes, Services and Scheduled Tasks
+
+Q0046
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Security Analyst
+- Competency: Windows process and service fundamentals
+
+Question: What is the difference between a Windows process, thread, service and scheduled task? How do they interact during normal system operation?
+
+Q0047
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, EDR Engineer
+- Competency: Windows process investigation
+
+Question: Which PowerShell commands would you use to identify running processes, retrieve their executable paths, inspect associated services and identify scheduled tasks configured on a Windows endpoint?
+
+Q0048
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, EDR Engineer, Incident Responder
+- Competency: Suspicious service investigation
+
+Question: Your EDR detects a newly created Windows service whose executable is located inside a user's temporary directory. How would you investigate the service configuration, parent process, creation timestamp, account privileges and network activity?
+
+## Topic 17: Windows Registry, Users, Groups and Permissions
+
+Q0049
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Windows Security Engineer
+- Competency: Windows Registry fundamentals
+
+Question: What is the Windows Registry? Explain the purpose of registry hives and how they store operating system, user and application configuration.
+
+Q0050
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: SOC Analyst, DFIR Analyst, Windows Security Engineer
+- Competency: Registry analysis
+
+Question: What are `HKEY_LOCAL_MACHINE`, `HKEY_CURRENT_USER`, `HKEY_USERS` and `HKEY_CLASSES_ROOT`? Explain how their contents differ and why they matter during security investigations.
+
+Q0051
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, DFIR Analyst, Incident Responder
+- Competency: Registry-based persistence detection
+
+Question: During an investigation, you discover an unfamiliar executable configured under a Windows Run registry key. How would you establish when the entry appeared, identify the process responsible for creating it and determine whether it represents malicious persistence?
+
+## Topic 18: Windows Authentication and Security Model
+
+Q0052
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, IAM Engineer
+- Competency: Windows authentication fundamentals
+
+Question: Explain how Windows authentication works at a high level. What are the roles of the Local Security Authority Subsystem Service (LSASS), Security Accounts Manager (SAM) and Windows access tokens?
+
+Q0053
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: IAM Engineer, Active Directory Security Engineer, SOC Analyst
+- Competency: Windows authentication mechanisms
+
+Question: Compare local Windows authentication with domain authentication. How do NTLM and Kerberos differ in their authentication mechanisms and security properties?
+
+## Topic 19: PowerShell
+
+Q0054
+
+- Difficulty: Intermediate
+- Classification: Practical
+- Question Type: Practical and Command-Based
+- Job Roles: SOC Analyst, Windows Security Engineer, Incident Responder
+- Competency: PowerShell administration and investigation
+
+Question: Write a PowerShell command that retrieves the ten processes consuming the highest memory on a Windows machine. Explain how you would extend it to include executable paths and process owners.
+
+## Topic 20: Windows Event Logs, Event Viewer and Defender
+
+Q0055
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: SOC Analyst, Incident Responder, EDR Engineer
+- Competency: Windows security telemetry analysis
+
+Question: A Windows endpoint has experienced suspicious account activity. Which Event Viewer channels and authentication-related events would you investigate to reconstruct successful and failed logons, account changes and privilege-related activity?
+
+Q0056
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: SOC Analyst, Detection Engineer, Incident Responder
+- Competency: Windows telemetry correlation
+
+Question: An attacker gains access to a Windows workstation, creates a scheduled task, modifies a Registry Run key and launches PowerShell. How would you correlate Windows Security logs, Sysmon events and Defender telemetry to reconstruct the attack sequence?
+
+Q0057
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: SOC Analyst, EDR Engineer, Security Architect
+- Competency: Endpoint visibility engineering
+
+Question: Your organization discovers that several Windows endpoints are missing process creation and command-line telemetry. How would you investigate audit policy configuration, Sysmon deployment, event forwarding and endpoint protection settings to identify and resolve the visibility gap?
+
+Q0058
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, SOC Manager, EDR Engineer
+- Competency: Enterprise endpoint monitoring architecture
+
+Question: Design a Windows endpoint monitoring architecture for an organization with 10,000 endpoints. How would you collect, retain and correlate authentication, process, Registry, PowerShell and Defender telemetry while balancing storage costs, performance and detection coverage?
+
+Q0059
+
+- Difficulty: Senior
+- Classification: Theoretical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Security Manager, SOC Manager
+- Competency: Endpoint security strategy
+
+Question: Your organization must choose between expanding native Windows Defender capabilities and deploying a commercial EDR platform. What technical, operational, financial and risk-related factors would influence your recommendation?
+
+Q0060
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Security Architect, Incident Response Lead, SOC Manager
+- Competency: Enterprise investigation strategy
+
+Question: An organization experiences repeated endpoint compromises despite having antivirus, centralized logging and regular patching. How would you lead an enterprise-wide assessment to identify architectural weaknesses, prioritize corrective actions and establish measurable security improvements?
+
+# Section 2 — Networking
+
+## Topic 1: OSI and TCP/IP Models
+
+Q0061
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Networking fundamentals
+
+Question: Explain the seven layers of the OSI model and describe the primary responsibility of each layer. How does the TCP/IP model organize these networking functions?
+
+Q0062
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Penetration Tester
+- Competency: Network protocol understanding
+
+Question: Compare the OSI and TCP/IP models. Why is the distinction between network-layer, transport-layer and application-layer communication important when investigating security incidents?
+
+Q0063
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: SOC Analyst, Network Security Engineer, Incident Responder
+- Competency: Layer-based network troubleshooting
+
+Question: An employee can successfully resolve a domain name but cannot establish an HTTPS connection to the destination server. Explain how you would systematically investigate the issue across the OSI layers and determine where communication is failing.
+
+## Topic 2: MAC, IP, IPv4, IPv6, Subnetting and CIDR
+
+Q0064
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Addressing fundamentals
+
+Question: Differentiate between MAC addresses and IP addresses. Why are both required for communication across local and routed networks?
+
+Q0065
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: Network Security Engineer, Penetration Tester
+- Competency: IPv4 subnetting
+
+Question: Given the network `192.168.10.0/26`, calculate the subnet mask, total addresses, usable host addresses, network address and broadcast address.
+
+Q0066
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, Infrastructure Security Engineer
+- Competency: Subnetting and network segmentation
+
+Question: An organization has been allocated `10.20.0.0/22` and needs to create separate networks supporting 200, 100, 50 and 25 hosts. Design an appropriate VLSM addressing plan and explain how you would prevent overlapping subnets.
+
+Q0067
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: IPv6 security architecture
+
+Question: Compare IPv4 and IPv6 from a security perspective. How do IPv6 address configuration, Neighbor Discovery, extension headers and dual-stack environments introduce different monitoring and attack-surface considerations?
+
+## Topic 3: Ports, Sockets and Network Communication
+
+Q0068
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Network Security Engineer
+- Competency: Network communication fundamentals
+
+Question: What are network ports and sockets? Explain how a combination of IP addresses, transport protocols and port numbers helps identify individual communication endpoints.
+
+Q0069
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: SOC Analyst, Penetration Tester, Network Security Engineer
+- Competency: Network service identification
+
+Question: What are ephemeral ports? How does a client operating system select a source port when initiating a TCP connection to a remote server?
+
+Q0070
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Incident Responder, Network Security Engineer
+- Competency: Socket investigation
+
+Question: A Windows workstation establishes hundreds of outbound connections to different external IP addresses using unusual destination ports. How would you correlate socket information with process ownership, DNS activity and firewall logs to identify the responsible application?
+
+## Topic 4: TCP, UDP, ARP and ICMP
+
+Q0071
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: SOC Analyst, Network Security Engineer
+- Competency: Transport protocol fundamentals
+
+Question: Compare TCP and UDP in terms of connection establishment, reliability, ordering, retransmission and common application use cases.
+
+Q0072
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: TCP connection establishment
+
+Question: Explain the TCP three-way handshake. What information is exchanged through SYN, SYN-ACK and ACK packets, and how are initial sequence numbers used?
+
+Q0073
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation and Evidence
+- Job Roles: SOC Analyst, Network Security Engineer, Incident Responder
+- Competency: Packet analysis
+
+Question: You capture a TCP session in Wireshark and observe repeated SYN packets without corresponding SYN-ACK responses. How would you determine whether the problem is caused by packet filtering, an unreachable destination, a service outage or a possible SYN flood?
+
+Q0074
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: ARP and network troubleshooting
+
+Question: Two devices on the same LAN report intermittent connectivity. An ARP inspection tool shows that the IP-to-MAC mapping for the default gateway changes repeatedly. How would you investigate a possible ARP spoofing attack and distinguish it from legitimate network changes?
+
+Q0075
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: Network Security Engineer, Threat Hunter, SOC Analyst
+- Competency: ICMP traffic analysis
+
+Question: Your network monitoring system detects unusual ICMP traffic between internal hosts and an external server. How would you investigate whether the traffic represents legitimate diagnostics, network discovery, tunneling or data exfiltration?
+
+## Topic 5: DHCP, NAT and Routing
+
+Q0076
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Network configuration fundamentals
+
+Question: Explain how DHCP assigns IP addresses to clients. Describe the Discover, Offer, Request and Acknowledgment stages of the DHCP process.
+
+Q0077
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Infrastructure Security Engineer
+- Competency: Routing and address translation
+
+Question: Compare static routing, dynamic routing and Network Address Translation. What problems does each solve, and what security considerations are associated with their implementation?
+
+Q0078
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, Incident Responder
+- Competency: Routing investigation
+
+Question: A server can communicate with machines on its local subnet but cannot reach remote networks. Its IP address and subnet mask are correct. Describe how you would inspect its default gateway, routing table, firewall rules and upstream network connectivity to locate the failure.
+
+## Topic 6: Switching and VLANs
+
+Q0079
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Network Security Engineer, Infrastructure Security Engineer
+- Competency: Switching fundamentals
+
+Question: Explain how an Ethernet switch learns MAC addresses and forwards frames. What is the purpose of a MAC address table?
+
+Q0080
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: How-It-Works
+- Job Roles: Network Security Engineer, Security Architect
+- Competency: VLAN architecture
+
+Question: What is a VLAN? Explain the difference between access ports and trunk ports, and describe how IEEE 802.1Q VLAN tagging works.
+
+Q0081
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Network Security Engineer, Penetration Tester, Security Analyst
+- Competency: VLAN security assessment
+
+Question: During an authorized network assessment, you discover that devices belonging to different VLANs can communicate unexpectedly. How would you investigate trunk configuration, inter-VLAN routing, access control lists and possible VLAN hopping exposure?
+
+## Topic 7: HTTP/HTTPS Networking
+
+Q0082
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: Web Application Security Engineer, SOC Analyst
+- Competency: HTTP networking fundamentals
+
+Question: Explain how HTTP communication works between a client and a web server. What roles do requests, responses, headers, methods and status codes play?
+
+Q0083
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Comparison
+- Job Roles: Web Application Security Engineer, Network Security Engineer
+- Competency: HTTP protocol analysis
+
+Question: Compare HTTP/1.1, HTTP/2 and HTTP/3 in terms of connection handling, multiplexing, transport protocols and their implications for network security monitoring.
+
+Q0084
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Web Application Security Engineer, Incident Responder
+- Competency: HTTP traffic analysis
+
+Question: A web application experiences an unusual increase in POST requests containing large payloads, followed by repeated HTTP 401 and 403 responses. How would you use packet captures, reverse proxy logs and application logs to determine whether this represents automated abuse, authentication attacks or legitimate client behavior?
+
+## Topic 8: DNS
+
+Q0085
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: How-It-Works
+- Job Roles: SOC Analyst, Network Security Engineer
+- Competency: DNS fundamentals
+
+Question: Explain how DNS resolution works from a client requesting a domain name to receiving its corresponding IP address. Describe the roles of recursive resolvers, root servers, TLD servers and authoritative name servers.
+
+Q0086
+
+- Difficulty: Intermediate
+- Classification: Specific Technical
+- Question Type: Direct Question
+- Job Roles: Network Security Engineer, Threat Intelligence Analyst
+- Competency: DNS record analysis
+
+Question: Explain the purpose of A, AAAA, CNAME, MX, NS, TXT, PTR and SOA records. Which of these records would you examine when investigating suspicious domain infrastructure?
+
+Q0087
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Threat Hunter, Threat Intelligence Analyst
+- Competency: DNS threat detection
+
+Question: An endpoint repeatedly queries randomly generated-looking domain names, and many queries return NXDOMAIN responses. How would you investigate possible DNS tunneling or domain generation algorithm activity using DNS telemetry, query frequency, entropy and endpoint process information?
+
+Q0088
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Scenario-Based
+- Job Roles: Threat Hunter, Detection Engineer, Network Security Engineer
+- Competency: DNS attack investigation
+
+Question: Your organization suspects that a compromised internal host is using DNS as a covert command-and-control channel. How would you design a detection approach that distinguishes malicious tunneling from legitimate DNS-heavy applications while minimizing false positives?
+
+## Topic 9: SSH, FTP/SFTP, SMTP/IMAP/POP3
+
+Q0089
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, SOC Analyst
+- Competency: Application protocol security
+
+Question: Compare FTP, FTPS and SFTP. How do their underlying communication mechanisms differ, and why is traditional FTP unsuitable for transmitting sensitive credentials over untrusted networks?
+
+Q0090
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: SOC Analyst, Network Security Engineer, Incident Responder
+- Competency: SSH security investigation
+
+Question: A Linux server receives repeated SSH login attempts followed by a successful login from an unfamiliar IP address. How would you investigate authentication methods, SSH configuration, authorized keys, session activity and subsequent commands to determine whether the account was compromised?
+
+## Topic 10: LDAP, SMB, SNMP, RDP and Kerberos Networking
+
+Q0091
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Broad Conceptual
+- Job Roles: SOC Analyst, Network Security Engineer, IAM Engineer
+- Competency: Enterprise protocol fundamentals
+
+Question: Explain the purpose of LDAP, SMB, SNMP, RDP and Kerberos. Which enterprise systems commonly rely on each protocol?
+
+Q0092
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Investigation
+- Job Roles: SOC Analyst, Active Directory Security Engineer, Incident Responder
+- Competency: Enterprise network protocol investigation
+
+Question: Your SIEM detects an unusual increase in SMB connections between workstation subnets, followed by successful RDP sessions to several servers. How would you investigate whether the activity represents legitimate administration, credential misuse or lateral movement?
+
+## Topic 11: LAN, WAN and DMZ
+
+Q0093
+
+- Difficulty: Beginner
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Security Analyst
+- Competency: Network architecture fundamentals
+
+Question: Differentiate between LAN, WAN and DMZ networks. Why would an organization place publicly accessible web servers in a DMZ rather than directly inside its internal corporate network?
+
+## Topic 12: Proxies, Reverse Proxies and Load Balancers
+
+Q0094
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Web Application Security Engineer
+- Competency: Network infrastructure architecture
+
+Question: Compare forward proxies, reverse proxies and load balancers. Explain where each is positioned in a network architecture and what security functions it can provide.
+
+Q0095
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Troubleshooting
+- Job Roles: Network Security Engineer, Web Application Security Engineer, Security Architect
+- Competency: Proxy and reverse proxy investigation
+
+Question: A production web application sits behind a reverse proxy and load balancer. Users report intermittent authentication failures, and the application logs show inconsistent client IP addresses. How would you investigate forwarded headers, proxy trust configuration, session affinity and request routing?
+
+## Topic 13: VPNs, Firewalls and WAFs
+
+Q0096
+
+- Difficulty: Intermediate
+- Classification: Theoretical
+- Question Type: Comparison
+- Job Roles: Network Security Engineer, Security Analyst
+- Competency: Network security controls
+
+Question: Compare network firewalls, Web Application Firewalls and VPNs. What types of traffic or security threats does each primarily address, and what are their limitations?
+
+## Topic 14: IDS/IPS and Network Segmentation
+
+Q0097
+
+- Difficulty: Advanced
+- Classification: Practical
+- Question Type: Decision-Making
+- Job Roles: Network Security Engineer, SOC Analyst, Security Architect
+- Competency: Network defense engineering
+
+Question: An IDS generates repeated alerts for suspicious traffic between two internal servers, but an IPS deployment could potentially interrupt critical business operations. How would you validate the detection, determine whether blocking is appropriate and minimize the risk of disrupting legitimate services?
+
+Q0098
+
+- Difficulty: Expert
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Network Security Engineer, Security Architect, Purple Team Engineer
+- Competency: Network segmentation architecture
+
+Question: Design a network segmentation strategy for an enterprise containing employee workstations, application servers, databases, domain controllers and publicly accessible services. How would you establish trust boundaries, control east-west traffic and validate that segmentation policies are effective?
+
+## Topic 15: Zero Trust Networking
+
+Q0099
+
+- Difficulty: Expert
+- Classification: Theoretical
+- Question Type: Decision-Making
+- Job Roles: Security Architect, Network Security Engineer, IAM Engineer
+- Competency: Zero Trust architecture
+
+Question: An organization plans to replace its traditional perimeter-based security architecture with Zero Trust networking. What architectural changes would you introduce around identity verification, device posture, least-privilege access, continuous evaluation and network enforcement? How would you measure whether the transition actually improves security?
+
+## Topic 16: Wireshark and tcpdump
+
+Q0100
+
+- Difficulty: Senior
+- Classification: Practical
+- Question Type: Design and Architecture
+- Job Roles: Network Security Engineer, SOC Manager, Security Architect, Threat Hunter
+- Competency: Enterprise packet visibility strategy
+
+Question: Design a network packet visibility and investigation strategy for an organization operating across multiple offices and cloud environments. How would you determine where to deploy packet capture sensors, select between full-packet capture and flow metadata, manage encrypted traffic visibility, preserve evidence and control storage costs while ensuring sufficient telemetry for incident investigations?

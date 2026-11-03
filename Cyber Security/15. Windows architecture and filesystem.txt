@@ -1,0 +1,1066 @@
+# 15. Windows Architecture and Filesystem
+Cybersecurity Fundamentals — Operating Systems
+
+Understanding Windows architecture and its filesystem is essential for cybersecurity because Windows is widely used in enterprise environments, corporate networks, and personal computers. Security professionals need to understand how Windows manages hardware, processes, memory, files, permissions, and system resources to investigate attacks, analyze malware, and secure systems.
+
+This topic covers the internal structure of Windows, its major components, the Windows boot process, filesystem organization, NTFS permissions, the Windows Registry, and important locations used during security investigations.
+
+---
+
+# 1. Windows Operating System Architecture
+
+Windows uses a hybrid kernel architecture. It combines characteristics of monolithic and microkernel designs to provide performance, modularity, and isolation.
+
+The Windows operating system is broadly divided into two execution modes:
+
+1. User Mode
+2. Kernel Mode
+
+These modes provide different levels of access to system resources.
+
+## 1.1 User Mode
+
+User Mode is where ordinary applications and many operating system services execute.
+
+Examples include:
+- Web browsers
+- Text editors
+- Command-line applications
+- User applications
+- Many Windows services and background processes
+
+Each user-mode process normally has its own virtual address space. A process generally cannot directly access another process's private memory or protected kernel memory.
+
+If an application crashes, the failure usually affects that process rather than immediately crashing the entire operating system.
+
+### Examples
+
+| Process | Purpose |
+|---|---|
+| `explorer.exe` | Windows desktop, taskbar, and File Explorer |
+| `notepad.exe` | Text editing |
+| `chrome.exe` | Web browsing |
+| `powershell.exe` | Command-line administration and automation |
+| `svchost.exe` | Hosts certain Windows services |
+
+Security significance: Malware frequently executes in User Mode because compromising an ordinary application or user account can provide an initial foothold into a system.
+
+However, malicious software may attempt to obtain elevated privileges or exploit vulnerabilities to gain access to Kernel Mode.
+
+## 1.2 Kernel Mode
+
+Kernel Mode is the privileged execution mode used by the Windows kernel and other trusted, privileged components.
+
+Code running in Kernel Mode has access to critical operating system resources, including kernel memory and hardware-related functionality.
+
+Important components include:
+- Windows kernel
+- Hardware abstraction layer
+- Device drivers
+- Certain filesystem and network drivers
+
+A serious error in kernel-mode code can cause a system crash, commonly displayed as a Blue Screen of Death (BSOD).
+
+### Why Kernel Mode matters in cybersecurity
+
+Suppose malware gains administrative privileges on a Windows computer.
+
+Administrative privileges provide extensive control, but they do not automatically mean the malware is executing in Kernel Mode.
+
+To gain kernel-level access, an attacker might attempt to exploit a vulnerable driver or abuse a vulnerable kernel component.
+
+Successful kernel compromise can allow an attacker to interfere with security controls, manipulate system behavior, or conceal malicious activity.
+
+This is why security products monitor suspicious driver installation, vulnerable drivers, and attempts to modify kernel-related components.
+
+---
+
+# 2. Major Components of Windows Architecture
+
+The following conceptual diagram shows the major layers of Windows.
+
+```text
++--------------------------------------------------+
+|                  USER MODE                       |
+|                                                  |
+|  Applications                                    |
+|  explorer.exe | chrome.exe | powershell.exe      |
+|                                                  |
+|  Windows Subsystem DLLs                          |
+|  kernel32.dll | user32.dll | advapi32.dll        |
+|                                                  |
+|  Windows Services and Subsystem Processes        |
++--------------------------------------------------+
+|              SYSTEM CALL INTERFACE               |
++--------------------------------------------------+
+|                 KERNEL MODE                      |
+|                                                  |
+|  Windows Executive                              |
+|  +--------------------------------------------+  |
+|  | Object Manager | Process Manager            |  |
+|  | Memory Manager | I/O Manager                |  |
+|  | Security Reference Monitor                  |  |
+|  | Cache Manager | Configuration Manager       |  |
+|  +--------------------------------------------+  |
+|                                                  |
+|  Windows Kernel (NT Kernel)                      |
+|  Device Drivers                                  |
+|  Hardware Abstraction Layer (HAL)                |
++--------------------------------------------------+
+|                   HARDWARE                       |
+|      CPU | RAM | Storage | Network Devices       |
++--------------------------------------------------+
+```
+
+This is a simplified conceptual representation. Actual Windows internals contain additional components, and some services and subsystems operate across different architectural boundaries.
+
+Let's examine the most important components.
+
+## 2.1 Windows Kernel — `ntoskrnl.exe`
+
+The Windows kernel provides fundamental operating system mechanisms.
+
+Its responsibilities include:
+- Thread scheduling and dispatching
+- Interrupt and exception handling
+- Synchronization
+- Low-level processor management
+- Coordination with hardware and privileged components
+
+The kernel works with the Windows Executive to provide the complete operating system environment.
+
+Cybersecurity relevance: Kernel vulnerabilities can potentially allow privilege escalation, while malicious kernel-level code may interfere with process monitoring or other security mechanisms.
+
+## 2.2 Windows Executive
+
+The Windows Executive provides higher-level operating system services.
+
+Important components include:
+
+| Component | Responsibility | Security relevance |
+|---|---|---|
+| Object Manager | Manages system objects and handles | Object access and permissions |
+| Process Manager | Supports process and thread management | Process creation and investigation |
+| Memory Manager | Manages virtual memory and physical memory allocation | Memory exploitation and malware analysis |
+| I/O Manager | Coordinates input/output requests | Filesystem and device operations |
+| Security Reference Monitor | Enforces access checks for protected objects | Authorization and access control |
+| Cache Manager | Supports filesystem caching | File I/O performance and forensic considerations |
+| Configuration Manager | Implements core Registry functionality | Configuration analysis and persistence investigation |
+
+These components work together to provide essential operating system functionality.
+
+For example, when a process attempts to open a protected file, Windows uses object and security mechanisms to determine whether the requested access is permitted.
+
+## 2.3 Hardware Abstraction Layer (HAL)
+
+The Hardware Abstraction Layer separates certain hardware-specific details from the rest of the operating system.
+
+It allows Windows to interact with supported hardware through standardized interfaces.
+
+Its responsibilities include aspects of hardware platform abstraction and low-level system operations.
+
+Security relevance: Understanding the HAL helps explain the separation between hardware, kernel components, and device drivers. It is particularly relevant when studying kernel internals and advanced rootkit techniques.
+
+## 2.4 Device Drivers
+
+A device driver allows the operating system to communicate with particular hardware devices or implement certain low-level system functions.
+
+Examples include:
+- Graphics drivers
+- Network adapter drivers
+- Storage drivers
+- USB device drivers
+- Filesystem drivers
+
+Many drivers execute in Kernel Mode, although Windows also supports certain user-mode drivers.
+
+Drivers are particularly important from a cybersecurity perspective because vulnerable or malicious kernel-mode drivers can provide powerful capabilities.
+
+For example, an attacker with sufficient privileges might attempt to install or load a vulnerable driver to bypass security restrictions.
+
+Defensive practices:
+- Install drivers from trusted sources.
+- Keep drivers updated.
+- Use Windows security features that restrict vulnerable or untrusted drivers.
+- Investigate unexpected driver installations.
+
+---
+
+# 3. Windows Processes, Services, and System Processes
+
+Understanding Windows architecture requires distinguishing applications, processes, and services.
+
+A process is an executing program with its own process-level resources, including a virtual address space.
+
+A thread is an execution unit scheduled by the operating system. A process normally contains one or more threads.
+
+A service is a component designed to provide functionality, often in the background. Services are commonly managed by the Service Control Manager.
+
+Some services run within shared `svchost.exe` processes, while others use separate executable processes.
+
+## Important Windows processes
+
+| Process | Purpose |
+|---|---|
+| `System` | Represents important kernel-related system activity |
+| `smss.exe` | Session Manager Subsystem |
+| `csrss.exe` | Client/Server Runtime Subsystem |
+| `wininit.exe` | Initializes important system processes |
+| `services.exe` | Service Control Manager |
+| `lsass.exe` | Local Security Authority Subsystem Service |
+| `winlogon.exe` | Handles important interactive logon functions |
+| `explorer.exe` | Provides the standard Windows desktop shell |
+| `svchost.exe` | Hosts certain Windows services |
+
+These processes are not inherently malicious simply because of their names.
+
+Attackers sometimes use names resembling legitimate Windows processes to disguise malware.
+
+### Example: Detecting suspicious processes
+
+Open PowerShell and run:
+
+```powershell
+Get-Process
+```
+
+This displays processes visible to your account.
+
+To inspect process IDs and executable paths:
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath
+```
+
+Pay attention to:
+- Unexpected executable paths
+- Unusual parent-child process relationships
+- Processes launched from temporary directories
+- Executables with suspicious names
+- Unexpected command-line arguments
+
+Important: A suspicious path or process name is an investigative clue, not proof of malware. Validate findings using signatures, hashes, command lines, process ancestry, and other evidence.
+
+---
+
+# 4. Windows Boot Process
+
+The Windows boot process explains how the computer transitions from powered-off hardware to a functioning operating system.
+
+Understanding it helps security professionals investigate boot failures, unauthorized boot modifications, and certain persistence techniques.
+
+## 4.1 Boot sequence
+
+A simplified UEFI-based Windows boot sequence is:
+
+```text
+1. Computer powers on
+          |
+          v
+2. UEFI firmware initializes hardware
+          |
+          v
+3. Windows Boot Manager
+   bootmgfw.efi
+          |
+          v
+4. Windows OS Loader
+   winload.efi
+          |
+          v
+5. Windows kernel and essential
+   boot components are initialized
+          |
+          v
+6. Session Manager
+   smss.exe
+          |
+          v
+7. Important system processes and services
+          |
+          v
+8. Logon screen
+          |
+          v
+9. User signs in
+          |
+          v
+10. User session and desktop
+```
+
+The exact sequence contains additional initialization steps and varies with Windows version, configuration, and boot environment.
+
+### Step 1: UEFI firmware
+
+UEFI initializes hardware and identifies a bootable operating system.
+
+On a typical UEFI installation, Windows boot files are stored on the EFI System Partition.
+
+### Step 2: Windows Boot Manager
+
+The Windows Boot Manager selects the operating system to load and processes boot configuration information.
+
+Its executable is commonly:
+
+```text
+bootmgfw.efi
+```
+
+### Step 3: Windows OS Loader
+
+The Windows OS Loader loads the kernel and required boot components.
+
+On a typical UEFI system, the loader is:
+
+```text
+winload.efi
+```
+
+### Step 4: Kernel initialization
+
+The kernel initializes critical operating system structures, memory management, and other essential components.
+
+### Step 5: Session initialization
+
+Windows initializes the required system processes and services, eventually presenting the logon interface.
+
+### Cybersecurity significance
+
+Attackers may attempt to compromise the boot process to execute malicious code early, interfere with security protections, or establish persistence.
+
+Relevant defensive technologies include:
+- Secure Boot: Helps prevent unauthorized or improperly trusted boot components from loading.
+- Trusted Platform Module (TPM): Provides hardware-backed security capabilities.
+- BitLocker: Encrypts supported Windows volumes to help protect data at rest.
+- Measured Boot: Records measurements of boot components for security assessment and attestation.
+
+These technologies address different threats and are most effective when configured appropriately.
+
+---
+
+# 5. Windows Filesystem Architecture
+
+A filesystem organizes data on storage devices and defines how files and directories are stored, located, and accessed.
+
+Windows supports several filesystems, including:
+
+| Filesystem | Typical use | Important characteristics |
+|---|---|---|
+| NTFS | Windows system and data volumes | Permissions, journaling, metadata, and large-volume support |
+| FAT32 | Removable media and compatibility | Broad compatibility; individual files are limited to 4 GiB minus 1 byte |
+| exFAT | Flash drives and removable storage | Supports large files and is suited to flash storage |
+| ReFS | Supported storage and server scenarios | Designed for resilience and data integrity in applicable configurations |
+
+For cybersecurity, NTFS is especially important because it is commonly used for Windows operating system installations and enterprise storage.
+
+---
+
+# 6. NTFS — New Technology File System
+
+NTFS is a Windows filesystem that provides extensive metadata and access-control functionality.
+
+Its features include:
+- Access Control Lists (ACLs)
+- File and directory ownership
+- Journaling
+- Alternate Data Streams
+- Hard links and symbolic links
+- File compression
+- Encryption support through Encrypting File System (EFS), where supported and configured
+- Disk quotas
+- Sparse files
+
+Not every NTFS feature is enabled or used on every Windows system.
+
+Let's examine the features that matter most for security.
+
+## 6.1 Master File Table (MFT)
+
+The Master File Table is a central NTFS metadata structure.
+
+It contains records describing files and directories on an NTFS volume.
+
+Metadata associated with files can include:
+- File names
+- Timestamps
+- Security descriptors
+- File attributes
+- References to file data
+
+Some small files may have their contents stored directly within their MFT records. Larger files generally store data in separate clusters referenced by metadata.
+
+### Example
+
+Suppose the filesystem contains:
+
+```text
+C:\Users\Student\Documents\report.txt
+```
+
+NTFS maintains metadata describing this file, including information needed to locate its content and manage its attributes and permissions.
+
+### Cybersecurity relevance
+
+Digital forensic investigators examine NTFS metadata to reconstruct file activity and investigate suspicious files.
+
+However, timestamps must be interpreted carefully. Different timestamps represent different events, and timestamps can sometimes be modified or affected by normal filesystem behavior.
+
+A timestamp alone does not prove when an attacker created, accessed, or modified a file.
+
+## 6.2 NTFS Journaling
+
+NTFS maintains a change journal, commonly associated with the `$UsnJrnl` metadata file, that records information about changes to files and directories.
+
+Depending on the recorded event, entries can indicate operations such as:
+- File creation
+- File deletion
+- Renaming
+- Changes to file data
+- Changes to file attributes
+
+The USN Change Journal is useful for investigating filesystem activity, but it is not a complete record of every action performed on a system.
+
+Practical application: If suspicious files appear in a directory, forensic investigators may correlate journal records with event logs, timestamps, process activity, and other evidence.
+
+---
+
+# 7. Windows Filesystem Structure
+
+Windows organizes files into volumes, directories, and files.
+
+A volume is a logical storage unit formatted with a filesystem. A drive letter is one way Windows exposes a volume.
+
+For example:
+
+```text
+C:\
+├── Windows\
+│   ├── System32\
+│   ├── SysWOW64\
+│   ├── WinSxS\
+│   └── Temp\
+│
+├── Program Files\
+├── Program Files (x86)\
+├── ProgramData\
+└── Users\
+    ├── Public\
+    └── Student\
+        ├── Desktop\
+        ├── Documents\
+        ├── Downloads\
+        ├── AppData\
+        │   ├── Local\
+        │   ├── LocalLow\
+        │   └── Roaming\
+        └── NTUSER.DAT
+```
+
+This is an illustrative layout. Exact directory contents vary by Windows version, installed software, and system configuration.
+
+## 7.1 `C:\Windows`
+
+This directory contains Windows operating system components.
+
+Important subdirectories include:
+
+### `C:\Windows\System32`
+
+Contains many essential Windows executables, libraries, and system components.
+
+Examples include:
+
+```text
+C:\Windows\System32\cmd.exe
+C:\Windows\System32\WindowsPowerShell\
+C:\Windows\System32\drivers\
+```
+
+Despite its name, `System32` commonly contains 64-bit system components on 64-bit Windows.
+
+### `C:\Windows\SysWOW64`
+
+On 64-bit Windows, this directory generally contains 32-bit system components used for compatibility with 32-bit applications.
+
+The naming convention can be confusing, but it is normal on 64-bit Windows.
+
+### `C:\Windows\WinSxS`
+
+Contains components used by Windows component servicing and related system maintenance operations.
+
+It supports component versioning, updates, and system servicing.
+
+Security relevance: Unexpected modifications to protected Windows files deserve investigation, but legitimate updates and servicing operations also modify these locations.
+
+## 7.2 `C:\Program Files`
+
+Typically contains installed applications.
+
+On 64-bit Windows:
+- `C:\Program Files` commonly holds 64-bit applications.
+- `C:\Program Files (x86)` commonly holds 32-bit applications.
+
+These directories are frequently used for legitimate software installation.
+
+Malware can also reside in application directories, so location alone is not enough to determine whether an executable is safe.
+
+## 7.3 `C:\ProgramData`
+
+Contains application data shared across users.
+
+Some applications store machine-wide configuration, databases, caches, and other supporting data here.
+
+Because this directory can be writable by particular services or applications, defenders should investigate unexpected executable files or persistence-related artifacts found within it.
+
+## 7.4 `C:\Users`
+
+Contains user profile directories.
+
+Each profile may include:
+- Desktop
+- Documents
+- Downloads
+- AppData
+- User-specific configuration files
+
+User-writable directories are important in security investigations because applications and users commonly download, create, and execute files there.
+
+For example, a suspicious executable launched from a Downloads directory may warrant investigation.
+
+However, legitimate software can also run from user directories.
+
+---
+
+# 8. AppData and Security Investigations
+
+The AppData directory contains application-specific data associated with a user profile.
+
+It normally includes three subdirectories.
+
+| Directory | Purpose |
+|---|---|
+| `AppData\Local` | User-specific data that is generally local to the device |
+| `AppData\LocalLow` | Data used by applications operating with certain lower-integrity restrictions |
+| `AppData\Roaming` | User-specific application data that may roam in appropriately configured environments |
+
+### Why security professionals examine AppData
+
+Applications often store configuration, caches, databases, and supporting files here.
+
+Attackers may also abuse user-writable directories for malicious scripts, executables, or persistence mechanisms.
+
+For example, investigate an unexpected executable in:
+
+```text
+C:\Users\Student\AppData\Roaming\
+```
+
+Useful questions include:
+
+1. What created the file?
+2. When was it created or modified?
+3. What process launched it?
+4. Does its digital signature validate?
+5. What is its cryptographic hash?
+6. Does it have associated startup or scheduled-task entries?
+7. Is there related activity in Windows event logs?
+
+A file's presence in AppData is not proof of malicious activity. Many legitimate applications use these directories.
+
+---
+
+# 9. NTFS Permissions and Access Control
+
+NTFS permissions determine which users and groups can perform particular operations on files and directories.
+
+Windows primarily uses Access Control Lists (ACLs) to implement discretionary access control on securable objects such as files and directories.
+
+A security descriptor can contain:
+- Owner information
+- A Discretionary Access Control List (DACL)
+- A System Access Control List (SACL)
+
+The DACL controls access decisions. The SACL specifies auditing rules for access-related events.
+
+## 9.1 Common NTFS permissions
+
+| Permission | General capability |
+|---|---|
+| Full Control | Broad access, including changing permissions and ownership where authorized |
+| Modify | Read, write, and delete capabilities, among others |
+| Read & Execute | Read file contents and execute applicable files |
+| List Folder Contents | List directory contents and traverse in applicable circumstances |
+| Read | Read file contents and associated attributes |
+| Write | Create or modify data and certain attributes |
+
+The precise access granted depends on the object type, specific access-control entries, inheritance, and the operation being performed.
+
+### Example
+
+Suppose a directory contains confidential company documents.
+
+```text
+C:\Company\Finance\
+```
+
+The intended policy might be:
+
+- Finance team: Modify
+- Auditors: Read
+- Ordinary users: No access
+
+If the directory accidentally grants broad write access to ordinary users, an unauthorized user might modify files or place malicious content there.
+
+The exact impact depends on the permissions, application behavior, and other security controls.
+
+## 9.2 Inspecting permissions with PowerShell
+
+Run:
+
+```powershell
+Get-Acl "C:\Users\Student\Documents"
+```
+
+To display access-control entries:
+
+```powershell
+(Get-Acl "C:\Users\Student\Documents").Access
+```
+
+To inspect permissions on a directory and its immediate child items:
+
+```powershell
+Get-ChildItem "C:\Users\Student\Documents" |
+    Get-Acl
+```
+
+This last command does not automatically audit every nested descendant. Recursive inspection requires additional handling.
+
+### What to look for
+
+Investigate permissions that allow unexpected users or groups to:
+- Modify executable files
+- Change security settings
+- Write into sensitive application directories
+- Modify scripts that privileged processes execute
+
+Important distinction: Being able to modify a file does not automatically grant administrative privileges. The security impact depends on how and by whom the file is subsequently used.
+
+---
+
+# 10. NTFS Alternate Data Streams (ADS)
+
+NTFS supports Alternate Data Streams, which allow additional named data streams to be associated with a file.
+
+A normal file can contain a default data stream and additional named streams.
+
+For example:
+
+```text
+report.txt
+report.txt:metadata
+```
+
+The second notation illustrates a named stream associated with the file. It is not necessarily a separate file visible in ordinary directory listings.
+
+### Why ADS matters in cybersecurity
+
+Alternate Data Streams have legitimate uses, but they can also complicate investigations.
+
+For example:
+- Investigators may need to examine streams that ordinary directory listings do not show.
+- Some files downloaded from the internet may have a `Zone.Identifier` stream containing security-related zone information.
+- Malware may abuse named streams to conceal data from casual inspection.
+
+The presence of an alternate stream is not automatically suspicious.
+
+### Inspect streams with PowerShell
+
+On supported Windows versions, you can run:
+
+```powershell
+Get-Item "C:\Path\To\File.txt" -Stream 
+```
+
+To search files and directories for streams:
+
+```powershell
+Get-ChildItem "C:\Path\To\Directory" -Recurse -File |
+    Get-Item -Stream 
+```
+
+The recursive example can be expensive on large directory trees, and access-denied errors or unsupported locations may affect the results.
+
+Use a test directory when learning about alternate streams.
+
+---
+
+# 11. The Windows Registry
+
+The Windows Registry is a hierarchical configuration database used by Windows and many applications.
+
+It stores settings related to:
+- Operating system configuration
+- Installed software
+- Hardware
+- User profiles
+- Services
+- File associations
+- Some application startup mechanisms
+
+The Registry is not a filesystem. It is a separate configuration system that uses hierarchical keys and values.
+
+## 11.1 Main Registry root keys
+
+| Root key | Purpose |
+|---|---|
+| `HKEY_LOCAL_MACHINE` (HKLM) | Machine-wide configuration |
+| `HKEY_CURRENT_USER` (HKCU) | Configuration for the current user |
+| `HKEY_USERS` (HKU) | Loaded user profile hives |
+| `HKEY_CLASSES_ROOT` (HKCR) | Merged view of class-registration information |
+| `HKEY_CURRENT_CONFIG` (HKCC) | Information associated with the current hardware profile |
+
+### Example
+
+A machine-wide software setting might be located under:
+
+```text
+HKEY_LOCAL_MACHINE\SOFTWARE
+```
+
+A current-user application setting might be located under:
+
+```text
+HKEY_CURRENT_USER\Software
+```
+
+The actual location depends on the application and configuration.
+
+## 11.2 Registry hives
+
+A Registry hive is a file-backed collection of Registry keys and values.
+
+Important examples include:
+
+| Hive or file | General purpose |
+|---|---|
+| `SYSTEM` | System configuration, including control sets and service configuration |
+| `SOFTWARE` | Machine-wide software and operating system settings |
+| `SAM` | Local account database information |
+| `SECURITY` | Local security policy and related information |
+| `NTUSER.DAT` | User-specific Registry data |
+| `UsrClass.dat` | Per-user class-registration and related information |
+
+Several system hives are commonly stored under:
+
+```text
+C:\Windows\System32\config\
+```
+
+`NTUSER.DAT` is typically stored in a user's profile directory.
+
+These files contain sensitive information. Access should be controlled, and Registry hive collection should follow appropriate forensic procedures.
+
+## 11.3 Registry and persistence
+
+Some applications configure themselves to start automatically through Registry-based startup locations.
+
+This creates an opportunity for abuse if an attacker can write to an applicable location or modify the associated configuration.
+
+Security investigators examine relevant Registry keys when investigating suspicious automatic execution.
+
+Defensive principle: Do not delete Registry entries solely because they look unfamiliar. Establish their purpose, identify the associated executable, and preserve evidence before making changes.
+
+---
+
+# 12. NTFS vs. Windows Registry
+
+These are different components that serve complementary purposes.
+
+| Feature | NTFS | Windows Registry |
+|---|---|---|
+| Primary purpose | Store and organize files | Store hierarchical configuration data |
+| Structure | Files, directories, metadata, streams | Keys, subkeys, and values |
+| Examples | Documents, executables, logs | Service settings, application configuration |
+| Access control | Filesystem security descriptors and ACLs | Registry key security descriptors and ACLs |
+| Forensic value | File activity, metadata, and content | Configuration changes and certain persistence artifacts |
+| Common investigation | Suspicious executable or deleted file | Unexpected startup or service configuration |
+
+An attacker might store a malicious executable on an NTFS volume and configure a Registry-based mechanism to launch it automatically.
+
+An investigation may therefore need to examine both the executable and the configuration that references it.
+
+---
+
+# 13. Important Windows Directories for Cybersecurity
+
+Security analysts often examine specific directories when investigating malware, suspicious execution, or system compromise.
+
+| Location | Why it matters |
+|---|---|
+| `C:\Windows\System32` | Essential Windows components and executables |
+| `C:\Windows\System32\drivers` | Many system driver files |
+| `C:\Windows\Temp` | Temporary system-related files |
+| `%TEMP%` | Temporary files for the current user or process environment |
+| `%APPDATA%` | Roaming application data for the current user |
+| `%LOCALAPPDATA%` | Local application data for the current user |
+| `C:\ProgramData` | Shared application data |
+| `C:\Users\Public` | Files accessible to multiple local users, subject to permissions |
+| `C:\Program Files` | Common installation directory for applications |
+| `C:\Program Files (x86)` | Common installation directory for 32-bit applications on 64-bit Windows |
+| `C:\Windows\System32\config` | Important Registry hive files |
+
+These locations are not inherently malicious. They are useful because understanding their normal purpose helps analysts recognize unusual behavior.
+
+---
+
+# 14. Practical Lab: Explore Windows Architecture and Filesystem
+
+You can complete this lab on your own Windows computer without installing additional software.
+
+Use PowerShell for the exercises.
+
+## Exercise 1: Identify the Windows version
+
+Run:
+
+```powershell
+Get-ComputerInfo |
+    Select-Object WindowsProductName, WindowsVersion, OsArchitecture
+```
+
+Learn:
+- Which Windows version is installed?
+- Is the operating system 64-bit?
+- Why does operating system version matter when evaluating security features and vulnerabilities?
+
+## Exercise 2: Inspect running processes
+
+Run:
+
+```powershell
+Get-Process |
+    Select-Object ProcessName, Id, CPU
+```
+
+Then:
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath
+```
+
+Learn:
+- How many processes are running?
+- Which processes have visible executable paths?
+- Which processes have unusual names or parent-child relationships?
+- Why is a process name alone insufficient to establish maliciousness?
+
+Some executable paths may be unavailable because of access restrictions or process characteristics.
+
+## Exercise 3: Explore important directories
+
+Run:
+
+```powershell
+Get-ChildItem C:\Windows
+```
+
+Inspect your user profile:
+
+```powershell
+Get-ChildItem $env:USERPROFILE
+```
+
+Display your AppData paths:
+
+```powershell
+$env:APPDATA
+$env:LOCALAPPDATA
+$env:TEMP
+```
+
+Learn:
+- What types of files are stored in each directory?
+- Which directories contain operating system components?
+- Which directories are associated with your user profile?
+
+Do not delete or modify system files during this exercise.
+
+## Exercise 4: Inspect NTFS permissions
+
+Run:
+
+```powershell
+Get-Acl "$env:USERPROFILE\Documents"
+```
+
+Then:
+
+```powershell
+(Get-Acl "$env:USERPROFILE\Documents").Access |
+    Format-Table IdentityReference, FileSystemRights, AccessControlType, IsInherited
+```
+
+Learn:
+- Which users and groups have access?
+- Which permissions are inherited?
+- What is the difference between Allow and Deny entries?
+
+Remember that effective access depends on the complete security context, including group membership and applicable access-control entries.
+
+## Exercise 5: Explore the Windows Registry
+
+Open PowerShell and run:
+
+```powershell
+Get-ChildItem Registry::HKEY_LOCAL_MACHINE\SOFTWARE |
+    Select-Object -First 20
+```
+
+Inspect a common Registry location:
+
+```powershell
+Get-ChildItem "HKCU:\Software" |
+    Select-Object -First 20
+```
+
+Learn:
+- How is Registry data organized?
+- What is the difference between machine-wide and user-specific configuration?
+- Why might investigators inspect Registry data when investigating persistence?
+
+Use read-only commands. Do not modify startup settings or security-sensitive Registry keys as part of this exercise.
+
+## Exercise 6: Check file metadata
+
+Select an ordinary file you own:
+
+```powershell
+Get-Item "$env:USERPROFILE\Documents\example.txt" |
+    Select-Object FullName, Length, CreationTime, LastWriteTime, LastAccessTime
+```
+
+Replace `example.txt` with the name of an existing file.
+
+Calculate its SHA-256 hash:
+
+```powershell
+Get-FileHash "$env:USERPROFILE\Documents\example.txt" -Algorithm SHA256
+```
+
+Learn:
+- What information does file metadata provide?
+- What is a cryptographic hash?
+- Why is a hash useful when comparing a suspicious file against a known sample?
+
+A hash identifies file content with high probability, but a matching hash does not independently establish whether a file is malicious.
+
+---
+
+# 15. Common Windows Security Investigation Scenarios
+
+Understanding the concepts above allows you to approach practical security problems.
+
+### Scenario 1: A suspicious executable appears in AppData
+
+An executable appears in a user's roaming application-data directory.
+
+Investigate:
+1. File metadata and SHA-256 hash.
+2. Digital signature and publisher.
+3. Process execution history and parent process.
+4. Related Registry or scheduled-task entries.
+5. Relevant Windows event logs.
+6. Network activity associated with the process, if evidence is available.
+
+Do not assume the executable is malicious solely because it is stored in AppData.
+
+### Scenario 2: A user can modify a sensitive application file
+
+A standard user appears to have write permission on an application executable.
+
+Investigate:
+1. The file's actual ACL.
+2. Inherited permissions on its parent directories.
+3. Which users and groups can modify the file.
+4. Whether a privileged service or administrator executes it.
+5. Whether the permissions are intentional.
+
+If a privileged process executes a file that an unprivileged user can modify, the configuration may create a privilege-escalation risk.
+
+### Scenario 3: A computer launches an unfamiliar program at startup
+
+Investigate:
+1. Registry-based startup configuration.
+2. Scheduled tasks.
+3. Windows services.
+4. Startup folders.
+5. The executable's location, signature, and hash.
+6. Related process and event-log evidence.
+
+Startup execution can be legitimate or malicious. Correlate multiple sources before reaching a conclusion.
+
+### Scenario 4: A Windows system may have been compromised at boot
+
+Investigate:
+1. Secure Boot configuration and status.
+2. Relevant boot configuration.
+3. Unexpected driver installations.
+4. Boot-related system events.
+5. Windows security alerts.
+6. Firmware and platform security evidence where appropriate.
+
+A normal boot configuration does not prove that a system is uncompromised, and a boot-related anomaly does not necessarily indicate a bootkit.
+
+---
+
+# 16. Windows vs. Linux Architecture and Filesystem
+
+Since you are studying both operating systems for cybersecurity, understanding their differences will help you connect the concepts.
+
+| Feature | Windows | Linux |
+|---|---|---|
+| Kernel architecture | Hybrid kernel | Monolithic kernel with loadable modules |
+| Common system filesystem | NTFS | Ext4, XFS, Btrfs, and others |
+| Root filesystem | Commonly exposed through drive letters such as `C:\` | Organized under `/` |
+| Path separator | Backslash `\` | Forward slash `/` |
+| Typical configuration system | Windows Registry and configuration files | Primarily text-based configuration files and other mechanisms |
+| User and group permissions | Access Control Lists and security descriptors | Traditional ownership and mode bits, with ACL support |
+| Process management | Windows process and thread mechanisms | Linux process and thread mechanisms |
+| Services | Windows services, commonly managed by SCM | Commonly managed by systemd on modern distributions |
+| System logging | Windows Event Log and other logging mechanisms | Journald, syslog, and application logs |
+| Common shell | PowerShell, Command Prompt | Bash, Zsh, and other shells |
+| Common security mechanisms | Windows Defender, Windows Firewall, ACLs, UAC, and other controls | Linux security modules, file permissions, firewall tools, and other controls |
+
+Neither operating system is inherently secure in every configuration. Security depends on implementation, patching, permissions, software, monitoring, and administrative practices.
+
+---
+
+# 17. Key Concepts to Remember
+
+For university examinations and cybersecurity fundamentals, focus on the following:
+
+1. Windows uses a hybrid kernel architecture with User Mode and Kernel Mode.
+2. The Windows kernel, Executive, drivers, and HAL perform different operating system functions.
+3. Processes, threads, and services are distinct concepts.
+4. The Windows boot process includes UEFI firmware, Boot Manager, OS Loader, kernel initialization, and system startup.
+5. NTFS is a major Windows filesystem supporting ACLs, metadata, journaling, and alternate data streams.
+6. The Master File Table (MFT) stores records describing files and directories on an NTFS volume.
+7. NTFS permissions control access to files and directories.
+8. The Windows Registry stores hierarchical configuration data and is not itself a filesystem.
+9. Directories such as AppData, ProgramData, and Windows system directories are useful locations for security investigations.
+10. Security analysts correlate filesystem metadata, process activity, permissions, Registry data, and event logs instead of relying on a single indicator.
+
+## What you should study next
+
+To build on this topic, the most useful next subjects are:
+
+- Windows internals: Processes, threads, handles, virtual memory, and system calls.
+- Windows security: Users, groups, UAC, access tokens, ACLs, and privileges.
+- Windows event logging: Security logs, Sysmon, Event Viewer, and PowerShell logging.
+- Windows persistence: Registry startup locations, scheduled tasks, services, and startup folders.
+- Windows malware analysis: PE files, DLL loading, process injection, and memory analysis.
+
+Recommended practical goal: Be able to inspect a Windows process, identify its executable path, examine its file permissions, calculate its SHA-256 hash, and explain where you would look for evidence if it behaved suspiciously. This connects Windows architecture and filesystem knowledge directly to real-world cybersecurity investigations.

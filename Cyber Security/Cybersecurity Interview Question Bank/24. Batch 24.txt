@@ -1,0 +1,1038 @@
+# Batch 24 — Advanced Windows Internals, Exploitation & Enterprise Defense
+
+## Beginner (Q2301–Q2315)
+
+Q2301
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Windows Security Engineer, Malware Analyst, Security Researcher
+- Competency: Understanding Windows kernel architecture
+
+Question: Explain the difference between user mode and kernel mode in Windows. Why does executing code in kernel mode introduce greater security risks than executing the same code in an ordinary user-mode process?
+
+Q2302
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, SOC Analyst
+- Competency: Investigating Windows driver inventory
+
+Question: You discover an unfamiliar driver on a Windows endpoint. Which PowerShell commands and Windows management interfaces would you use to identify its filename, service name, publisher, digital signature, start type and loading status? How would you determine whether it is authorized?
+
+Q2303
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Reverse Engineer, Security Researcher, Malware Analyst
+- Competency: Understanding virtual memory protection
+
+Question: Explain the purpose of memory-page permissions such as read, write and execute. Why does allowing a memory region to be both writable and executable increase the attack surface of a process?
+
+Q2304
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, SOC Analyst
+- Competency: Investigating Linux kernel modules
+
+Question: A Linux server contains an unfamiliar loaded kernel module. Which commands would you use to inspect loaded modules, module dependencies, associated files and kernel messages? Explain how you would investigate whether the module was loaded legitimately.
+
+Q2305
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Understanding memory corruption
+
+Question: Explain the difference between a buffer overflow, an out-of-bounds read and a use-after-free vulnerability. What types of security impact can arise from each?
+
+Q2306
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SOC Analyst, Detection Engineer
+- Competency: Investigating Windows driver-loading events
+
+Question: A Windows endpoint generates a System log event indicating that a new kernel driver service was installed. Explain how you would examine the service configuration, driver file, signature information and surrounding process activity to establish whether the installation was authorized.
+
+Q2307
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Understanding executable memory layout
+
+Question: Explain the differences between the stack, heap, code section and data section of a process. Why does understanding these regions help an analyst investigate memory-corruption vulnerabilities?
+
+Q2308
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Identifying native application crashes
+
+Question: A native Windows application crashes when processing a malformed input file. Using Windows Event Viewer and a debugger, explain how you would identify the faulting module, exception code, instruction address and relevant crash context.
+
+Q2309
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Understanding enterprise privilege boundaries
+
+Question: Explain the difference between a local administrator, a domain administrator and a service account with delegated privileges. Why can granting broad administrative rights to service accounts create an enterprise-wide security risk?
+
+Q2310
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Kubernetes Security Engineer
+- Competency: Inspecting container runtime configuration
+
+Question: You discover that a production container runs with UID 0. Which container configuration fields and runtime settings would you inspect to determine whether the container has additional host privileges? Explain how you would assess the actual risk instead of assuming that every root container has identical capabilities.
+
+Q2311
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, Security Analyst
+- Competency: Understanding security telemetry provenance
+
+Question: What is telemetry provenance, and why should a security analyst understand where an event originated, how it was collected and whether it was transformed before reaching the SIEM?
+
+Q2312
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Inspecting HTTP authorization failures
+
+Question: An API returns HTTP 403 for a request made by an authenticated user. Which request headers, token claims, application logs and authorization decisions would you examine to determine whether the denial is caused by an invalid permission, an incorrect tenant context or a backend configuration problem?
+
+Q2313
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Auditor, Security Architect
+- Competency: Understanding security exceptions
+
+Question: What is a security exception, and how should an organization document its business justification, affected assets, compensating controls, approval authority, expiration date and residual risk?
+
+Q2314
+
+- Difficulty: Beginner
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Threat Hunter, Windows Security Engineer
+- Competency: Inspecting Windows process integrity
+
+Question: A process unexpectedly executes from a directory normally used for temporary files. Which PowerShell commands and Windows process-inspection tools would you use to examine its executable path, parent process, user context, digital signature and command line?
+
+Q2315
+
+- Difficulty: Beginner
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, DevSecOps Engineer
+- Competency: Understanding infrastructure trust boundaries
+
+Question: Explain the difference between infrastructure isolation, administrative isolation and data isolation. Why can two cloud environments that use separate virtual networks still share important security dependencies?
+
+## Intermediate (Q2316–Q2340)
+
+Q2316
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, Reverse Engineer
+- Competency: Investigating Windows process access rights
+
+Question: During an endpoint investigation, an unfamiliar process opens a handle to another process with access rights that include `PROCESS_VM_READ`, `PROCESS_VM_WRITE` and `PROCESS_VM_OPERATION`. Explain how you would inspect the process relationships, handle information, call sequence and associated telemetry to determine whether the access represents legitimate debugging or suspicious memory manipulation.
+
+Q2317
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Researcher, Reverse Engineer, Malware Analyst
+- Competency: Understanding operating-system attack surfaces
+
+Question: How do system calls, kernel objects, device interfaces and privileged drivers collectively influence the attack surface of an operating system? Why can a vulnerability in a seemingly minor driver have consequences beyond the application that interacts with it?
+
+Q2318
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, Incident Responder
+- Competency: Investigating Linux privilege boundaries
+
+Question: A Linux process unexpectedly has effective UID 0 while its real UID belongs to an ordinary user. Explain how you would inspect its credentials, executable permissions, capabilities, parent process and execution history to identify how the privilege transition occurred.
+
+Q2319
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Understanding use-after-free exploit conditions
+
+Question: Why does a use-after-free vulnerability become dangerous when an application reuses a freed memory region for another object? Explain how object lifetime, allocator behavior, stale pointers and attacker-controlled data can influence the security impact.
+
+Q2320
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Reverse Engineer, Malware Analyst
+- Competency: Debugging native application memory failures
+
+Question: You receive a Windows crash dump containing an access violation with exception code `0xC0000005`. Using WinDbg, explain how you would examine the exception record, instruction pointer, faulting memory address, registers and call stack to determine whether the application attempted an invalid read, write or execution.
+
+Q2321
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Active Directory Security Engineer, IAM Engineer
+- Competency: Understanding privileged identity lifecycle
+
+Question: How should an enterprise manage the lifecycle of privileged identities from creation through authorization, monitoring, periodic review and decommissioning? Explain why orphaned administrative accounts and service identities create different risks from ordinary inactive employee accounts.
+
+Q2322
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, Detection Engineer
+- Competency: Detecting vulnerable driver exposure
+
+Question: An endpoint contains a signed but vulnerable third-party driver. Explain how you would identify its version, verify whether it appears in Microsoft's vulnerable-driver blocklist or another approved security source, inspect Code Integrity telemetry and assess whether the driver is actually loaded or exposed to exploitation.
+
+Q2323
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, Threat Hunter
+- Competency: Understanding detection signal quality
+
+Question: Explain how signal-to-noise ratio affects security monitoring. Why can increasing the number of alerts reduce an organization's ability to identify important attacks, even when detection coverage technically improves?
+
+Q2324
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Investigating insecure deserialization
+
+Question: An application accepts serialized objects from an external client and reconstructs them on the server. During an authorized assessment, you suspect that deserialization can trigger unexpected object behavior. Describe how you would identify the serialization format, trace object reconstruction, assess gadget availability and determine the impact without executing harmful payloads.
+
+Q2325
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Cloud Security Engineer, Security Architect
+- Competency: Understanding cloud identity boundaries
+
+Question: How do cloud resource policies, organization-level policies, identity permissions and service-control policies interact? Explain why a principal with broad permissions in one account may still be unable to perform an operation because of a higher-level organizational restriction.
+
+Q2326
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Detection Engineer
+- Competency: Investigating privileged Kubernetes workloads
+
+Question: A Kubernetes workload unexpectedly uses `hostPID: true` and mounts `/var/run` from the host. Explain how you would investigate the pod specification, container capabilities, runtime events and host process visibility to determine whether the workload crosses its intended isolation boundary.
+
+Q2327
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: DFIR Analyst, Incident Responder
+- Competency: Understanding memory acquisition reliability
+
+Question: Explain how memory acquisition methods can modify the very system state being investigated. What trade-offs exist between live acquisition, crash-dump analysis and hypervisor-level memory capture?
+
+Q2328
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, SIEM Engineer
+- Competency: Building Windows kernel security detections
+
+Question: Your SIEM receives Windows Code Integrity events and driver inventory data. Design a detection that identifies a newly loaded unsigned or unexpectedly signed driver on a production workstation. Explain how you would correlate the driver hash, signer, installation process, host role and software deployment history to reduce false positives.
+
+Q2329
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Application Security Engineer
+- Competency: Understanding secure memory management
+
+Question: How do memory-safe languages, compiler protections, runtime checks and secure coding practices complement one another? Why can a memory-safe language still contain security vulnerabilities involving logic, authorization, unsafe interfaces or incorrect resource handling?
+
+Q2330
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Analyzing stack corruption with debugging tools
+
+Question: A C application crashes after copying a user-controlled string into a fixed-size buffer. Explain how you would reproduce the issue in an isolated test environment using AddressSanitizer or GDB, identify the unsafe operation and determine whether the problem is an out-of-bounds write. What evidence would you preserve for a vulnerability report?
+
+Q2331
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Incident Responder
+- Competency: Investigating cloud administrative privilege escalation
+
+Question: An AWS CloudTrail investigation reveals that an ordinary user created a new IAM policy version and attached it to an existing role. Which events, policy documents, principal attributes and subsequent API calls would you inspect to establish whether the modification increased effective privileges?
+
+Q2332
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst, Security Auditor
+- Competency: Understanding security control ownership
+
+Question: Explain the difference between control ownership, control operation, control assurance and risk ownership. Why should an organization avoid assigning responsibility for an entire security control to a team that only operates one technical component?
+
+Q2333
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Malware Analyst, Reverse Engineer
+- Competency: Investigating Windows API behavior
+
+Question: A suspicious executable imports `NtQueryInformationProcess`, `NtProtectVirtualMemory`, `NtAllocateVirtualMemory` and `NtWriteVirtualMemory`. Explain how you would investigate the arguments and call context of these native APIs in an isolated debugger session. Why is understanding the actual operation more important than treating the presence of these API names as proof of malicious intent?
+
+Q2334
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Threat Hunter, Security Architect, SOC Manager
+- Competency: Understanding detection engineering feedback loops
+
+Question: How should an organization use incident investigations, threat hunts, penetration tests and Purple Team exercises to improve detection engineering? Explain why findings should be translated into tested detection requirements rather than simply added to an alert backlog.
+
+Q2335
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Investigating authorization middleware bypass
+
+Question: Consider this Express.js route:
+
+```
+app.get("/admin/reports", authenticate, async (req, res) => {
+  const reports = await Report.findMany({
+    where: { organizationId: req.query.organizationId }
+  });
+
+  res.json(reports);
+});
+```
+
+The `authenticate` middleware verifies the user's identity but does not check their administrative permissions or organization membership. Explain how you would correct the authorization model, enforce tenant scoping and prevent a user from accessing another organization's reports by changing query parameters.
+
+Q2336
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, Incident Responder
+- Competency: Understanding cloud recovery dependencies
+
+Question: Why should cloud recovery plans identify dependencies on DNS, identity providers, encryption keys, deployment pipelines, network connectivity and external control planes? Explain how an apparently successful restoration can still fail if one critical dependency remains compromised.
+
+Q2337
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, Detection Engineer
+- Competency: Investigating kernel module persistence
+
+Question: A Linux endpoint loads an unfamiliar module after every reboot. Describe how you would investigate `/etc/modules-load.d`, module configuration files, initramfs contents, systemd units, module dependencies and kernel logs to identify the persistence mechanism and its owner.
+
+Q2338
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Cryptography Engineer, Security Researcher
+- Competency: Understanding cryptographic implementation boundaries
+
+Question: Why can a cryptographically secure algorithm be undermined by incorrect API usage, insecure randomness, weak key storage or faulty error handling? Explain how implementation security differs from algorithm security.
+
+Q2339
+
+- Difficulty: Intermediate
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: SOC Analyst, Threat Hunter, Windows Security Engineer
+- Competency: Investigating unexpected Windows service installation
+
+Question: You discover a new Windows service that executes a binary from a user-writable directory. Which service-control configuration, registry entries, process creation records, binary signature details and installation events would you examine to determine whether the service is malicious persistence?
+
+Q2340
+
+- Difficulty: Intermediate
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Purple Team Engineer, GRC Analyst
+- Competency: Evaluating defensive control effectiveness
+
+Question: How should an organization distinguish between a security control that blocks a simulated attack, one that detects it and one that successfully supports investigation and containment? Explain why these outcomes should be measured independently.
+
+## Advanced (Q2341–Q2370)
+
+Q2341
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, Reverse Engineer, Malware Analyst
+- Competency: Investigating Windows kernel object access
+
+Question: A process opens handles to several kernel objects associated with a security service and subsequently attempts to modify their access permissions. Design an investigation using handle inspection, object-manager information, process telemetry, driver activity and Windows security logs. How would you determine whether the behavior represents legitimate security software interaction or an attempt to interfere with protected processes?
+
+Q2342
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Researcher, Reverse Engineer, Security Architect
+- Competency: Understanding kernel attack-surface reduction
+
+Question: How do driver signing, kernel-mode code integrity, virtualization-based security, HVCI and the vulnerable-driver blocklist contribute to Windows kernel protection? Explain their distinct security objectives and why none should be considered a complete substitute for secure driver development.
+
+Q2343
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, DFIR Analyst
+- Competency: Investigating suspicious Linux kernel behavior
+
+Question: A Linux server exhibits unexplained system-call behavior and intermittent discrepancies between process listings and observed resource usage. Design an investigation using auditd, kernel logs, `/proc`, eBPF-based observability and independent host monitoring. How would you distinguish a compromised user-space process from a possible kernel-level visibility problem?
+
+Q2344
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Understanding control-flow integrity
+
+Question: Explain how control-flow integrity mechanisms attempt to prevent attackers from redirecting program execution through corrupted function pointers or return addresses. What limitations arise from incomplete coverage, legitimate control-flow targets and interactions with other memory-corruption vulnerabilities?
+
+Q2345
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, Detection Engineer, DFIR Analyst
+- Competency: Detecting kernel-level security-control interference
+
+Question: An endpoint's security agent stops receiving process and file telemetry shortly after an unfamiliar driver loads. Develop an investigation correlating driver installation, Code Integrity events, service-state changes, EDR health records and kernel crash information. How would you distinguish a malicious attempt to disable telemetry from a driver compatibility failure?
+
+Q2346
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Active Directory Security Engineer
+- Competency: Understanding enterprise privilege graph analysis
+
+Question: How would you model enterprise privilege as a graph of users, groups, computers, service identities, ACLs, delegated permissions and trust relationships? Explain how graph-based analysis can identify indirect privilege escalation paths that are difficult to discover through conventional access reviews.
+
+Q2347
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, Threat Hunter, DFIR Analyst
+- Competency: Investigating dangerous directory ACL modifications
+
+Question: During an authorized investigation, you discover that a standard user has gained the ability to modify the security descriptor of a privileged Active Directory object. Explain how you would examine the object's DACL, inherited permissions, relevant directory audit events and replication metadata. How would you determine the effective impact and safely restore the intended permissions?
+
+Q2348
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Understanding exploit primitives
+
+Question: Explain the difference between an arbitrary read, arbitrary write, controlled instruction pointer and controlled memory allocation primitive. Why do exploit researchers distinguish the vulnerability itself from the primitive it provides?
+
+Q2349
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Assessing a heap corruption vulnerability
+
+Question: A native application contains a heap-use-after-free finding reported by AddressSanitizer. Explain how you would reproduce the issue, identify the allocation and deallocation paths, examine object lifetime and determine whether attacker-controlled input can influence the stale object. How would you distinguish a reproducible security vulnerability from a low-impact application crash?
+
+Q2350
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, Kubernetes Security Engineer
+- Competency: Understanding container-to-host trust boundaries
+
+Question: How do Linux namespaces, cgroups, capabilities, seccomp, SELinux or AppArmor and container runtime isolation work together to constrain workloads? Explain why weakening multiple independent isolation mechanisms can turn a container configuration issue into a host-compromise risk.
+
+Q2351
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Incident Responder
+- Competency: Investigating Kubernetes node compromise
+
+Question: A Kubernetes node unexpectedly runs a process outside the normal container runtime while several pods report unusual filesystem behavior. Design an investigation using node-level process information, container runtime metadata, kubelet logs, audit events, mount namespaces and kernel telemetry. How would you determine whether the incident is limited to one pod or affects the underlying node?
+
+Q2352
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, Security Architect, Purple Team Engineer
+- Competency: Understanding cross-layer detection engineering
+
+Question: How should detections combine application, operating-system, identity, network and cloud telemetry when no individual source can independently establish malicious activity? Discuss entity resolution, event ordering, confidence scoring and the consequences of missing evidence.
+
+Q2353
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, API Security Engineer
+- Competency: Investigating authorization inconsistencies in asynchronous jobs
+
+Question: An API validates that a user owns a report before scheduling an asynchronous export. However, the worker later retrieves the report using only its database ID. Design an investigation and remediation plan that traces authorization context from the initial HTTP request through the queue, worker and storage layer. How would you prevent tampering with queued messages and authorization-context loss?
+
+Q2354
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Understanding kernel-mode malware analysis
+
+Question: Why is kernel-mode malware analysis substantially more difficult than ordinary user-mode malware analysis? Discuss differences in execution context, memory access, system visibility, debugging constraints and the reliability of evidence collected from a potentially compromised kernel.
+
+Q2355
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: DFIR Analyst, Reverse Engineer, Security Researcher
+- Competency: Investigating Linux kernel crashes
+
+Question: A Linux server generates a kernel oops following execution of an unfamiliar module. Using kernel logs, `vmcore`, `crash` and symbol information, explain how you would examine the faulting instruction, register state, stack trace, loaded modules and affected kernel structures. What evidence would support a driver defect rather than malicious kernel modification?
+
+Q2356
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, IAM Engineer, Cloud Security Architect
+- Competency: Designing resilient privileged-access architecture
+
+Question: How would you architect privileged access across on-premises infrastructure, cloud environments, Kubernetes clusters and CI/CD platforms so that no single administrator credential provides unrestricted control over every security boundary? Discuss just-in-time privileges, independent approval, privileged workstation design and recovery access.
+
+Q2357
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, SIEM Engineer, Windows Security Engineer
+- Competency: Building kernel-driver detection correlation
+
+Question: Your detection platform receives driver installation events, Code Integrity records, process creation telemetry and endpoint health information. Design a correlation rule that identifies an unusual driver installation followed by a loss of security-agent reporting or unexpected system behavior. Explain how you would test the rule against legitimate software updates, driver maintenance and incomplete event collection.
+
+Q2358
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Researcher, Application Security Engineer
+- Competency: Understanding compiler-assisted memory safety
+
+Question: Explain how compiler hardening features, sanitizers, safe-language abstractions and runtime instrumentation contribute to finding or preventing memory corruption. What are the limitations of applying these protections to large legacy applications containing native dependencies and unsafe interfaces?
+
+Q2359
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, DevSecOps Engineer, Security Auditor
+- Competency: Investigating compromised deployment identities
+
+Question: A production deployment identity unexpectedly changes infrastructure permissions, deploys a new container image and modifies a cloud logging configuration. Design an investigation using CI/CD execution records, cloud audit logs, artifact provenance, IAM history and deployment metadata. How would you determine whether the deployment identity was stolen, misused by an authorized operator or compromised through the pipeline?
+
+Q2360
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: GRC Analyst, Security Architect, Security Director
+- Competency: Understanding technology concentration risk
+
+Question: How can an enterprise become excessively dependent on a single endpoint management platform, identity provider, cloud provider or security vendor? Explain how common-mode failures, administrative concentration and vendor dependency can undermine otherwise mature security controls.
+
+Q2361
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Investigating integer-overflow vulnerabilities
+
+Question: A C application calculates an allocation size using a user-controlled element count multiplied by an element size. Explain how you would inspect the integer types, signedness, arithmetic behavior and allocation result using static analysis and debugging. How would you establish whether an integer overflow can cause an undersized allocation and subsequent out-of-bounds access?
+
+Q2362
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: DFIR Analyst, Incident Responder, Security Architect
+- Competency: Understanding evidence trust under kernel compromise
+
+Question: If an attacker gains kernel-level control over an endpoint, how does this affect confidence in locally collected process lists, filesystem records, security logs and memory observations? Explain how investigators should use independent evidence sources and document the limitations of potentially compromised collection mechanisms.
+
+Q2363
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Application Security Engineer, Security Researcher
+- Competency: Investigating unsafe native extensions
+
+Question: A Node.js application uses a native C++ addon to process uploaded binary files. The JavaScript layer validates input length, but the native addon performs additional memory operations without equivalent bounds checking. Design a security review that traces the input across the JavaScript-to-native boundary, identifies unsafe conversions and validates memory-safety protections.
+
+Q2364
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Detection Engineer, SOC Manager
+- Competency: Designing independent security assurance
+
+Question: Why should an enterprise periodically validate security controls through independent mechanisms rather than relying exclusively on the status reported by the products that implement those controls? Discuss independent measurement, telemetry integrity, testing authority and the risk of self-reported security posture.
+
+Q2365
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, Threat Hunter, DFIR Analyst
+- Competency: Investigating eBPF-based security risks
+
+Question: A Linux endpoint runs several unfamiliar eBPF programs with attachment points associated with networking and process monitoring. Explain how you would inventory the programs and maps, identify their loaders and owners, inspect attachment types and correlate their activity with process and kernel telemetry. How would you distinguish legitimate observability tooling from unauthorized kernel-level monitoring or manipulation?
+
+Q2366
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Engineer, Incident Responder
+- Competency: Understanding multi-layer containment dependencies
+
+Question: How should an incident response team select containment actions when the compromised system is also responsible for identity authentication, security monitoring or critical application availability? Explain the risks of isolating infrastructure without understanding its dependency relationships.
+
+Q2367
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, Detection Engineer
+- Competency: Detecting abnormal privileged group changes
+
+Question: Design a detection approach for unauthorized changes to highly privileged Active Directory groups. Correlate Security Event IDs 4728, 4732 and 4756 with group scope, actor identity, source workstation, change authorization and subsequent logon behavior. How would you distinguish direct membership changes from changes introduced through nested group relationships?
+
+Q2368
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Application Security Engineer, Security Researcher
+- Competency: Evaluating memory-safe migration strategy
+
+Question: An enterprise maintains millions of lines of C and C++ code in security-critical applications. How would you prioritize migration toward memory-safe languages while maintaining performance, interoperability and operational stability? Discuss component isolation, foreign-function interfaces, risk-based migration and verification of legacy code that cannot immediately be replaced.
+
+Q2369
+
+- Difficulty: Advanced
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Cloud Security Engineer, Security Architect, Incident Responder
+- Competency: Investigating cross-account cloud control-plane changes
+
+Question: A central cloud administration account modifies network security policies, workload roles and logging configurations across several production accounts. Design a forensic investigation that correlates the originating principal, assumed-role sessions, organization-level policies, resource changes and subsequent data-plane activity. How would you determine whether the central management account was compromised or an authorized automation process malfunctioned?
+
+Q2370
+
+- Difficulty: Advanced
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Security Director
+- Competency: Evaluating enterprise technical debt risk
+
+Question: How should security leadership prioritize legacy operating systems, unsupported drivers, native application components, outdated cryptographic libraries and unmaintained infrastructure dependencies? Explain how exploitability, exposure, business criticality, migration cost and compensating controls should influence the retirement strategy.
+
+## Expert (Q2371–Q2390)
+
+Q2371
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, DFIR Analyst, Reverse Engineer
+- Competency: Investigating suspected kernel-level compromise
+
+Question: A Windows endpoint exhibits discrepancies between normal process enumeration, EDR telemetry and independently acquired memory data. Design a forensic investigation using WinDbg, kernel debugging information, loaded-driver analysis, process-object structures and independent acquisition sources. How would you determine whether the discrepancies originate from instrumentation limitations, memory corruption or deliberate kernel-level concealment?
+
+Q2372
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Security Researcher, Windows Security Engineer
+- Competency: Evaluating operating-system trust architecture
+
+Question: How should an enterprise evaluate trust in the Windows boot chain, firmware, bootloader, hypervisor, kernel, driver-signing infrastructure and user-mode security services? Explain how Secure Boot, measured boot, TPM-backed attestation and virtualization-based security contribute to different parts of the trust model.
+
+Q2373
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Reverse Engineer, Security Researcher
+- Competency: Analyzing complex memory-corruption root causes
+
+Question: You discover that a native application crashes only when a particular object is freed, reallocated and subsequently accessed through a stale pointer. Design a debugging investigation using GDB, AddressSanitizer, allocation tracing and call-stack reconstruction. How would you establish the root cause, identify the conditions required for exploitation and determine whether allocator behavior changes the security impact?
+
+Q2374
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Windows Security Engineer, Linux Security Engineer
+- Competency: Understanding kernel trust and recovery boundaries
+
+Question: How should an enterprise respond when it cannot confidently establish the integrity of the operating-system kernel on critical infrastructure? Discuss evidence preservation, isolation, trusted boot verification, firmware assessment, rebuild decisions and the limitations of attempting to clean a potentially compromised kernel in place.
+
+Q2375
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Active Directory Security Engineer, IAM Engineer, DFIR Analyst
+- Competency: Investigating cross-domain privilege escalation
+
+Question: An enterprise investigation reveals an unexpected trust relationship between two Active Directory forests, followed by authentication activity involving privileged resources in the second forest. Design an investigation using trust attributes, SID filtering configuration, Kerberos authentication records, directory permissions and Domain Controller logs. How would you determine the direction and scope of the trust abuse and validate that remediation has not disrupted legitimate cross-forest services?
+
+Q2376
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Detection Engineer, Security Architect, Purple Team Engineer
+- Competency: Evaluating adversarial visibility gaps
+
+Question: How would you evaluate whether an enterprise can detect malicious activity when an attacker operates entirely through trusted administrative tools, signed binaries, legitimate workload identities and approved network channels? Discuss behavioral invariants, independent telemetry, authorization context and detection assumptions that may fail under legitimate-tool abuse.
+
+Q2377
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Malware Analyst, Reverse Engineer, Security Researcher
+- Competency: Investigating Windows syscall behavior
+
+Question: A malware analyst suspects that a sample bypasses ordinary user-mode monitoring by invoking native system-call interfaces directly. Design a controlled investigation using debugger traces, module mappings, call stacks, system-call telemetry and kernel observations. How would you establish what monitoring visibility is lost and whether the observed behavior is actually malicious?
+
+Q2378
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Cloud Security Architect, GRC Analyst
+- Competency: Designing independent administrative trust domains
+
+Question: How would you architect separate administrative trust domains for identity, cloud management, endpoint security, software delivery and backup infrastructure? Explain how independent authentication, authorization, credential custody and monitoring can reduce the consequences of a compromise without making enterprise operations unmanageable.
+
+Q2379
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Assessing exploitability across compiler and runtime protections
+
+Question: You discover a stack-based memory corruption defect in a 64-bit application built with stack canaries, ASLR, NX and control-flow protection. Design an assessment using a controlled build and debugging environment to identify the corruption primitive, inspect compiler-generated protections and determine the realistic security impact. How would you avoid overstating exploitability based solely on the presence of a controllable crash?
+
+Q2380
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Incident Responder, DFIR Analyst, Security Architect
+- Competency: Managing evidence collection during suspected kernel compromise
+
+Question: How should a forensic team collect and preserve evidence when the endpoint's kernel, memory acquisition interfaces and security monitoring agents may all be compromised? Explain the role of external network evidence, hypervisor-level acquisition, trusted boot measurements, offline analysis and explicit confidence limitations.
+
+Q2381
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Linux Security Engineer, Security Researcher
+- Competency: Investigating Linux kernel privilege-boundary weaknesses
+
+Question: A Linux system exhibits unexpected changes in process credentials following interaction with a custom kernel module. Design a controlled investigation using kernel logs, syscall traces, credential structures, module source review and memory inspection. How would you determine whether the issue originates from incorrect credential handling, unsafe module interfaces or an exploitable kernel vulnerability?
+
+Q2382
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Application Security Engineer, Security Researcher
+- Competency: Evaluating native-code supply-chain risk
+
+Question: Why can a vulnerability in a widely used native library create security exposure across multiple applications, operating systems and deployment environments? Explain how dependency reachability, ABI compatibility, compiler configuration, transitive dependencies and patch propagation affect enterprise remediation.
+
+Q2383
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Kubernetes Security Engineer, Security Architect, DFIR Analyst
+- Competency: Investigating compromised cluster-node trust
+
+Question: An attacker may have compromised a Kubernetes worker node and modified container runtime behavior. Design an investigation that combines node memory, runtime binaries, container image digests, kubelet configuration, kernel modules, audit logs and cluster control-plane records. How would you determine whether workloads running on that node can still be trusted?
+
+Q2384
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Security Director
+- Competency: Establishing security architecture assurance
+
+Question: How should an enterprise independently verify that its security architecture operates as designed across infrastructure, identity, applications and operational processes? Discuss architecture conformance, technical testing, evidence quality, control independence and the management of deviations from approved designs.
+
+Q2385
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Detection Engineer, SIEM Engineer, Security Architect
+- Competency: Detecting multi-stage kernel and endpoint compromise
+
+Question: You need to detect a potential endpoint attack involving suspicious driver installation, unexpected kernel configuration changes, process telemetry gaps and unusual network communication. Design a multi-source detection model that combines Windows Code Integrity, driver inventory, EDR health, system events and network telemetry. Explain how you would test the model when some sources are intentionally unavailable during adversary simulation.
+
+Q2386
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Incident Responder, Security Director
+- Competency: Establishing post-compromise trust criteria
+
+Question: What evidence should an enterprise require before trusting a rebuilt operating system, reissued identity credentials, restored cloud workloads and redeployed software after a sophisticated compromise? Explain why successful restoration, clean vulnerability scans and the absence of new alerts are individually insufficient proof of recovery.
+
+Q2387
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Researcher, Reverse Engineer
+- Competency: Investigating compiler optimization effects on vulnerabilities
+
+Question: A memory-safety defect reproduces in a debug build but behaves differently in a production binary compiled with aggressive optimization. Explain how you would compare compiler flags, generated assembly, object lifetime, undefined behavior assumptions and sanitizer results to identify the root cause. How would you ensure that the final vulnerability assessment reflects the deployed binary rather than only the development build?
+
+Q2388
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, GRC Analyst, Security Director
+- Competency: Governing high-impact technical vulnerabilities
+
+Question: An enterprise discovers a kernel vulnerability affecting thousands of endpoints, including systems that cannot be immediately rebooted or upgraded. How should security leadership establish exposure, prioritize remediation, evaluate compensating controls, manage operational exceptions and communicate residual risk to business owners?
+
+Q2389
+
+- Difficulty: Expert
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Windows Security Engineer, Detection Engineer, Incident Responder
+- Competency: Investigating virtualization-based security failures
+
+Question: An endpoint is expected to enforce virtualization-based security and Hypervisor-Protected Code Integrity, but compliance telemetry indicates that some machines are not enforcing these protections. Design an investigation using Windows security configuration, system information, Code Integrity events, boot measurements and device policy records. How would you identify configuration drift, hardware limitations and intentional security-control tampering?
+
+Q2390
+
+- Difficulty: Expert
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Security Director
+- Competency: Governing enterprise operating-system security
+
+Question: How would you establish an enterprise-wide operating-system security program covering kernel integrity, driver governance, firmware assurance, memory safety, patch management, endpoint telemetry and secure recovery? Explain how you would assign ownership and measure progress across heterogeneous Windows and Linux environments.
+
+## Senior/Architect (Q2391–Q2400)
+
+Q2391
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Security Director
+- Competency: Defining enterprise operating-system trust strategy
+
+Question: You are responsible for defining the operating-system trust strategy for an enterprise operating tens of thousands of Windows and Linux endpoints, critical servers, cloud workloads and Kubernetes nodes. How would you establish common security requirements for firmware integrity, secure boot, kernel protection, driver governance, memory safety, privileged access and endpoint monitoring while accommodating different hardware capabilities and operational requirements?
+
+Q2392
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, Windows Security Engineer, Linux Security Engineer
+- Competency: Designing enterprise kernel integrity assurance
+
+Question: Design an enterprise kernel-integrity assurance architecture that continuously evaluates Windows and Linux systems. Specify trusted boot measurements, driver and module authorization, code-signing requirements, runtime integrity monitoring, configuration attestation, independent telemetry and remediation workflows. How would you detect and respond when the local operating system reports a healthy state but an independent attestation source disagrees?
+
+Q2393
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, Security Director, GRC Analyst
+- Competency: Establishing memory-safety governance
+
+Question: How would you establish an enterprise memory-safety strategy for products containing legacy C and C++, third-party native libraries and performance-critical kernel components? Explain how you would prioritize remediation, introduce safer development standards, establish compiler-hardening baselines, evaluate migration to memory-safe languages and manage exceptions for systems that cannot be immediately rewritten.
+
+Q2394
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, DFIR Analyst, Incident Commander
+- Competency: Architecting independent forensic acquisition
+
+Question: Design a forensic acquisition architecture for critical enterprise systems where local kernels and endpoint security agents cannot always be trusted. Specify external evidence collection, hypervisor-level acquisition, network telemetry, trusted boot measurements, cryptographic evidence integrity, chain-of-custody procedures and isolated analysis environments. How would you maintain evidence availability during a widespread compromise without allowing forensic infrastructure to become another privileged attack path?
+
+Q2395
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: Security Architect, CISO, Security Director
+- Competency: Designing enterprise vulnerability research governance
+
+Question: How would you build an internal vulnerability research and coordinated remediation program covering operating systems, native applications, drivers, cloud workloads and third-party dependencies? Explain research authorization, safe reproduction, severity assessment, exploitability analysis, disclosure governance, patch ownership and verification of remediation across a large technology estate.
+
+Q2396
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, Detection Engineer, SOC Director
+- Competency: Architecting kernel-aware security monitoring
+
+Question: Design a kernel-aware security monitoring architecture for an enterprise with Windows and Linux endpoints, virtualized infrastructure and Kubernetes worker nodes. Define collection methods, event normalization, driver and module inventory, system-call visibility, telemetry integrity, performance constraints and independent health monitoring. How would you ensure that loss of kernel-level visibility itself generates a reliable security signal?
+
+Q2397
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: CISO, Security Architect, Security Director
+- Competency: Establishing enterprise technology trust governance
+
+Question: How would you establish a technology trust governance framework that covers firmware vendors, operating-system suppliers, kernel drivers, native libraries, cloud platforms, container runtimes and security agents? Explain how procurement assurance, software provenance, vulnerability disclosure, independent testing and retirement decisions should be integrated into enterprise risk governance.
+
+Q2398
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: Security Architect, Incident Responder, Cloud Security Architect
+- Competency: Designing recovery from operating-system and infrastructure compromise
+
+Question: An enterprise suspects that both its endpoint management infrastructure and portions of its operating-system deployment pipeline have been compromised. Design a clean recovery architecture covering trusted installation media, firmware verification, independent identity, signing-key protection, operating-system baselines, driver validation, workload redeployment and post-recovery attestation. How would you prevent compromised deployment infrastructure from reintroducing the original threat?
+
+Q2399
+
+- Difficulty: Senior/Architect
+- Type: Broad Conceptual
+- Classification: Theoretical
+- Job Roles: CISO, Security Director, Security Architect, GRC Analyst
+- Competency: Evaluating enterprise technical resilience
+
+Question: How would you determine whether an enterprise can withstand a coordinated attack targeting firmware, operating systems, privileged identities, software supply chains and security monitoring simultaneously? Develop an assessment framework that evaluates preventive controls, independent detection, trusted recovery, organizational readiness and systemic failure dependencies. Which indicators would demonstrate genuine resilience rather than simply regulatory compliance?
+
+Q2400
+
+- Difficulty: Senior/Architect
+- Type: Specific Technical
+- Classification: Practical
+- Job Roles: CISO, Security Architect, Incident Commander, DFIR Director
+- Competency: Leading a suspected enterprise kernel and infrastructure compromise
+
+Question: You are leading the response to an incident in which multiple critical servers exhibit suspicious kernel behavior, endpoint monitoring becomes unreliable, privileged identities show abnormal activity and the software deployment infrastructure may also be compromised.
+
+The board requires an initial security assessment within 48 hours.
+
+Develop a comprehensive investigation and recovery strategy addressing:
+
+1. How you establish which operating systems, kernels, drivers and infrastructure components remain trustworthy.
+2. How you distinguish user-mode compromise, kernel compromise and infrastructure-level compromise.
+3. Which independent evidence sources you prioritize when local security telemetry may be unreliable.
+4. How you assess the possibility of persistence across operating systems, boot infrastructure, identity systems and deployment pipelines.
+5. How you decide between live investigation, system isolation, forensic acquisition and rebuilding.
+6. How you establish trusted operating-system images, firmware verification and independent administrative access.
+7. How you prioritize systems that cannot immediately be rebooted or patched.
+8. How you preserve evidence and establish chain of custody during widespread containment.
+9. How you verify that security monitoring and recovery mechanisms have not themselves been compromised.
+10. What measurable technical and organizational criteria must be satisfied before declaring the affected infrastructure trustworthy again.
