@@ -1,0 +1,1430 @@
+# 19. PowerShell — Complete Guide for Cybersecurity
+
+PowerShell is a command-line shell and scripting language developed by Microsoft. It is particularly important for Windows administration, cybersecurity, digital forensics, incident response, and security automation.
+
+For cybersecurity, PowerShell helps you investigate running processes, inspect user accounts, analyze system logs, examine permissions, identify suspicious activity, and automate defensive security tasks.
+
+Learning objective: Understand PowerShell from the fundamentals to practical security investigation, so you can use it confidently during Windows security analysis and incident response.
+
+---
+
+# 1. What Is PowerShell?
+
+PowerShell is a command-line environment that allows you to interact with the operating system through commands and scripts.
+
+For example, you can use PowerShell to:
+
+- List running processes.
+- Investigate Windows services.
+- Examine user accounts and group memberships.
+- Inspect files, directories, and permissions.
+- Read Windows Event Logs.
+- Investigate network connections.
+- Automate repetitive administrative tasks.
+- Collect evidence during security investigations.
+
+PowerShell is available on Windows, and PowerShell 7+ also supports Linux and macOS.
+
+### PowerShell vs. CMD vs. Bash
+
+| Feature | PowerShell | CMD | Bash |
+|---|---|---|---|
+| Primary environment | Windows administration and cross-platform scripting | Traditional Windows command line | Linux and Unix environments |
+| Scripting | Advanced | Basic batch scripting | Advanced shell scripting |
+| Data handling | Works primarily with .NET objects | Primarily text | Primarily text streams |
+| Pipeline | Passes objects | Passes text | Passes text |
+| Windows administration | Excellent | Basic to moderate | Limited natively |
+| Security investigation | Excellent Windows integration | Limited compared with PowerShell | Excellent for Linux environments |
+| Typical script extensions | `.ps1` | `.bat`, `.cmd` | `.sh` |
+
+The most important difference: PowerShell pipelines pass structured objects between commands rather than simply passing text.
+
+For example:
+
+```powershell
+Get-Process
+```
+
+This returns process objects containing properties such as process name, ID, memory usage, and other information.
+
+You can filter those objects directly:
+
+```powershell
+Get-Process | Where-Object { $_.CPU -gt 10 }
+```
+
+This returns processes whose reported CPU time exceeds 10 seconds.
+
+Note that the `CPU` property represents accumulated processor time, not instantaneous CPU utilization.
+
+---
+
+# 2. PowerShell Architecture and Fundamentals
+
+Before learning security commands, understand how PowerShell works.
+
+## 2.1 PowerShell Components
+
+PowerShell consists of several important components.
+
+1. Shell
+
+The interactive environment in which you enter commands.
+
+2. PowerShell engine
+
+Interprets commands, executes scripts, manages pipelines, and processes objects.
+
+3. Cmdlets
+
+Built-in commands designed to perform specific operations.
+
+Examples:
+
+```powershell
+Get-Process
+Get-Service
+Get-ChildItem
+Get-EventLog
+```
+
+4. Providers
+
+Providers expose different data stores through a filesystem-like interface.
+
+Examples include:
+
+- FileSystem: files and directories.
+- Registry: Windows Registry.
+- Environment: environment variables.
+- Certificate: certificate stores.
+
+5. Modules
+
+Modules package commands, functions, and other resources.
+
+Examples include:
+
+- `Microsoft.PowerShell.Management`
+- `Microsoft.PowerShell.Security`
+- `Microsoft.PowerShell.Diagnostics`
+
+6. .NET integration
+
+PowerShell can interact with .NET classes and objects, enabling advanced system administration and automation.
+
+## 2.2 Cmdlet Naming Convention
+
+Most PowerShell cmdlets follow the pattern:
+
+`Verb-Noun`
+
+Examples:
+
+| Cmdlet | Purpose |
+|---|---|
+| `Get-Process` | Retrieve processes |
+| `Get-Service` | Retrieve services |
+| `Stop-Process` | Stop a process |
+| `Start-Service` | Start a service |
+| `Get-ChildItem` | List filesystem or provider items |
+| `Set-Location` | Change the current location |
+| `Get-Content` | Read file contents |
+| `Select-Object` | Select object properties |
+| `Where-Object` | Filter objects |
+| `Sort-Object` | Sort objects |
+
+PowerShell command names are generally case-insensitive.
+
+For example, these commands are equivalent:
+
+```powershell
+Get-Process
+get-process
+GET-PROCESS
+```
+
+## 2.3 Discover Commands
+
+You do not need to memorize every command.
+
+Use PowerShell's built-in discovery capabilities.
+
+```powershell
+Get-Command
+```
+
+Lists available commands.
+
+```powershell
+Get-Command Process
+```
+
+Finds commands whose names match `Process`.
+
+```powershell
+Get-Help Get-Process
+```
+
+Displays help for a command.
+
+```powershell
+Get-Help Get-Process -Examples
+```
+
+Displays usage examples when available in the installed help content.
+
+```powershell
+Get-Command -Module Microsoft.PowerShell.Security
+```
+
+Lists commands exported by that module.
+
+Practical exercise: Open PowerShell and discover five commands related to processes, services, or security.
+
+---
+
+# 3. PowerShell Navigation and File Operations
+
+Security investigations often begin with examining files, directories, and system locations.
+
+## 3.1 Navigate the Filesystem
+
+Display the current location:
+
+```powershell
+Get-Location
+```
+
+List files and directories:
+
+```powershell
+Get-ChildItem
+```
+
+List hidden items as well:
+
+```powershell
+Get-ChildItem -Force
+```
+
+Change directories:
+
+```powershell
+Set-Location C:\Windows
+```
+
+Return to the user directory:
+
+```powershell
+Set-Location $HOME
+```
+
+Search recursively for files matching a pattern:
+
+```powershell
+Get-ChildItem C:\Users -Filter .ps1 -Recurse -ErrorAction SilentlyContinue
+```
+
+This searches for PowerShell scripts under `C:\Users`. Some directories may be inaccessible without additional permissions.
+
+## 3.2 Read Files
+
+Display file contents:
+
+```powershell
+Get-Content .\example.txt
+```
+
+Display the last 20 lines:
+
+```powershell
+Get-Content .\example.txt -Tail 20
+```
+
+Search a file for a keyword:
+
+```powershell
+Select-String -Path .\example.txt -Pattern "failed"
+```
+
+Search multiple log files:
+
+```powershell
+Get-ChildItem C:\Logs -Filter .log -Recurse |
+    Select-String -Pattern "error|failed"
+```
+
+The final example searches log files for either `error` or `failed`.
+
+## 3.3 File Metadata
+
+Inspect a file's properties:
+
+```powershell
+Get-Item C:\Windows\System32\notepad.exe |
+    Select-Object FullName, Length, CreationTime, LastWriteTime
+```
+
+Calculate a file hash:
+
+```powershell
+Get-FileHash C:\Windows\System32\notepad.exe -Algorithm SHA256
+```
+
+A cryptographic hash can help determine whether a file matches a known artifact.
+
+However, a hash alone does not prove that a file is malicious or trustworthy. Compare it with a reliable reference and consider the file's origin and context.
+
+### Cybersecurity application
+
+Suppose an incident responder discovers an unfamiliar script in a user's Downloads directory.
+
+They might:
+
+1. Record its path and metadata.
+2. Calculate its SHA-256 hash.
+3. Examine its contents without executing it.
+4. Check its origin and surrounding activity.
+5. Correlate it with relevant security logs.
+
+This is safer than immediately running the script to discover what it does.
+
+---
+
+# 4. Variables, Data Types, and Operators
+
+PowerShell scripts use variables to store information and manipulate data.
+
+## 4.1 Variables
+
+PowerShell variables begin with `$`.
+
+```powershell
+$name = "PowerShell"
+$count = 10
+$isEnabled = $true
+```
+
+Display a variable:
+
+```powershell
+$name
+```
+
+Display its data type:
+
+```powershell
+$count.GetType()
+```
+
+Common data types include:
+
+- String
+- Integer
+- Boolean
+- Array
+- Hashtable
+- DateTime
+- .NET objects
+
+## 4.2 Arrays
+
+Arrays store multiple values.
+
+```powershell
+$services = @("WinDefend", "EventLog", "Schedule")
+```
+
+Access individual elements:
+
+```powershell
+$services[0]
+```
+
+Iterate through the values:
+
+```powershell
+foreach ($service in $services) {
+    Write-Output $service
+}
+```
+
+## 4.3 Hashtables
+
+Hashtables store key-value pairs.
+
+```powershell
+$system = @{
+    Name   = "Workstation01"
+    Role   = "Client"
+    Status = "Active"
+}
+```
+
+Access a value:
+
+```powershell
+$system["Name"]
+```
+
+Hashtables are useful for creating structured reports and collecting investigation results.
+
+## 4.4 Comparison Operators
+
+PowerShell uses operators that differ from those found in many programming languages.
+
+| Operator | Meaning |
+|---|---|
+| `-eq` | Equal |
+| `-ne` | Not equal |
+| `-gt` | Greater than |
+| `-lt` | Less than |
+| `-ge` | Greater than or equal |
+| `-le` | Less than or equal |
+| `-like` | Wildcard matching |
+| `-match` | Regular-expression matching |
+| `-contains` | Collection contains a value |
+
+Example:
+
+```powershell
+$number = 15
+
+if ($number -gt 10) {
+    Write-Output "Number is greater than 10"
+}
+```
+
+### Security example
+
+Identify processes whose names match a suspicious pattern:
+
+```powershell
+Get-Process |
+    Where-Object { $_.ProcessName -like "unknown" }
+```
+
+This is only a demonstration of filtering. Real malware often uses legitimate-looking process names, so process names alone are insufficient for detection.
+
+---
+
+# 5. The PowerShell Pipeline
+
+The pipeline is one of PowerShell's most important features.
+
+The pipe symbol `|` passes output from one command to another.
+
+Consider:
+
+```powershell
+Get-Process
+```
+
+This returns process objects.
+
+You can pass them to another command:
+
+```powershell
+Get-Process | Sort-Object CPU -Descending
+```
+
+This sorts processes by accumulated CPU time.
+
+Select particular properties:
+
+```powershell
+Get-Process |
+    Select-Object ProcessName, Id, CPU
+```
+
+Filter processes:
+
+```powershell
+Get-Process |
+    Where-Object { $_.WorkingSet64 -gt 100MB }
+```
+
+This returns processes whose working-set memory exceeds 100 MiB.
+
+## Understanding `$_`
+
+Inside `Where-Object`, `$_` represents the current pipeline object.
+
+For example:
+
+```powershell
+Get-Service |
+    Where-Object { $_.Status -eq "Running" }
+```
+
+For each service, PowerShell checks whether its status is `Running`.
+
+## Combining Pipeline Operations
+
+```powershell
+Get-Service |
+    Where-Object { $_.Status -eq "Running" } |
+    Sort-Object Name |
+    Select-Object Name, DisplayName, Status
+```
+
+This command:
+
+1. Retrieves services.
+2. Filters running services.
+3. Sorts them by name.
+4. Selects relevant properties.
+
+Cybersecurity relevance: You will frequently use pipelines to filter security events, investigate processes, analyze services, and produce incident reports.
+
+---
+
+# 6. Processes and Services Investigation
+
+This section connects PowerShell to Windows operating-system security.
+
+## 6.1 Inspect Running Processes
+
+List processes:
+
+```powershell
+Get-Process
+```
+
+Display selected properties:
+
+```powershell
+Get-Process |
+    Select-Object ProcessName, Id, CPU, WorkingSet64
+```
+
+Find a specific process:
+
+```powershell
+Get-Process -Name powershell
+```
+
+Inspect a process using CIM:
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath
+```
+
+The CIM query can provide useful information about process relationships and executable paths. Some properties may be unavailable because of access restrictions.
+
+## 6.2 Why Parent Processes Matter
+
+Processes often create other processes.
+
+For example:
+
+```text
+explorer.exe
+    |
+    +--- application.exe
+              |
+              +--- powershell.exe
+```
+
+This could be legitimate, depending on the application.
+
+During an investigation, an unexpected process relationship may deserve attention.
+
+For example, a document viewer launching a command shell could be suspicious in certain circumstances, especially if followed by unusual network connections or file modifications.
+
+Important: Parent-child relationships are clues, not proof of malicious activity.
+
+## 6.3 Inspect Services
+
+List all services:
+
+```powershell
+Get-Service
+```
+
+Find running services:
+
+```powershell
+Get-Service |
+    Where-Object { $_.Status -eq "Running" }
+```
+
+Inspect a particular service:
+
+```powershell
+Get-Service -Name WinDefend
+```
+
+Retrieve additional service configuration information:
+
+```powershell
+Get-CimInstance Win32_Service |
+    Select-Object Name, DisplayName, State, StartMode, PathName
+```
+
+Review the executable paths of services that are unfamiliar or unexpected.
+
+Security investigators may look for:
+
+- Services running from unusual directories.
+- Executables in user-writable locations.
+- Unexpected service installation times.
+- Unusual service accounts.
+- Service configurations that differ from an approved baseline.
+
+A legitimate service may run outside the Windows directory, so investigate the full context before drawing conclusions.
+
+---
+
+# 7. Users, Groups, and Permissions
+
+User and group information helps establish which accounts have access to a system and what privileges they may possess.
+
+## 7.1 Identify the Current User
+
+```powershell
+whoami
+```
+
+Display the current user's security identity and group memberships:
+
+```powershell
+whoami /all
+```
+
+This is useful for inspecting the current security token, group memberships, and privileges.
+
+## 7.2 Inspect Local Users
+
+On supported Windows systems:
+
+```powershell
+Get-LocalUser
+```
+
+Display selected information:
+
+```powershell
+Get-LocalUser |
+    Select-Object Name, Enabled, LastLogon
+```
+
+The `LastLogon` property can be empty or unavailable, and it should not be treated as a complete account activity history.
+
+## 7.3 Inspect Local Groups
+
+```powershell
+Get-LocalGroup
+```
+
+Inspect local administrators:
+
+```powershell
+Get-LocalGroupMember -Group "Administrators"
+```
+
+This helps identify which accounts belong to the local Administrators group.
+
+On some systems, especially domain-managed systems, additional permissions or remote queries may be needed to inspect the relevant accounts.
+
+## 7.4 Inspect File Permissions
+
+Use:
+
+```powershell
+Get-Acl C:\Users
+```
+
+Display access-control entries:
+
+```powershell
+(Get-Acl C:\Users).Access
+```
+
+These commands help examine the permissions associated with a file or directory.
+
+### Cybersecurity application
+
+During a security audit, you might discover:
+
+- An unexpected account in the Administrators group.
+- A disabled account that should have been removed.
+- A sensitive directory accessible to ordinary users.
+- A service account with unnecessarily broad permissions.
+
+The correct response is to validate the finding against the organization's approved access policy before making changes.
+
+---
+
+# 8. Windows Registry Investigation
+
+The Windows Registry stores configuration information for the operating system, applications, services, and users.
+
+PowerShell exposes the Registry through a provider.
+
+## 8.1 Registry Paths
+
+Common Registry locations include:
+
+| Registry path | General purpose |
+|---|---|
+| `HKLM:\SOFTWARE` | Machine-wide software configuration |
+| `HKLM:\SYSTEM` | System and service configuration |
+| `HKCU:\Software` | Configuration associated with the current user |
+| `HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run` | Machine-wide startup configuration |
+| `HKCU:\Software\Microsoft\Windows\CurrentVersion\Run` | Current-user startup configuration |
+
+These are examples of useful locations for investigation, not a complete list of Registry persistence mechanisms.
+
+## 8.2 Inspect Registry Keys
+
+List entries under a key:
+
+```powershell
+Get-ChildItem "HKCU:\Software"
+```
+
+Inspect a startup configuration key:
+
+```powershell
+Get-ItemProperty `
+    "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
+```
+
+The second command reads the configured values associated with the current user's Run key.
+
+### Why security analysts inspect the Registry
+
+Attackers may attempt to maintain access by modifying startup configuration or other Registry settings.
+
+Analysts therefore examine:
+
+- Unexpected startup entries.
+- Unfamiliar executable paths.
+- Changes to security-related configuration.
+- Registry modifications around the time of a suspected compromise.
+
+However, startup entries are not inherently malicious. Many legitimate applications use them.
+
+Practical rule: Record the key, value, executable path, modification context, and associated user before classifying a finding.
+
+---
+
+# 9. Windows Event Logs and Security Monitoring
+
+Windows Event Logs contain records of system activity, authentication events, service changes, application errors, and other events.
+
+PowerShell makes these logs accessible.
+
+## 9.1 List Available Event Logs
+
+```powershell
+Get-WinEvent -ListLog 
+```
+
+This can return a large amount of information. To inspect selected logs:
+
+```powershell
+Get-WinEvent -ListLog Security
+```
+
+The Security log may require administrative permissions to read.
+
+## 9.2 Read Recent System Events
+
+```powershell
+Get-WinEvent -LogName System -MaxEvents 20
+```
+
+Display selected fields:
+
+```powershell
+Get-WinEvent -LogName System -MaxEvents 20 |
+    Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
+```
+
+## 9.3 Investigate Failed Logons
+
+On Windows systems that record the relevant auditing events, Event ID `4625` indicates a failed logon.
+
+Query recent failed-logon events:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = (Get-Date).AddHours(-24)
+} -ErrorAction SilentlyContinue
+```
+
+This queries the preceding 24 hours.
+
+Display useful fields:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = (Get-Date).AddHours(-24)
+} -ErrorAction SilentlyContinue |
+    Select-Object TimeCreated, Id, Message
+```
+
+The `Message` property contains rendered event details, which may include the account name, logon type, and source information.
+
+### Other useful Security event IDs
+
+| Event ID | Meaning |
+|---|---|
+| 4624 | Successful logon |
+| 4625 | Failed logon |
+| 4634 | Logoff |
+| 4648 | Logon attempted using explicit credentials |
+| 4672 | Special privileges assigned to a new logon |
+| 4688 | Process creation, when the relevant auditing is enabled |
+| 4720 | User account created |
+| 4726 | User account deleted |
+| 4732 | Member added to a security-enabled local group |
+
+The availability and detail of these events depend on Windows version, audit policy, logging configuration, and permissions.
+
+For process-creation investigations, command-line details may require additional audit configuration.
+
+## 9.4 Investigate a Suspicious Time Window
+
+A useful investigation correlates multiple event types.
+
+For example:
+
+1. Identify failed logons.
+2. Check for a subsequent successful logon.
+3. Examine account or group changes.
+4. Investigate processes launched during the same period.
+5. Review relevant network connections.
+6. Compare the results with known administrative activity.
+
+One failed logon does not necessarily indicate an attack. Repeated attempts, unusual source systems, unexpected accounts, and successful access following failures may collectively provide stronger evidence.
+
+---
+
+# 10. Network Investigation with PowerShell
+
+PowerShell provides several commands for investigating network configuration and connections.
+
+## 10.1 Inspect Network Interfaces
+
+```powershell
+Get-NetIPConfiguration
+```
+
+Display network adapters:
+
+```powershell
+Get-NetAdapter
+```
+
+Inspect IP addresses:
+
+```powershell
+Get-NetIPAddress
+```
+
+These commands help you understand the system's network configuration.
+
+## 10.2 Inspect Active Connections
+
+```powershell
+Get-NetTCPConnection
+```
+
+Display selected properties:
+
+```powershell
+Get-NetTCPConnection |
+    Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State, OwningProcess
+```
+
+Identify listening TCP ports:
+
+```powershell
+Get-NetTCPConnection -State Listen
+```
+
+A listening port indicates that a process is accepting or awaiting TCP connections. It does not automatically indicate a vulnerability.
+
+## 10.3 Map Connections to Processes
+
+Each connection includes an owning process ID.
+
+You can correlate it with process information:
+
+```powershell
+$connections = Get-NetTCPConnection -ErrorAction SilentlyContinue
+
+$processes = Get-Process -ErrorAction SilentlyContinue
+
+$connections |
+    ForEach-Object {
+        $connection = $_
+
+        $process = $processes |
+            Where-Object { $_.Id -eq $connection.OwningProcess } |
+            Select-Object -First 1
+
+        [PSCustomObject]@{
+            LocalAddress  = $connection.LocalAddress
+            LocalPort     = $connection.LocalPort
+            RemoteAddress = $connection.RemoteAddress
+            RemotePort    = $connection.RemotePort
+            State         = $connection.State
+            ProcessId     = $connection.OwningProcess
+            ProcessName   = $process.ProcessName
+        }
+    }
+```
+
+This creates a table that links TCP connections with process names.
+
+Some process information may be unavailable if a process terminates during collection or access is restricted.
+
+### What should you investigate?
+
+Look for connections that are unusual for the host's normal activity, including:
+
+- Unexpected processes communicating externally.
+- Connections to unfamiliar remote systems.
+- Services listening on unnecessary interfaces.
+- Unusual combinations of processes, ports, and destinations.
+
+Do not assume that a public IP address or unfamiliar port is malicious without additional evidence.
+
+---
+
+# 11. PowerShell Scripting
+
+PowerShell becomes significantly more useful when you combine commands into scripts.
+
+Scripts typically use the `.ps1` extension.
+
+## 11.1 Conditional Statements
+
+```powershell
+$service = Get-Service -Name WinDefend -ErrorAction SilentlyContinue
+
+if ($null -eq $service) {
+    Write-Output "Service not found"
+}
+elseif ($service.Status -eq "Running") {
+    Write-Output "Service is running"
+}
+else {
+    Write-Output "Service is not running"
+}
+```
+
+This checks whether the service exists and reports its status.
+
+The service's presence and running state alone do not prove that all endpoint protection features are functioning correctly.
+
+## 11.2 Loops
+
+```powershell
+$names = @("WinDefend", "EventLog", "Schedule")
+
+foreach ($name in $names) {
+    Get-Service -Name $name -ErrorAction SilentlyContinue
+}
+```
+
+This checks a list of service names.
+
+## 11.3 Functions
+
+Functions allow you to reuse logic.
+
+```powershell
+function Get-ProcessByName {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
+
+    Get-Process -Name $Name -ErrorAction SilentlyContinue
+}
+```
+
+Call the function:
+
+```powershell
+Get-ProcessByName -Name "notepad"
+```
+
+## 11.4 Error Handling
+
+Use `try` and `catch` to handle terminating errors.
+
+```powershell
+try {
+    Get-Content "C:\Logs\security.log" -ErrorAction Stop
+}
+catch {
+    Write-Output "Unable to read the requested log file."
+    Write-Output $_.Exception.Message
+}
+```
+
+`-ErrorAction Stop` converts applicable non-terminating errors into terminating errors that the `catch` block can handle.
+
+This is important when writing scripts that collect evidence from multiple locations.
+
+---
+
+# 12. PowerShell Execution Policy and Security
+
+PowerShell has security-related controls that administrators should understand.
+
+## 12.1 What Is Execution Policy?
+
+Execution policy controls the conditions under which PowerShell loads or runs script files.
+
+Inspect the current settings:
+
+```powershell
+Get-ExecutionPolicy
+```
+
+Inspect the settings at different scopes:
+
+```powershell
+Get-ExecutionPolicy -List
+```
+
+Common policies include:
+
+| Policy | General behavior |
+|---|---|
+| `Restricted` | Prevents running script files in Windows PowerShell |
+| `AllSigned` | Requires scripts and configuration files covered by the policy to be signed by a trusted publisher |
+| `RemoteSigned` | Requires signatures for applicable scripts downloaded from the internet |
+| `Unrestricted` | Permits scripts but may warn about scripts originating from the internet |
+| `Bypass` | Removes execution-policy blocking and warnings at the policy level |
+
+Actual behavior can depend on platform, file origin, version, and Group Policy configuration.
+
+Important: Execution policy is not a complete security boundary. It does not, by itself, prevent malicious code from executing.
+
+## 12.2 Why Execution Policy Matters in Cybersecurity
+
+Security analysts should understand how execution policy affects script execution and how attackers may attempt to bypass organizational controls.
+
+Defenders should focus on multiple layers of protection, including:
+
+- Application control and allowlisting.
+- Appropriate PowerShell logging.
+- Endpoint detection and response.
+- Least-privilege access.
+- Restricting unnecessary administrative permissions.
+- Monitoring suspicious script execution.
+- Reviewing and enforcing organizational security policies.
+
+Do not change execution policy simply to make an unknown script run.
+
+## 12.3 PowerShell Logging
+
+PowerShell supports several forms of logging.
+
+Module logging: Records pipeline execution details for configured modules.
+
+Script block logging: Records content processed by PowerShell's script-block engine, subject to the applicable configuration and logging behavior.
+
+Transcription: Records PowerShell session input and output to transcript files.
+
+These logs can support investigations, but they are not a perfect record of every action. Configuration, version, collection settings, and attacker behavior affect what is captured.
+
+For enterprise environments, administrators can configure and manage relevant settings through Group Policy.
+
+---
+
+# 13. PowerShell Remoting
+
+PowerShell Remoting allows administrators to run commands on remote systems.
+
+It is useful for managing multiple Windows machines and collecting information during authorized investigations.
+
+## 13.1 Basic Remoting Concepts
+
+The main commands include:
+
+| Command | Purpose |
+|---|---|
+| `Test-WSMan` | Tests whether a system responds to WS-Management requests |
+| `Enter-PSSession` | Opens an interactive remote PowerShell session |
+| `Invoke-Command` | Executes commands on remote systems |
+| `New-PSSession` | Creates a reusable remote session |
+| `Remove-PSSession` | Closes a remote session |
+
+Example:
+
+```powershell
+Test-WSMan -ComputerName SERVER01
+```
+
+This tests WS-Management connectivity to a system named `SERVER01`.
+
+## 13.2 Run a Remote Command
+
+On an appropriately configured and authorized environment:
+
+```powershell
+Invoke-Command -ComputerName SERVER01 -ScriptBlock {
+    Get-Service
+}
+```
+
+This retrieves service information from the remote system.
+
+Actual use requires suitable connectivity, authentication, permissions, and remoting configuration.
+
+### Security considerations
+
+PowerShell Remoting is valuable for administration but also provides capabilities that can be abused.
+
+Defensive controls include:
+
+- Restricting which accounts can connect remotely.
+- Limiting remote-management access to authorized systems.
+- Using secure authentication and transport configurations.
+- Monitoring remote-session activity.
+- Auditing privileged commands.
+- Avoiding unnecessary exposure of management endpoints.
+
+---
+
+# 14. PowerShell in Incident Response
+
+PowerShell is particularly valuable during incident response because it can collect information from many parts of Windows.
+
+A structured investigation often follows this sequence.
+
+### Step 1: Identify the system and current user
+
+```powershell
+hostname
+whoami
+Get-Date
+```
+
+These commands establish basic context.
+
+### Step 2: Collect process information
+
+```powershell
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath
+```
+
+### Step 3: Inspect services
+
+```powershell
+Get-CimInstance Win32_Service |
+    Select-Object Name, State, StartMode, PathName
+```
+
+### Step 4: Inspect network connections
+
+```powershell
+Get-NetTCPConnection |
+    Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State, OwningProcess
+```
+
+### Step 5: Review recent system events
+
+```powershell
+Get-WinEvent -LogName System -MaxEvents 50 |
+    Select-Object TimeCreated, Id, ProviderName, LevelDisplayName
+```
+
+### Step 6: Calculate hashes of relevant files
+
+```powershell
+Get-FileHash "C:\Path\To\SuspiciousFile.exe" -Algorithm SHA256
+```
+
+Replace the example path with the file being investigated.
+
+### Step 7: Save collected information
+
+For example:
+
+```powershell
+Get-Process |
+    Select-Object ProcessName, Id, CPU |
+    Export-Csv ".\processes.csv" -NoTypeInformation
+```
+
+This saves selected process information as a CSV file.
+
+Evidence-handling caution: If you are investigating a real compromise, coordinate with the incident-response team before modifying the affected system. Even collection activities can alter timestamps, create files, or change system state. Preserve evidence according to the organization's procedures.
+
+---
+
+# 15. Practical Lab: Build a Windows Security Inventory
+
+The following exercise combines the concepts above into a small defensive investigation script.
+
+## Objective
+
+Collect a basic snapshot of:
+
+- System identity.
+- Current user.
+- Running processes.
+- Windows services.
+- TCP connections.
+- Recent System log events.
+
+Run it on your own Windows machine or an authorized lab VM.
+
+### Script
+
+Save the following as `WindowsSecurityInventory.ps1`.
+
+```powershell
+$ErrorActionPreference = "Continue"
+
+$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+
+$outputDirectory = Join-Path $HOME "SecurityInventory_$timestamp"
+
+New-Item -Path $outputDirectory -ItemType Directory -Force |
+    Out-Null
+
+Write-Output "Collecting system information..."
+
+$systemInfo = [PSCustomObject]@{
+    ComputerName = $env:COMPUTERNAME
+    UserName     = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+    CollectionTime = Get-Date
+    PowerShellVersion = $PSVersionTable.PSVersion.ToString()
+}
+
+$systemInfo |
+    Export-Csv `
+        -Path (Join-Path $outputDirectory "system.csv") `
+        -NoTypeInformation
+
+Write-Output "Collecting processes..."
+
+Get-CimInstance Win32_Process |
+    Select-Object ProcessId, ParentProcessId, Name, ExecutablePath |
+    Export-Csv `
+        -Path (Join-Path $outputDirectory "processes.csv") `
+        -NoTypeInformation
+
+Write-Output "Collecting services..."
+
+Get-CimInstance Win32_Service |
+    Select-Object Name, DisplayName, State, StartMode, PathName |
+    Export-Csv `
+        -Path (Join-Path $outputDirectory "services.csv") `
+        -NoTypeInformation
+
+Write-Output "Collecting TCP connections..."
+
+Get-NetTCPConnection -ErrorAction SilentlyContinue |
+    Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State, OwningProcess |
+    Export-Csv `
+        -Path (Join-Path $outputDirectory "tcp_connections.csv") `
+        -NoTypeInformation
+
+Write-Output "Collecting recent System events..."
+
+Get-WinEvent -LogName System -MaxEvents 100 -ErrorAction SilentlyContinue |
+    Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message |
+    Export-Csv `
+        -Path (Join-Path $outputDirectory "system_events.csv") `
+        -NoTypeInformation
+
+Write-Output "Inventory complete."
+Write-Output "Results saved to: $outputDirectory"
+```
+
+### Run the script
+
+First, inspect the script and ensure you understand what it does.
+
+Open PowerShell in the directory containing the file and execute it using the appropriate organizational policy and permissions.
+
+For example, if your environment permits local script execution:
+
+```powershell
+.\WindowsSecurityInventory.ps1
+```
+
+The script creates a timestamped directory in your home folder.
+
+It does not intentionally stop processes, change services, modify accounts, or alter Registry settings.
+
+Some fields may be empty or unavailable. This is normal when the relevant information cannot be retrieved.
+
+### Lab tasks
+
+After running the script:
+
+1. Open `processes.csv` and identify five processes you recognize.
+2. Inspect `services.csv` and select three services to research.
+3. Examine `tcp_connections.csv` and identify listening ports.
+4. Open `system_events.csv` and investigate three event IDs.
+5. Pick one unfamiliar process and examine its executable path and parent process.
+6. Write a short report explaining what you found and which findings require further investigation.
+
+Do not classify something as malicious solely because you do not recognize its name.
+
+---
+
+# 16. Additional Practical Exercises
+
+Once you complete the inventory lab, work through these exercises.
+
+| Level | Exercise | Skills developed |
+|---|---|---|
+| Beginner | List all running processes and sort them by CPU time | Cmdlets and sorting |
+| Beginner | Find all `.ps1` files in your Downloads directory | Filesystem navigation |
+| Beginner | Display the current user's identity and groups | Windows security context |
+| Beginner | List running services | Service enumeration |
+| Intermediate | Query failed logons from the previous 24 hours | Event-log investigation |
+| Intermediate | Map active TCP connections to process IDs | Network investigation |
+| Intermediate | Find local administrator group members | Privilege auditing |
+| Intermediate | Calculate SHA-256 hashes for selected files | File integrity analysis |
+| Intermediate | Export process and service information to CSV | Security reporting |
+| Advanced | Correlate logon events with process creation events | Incident investigation |
+| Advanced | Build a baseline of services and compare it with a later snapshot | Change detection |
+| Advanced | Investigate a simulated suspicious process in an isolated VM | Threat hunting |
+
+For advanced exercises, use a Windows virtual machine that you control. Avoid experimenting with account changes, service modifications, or remote execution on production systems.
+
+---
+
+# 17. Common PowerShell Mistakes
+
+### Mistake 1: Treating every command as text-based
+
+PowerShell commands usually return objects.
+
+Use:
+
+```powershell
+Get-Process | Select-Object ProcessName, Id
+```
+
+rather than trying to parse formatted console output unnecessarily.
+
+### Mistake 2: Confusing `Select-Object` and `Where-Object`
+
+`Select-Object` chooses properties or objects.
+
+`Where-Object` filters objects according to a condition.
+
+```powershell
+Get-Process |
+    Where-Object { $_.CPU -gt 5 } |
+    Select-Object ProcessName, CPU
+```
+
+### Mistake 3: Assuming commands work without sufficient permissions
+
+Reading certain logs, inspecting protected processes, and administering remote systems may require additional privileges.
+
+If a command fails, inspect the error and determine whether the issue is permissions, configuration, missing modules, or unsupported functionality.
+
+### Mistake 4: Running unknown scripts
+
+A `.ps1` extension does not indicate that a script is safe.
+
+Inspect the contents and verify the source before running it.
+
+### Mistake 5: Assuming execution policy guarantees safety
+
+Execution policy does not replace application control, endpoint protection, appropriate permissions, or security monitoring.
+
+### Mistake 6: Trusting a single indicator
+
+A suspicious process name, unusual port, failed login, or unfamiliar Registry entry is only one piece of evidence.
+
+Correlate multiple indicators before reaching a conclusion.
+
+---
+
+# 18. Essential PowerShell Commands to Memorize
+
+These commands provide a useful foundation for Windows security work.
+
+| Command | Purpose |
+|---|---|
+| `Get-Command` | Discover available commands |
+| `Get-Help` | Read command documentation |
+| `Get-Location` | Display the current location |
+| `Get-ChildItem` | List files, directories, or provider items |
+| `Get-Content` | Read file contents |
+| `Select-String` | Search text |
+| `Get-FileHash` | Calculate file hashes |
+| `Get-Process` | Inspect processes |
+| `Get-Service` | Inspect services |
+| `Get-CimInstance` | Query system information through CIM |
+| `Get-LocalUser` | Inspect local users |
+| `Get-LocalGroupMember` | Inspect local group membership |
+| `Get-Acl` | Inspect access permissions |
+| `Get-ItemProperty` | Read Registry or other provider properties |
+| `Get-WinEvent` | Query Windows Event Logs |
+| `Get-NetTCPConnection` | Inspect TCP connections |
+| `Get-NetIPConfiguration` | Inspect IP configuration |
+| `Where-Object` | Filter pipeline objects |
+| `Select-Object` | Select properties or objects |
+| `Sort-Object` | Sort objects |
+| `Export-Csv` | Export structured data to CSV |
+| `Invoke-Command` | Execute authorized remote commands |
+
+For reference, use Microsoft's official documentation: [PowerShell documentation](https://learn.microsoft.com/en-us/powershell/?utm_source=chatgpt.com).
+
+---
+
+# 19. What You Should Be Able to Do Before Moving On
+
+You have learned the major PowerShell concepts relevant to Windows cybersecurity. Before moving to the next topic, make sure you can perform these tasks without copying commands blindly.
+
+Fundamentals
+- Explain the difference between PowerShell, CMD, and Bash.
+- Understand cmdlets, objects, and pipelines.
+- Use variables, conditions, loops, and functions.
+
+Windows investigation
+- Enumerate processes and services.
+- Inspect local users, groups, and permissions.
+- Examine relevant Registry keys.
+- Query Windows Event Logs.
+- Investigate network connections.
+
+Security and automation
+- Explain the limitations of execution policy.
+- Understand PowerShell logging and remoting.
+- Write a script that collects system information.
+- Export investigation results to CSV.
+- Correlate multiple indicators when investigating suspicious activity.
+
+### Recommended learning order
+
+1. PowerShell fundamentals and command discovery.
+2. Objects, pipelines, filtering, and sorting.
+3. Filesystem operations and scripting.
+4. Processes, services, users, and permissions.
+5. Registry investigation.
+6. Event-log analysis.
+7. Network investigation.
+8. Execution policy, logging, and remoting.
+9. Incident-response automation.
+
+The most important takeaway: For a cybersecurity learner, PowerShell is not just a way to administer Windows. It is a practical interface for examining system state, collecting evidence, automating defensive investigations, and understanding suspicious activity.
+
+Once you are comfortable with these skills, the natural next step is to practice Windows threat hunting and incident response in an isolated lab.
