@@ -1,0 +1,1415 @@
+# 20. Windows Event Logs, Event Viewer and Microsoft Defender
+Cybersecurity Fundamentals — Windows Monitoring, Logging, and Endpoint Security
+
+This topic is essential for learning Blue Team cybersecurity, SOC analysis, incident response, Windows troubleshooting, and malware detection. Windows records system activities, security events, application errors, and other important information that security professionals use to investigate suspicious behavior.
+
+By the end of this lesson, you should be able to:
+- Understand Windows Event Logs and how Windows records events.
+- Navigate Event Viewer and investigate security incidents.
+- Identify important Windows Security Event IDs.
+- Use PowerShell to query and analyze event logs.
+- Understand Microsoft Defender Antivirus and its security features.
+- Investigate suspicious processes, failed logins, malware detections, and persistence mechanisms.
+- Build a practical Windows security monitoring lab.
+
+---
+
+# 1. Windows Event Logging
+
+## 1.1 What is Windows Event Logging?
+
+Windows Event Logging is a mechanism through which Windows and its applications record events that occur within the operating system.
+
+An event is a recorded occurrence, such as:
+- A user logging into Windows.
+- Someone entering an incorrect password.
+- A process crashing.
+- A Windows service starting or stopping.
+- A file being accessed, when the relevant auditing is enabled.
+- Microsoft Defender detecting malware.
+- A user creating a new account.
+- A program attempting to execute a suspicious action.
+
+These records help administrators understand what happened on a computer and help security analysts investigate potential attacks.
+
+### Example
+
+Suppose an attacker attempts to access your computer using a stolen password.
+
+A simplified sequence might look like this:
+
+```text
+Attacker attempts to log in
+          |
+          v
+Windows receives authentication request
+          |
+          v
+Authentication fails
+          |
+          v
+Windows Security auditing records the failure
+          |
+          v
+Security Event Log stores Event ID 4625
+          |
+          v
+Security analyst investigates the event
+```
+
+Event ID 4625 represents a failed logon attempt. However, a single failed logon does not prove an attack; analysts investigate its context, frequency, account, and source.
+
+## 1.2 Why are event logs important in cybersecurity?
+
+Event logs provide evidence of activity on a Windows system.
+
+| Security task | How event logs help |
+|---|---|
+| Authentication monitoring | Identify successful and failed logons. |
+| Account monitoring | Detect account creation and changes to group membership. |
+| Process investigation | Examine process creation when appropriate auditing is enabled. |
+| Malware investigation | Review antivirus detections and remediation actions. |
+| Persistence detection | Investigate suspicious services, scheduled tasks, and other system changes. |
+| Incident response | Reconstruct a timeline of events before and after an incident. |
+| Troubleshooting | Identify application crashes, driver failures, and service errors. |
+| Compliance | Maintain records of selected security-relevant activities. |
+
+Important limitation: Windows does not automatically record every action in every possible detail. The available evidence depends on the event provider, audit policy, logging configuration, retention settings, and whether the records have been preserved.
+
+---
+
+# 2. How Windows Event Logging Works
+
+Windows uses an event infrastructure in which applications, operating system components, and security providers generate structured events.
+
+A simplified architecture is:
+
+```text
++------------------------------------+
+| Applications and Windows Services  |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+| Event Providers                    |
+|                                    |
+| Security, System, Defender, etc.   |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+| Windows Event Infrastructure       |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+| Event Channels / Logs               |
+|                                    |
+| Security, System, Application, etc.|
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+| Event Viewer / PowerShell / SIEM    |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+| Administrator / SOC Analyst        |
++------------------------------------+
+```
+
+This is a conceptual diagram, not a complete description of the internal Windows Event Log architecture.
+
+## 2.1 Event providers
+
+An event provider is a component that generates events.
+
+Examples include:
+- Windows Security auditing providers.
+- Microsoft Defender Antivirus.
+- Windows Service Control Manager.
+- Application-specific logging providers.
+- Kernel and networking components.
+
+Each provider can generate different types of events.
+
+For example, Microsoft Defender can generate events when it detects a threat, while the Service Control Manager can generate events about services starting or stopping.
+
+## 2.2 Event channels
+
+A channel is a logical destination for events.
+
+Examples include:
+- `Security`
+- `System`
+- `Application`
+- `Microsoft-Windows-Windows Defender/Operational`
+
+Different channels serve different purposes. Some record general operating system activity, while others provide detailed information about particular components.
+
+## 2.3 Event records
+
+An event record contains structured information about an occurrence.
+
+A typical event may include:
+
+| Field | Meaning |
+|---|---|
+| Provider | Component that generated the event. |
+| Event ID | Identifier for the event type within the provider's event definitions. |
+| Level | Severity or importance, such as Information, Warning, or Error. |
+| TimeCreated | Time the event was recorded. |
+| Computer | Computer on which the event was recorded. |
+| User or security context | User or account associated with the event, when applicable. |
+| Event data | Additional fields describing the occurrence. |
+| Record ID | Identifier for the event record within its log. |
+
+Do not confuse Event ID with Record ID. Event ID describes the type of event; Record ID identifies a particular record in a log.
+
+For example, many failed logons can produce different event records with Event ID 4625.
+
+---
+
+# 3. Windows Event Log Files
+
+Windows stores many event logs as `.evtx` files.
+
+The primary location for Windows event log files is:
+
+```text
+C:\Windows\System32\winevt\Logs\
+```
+
+Examples of log files include:
+
+```text
+Security.evtx
+System.evtx
+Application.evtx
+Microsoft-Windows-Windows Defender%4Operational.evtx
+```
+
+The last filename illustrates how a channel name containing `/` can be represented in a filename.
+
+### Important distinction
+
+- Event channel: A logical event destination, such as `Security`.
+- EVTX file: A file used to store event records.
+- Event Viewer: A graphical application for browsing and analyzing events.
+- Windows Event Log service: A Windows service that manages event logging infrastructure.
+
+Do not assume every channel is stored in a separate file with an obvious filename. Some channels use different storage configurations.
+
+### Can attackers delete event logs?
+
+An attacker with sufficient privileges may attempt to clear logs or interfere with logging. Windows Security auditing can record log-clearing activity, including Security Event ID 1102 when the Security audit log is cleared.
+
+However, local logs are not tamper-proof. If an attacker obtains administrative or SYSTEM-level access, they may be able to destroy or alter important evidence.
+
+Organizations reduce this risk by forwarding logs to a centralized logging system or SIEM and restricting access to the logging infrastructure.
+
+---
+
+# 4. Windows Event Levels
+
+Events can be assigned levels indicating their importance or severity.
+
+| Level | Meaning | Example |
+|---|---|---|
+| Critical | Severe failure requiring immediate attention. | A critical component fails. |
+| Error | A significant problem occurred. | A service fails to start. |
+| Warning | A condition may require investigation. | A resource or operation encounters a potential problem. |
+| Information | An operation completed or an event occurred. | A service starts successfully. |
+| Verbose | Detailed diagnostic information. | Detailed component activity. |
+
+The exact interpretation depends on the event provider.
+
+### Cybersecurity perspective
+
+A Warning does not necessarily mean a security threat, and an Information event can be extremely important during an investigation.
+
+For example:
+- A failed logon can be security-relevant even if the event level is Information or Audit Failure.
+- A successful logon can be normal activity or part of an attack.
+- A service starting successfully may be worth investigating if the service is unexpected.
+
+Learn to interpret event meaning, not just event severity.
+
+---
+
+# 5. Event Viewer
+
+## 5.1 What is Event Viewer?
+
+Event Viewer is a built-in Windows graphical utility used to view, filter, and investigate event logs.
+
+It is useful for both system administration and cybersecurity investigations.
+
+### How to open Event Viewer
+
+Method 1: Run dialog
+
+1. Press `Win + R`.
+2. Type `eventvwr.msc`.
+3. Press Enter.
+
+Method 2: Start menu
+
+1. Open Start.
+2. Search for `Event Viewer`.
+3. Open the application.
+
+Method 3: PowerShell
+
+```powershell
+eventvwr.msc
+```
+
+## 5.2 Understanding the Event Viewer interface
+
+Event Viewer contains several important sections.
+
+```text
+Event Viewer
+│
+├── Custom Views
+│
+├── Windows Logs
+│   ├── Application
+│   ├── Security
+│   ├── Setup
+│   ├── System
+│   └── Forwarded Events
+│
+└── Applications and Services Logs
+    └── Microsoft
+        └── Windows
+            └── Windows Defender
+                └── Operational
+```
+
+The exact channels available depend on the Windows version and installed components.
+
+### A. Windows Logs
+
+| Log | Purpose | Security relevance |
+|---|---|---|
+| Application | Records events from applications. | Investigate suspicious application behavior and crashes. |
+| Security | Records security auditing events. | Investigate authentication, account changes, and other audited actions. |
+| System | Records Windows components, drivers, and services. | Investigate unexpected service changes and system failures. |
+| Setup | Records Windows setup and servicing activity. | Investigate installation and update problems. |
+| Forwarded Events | Stores events forwarded from other computers. | Review centrally collected events when Windows Event Forwarding is configured. |
+
+The Security log is especially important for SOC analysts. However, the events it contains depend on the configured audit policies.
+
+### B. Applications and Services Logs
+
+This section contains logs for specific Windows components, applications, and services.
+
+For example:
+
+```text
+Applications and Services Logs
+    → Microsoft
+        → Windows
+            → Windows Defender
+                → Operational
+```
+
+This channel records operational information from Microsoft Defender Antivirus. It can help you investigate scan activity, detections, configuration changes, and other Defender-related events. [Microsoft Learn](https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues?utm_source=chatgpt.com)
+
+## 5.3 How to investigate an event
+
+Follow these steps:
+
+1. Open Event Viewer.
+2. Navigate to the relevant log.
+3. Select Filter Current Log.
+4. Enter one or more Event IDs.
+5. Choose an appropriate time range if necessary.
+6. Select an event from the results.
+7. Read the General tab.
+8. Open the Details tab to inspect structured event data.
+9. Record the timestamp, account, computer, relevant identifiers, and event details.
+
+### Example: Investigating failed logons
+
+Navigate to:
+
+```text
+Event Viewer
+    → Windows Logs
+        → Security
+            → Filter Current Log
+                → Event IDs: 4625
+```
+
+The resulting events can help you determine:
+- Which account was targeted.
+- When the failed logon occurred.
+- Which logon type was involved.
+- Whether the log records a source network address.
+- Whether the failure was caused by an incorrect password or another authentication problem.
+
+Some fields may be unavailable or contain values that require interpretation.
+
+Investigation principle: Never conclude that an attack occurred based solely on one event. Correlate the event with surrounding activity.
+
+---
+
+# 6. Important Windows Security Event IDs
+
+Event IDs are among the most important concepts for Windows security monitoring.
+
+They help analysts locate specific categories of activity in Windows event logs.
+
+## 6.1 Authentication and logon events
+
+| Event ID | Meaning | Why it matters |
+|---|---|---|
+| 4624 | Successful logon | Identify successful access to a system. |
+| 4625 | Failed logon | Investigate repeated failures and potential brute-force attempts. |
+| 4634 | Account logged off | Understand session termination. |
+| 4647 | User initiated logoff | Identify user-initiated session endings. |
+| 4648 | Logon attempted using explicit credentials | Investigate processes or users supplying alternate credentials. |
+| 4672 | Special privileges assigned to a new logon | Identify sessions granted sensitive privileges. |
+| 4771 | Kerberos pre-authentication failed | Investigate certain Kerberos authentication failures. |
+| 4776 | Domain controller attempted to validate credentials using NTLM | Investigate NTLM authentication activity in applicable environments. |
+
+These events are not interchangeable. For example, Event ID 4672 does not automatically indicate malicious privilege escalation; it can occur during normal administrative logons.
+
+## 6.2 Account and privilege changes
+
+| Event ID | Meaning | Why it matters |
+|---|---|---|
+| 4720 | User account created | Investigate unexpected account creation. |
+| 4722 | User account enabled | Detect unexpected reactivation of accounts. |
+| 4724 | Attempt to reset an account password | Investigate unauthorized password-reset activity. |
+| 4728 | Member added to a security-enabled global group | Investigate privileged group changes in applicable environments. |
+| 4732 | Member added to a security-enabled local group | Investigate local group membership changes. |
+| 4738 | User account changed | Investigate modifications to user accounts. |
+| 4725 | User account disabled | Investigate unexpected account disablement. |
+| 1102 | Security audit log cleared | Investigate possible evidence destruction or administrative maintenance. |
+
+For example, Event ID 4732 may be important when an unexpected user is added to the local Administrators group.
+
+Remember that these events are generated when the relevant auditing is enabled and the corresponding action is covered by that auditing configuration.
+
+## 6.3 Process execution and persistence
+
+| Event ID | Meaning | Investigation value |
+|---|---|---|
+| 4688 | A new process was created | Investigate process execution when process-creation auditing is enabled. |
+| 4697 | A service was installed | Investigate unexpected service installation when the applicable auditing is enabled. |
+| 4698 | A scheduled task was created | Investigate potential persistence through scheduled tasks. |
+| 4702 | A scheduled task was updated | Investigate changes to existing tasks. |
+
+These events are particularly useful when investigating suspicious programs and persistence mechanisms.
+
+However, Event ID 4688 may not be enabled by default in a given environment. Command-line information also requires the relevant additional policy configuration.
+
+### Example: Suspicious process execution
+
+Imagine a workstation records the following sequence:
+
+```text
+09:14 — User opens an unexpected attachment.
+09:15 — A scripting process starts.
+09:15 — A second process launches from a temporary directory.
+09:16 — A scheduled task is created.
+09:17 — The computer makes an unusual outbound connection.
+```
+
+A SOC analyst might correlate:
+- Event ID 4688, if process auditing is enabled.
+- Event ID 4698, if the task-creation event is audited.
+- Relevant network telemetry.
+- Microsoft Defender detections.
+- PowerShell logs, if available.
+
+The objective is to determine whether the events form a coherent attack sequence rather than treating each event independently.
+
+## 6.4 System and logging events
+
+| Event ID | Meaning | Investigation value |
+|---|---|---|
+| 6005 | Event Log service started | Help establish system logging startup activity. |
+| 6006 | Event Log service stopped | Help investigate shutdown or service activity. |
+| 6008 | Previous system shutdown was unexpected | Investigate unexpected shutdowns. |
+| 1102 | Security audit log cleared | Investigate potential loss of security evidence. |
+
+Event IDs must always be interpreted in the context of their provider and log. The same numeric ID can have different meanings in different event providers.
+
+For more detail on event querying, consult Microsoft's official [`Get-WinEvent` documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent). [Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent?view=powershell-5.1\&utm_source=chatgpt.com)
+
+---
+
+# 7. PowerShell for Event Log Analysis
+
+A cybersecurity analyst should be comfortable with both Event Viewer and PowerShell.
+
+Event Viewer is convenient for interactive investigations. PowerShell is useful for repeatable queries, filtering large numbers of records, exporting evidence, and building basic analysis scripts.
+
+## 7.1 List available event logs
+
+Open PowerShell and run:
+
+```powershell
+Get-WinEvent -ListLog 
+```
+
+This lists available event logs.
+
+To show only logs with records:
+
+```powershell
+Get-WinEvent -ListLog  |
+    Where-Object { $_.RecordCount -gt 0 } |
+    Select-Object LogName, RecordCount, IsEnabled
+```
+
+Some logs may be inaccessible without appropriate permissions.
+
+## 7.2 Read recent Security events
+
+```powershell
+Get-WinEvent -LogName Security -MaxEvents 20
+```
+
+This retrieves the most recent 20 events from the Security log, assuming you have permission to read it.
+
+Display only useful fields:
+
+```powershell
+Get-WinEvent -LogName Security -MaxEvents 20 |
+    Select-Object TimeCreated, Id, ProviderName, Message
+```
+
+## 7.3 Find failed logons
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Security'
+    Id      = 4625
+} -MaxEvents 50 |
+    Select-Object TimeCreated, Id, Message
+```
+
+This retrieves up to 50 recent failed-logon events.
+
+For a more focused investigation, filter by time:
+
+```powershell
+$startTime = (Get-Date).AddHours(-24)
+
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = $startTime
+} |
+    Select-Object TimeCreated, Id, Message
+```
+
+This searches for failed-logon events recorded during the previous 24 hours.
+
+## 7.4 Count failed logons
+
+```powershell
+$events = Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = (Get-Date).AddHours(-24)
+}
+
+$events.Count
+```
+
+To group them by the account field, parse the event's structured data rather than relying on text in the rendered message.
+
+For an initial overview, you can also group the returned records by Event ID:
+
+```powershell
+$events |
+    Group-Object Id |
+    Select-Object Name, Count
+```
+
+Since the query already filters for Event ID 4625, this grouping is mainly a simple exercise in PowerShell aggregation.
+
+## 7.5 Search for successful logons
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4624
+    StartTime = (Get-Date).AddHours(-24)
+} -MaxEvents 100 |
+    Select-Object TimeCreated, Id, Message
+```
+
+When analyzing successful logons, pay attention to:
+- Account name and domain.
+- Logon type.
+- Source network address, when applicable.
+- Authentication package.
+- Whether the activity matches the user's normal behavior.
+
+Logon types matter because an interactive console login, a network login, and a remote interactive session represent different kinds of access.
+
+## 7.6 Investigate process creation
+
+If process-creation auditing is enabled, you can query Event ID 4688:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4688
+    StartTime = (Get-Date).AddHours(-4)
+} -MaxEvents 50 |
+    Select-Object TimeCreated, Id, Message
+```
+
+This searches recent process-creation records.
+
+The exact information available depends on the audit policy and event version. If command-line logging is not enabled, the process command line may not appear.
+
+## 7.7 Export events for further investigation
+
+You can export selected events to a CSV file:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = (Get-Date).AddHours(-24)
+} |
+    Select-Object TimeCreated, Id, MachineName, Message |
+    Export-Csv -Path "$env:USERPROFILE\Desktop\failed-logons.csv" `
+        -NoTypeInformation
+```
+
+This creates a CSV containing the selected events' timestamps, IDs, computer names, and rendered messages.
+
+For formal incident response, preserve the original event data and record relevant timestamps and collection details. A CSV is convenient for analysis, but it is not a substitute for preserving the original evidence.
+
+---
+
+# 8. Microsoft Defender Antivirus
+
+## 8.1 What is Microsoft Defender?
+
+Microsoft Defender Antivirus is Microsoft's built-in antivirus and antimalware protection for Windows.
+
+It helps protect a system against malicious software, including:
+- Trojans.
+- Ransomware.
+- Spyware.
+- Viruses.
+- Potentially unwanted applications.
+- Other malicious or suspicious files and activities.
+
+Defender is an endpoint security component. It complements Windows security features, system updates, access controls, firewalls, and monitoring.
+
+Important distinction: Microsoft Defender Antivirus is not the same thing as the entire Microsoft Defender security product family. For example, Microsoft Defender for Endpoint provides broader endpoint security capabilities, depending on the product, licence, and configuration.
+
+## 8.2 How antivirus protection works
+
+A simplified antivirus detection process looks like this:
+
+```text
+File downloaded or accessed
+          |
+          v
+Security checks are performed
+          |
+          v
+File and activity are evaluated
+          |
+          +----------------------+
+          |                      |
+          v                      v
+No threat detected        Threat detected
+          |                      |
+          v                      v
+Normal operation          Security response
+                                 |
+                                 v
+                      Block, quarantine, or
+                      remediate as appropriate
+                                 |
+                                 v
+                      Detection may be logged
+                                 |
+                                 v
+                      Analyst investigates
+```
+
+The actual detection pipeline is more complex. It can include multiple protection layers, cloud-delivered protection, behavior monitoring, and other mechanisms, depending on the configuration.
+
+## 8.3 Major Microsoft Defender features
+
+| Feature | Purpose |
+|---|---|
+| Real-time protection | Monitors files and activities for threats. |
+| Signature-based detection | Uses known threat signatures and definitions. |
+| Heuristic detection | Identifies suspicious characteristics. |
+| Behavior monitoring | Evaluates potentially malicious behavior. |
+| Cloud-delivered protection | Uses cloud-based intelligence to help identify threats. |
+| Tamper Protection | Helps prevent unauthorized changes to important security settings. |
+| Controlled folder access | Helps protect selected folders against unauthorized changes by untrusted applications. |
+| Threat quarantine and remediation | Isolates or addresses detected threats when supported by the configured protection workflow. |
+
+Feature availability and behavior vary by Windows version, policy, and management configuration.
+
+### Signature-based versus behavior-based detection
+
+Signature-based detection looks for characteristics associated with known threats.
+
+For example, a file may match a known malware signature.
+
+Behavior-based detection looks at what a program does.
+
+For example, an application that unexpectedly attempts to modify large numbers of user documents may exhibit behavior associated with ransomware.
+
+Neither method is perfect. New malware, obfuscation, legitimate administrative tools, and unusual but harmless software can complicate detection.
+
+---
+
+# 9. Check Microsoft Defender's Status
+
+You should learn how to inspect Defender before investigating its detections.
+
+## 9.1 Open Windows Security
+
+On Windows:
+
+1. Open the Start menu.
+2. Search for Windows Security.
+3. Open the application.
+4. Select Virus & threat protection.
+
+Depending on your system, this interface may show:
+- Current threat status.
+- Scan options.
+- Protection settings.
+- Protection history.
+- Security provider information.
+
+Do not assume that seeing Windows Security installed means every protection feature is enabled.
+
+## 9.2 Check Defender using PowerShell
+
+Open PowerShell and run:
+
+```powershell
+Get-MpComputerStatus
+```
+
+This returns Defender status information, including properties related to:
+- Antivirus enablement.
+- Real-time protection.
+- Antispyware protection.
+- Antivirus signatures.
+- Recent scan information.
+
+To inspect a smaller selection of properties:
+
+```powershell
+Get-MpComputerStatus |
+    Select-Object AntivirusEnabled,
+                  RealTimeProtectionEnabled,
+                  AMServiceEnabled,
+                  AntivirusSignatureLastUpdated
+```
+
+Property availability can vary across versions and environments.
+
+## 9.3 Check protection preferences
+
+```powershell
+Get-MpPreference
+```
+
+This displays configured Microsoft Defender preferences.
+
+You can use it to inspect settings such as exclusions and scan preferences.
+
+Security warning: Exclusions can create blind spots. An overly broad exclusion may prevent files or locations from receiving expected antivirus scanning. Do not add exclusions just to make a suspicious program run.
+
+## 9.4 Update Defender security intelligence
+
+On a personal or authorised lab computer, you can request a security intelligence update:
+
+```powershell
+Update-MpSignature
+```
+
+This asks Microsoft Defender to update its security intelligence using the configured update mechanism.
+
+You can then check the update timestamp:
+
+```powershell
+Get-MpComputerStatus |
+    Select-Object AntivirusSignatureLastUpdated
+```
+
+If your device is managed by an organisation, its security policies may control update behavior.
+
+## 9.5 Run an antivirus scan
+
+To run a quick scan:
+
+```powershell
+Start-MpScan -ScanType QuickScan
+```
+
+To request a full scan:
+
+```powershell
+Start-MpScan -ScanType FullScan
+```
+
+A quick scan checks common locations and other areas selected by Defender. A full scan performs a broader examination of files and running programs.
+
+Scan duration depends on the device, storage, and amount of data.
+
+---
+
+# 10. Defender Event Logs and Threat Investigation
+
+Microsoft Defender records operational information in Windows Event Logs.
+
+The principal channel to examine is:
+
+```text
+Microsoft-Windows-Windows Defender/Operational
+```
+
+### Open it in Event Viewer
+
+Navigate to:
+
+```text
+Event Viewer
+    → Applications and Services Logs
+        → Microsoft
+            → Windows
+                → Windows Defender
+                    → Operational
+```
+
+This log can provide evidence about Defender scans, detections, protection changes, and other operational activity. [Microsoft Learn](https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues?utm_source=chatgpt.com)
+
+## 10.1 Read Defender events using PowerShell
+
+First, retrieve recent events:
+
+```powershell
+Get-WinEvent `
+    -LogName 'Microsoft-Windows-Windows Defender/Operational' `
+    -MaxEvents 30 |
+    Select-Object TimeCreated, Id, LevelDisplayName, Message
+```
+
+To investigate scan-related events, filter by Event ID 1000:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Microsoft-Windows-Windows Defender/Operational'
+    Id      = 1000
+} -MaxEvents 20 |
+    Select-Object TimeCreated, Id, Message
+```
+
+Event ID 1000 is associated with a scan starting in the documented Defender event-log examples. Interpret it using its message and surrounding records rather than assuming every event in the channel is a threat detection. [Microsoft Learn](https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues?utm_source=chatgpt.com)
+
+## 10.2 Important Defender Event IDs
+
+The following are useful starting points when investigating Defender activity:
+
+| Event ID | General meaning | Why you would inspect it |
+|---|---|---|
+| 1000 | Scan started | Establish when a scan began. |
+| 1001 | Scan completed | Determine whether a scan completed. |
+| 1116 | Malware or potentially unwanted software detected | Investigate a detection and its associated threat details. |
+| 1117 | An action was taken in response to a detection | Investigate the protection response. |
+| 1118 | A protection action encountered an error | Determine why an action did not complete successfully. |
+| 5001 | Real-time protection disabled | Investigate unexpected changes to protection. |
+| 5007 | Microsoft Defender configuration changed | Examine the configuration change and its context. |
+
+Event details can vary by platform and version. Verify the event's provider, message, and structured data on your own system before drawing conclusions.
+
+A detection event does not automatically mean the device is currently infected. The threat may have been blocked or quarantined, or the detection may require additional investigation.
+
+## 10.3 Investigate a malware detection
+
+Suppose Microsoft Defender detects a suspicious file.
+
+A sensible investigation process is:
+
+Step 1 — Identify the detection
+
+Review the event message, threat name, timestamp, and affected resource.
+
+Step 2 — Check the response
+
+Determine whether Defender blocked the activity, quarantined the file, or successfully remediated the threat.
+
+Step 3 — Inspect Protection History
+
+Open Windows Security and review the associated detection and action.
+
+Step 4 — Correlate other evidence
+
+Look for related events, such as:
+- Process creation.
+- Unusual PowerShell activity.
+- New scheduled tasks.
+- Unexpected services.
+- Suspicious network connections.
+
+Step 5 — Determine the impact
+
+Assess whether the threat executed, whether remediation succeeded, and whether other files or accounts might be affected.
+
+Step 6 — Escalate or contain when necessary
+
+On an organisational device, follow the incident-response process. Do not delete evidence or change security settings before preserving information needed for investigation.
+
+---
+
+# 11. PowerShell Logging and Security Monitoring
+
+PowerShell is a legitimate Windows administration tool, but attackers can also abuse it.
+
+A SOC analyst therefore needs to understand how PowerShell activity is logged.
+
+## 11.1 Windows PowerShell logs
+
+Relevant channels include:
+
+```text
+Windows PowerShell
+```
+
+and, where enabled:
+
+```text
+Microsoft-Windows-PowerShell/Operational
+```
+
+These channels serve different purposes and can contain different records.
+
+For example, the operational channel can record PowerShell engine events and, when the appropriate logging is enabled, script-related information.
+
+## 11.2 Important PowerShell event IDs
+
+| Event ID | Common significance |
+|---|---|
+| 400 | PowerShell engine state changed to Available. |
+| 403 | PowerShell engine state changed to Stopped. |
+| 4103 | Module logging event, when configured. |
+| 4104 | Script block logging event, when configured. |
+
+Event IDs 400 and 403 describe engine lifecycle activity; they do not independently indicate malicious behavior.
+
+Events 4103 and 4104 can be valuable during incident response, but their availability depends on the relevant logging configuration.
+
+### What is Script Block Logging?
+
+Script Block Logging records information about PowerShell script blocks processed by the engine when the relevant policy is enabled.
+
+For example, if an analyst investigates a suspicious PowerShell script, Event ID 4104 may provide information about the script content that was processed.
+
+This can help answer questions such as:
+- What commands were executed?
+- Was the script downloading or processing data?
+- Was it interacting with the filesystem?
+- Was it launching other programs?
+
+Script logging can capture sensitive information. Organisations should configure access, retention, and collection appropriately.
+
+## 11.3 Search for PowerShell script-block events
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Microsoft-Windows-PowerShell/Operational'
+    Id        = 4104
+    StartTime = (Get-Date).AddHours(-24)
+} -MaxEvents 50 |
+    Select-Object TimeCreated, Id, Message
+```
+
+If the log or events are unavailable, script-block logging may not be enabled, the channel may be inaccessible, or the records may not exist in the selected period.
+
+Do not assume an empty result proves PowerShell was not used. It may simply mean that the required evidence was not recorded or retained.
+
+---
+
+# 12. How Event Logs Help Detect Attacks
+
+Event logs become much more valuable when related events are correlated.
+
+## 12.1 Brute-force login attempts
+
+A brute-force attack involves repeated attempts to guess or discover valid credentials.
+
+Possible evidence includes:
+- Many Event ID 4625 records.
+- Repeated failures against the same account.
+- Attempts against several accounts.
+- Unusual source addresses or logon types.
+- A successful Event ID 4624 after a sequence of failures.
+
+Example:
+
+```text
+10:01:02 — Failed logon for user A
+10:01:04 — Failed logon for user A
+10:01:06 — Failed logon for user A
+10:01:08 — Failed logon for user A
+10:01:10 — Successful logon for user A
+```
+
+This pattern deserves investigation, but it does not prove brute forcing. A mistyped password followed by a successful login can produce a similar sequence.
+
+The analyst should examine frequency, source, account history, and surrounding activity.
+
+## 12.2 Privilege escalation or unauthorised administration
+
+Suppose an unexpected account is added to the local Administrators group.
+
+Potential evidence includes:
+
+```text
+4720 — User account created
+4732 — Member added to a local security-enabled group
+4672 — Special privileges assigned to a new logon
+```
+
+The analyst should determine:
+- Who created the account?
+- Who changed the group membership?
+- Was the change authorised?
+- What process or session was involved?
+- Was the account subsequently used?
+
+Not every environment records every step, so corroborating telemetry may be necessary.
+
+## 12.3 Persistence through scheduled tasks
+
+Attackers sometimes create scheduled tasks so that a program runs automatically.
+
+Potential evidence includes:
+
+```text
+4698 — Scheduled task created
+4702 — Scheduled task updated
+4688 — New process created
+```
+
+The analyst should inspect the task's name, action, execution account, trigger, creation time, and associated executable.
+
+A scheduled task is not inherently malicious. Operating systems and legitimate applications use scheduled tasks routinely.
+
+## 12.4 Defence evasion
+
+Attackers may try to weaken endpoint protection or interfere with logging.
+
+Potential evidence includes:
+- Defender configuration-change events.
+- Unexpected changes to real-time protection.
+- Security Event ID 1102.
+- Gaps in expected logging.
+- Suspicious administrative commands.
+
+These are investigation leads, not proof of malicious activity. Legitimate maintenance and policy changes can produce similar evidence.
+
+---
+
+# 13. Practical Lab: Investigate Your Windows Computer
+
+Now let's turn the theory into practical exercises.
+
+You can perform these labs on your own Windows computer. Most initial exercises only require reading logs and inspecting security settings.
+
+## Lab 1: Explore Windows Event Viewer
+
+Objective: Become familiar with the event logging system.
+
+### Tasks
+
+1. Open Event Viewer using `eventvwr.msc`.
+2. Open the Application log.
+3. Open the System log.
+4. Open the Security log.
+5. Open the Windows Defender Operational log.
+6. Select several events and inspect their General and Details tabs.
+7. Identify their timestamps, providers, Event IDs, and messages.
+
+### Questions to answer
+
+- Which provider generated the event?
+- What happened?
+- When did it happen?
+- Does the event indicate an error, a normal operation, or a security-relevant activity?
+- What other evidence would you need to understand it?
+
+Expected result: You should understand how to navigate logs and extract relevant information from individual records.
+
+## Lab 2: Investigate Failed Logons
+
+Objective: Use Windows Security events to investigate authentication activity.
+
+Open PowerShell and run:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4625
+    StartTime = (Get-Date).AddDays(-7)
+} -MaxEvents 50 |
+    Select-Object TimeCreated, Id, Message |
+    Format-List
+```
+
+This retrieves up to 50 recent failed-logon events from the previous seven days.
+
+If no events appear, that does not necessarily mean anything is wrong. Your computer might not have recorded any matching events during that period.
+
+### Your task
+
+For each available event, identify:
+
+1. The target account.
+2. The time of the attempt.
+3. The logon type.
+4. The failure reason and status codes.
+5. The source network address, if recorded.
+6. Whether the event appears consistent with normal activity.
+
+Then consider whether repeated attempts form a pattern.
+
+Expected result: You should be able to explain why a failed logon occurred and distinguish an isolated failure from a potentially suspicious sequence.
+
+## Lab 3: Investigate Defender Activity
+
+Objective: Learn to inspect antivirus status and scan records.
+
+First, check the Defender status:
+
+```powershell
+Get-MpComputerStatus
+```
+
+Next, review recent Defender Operational events:
+
+```powershell
+Get-WinEvent `
+    -LogName 'Microsoft-Windows-Windows Defender/Operational' `
+    -MaxEvents 50 |
+    Select-Object TimeCreated, Id, LevelDisplayName, Message |
+    Format-List
+```
+
+Then, if appropriate for your device, run a quick scan:
+
+```powershell
+Start-MpScan -ScanType QuickScan
+```
+
+After the scan, review the relevant event log and identify any scan-started or scan-completed events that were recorded.
+
+### Your task
+
+Record:
+- Whether real-time protection is enabled.
+- When Defender security intelligence was last updated.
+- Whether a scan was started and completed.
+- Whether any threats were detected.
+- Whether any protective actions were taken.
+
+Expected result: You should be able to verify the status of endpoint protection and locate relevant evidence in Defender's logs.
+
+## Lab 4: Detect Suspicious Process Creation
+
+Objective: Understand how process-creation auditing helps an investigator.
+
+First, check whether recent process-creation events exist:
+
+```powershell
+Get-WinEvent -FilterHashtable @{
+    LogName   = 'Security'
+    Id        = 4688
+    StartTime = (Get-Date).AddHours(-4)
+} -MaxEvents 20 |
+    Select-Object TimeCreated, Message |
+    Format-List
+```
+
+If events are available, inspect them.
+
+Look for:
+- The new process name.
+- The process creator or subject.
+- The parent process, if available.
+- The command line, if logging is configured.
+- The timestamp.
+- Any unusual execution paths.
+
+### Important
+
+If no events are returned, process-creation auditing may not be enabled or no matching records may exist.
+
+On a dedicated lab machine, you can investigate the Windows audit policy for process creation. On a managed or personal device, avoid changing audit settings without understanding their impact.
+
+Expected result: You should understand how process execution can be reconstructed from available Windows telemetry.
+
+## Lab 5: Build a Basic Security Timeline
+
+Objective: Combine evidence from multiple sources.
+
+Choose a time window from your own logs and investigate an event that you can explain, such as a failed login, application crash, or Defender scan.
+
+Create a timeline:
+
+| Time | Evidence | Interpretation |
+|---|---|---|
+| 10:00 | A process starts | Identify the process and its context. |
+| 10:01 | An application reports an error | Determine whether it relates to the process. |
+| 10:02 | Defender records a scan event | Establish whether the events are related. |
+| 10:05 | A user logs in successfully | Examine whether this activity is relevant. |
+
+The times and events above are illustrative, not actual results from your computer.
+
+Your task is to create a timeline from real records and clearly distinguish observed facts from assumptions.
+
+Expected result: You should understand the basic reasoning used in incident response.
+
+---
+
+# 14. Practical Security Investigation Workflow
+
+A SOC analyst should follow a repeatable investigation process instead of opening random events and guessing what happened.
+
+Use this workflow whenever investigating a suspicious Windows activity.
+
+### Step 1: Define the alert or question
+
+Examples:
+- Why did a user account experience repeated failed logons?
+- Why was a new service installed?
+- Why did Microsoft Defender detect a suspicious file?
+- Why was endpoint protection disabled?
+
+### Step 2: Identify relevant log sources
+
+Choose logs based on the investigation.
+
+| Investigation | Primary evidence |
+|---|---|
+| Failed authentication | Security log |
+| Successful authentication | Security log |
+| Process execution | Security log, if auditing is enabled |
+| PowerShell activity | PowerShell Operational log and other available telemetry |
+| Malware detection | Defender Operational log and Protection History |
+| Service installation | Security log, System log, and service-related telemetry |
+| Unexpected shutdown | System log |
+| Account and group changes | Security log |
+
+### Step 3: Establish a time window
+
+Start with the time of the suspected event.
+
+Investigate a reasonable period before and after it. The appropriate window depends on the incident.
+
+For example, a suspicious process might require examining activity during the preceding 30 minutes, while a compromised account may require reviewing several days.
+
+### Step 4: Correlate events
+
+Look for relationships between:
+- Accounts.
+- Processes.
+- Parent processes.
+- Source addresses.
+- Services.
+- Scheduled tasks.
+- Defender detections.
+- Network activity.
+
+Correlation is the process of connecting evidence from multiple events or data sources to understand a larger sequence of activity.
+
+### Step 5: Assess the evidence
+
+Ask:
+- Is the activity expected?
+- Is it authorised?
+- Does the sequence match a known attack pattern?
+- Are there alternative explanations?
+- What evidence is missing?
+- How confident are you in the conclusion?
+
+### Step 6: Document the findings
+
+A basic investigation report should include:
+
+```text
+Incident title:
+Affected computer:
+Affected account:
+First observed:
+Last observed:
+
+Summary:
+Relevant event IDs:
+Timeline:
+Evidence:
+Assessment:
+Potential impact:
+Recommended actions:
+Confidence level:
+```
+
+### Step 7: Respond appropriately
+
+Depending on the findings, actions might include:
+- Escalating the incident.
+- Preserving logs and related evidence.
+- Isolating an affected endpoint.
+- Disabling a compromised account.
+- Removing or quarantining a confirmed threat.
+- Restoring security settings.
+- Collecting additional telemetry.
+
+For organisational devices, follow the authorised incident-response procedure rather than independently making disruptive changes.
+
+---
+
+# 15. Limitations of Windows Event Logs
+
+Event logging is valuable, but it has important limitations.
+
+## 15.1 Not everything is logged by default
+
+Some security events require specific audit policies.
+
+For example, process creation, command-line information, and PowerShell script-block logging may require additional configuration.
+
+## 15.2 Logs can be overwritten
+
+Many Windows logs use circular logging, in which older events can be overwritten when the log reaches its configured capacity.
+
+Retention depends on the log's configuration and event volume.
+
+## 15.3 Attackers may interfere with logging
+
+An attacker with sufficient privileges may attempt to clear logs, disable auditing, or otherwise interfere with evidence collection.
+
+Therefore, local logs should not be treated as an infallible record of everything that happened.
+
+## 15.4 One event rarely proves an attack
+
+A successful login, a new scheduled task, or a Defender configuration change may be legitimate.
+
+Security analysts need to consider the surrounding context and corroborating evidence.
+
+## 15.5 Centralised logging improves investigations
+
+In professional environments, Windows events may be forwarded to a central collection system or SIEM.
+
+Examples include:
+- Microsoft Sentinel.
+- Splunk.
+- Elastic Security.
+
+Centralised logging can improve visibility across multiple endpoints and preserve records beyond the retention window of an individual computer. Its effectiveness still depends on collection configuration, permissions, retention, and the security of the central system.
+
+---
+
+# 16. Essential Commands Cheat Sheet
+
+These are the commands worth practising until you can use them without referring to notes.
+
+| Task | Command |
+|---|---|
+| Open Event Viewer | `eventvwr.msc` |
+| List available logs | `Get-WinEvent -ListLog ` |
+| Read recent Security events | `Get-WinEvent -LogName Security -MaxEvents 20` |
+| Find failed logons | `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 50` |
+| Find successful logons | `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624} -MaxEvents 50` |
+| Find process-creation events | `Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4688} -MaxEvents 50` |
+| Read Defender events | `Get-WinEvent -LogName 'Microsoft-Windows-Windows Defender/Operational' -MaxEvents 30` |
+| Check Defender status | `Get-MpComputerStatus` |
+| Check Defender preferences | `Get-MpPreference` |
+| Update Defender intelligence | `Update-MpSignature` |
+| Run a quick scan | `Start-MpScan -ScanType QuickScan` |
+| Run a full scan | `Start-MpScan -ScanType FullScan` |
+
+Tip: For serious investigations, use `-FilterHashtable` with a specific time window rather than retrieving every record and filtering afterward. This can substantially reduce unnecessary processing.
+
+---
+
+# 17. Recommended Learning Resources
+
+Use official documentation to deepen your understanding.
+
+1. Event querying with PowerShell: Microsoft's [`Get-WinEvent` documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent) explains log discovery, filtering, and event retrieval. [Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent?view=powershell-5.1\&utm_source=chatgpt.com)
+
+2. Microsoft Defender event logs: The official [Microsoft Defender Antivirus event-log troubleshooting guide](https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues) explains how to inspect Defender Operational events through Event Viewer and PowerShell. [Microsoft Learn](https://learn.microsoft.com/en-us/defender-endpoint/troubleshoot-mdav-scan-issues?utm_source=chatgpt.com)
+
+3. Windows security auditing: Study Microsoft's documentation on Windows audit policies and security auditing so you understand which events can be recorded and what configuration is required.
+
+4. Windows security event analysis: Learn to interpret authentication events, account-management events, process-creation events, and audit-log clearing events in context.
+
+---
+
+# 18. What You Should Know Before Moving to the Next Topic
+
+Use this checklist to evaluate your understanding.
+
+### Windows Event Logging
+- [ ] I understand event providers, channels, records, and EVTX files.
+- [ ] I know the purpose of the Application, System, and Security logs.
+- [ ] I understand the difference between Event ID and Record ID.
+- [ ] I understand why logging configuration and retention matter.
+
+### Event Viewer
+- [ ] I can open Event Viewer and navigate between logs.
+- [ ] I can filter events by ID and time.
+- [ ] I can inspect event messages and structured details.
+- [ ] I understand how to correlate related events.
+
+### Windows Security Events
+- [ ] I understand Event IDs 4624 and 4625.
+- [ ] I understand Event IDs 4720 and 4732.
+- [ ] I understand Event IDs 4688 and 4698.
+- [ ] I understand why Event ID 1102 is worth investigating.
+- [ ] I know that the same Event ID can mean different things across providers.
+
+### PowerShell
+- [ ] I can use `Get-WinEvent`.
+- [ ] I can filter events using `-FilterHashtable`.
+- [ ] I can search by Event ID and time range.
+- [ ] I can export selected records to CSV.
+
+### Microsoft Defender
+- [ ] I can inspect Defender status using `Get-MpComputerStatus`.
+- [ ] I can inspect Defender Operational events.
+- [ ] I understand the difference between detection and successful remediation.
+- [ ] I can run an authorised quick scan.
+- [ ] I understand the role of real-time protection and security intelligence.
+
+### Investigation
+- [ ] I can investigate a sequence of failed logons.
+- [ ] I can construct a timeline from available evidence.
+- [ ] I understand why one suspicious event does not necessarily prove an attack.
+- [ ] I can explain why centralised logging matters.
+
+## Final takeaway
+
+Windows Event Logs tell you what Windows recorded. Event Viewer helps you inspect those records. PowerShell lets you query and analyse them efficiently. Microsoft Defender helps detect and respond to threats.
+
+Together, these capabilities form an important foundation for Windows security monitoring and SOC investigations.
+
+Your next step should be to practise the five labs on your own Windows system, record your findings, and learn to explain the evidence—not merely memorise Event IDs.
