@@ -1,0 +1,653 @@
+# 21. OSI and TCP/IP Models
+
+The OSI Model and TCP/IP Model are two networking models that explain how data travels from one device to another over a network.
+
+They divide network communication into different layers, where each layer performs a specific task.
+
+Understanding these models is important in cybersecurity because they help us understand:
+
+- How computers communicate.
+- Where network attacks occur.
+- How firewalls filter network traffic.
+- How attackers intercept, modify, or manipulate data.
+- How to troubleshoot network communication problems.
+
+# 1. What is the OSI Model?
+
+7 Layers
+
+OSI stands for Open Systems Interconnection.
+
+It is a conceptual model developed by ISO (International Organization for Standardization) to explain how network communication works.
+
+The OSI model divides communication into seven layers. Each layer has a specific responsibility.
+
+[Data Manipulation Tasks Using KNIME for ETL (Extract–Transform–Load) Processes | by Mohamad Mahmood | Low Code for Data Science | Medium](https://images.openai.com/static-rsc-4/Ndx1HHIodxb7en6l3H5zwKijLaWHtyjZ0BSgGdR_VZZN-VraPCFzxzgfmGSQftTt_4Gqe_5MK2OZ9NgcXJS1XdTlBq-WYbUUVr-6epIIl2SWHuAYA8l13Wt2jFN5iMVR_lg4MBhaT3s4B6zCzV30a4Ir3HWDffyEgdkfQ0H9ap4?purpose=inline)
+
+[medium.com](https://medium.com/low-code-for-advanced-data-science/data-manipulation-tasks-using-knime-for-etl-extract-transform-load-processes-4a6d0ecb772b?utm_source=chatgpt.com)
+
+### The Seven Layers of OSI Model
+
+| Layer | Name         | Main Responsibility                            |
+| ----- | ------------ | ---------------------------------------------- |
+| 7     | Application  | Provides network services to applications      |
+| 6     | Presentation | Data formatting, encryption and compression    |
+| 5     | Session      | Establishes and manages communication sessions |
+| 4     | Transport    | Reliable data delivery and segmentation        |
+| 3     | Network      | IP addressing and routing                      |
+| 2     | Data Link    | MAC addressing and frame delivery              |
+| 1     | Physical     | Transmits raw bits through physical media      |
+
+Let's understand each layer.
+
+## Layer 7: Application Layer
+
+The Application Layer is the layer closest to the user.
+
+It provides network services that applications use to communicate over a network.
+
+Examples of protocols:
+
+- HTTP / HTTPS – Accessing websites.
+- FTP – Transferring files.
+- SMTP – Sending emails.
+- DNS – Converting domain names into IP addresses.
+- SSH – Secure remote access.
+
+Cybersecurity relevance:
+
+Attackers commonly target application-layer services.
+
+Examples:
+
+- SQL Injection.
+- Cross-Site Scripting (XSS).
+- HTTP Request Smuggling.
+- Directory Traversal.
+- Application-layer DoS attacks.
+
+For example, an attacker sends a malicious HTTP request to exploit a vulnerable web application.
+
+## Layer 6: Presentation Layer
+
+The Presentation Layer handles how data is represented and formatted.
+
+Its major responsibilities include:
+
+1. Encryption and decryption.
+2. Data compression and decompression.
+3. Data encoding and formatting.
+
+Examples:
+
+- TLS encryption.
+- JPEG image encoding.
+- UTF-8 character encoding.
+- Data compression formats.
+
+Cybersecurity relevance:
+
+This layer is important for understanding how sensitive information is protected during communication.
+
+For example, HTTPS uses TLS to encrypt communication so attackers cannot easily read intercepted network traffic.
+
+Note: In real-world networking, TLS is commonly implemented through software libraries and does not map perfectly to a single OSI layer.
+
+## Layer 5: Session Layer
+
+The Session Layer manages communication sessions between applications.
+
+Its responsibilities include:
+
+- Establishing sessions.
+- Maintaining sessions.
+- Terminating sessions.
+- Synchronizing communication.
+
+Imagine logging into an online banking application. Your application establishes communication with the server and maintains the interaction while you perform different operations.
+
+Cybersecurity relevance:
+
+Attackers may exploit session-management weaknesses.
+
+Examples:
+
+- Session Hijacking.
+- Session Fixation.
+- Session Replay Attacks.
+
+For example, if an attacker steals a user's session cookie, they may impersonate that user without knowing their password.
+
+## Layer 4: Transport Layer
+
+The Transport Layer handles communication between applications running on different devices.
+
+Its major responsibilities include:
+
+- Breaking data into smaller segments.
+- Managing end-to-end communication.
+- Error detection and recovery.
+- Flow control.
+- Port-based communication.
+
+Two important protocols operate at this layer.
+
+1\. TCP (Transmission Control Protocol)
+
+TCP provides reliable, connection-oriented communication.
+
+Features:
+
+- Establishes a connection before transferring data.
+- Ensures data arrives in order.
+- Retransmits lost data.
+- Uses acknowledgements.
+
+Example: Downloading a file where missing data could corrupt the result.
+
+2\. UDP (User Datagram Protocol)
+
+UDP provides connectionless communication.
+
+Features:
+
+- No connection establishment.
+- No guarantee of delivery.
+- No guarantee of ordering.
+- Lower communication overhead.
+
+Example: Live video streaming, online gaming and DNS queries.
+
+Cybersecurity relevance:
+
+Common attacks include:
+
+- TCP SYN Flood.
+- UDP Flood.
+- TCP Session Hijacking.
+- Port Scanning.
+
+Important concept: Ports identify services or applications on a device.
+
+Examples:
+
+| Port   | Protocol / Service |
+| ------ | ------------------ |
+| 20, 21 | FTP                |
+| 22     | SSH                |
+| 25     | SMTP               |
+| 53     | DNS                |
+| 80     | HTTP               |
+| 443    | HTTPS              |
+| 3306   | MySQL              |
+| 5432   | PostgreSQL         |
+
+## Layer 3: Network Layer
+
+The Network Layer handles logical addressing and routing.
+
+Its main responsibility is to determine how data travels from its source to its destination across different networks.
+
+Important concepts:
+
+- IP Addressing.
+- Routing.
+- Packet Forwarding.
+- Subnetting.
+- Logical Addressing.
+
+Important protocols:
+
+- IPv4.
+- IPv6.
+- ICMP.
+- IPsec.
+
+Example:
+
+Suppose your computer wants to communicate with Google's server.
+
+Your computer sends IP packets containing:
+
+- Source IP address.
+- Destination IP address.
+
+Routers examine the destination IP and forward packets toward the appropriate network.
+
+Cybersecurity relevance:
+
+Common attacks include:
+
+- IP Spoofing.
+- ICMP Flood.
+- ICMP Tunneling.
+- Routing Attacks.
+- IP Fragmentation Attacks.
+
+For example, an attacker may forge the source IP address of a packet to make it appear as if it came from another device.
+
+## Layer 2: Data Link Layer
+
+The Data Link Layer handles communication between devices on the same local network.
+
+It uses MAC addresses to identify network interfaces.
+
+Its responsibilities include:
+
+- Frame creation.
+- MAC addressing.
+- Error detection.
+- Local network communication.
+- Media access control.
+
+Important technologies and protocols:
+
+- Ethernet.
+- Wi-Fi (IEEE 802.11).
+- ARP (commonly associated with the boundary between Layers 2 and 3).
+- VLAN.
+- PPP.
+
+Cybersecurity relevance:
+
+Common attacks include:
+
+- ARP Spoofing.
+- MAC Spoofing.
+- MAC Flooding.
+- VLAN Hopping.
+
+Example:
+
+In ARP Spoofing, an attacker sends fake ARP messages to associate their MAC address with another device's IP address.
+
+This can allow the attacker to intercept traffic on a local network.
+
+## Layer 1: Physical Layer
+
+The Physical Layer is responsible for transmitting raw bits (0s and 1s) through a physical medium.
+
+It deals with:
+
+- Electrical signals.
+- Radio signals.
+- Optical signals.
+- Cables and connectors.
+- Transmission speed.
+
+Examples:
+
+- Ethernet cables.
+- Fiber-optic cables.
+- Network hubs.
+- Wireless radio signals.
+
+Cybersecurity relevance:
+
+Possible attacks include:
+
+- Physical Cable Tapping.
+- Hardware Tampering.
+- Rogue Device Installation.
+- Physical Network Disconnection.
+- Electromagnetic Eavesdropping.
+
+For example, an attacker physically connects a malicious device to an organization's network port.
+
+# 2. What is the TCP/IP Model?
+
+4 Layers
+
+TCP/IP stands for Transmission Control Protocol / Internet Protocol.
+
+It is the practical networking model used for communication across the Internet and most modern networks.
+
+Unlike the OSI model, which is primarily a conceptual reference model, TCP/IP describes the protocols and architecture used in real-world networking.
+
+[✨ Decoding TCP/IP: The Four Layers that Power the Internet](https://images.openai.com/static-rsc-4/hJ_Hh6U3cNtq0XJOKF7uo6uQXa57nws5_ek1ByDuGtTMPnChFXM6Kh5ZUOgLP0xJ3KOSbc14F_l-DmG3W5kgUJFoqe1da53YkT4Ug2sZhfzuvTGQZlUOZytfO65So5LVH0VQVhQNjBzzKuL51YK81YAH3mdCLjtr1KLq6I7aS90?purpose=inline)
+
+[linkedin.com](https://www.linkedin.com/pulse/decoding-tcpip-four-layers-power-internet-risheek-kumar-mpkbc?utm_source=chatgpt.com)
+
+### Four Layers of TCP/IP Model
+
+| Layer          | Main Responsibility                     | Examples             |
+| -------------- | --------------------------------------- | -------------------- |
+| Application    | Network services for applications       | HTTP, DNS, FTP, SMTP |
+| Transport      | End-to-end communication                | TCP, UDP             |
+| Internet       | IP addressing and routing               | IPv4, IPv6, ICMP     |
+| Network Access | Local network and physical transmission | Ethernet, Wi-Fi      |
+
+### 1. Application Layer
+
+Combines three OSI layers:
+
+- Application.
+- Presentation.
+- Session.
+
+It handles application-level communication, data formatting and session-related functionality.
+
+Examples:
+
+- HTTP.
+- HTTPS.
+- DNS.
+- FTP.
+- SMTP.
+- SSH.
+
+### 2. Transport Layer
+
+Corresponds to the OSI Transport Layer.
+
+It provides communication between applications using TCP or UDP.
+
+Examples:
+
+- TCP.
+- UDP.
+
+It handles segmentation, port numbers, reliability and communication control.
+
+### 3. Internet Layer
+
+Corresponds to the OSI Network Layer.
+
+It handles:
+
+- IP addressing.
+- Routing.
+- Packet forwarding.
+- Communication between different networks.
+
+Examples:
+
+- IPv4.
+- IPv6.
+- ICMP.
+
+### 4. Network Access Layer
+
+Combines the OSI Data Link and Physical Layers.
+
+It handles:
+
+- MAC addressing.
+- Frame transmission.
+- Physical network communication.
+- Local network access.
+
+Examples:
+
+- Ethernet.
+- Wi-Fi.
+- Fiber-optic communication.
+
+# 3. OSI vs TCP/IP Model
+
+Both models explain network communication, but they differ in their structure and purpose.
+
+| Feature                | OSI Model                    | TCP/IP Model          |
+| ---------------------- | ---------------------------- | --------------------- |
+| Number of layers       | 7                            | 4                     |
+| Developed by           | ISO                          | DARPA / DoD research  |
+| Nature                 | Reference model              | Protocol architecture |
+| Usage                  | Learning and troubleshooting | Real-world networking |
+| Application layers     | 3 separate layers            | 1 combined layer      |
+| Physical and Data Link | Separate                     | Combined              |
+| Transport protocols    | TCP, UDP concepts            | TCP, UDP              |
+| Network protocols      | IP, ICMP                     | IP, ICMP              |
+
+### Layer Mapping
+
+This is one of the most important things to remember.
+
+[Day 3: Networking Fundamentals — TCP/IP & OSI Model | by Siddhesh Patil | Jan, 2026 | Medium](https://images.openai.com/static-rsc-4/XZtfOvGvvdXjqwzJeKI3PBGPFcrNFnnJm9WLDFTRhE6BROXX0hdLHAnhs9r7D06F3I-4R5ijBkjoeygJb73qjOj3rHNWoJyhPGTSviWZGRLoPAe5zgWKMRfrtcRHX_q5UnN32wUjf4leKChuZ62XdYci7Majt21nN6dOlwwyXVc?purpose=inline)
+
+[medium.com](https://medium.com/%40sid.patil/day-3-networking-fundamentals-tcp-ip-osi-model-a5a098580ebf?utm_source=chatgpt.com)
+
+| OSI Model    | TCP/IP Model   |
+| ------------ | -------------- |
+| Application  | Application    |
+| Presentation | Application    |
+| Session      | Application    |
+| Transport    | Transport      |
+| Network      | Internet       |
+| Data Link    | Network Access |
+| Physical     | Network Access |
+
+# 4. How Data Travels Through These Layers
+
+Let's understand this with a practical example.
+
+Suppose you open your browser and visit:
+
+`https://www.google.com`
+
+What happens behind the scenes?
+
+## Sending a request to Google
+
+1. Application Layer
+
+   Your browser creates an HTTP request to access Google's website.
+2. Presentation / Session concepts
+
+   TLS helps establish secure communication and encrypts the HTTP data.
+3. Transport Layer
+
+   TCP divides the data into segments and manages reliable delivery.
+4. Network Layer
+
+   IP adds source and destination IP addresses so routers can forward packets.
+5. Data Link Layer
+
+   Ethernet or Wi-Fi packages the packet into a frame for the next network hop.
+6. Physical Layer
+
+   The bits are transmitted through electrical, optical or radio signals.
+
+The destination server receives the data and processes it in reverse order.
+
+This process of adding information at each layer is called Encapsulation.
+
+When data travels from the receiving device back up the layers, the process is called Decapsulation.
+
+### Data Units at Different Layers
+
+| OSI Layer    | Data Unit                      |
+| ------------ | ------------------------------ |
+| Application  | Data                           |
+| Presentation | Data                           |
+| Session      | Data                           |
+| Transport    | Segment (TCP) / Datagram (UDP) |
+| Network      | Packet                         |
+| Data Link    | Frame                          |
+| Physical     | Bits                           |
+
+# 5. Encapsulation and Decapsulation
+
+Encapsulation: Each networking layer adds its own header (and sometimes trailer) to the data before sending it.
+
+Example:
+
+## Encapsulation process
+
+Application Data
+
+TCP Header
+
+Data
+
+IP Header
+
+TCP Header + Data
+
+Ethernet Header
+
+IP Packet
+
+Trailer
+
+Bits: 01010101...
+
+Simplified illustration of encapsulation. Actual headers and trailers vary by protocol.
+
+Decapsulation: The receiving device removes the headers and trailers layer by layer until the original application data is obtained.
+
+# 6. Why Are These Models Important in Cybersecurity?
+
+Understanding networking layers helps security professionals identify where an attack happens and which security controls can prevent it.
+
+| Layer        | Example Attack        | Security Mechanism                  |
+| ------------ | --------------------- | ----------------------------------- |
+| Application  | SQL Injection, XSS    | WAF, input validation               |
+| Presentation | Encryption weaknesses | TLS, secure cryptography            |
+| Session      | Session Hijacking     | Secure cookies, session rotation    |
+| Transport    | SYN Flood             | Firewall, SYN cookies               |
+| Network      | IP Spoofing           | Packet filtering, ingress filtering |
+| Data Link    | ARP Spoofing          | Dynamic ARP Inspection              |
+| Physical     | Cable tapping         | Physical access controls            |
+
+These are practical associations, not strict boundaries. Many attacks and defenses operate across multiple layers.
+
+### How cybersecurity professionals use these models
+
+1. Penetration Testers: Identify vulnerabilities in network services and applications.
+2. Network Security Engineers: Configure firewalls, routing security and network segmentation.
+3. SOC Analysts: Investigate suspicious network traffic and identify attack patterns.
+4. Red Team Operators: Exploit network protocols, misconfigurations and exposed services.
+5. Incident Responders: Trace malicious communication and investigate compromised devices.
+
+# 7. Important Concepts to Remember
+
+| Concept       | Meaning                                                              |
+| ------------- | -------------------------------------------------------------------- |
+| IP Address    | Logical address used to identify a device/interface on an IP network |
+| MAC Address   | Hardware-level network interface address                             |
+| Port          | Identifies a communication endpoint on a device                      |
+| Packet        | Data unit at the Network Layer                                       |
+| Frame         | Data unit at the Data Link Layer                                     |
+| Segment       | Data unit commonly used for TCP                                      |
+| Encapsulation | Adding headers and trailers to data                                  |
+| Decapsulation | Removing headers and trailers                                        |
+| Routing       | Forwarding packets between networks                                  |
+| Switching     | Forwarding frames within a local network                             |
+
+Easy memory trick for OSI layers (top to bottom):
+
+All People Seem To Need Data Processing.
+
+- All – Application
+- People – Presentation
+- Seem – Session
+- To – Transport
+- Need – Network
+- Data – Data Link
+- Processing – Physical
+
+# 8. Interview and Practical Questions
+
+Test your understanding before moving to the next topic.
+
+Knowledge check
+
+7/7 answered
+
+1\. How many layers are present in the OSI model?
+
+4
+
+5
+
+7
+
+8
+
+Correct — 7
+
+The OSI model has seven layers.
+
+2\. Which OSI layer handles IP addressing and routing?
+
+Transport
+
+Network
+
+Data Link
+
+Session
+
+Correct — Network
+
+The Network Layer handles logical addressing and routing.
+
+3\. Which layer is responsible for MAC addressing?
+
+Physical
+
+Network
+
+Data Link
+
+Application
+
+Correct — Data Link
+
+The Data Link Layer uses MAC addresses for local network communication.
+
+4\. Which protocol provides reliable, connection-oriented communication?
+
+UDP
+
+IP
+
+TCP
+
+ICMP
+
+Correct — TCP
+
+TCP provides ordered and reliable data delivery.
+
+5\. What is the process of adding headers to data called?
+
+Decapsulation
+
+Encapsulation
+
+Routing
+
+Switching
+
+Correct — Encapsulation
+
+Encapsulation adds protocol information as data moves down the layers.
+
+6\. Which TCP/IP layer combines the OSI Application, Presentation and Session layers?
+
+Internet
+
+Transport
+
+Network Access
+
+Application
+
+Correct — Application
+
+The TCP/IP Application Layer combines these three OSI layers.
+
+7\. ARP Spoofing primarily targets which OSI layer?
+
+Data Link
+
+Physical
+
+Transport
+
+Presentation
+
+Correct — Data Link
+
+ARP operates at the boundary between the Data Link and Network layers; it is commonly associated with Layer 2 attacks.

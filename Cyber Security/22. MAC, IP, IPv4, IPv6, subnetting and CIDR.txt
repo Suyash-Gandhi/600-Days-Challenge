@@ -1,0 +1,629 @@
+# 22. MAC, IP, IPv4, IPv6, Subnetting and CIDR
+
+These are fundamental networking concepts that are extremely important in cybersecurity, especially for ethical hacking, network security, penetration testing and understanding how devices communicate.
+
+Let's understand each concept step by step.
+
+## 1. MAC Address (Media Access Control Address)
+
+A MAC address is a unique hardware address assigned to a network interface card (NIC) of a device.
+
+It helps identify devices within a local network (LAN).
+
+Example:
+
+`00:1A:2B:3C:4D:5E`
+
+A MAC address is generally 48 bits (6 bytes) long and written in hexadecimal format.
+
+### How does it work?
+
+Imagine your laptop and mobile phone are connected to the same Wi-Fi network.
+
+- Your laptop has a MAC address.
+- Your mobile has a different MAC address.
+- Your router uses MAC addresses to identify devices and deliver Ethernet or Wi-Fi frames within the local network.
+
+### Important characteristics
+
+1. MAC addresses operate primarily at Layer 2 (Data Link Layer) of the OSI model.
+2. They are generally assigned by hardware manufacturers.
+3. They are used for communication within a local network.
+4. MAC addresses can be spoofed or changed through software.
+5. A device can have multiple MAC addresses if it has multiple network interfaces.
+
+### MAC Address vs IP Address
+
+| MAC Address                              | IP Address                                        |
+| ---------------------------------------- | ------------------------------------------------- |
+| Identifies a network interface           | Identifies a network interface's network location |
+| Layer 2                                  | Layer 3                                           |
+| Usually assigned by manufacturer         | Assigned manually or through DHCP/SLAAC           |
+| Used for local network delivery          | Used for routing between networks                 |
+| Usually remains the same across networks | Can change when connecting to another network     |
+
+Cybersecurity importance:
+
+- MAC spoofing can help attackers impersonate another device on a local network.
+- MAC filtering can restrict which devices connect to a Wi-Fi network.
+- Attackers can capture MAC addresses through packet sniffing.
+- MAC addresses can help identify devices during network investigations.
+
+Important: MAC addresses are not reliable authentication mechanisms because they can be spoofed.
+
+## 2. IP Address (Internet Protocol Address)
+
+An IP address is a logical address assigned to a network interface to identify its location within an IP network.
+
+It allows devices to communicate with each other across different networks.
+
+Example:
+
+`192.168.1.10`
+
+Imagine sending a letter:
+
+- The recipient's address tells the postal service where to deliver it.
+- Similarly, an IP address helps routers determine where network packets should go.
+
+### Types of IP Addresses
+
+A. Public IP Address
+
+A public IP address is globally routable on the internet.
+
+Example: `8.8.8.8`
+
+Characteristics:
+
+- Assigned by an ISP or another authorized provider.
+- Used for communication over the internet.
+- Generally unique across the public internet.
+- Can identify the public network connection being used.
+
+B. Private IP Address
+
+Private IP addresses are used inside local networks and are not directly routable over the public internet.
+
+There are three major private IPv4 ranges:
+
+| Class   | Private IP Range              |
+| ------- | ----------------------------- |
+| Class A | 10.0.0.0 – 10.255.255.255     |
+| Class B | 172.16.0.0 – 172.31.255.255   |
+| Class C | 192.168.0.0 – 192.168.255.255 |
+
+Example: `192.168.1.10`
+
+Your laptop might have this private IP address while your router has a public IP address assigned by your ISP.
+
+C. Static IP Address
+
+An IP address that is manually configured or reserved so that it remains consistent.
+
+Commonly used for:
+
+- Servers
+- Network infrastructure
+- Security appliances
+
+D. Dynamic IP Address
+
+An IP address assigned automatically, usually through DHCP in IPv4 networks.
+
+It can change over time.
+
+Commonly used for:
+
+- Personal computers
+- Smartphones
+- Home networks
+
+## 3. IPv4 (Internet Protocol Version 4)
+
+IPv4 is the fourth version of the Internet Protocol and is still widely used today.
+
+It uses a 32-bit address.
+
+Example:
+
+`192.168.1.10`
+
+An IPv4 address contains four groups called octets, separated by dots.
+
+Each octet contains 8 bits.
+
+For example:
+
+IPv4 address structure
+
+# 192
+
+Octet 18 bits
+
+# 168
+
+Octet 28 bits
+
+# 1
+
+Octet 38 bits
+
+# 10
+
+Octet 48 bits
+
+# 32 bits total
+
+Each octet can have a value between 0 and 255.
+
+This is because 8 bits can represent:
+
+\\[ 2^8 = 256 \text{ values} \\]
+
+Therefore, the possible values are 0–255.
+
+### IPv4 Address Types
+
+Some important special IPv4 addresses:
+
+| Address         | Purpose                                                                  |
+| --------------- | ------------------------------------------------------------------------ |
+| 127.0.0.1       | Loopback (localhost)                                                     |
+| 0.0.0.0         | Unspecified address; also used in certain routing and listening contexts |
+| 255.255.255.255 | Limited broadcast                                                        |
+| 192.168.x.x     | Private network range                                                    |
+| 10.x.x.x        | Private network range                                                    |
+| 169.254.x.x     | Link-local address                                                       |
+
+### Why is IPv4 running out?
+
+IPv4 has approximately:
+
+\\[ 2^{32} = 4.29 \text{ billion addresses} \\]
+
+With billions of internet-connected devices, the available IPv4 address space became insufficient.
+
+This led to the development and adoption of IPv6.
+
+## 4. IPv6 (Internet Protocol Version 6)
+
+IPv6 is the newer version of the Internet Protocol, designed primarily to solve IPv4 address exhaustion and improve several aspects of IP networking.
+
+It uses a 128-bit address.
+
+Example:
+
+`2001:0db8:85a3:0000:0000:8a2e:0370:7334`
+
+### IPv6 Address Structure
+
+An IPv6 address contains eight groups called hextets, separated by colons.
+
+Each group contains 16 bits.
+
+IPv6 address structure
+
+2001
+
+Group 116 bits
+
+0db8
+
+Group 216 bits
+
+85a3
+
+Group 316 bits
+
+0000
+
+Group 416 bits
+
+0000
+
+Group 516 bits
+
+8a2e
+
+Group 616 bits
+
+0370
+
+Group 716 bits
+
+7334
+
+Group 816 bits
+
+# 128 bits total
+
+### Why IPv6 is important
+
+IPv6 provides:
+
+1. A significantly larger address space.
+2. More efficient address allocation.
+3. No need for traditional broadcast communication; it uses multicast and anycast instead.
+4. Simplified packet headers compared with IPv4.
+5. Support for automatic address configuration.
+6. Better support for modern network architectures.
+
+### IPv6 Address Shortening
+
+IPv6 addresses can be shortened by removing leading zeros and replacing consecutive groups of zeros with `::` (only once in an address).
+
+For example:
+
+Original:
+
+`2001:0db8:0000:0000:0000:0000:0000:0001`
+
+Shortened:
+
+`2001:db8::1`
+
+### IPv4 vs IPv6
+
+| Feature       | IPv4                   | IPv6                     |
+| ------------- | ---------------------- | ------------------------ |
+| Address size  | 32 bits                | 128 bits                 |
+| Format        | Decimal                | Hexadecimal              |
+| Separator     | Dot (.)                | Colon (:)                |
+| Address space | 4.29 billion           | Approximately 3.4 × 10³⁸ |
+| Broadcast     | Supported              | Not supported            |
+| NAT           | Commonly used          | Generally not required   |
+| Header        | Variable (20–60 bytes) | Fixed 40 bytes           |
+| Configuration | DHCP or manual         | SLAAC, DHCPv6 or manual  |
+
+Cybersecurity importance:
+
+- IPv6 can create security blind spots when security tools monitor only IPv4 traffic.
+- Attackers may exploit incorrectly configured IPv6 networks.
+- IPv6 supports address spoofing under certain network conditions.
+- Security teams must configure firewalls for both IPv4 and IPv6.
+
+## 5. Subnetting
+
+Subnetting is the process of dividing a large network into smaller networks called subnets.
+
+It helps organize networks, manage IP addresses and improve network security.
+
+### Why do we need subnetting?
+
+Imagine a company has 500 employees.
+
+Instead of placing all 500 devices in one large network, the company can divide them into smaller networks.
+
+For example:
+
+- HR Department: 50 devices
+- IT Department: 100 devices
+- Finance Department: 50 devices
+- Marketing Department: 100 devices
+
+Each department can have its own subnet.
+
+### Benefits of Subnetting
+
+1. Better network management: Smaller networks are easier to organize.
+2. Reduced broadcast traffic: Broadcast traffic stays within its broadcast domain.
+3. Improved security: Departments can be separated using VLANs, routing policies and firewalls.
+4. Efficient IP allocation: Addresses can be allocated according to actual requirements.
+5. Troubleshooting: Network problems can be isolated more easily.
+
+### Understanding Network ID and Host ID
+
+An IP address has two important parts:
+
+- Network ID: Identifies the network.
+- Host ID: Identifies a particular interface within that network.
+
+Consider:
+
+`192.168.1.10/24`
+
+Here:
+
+- Network address: `192.168.1.0`
+- Host address: `192.168.1.10`
+- Broadcast address: `192.168.1.255`
+- Usable host range: `192.168.1.1 – 192.168.1.254`
+
+The `/24` tells us that the first 24 bits represent the network portion.
+
+### Subnet Mask
+
+A subnet mask determines which bits of an IPv4 address belong to the network and which belong to the host.
+
+Example:
+
+`255.255.255.0`
+
+Binary representation:
+
+`11111111.11111111.11111111.00000000`
+
+- First 24 bits = Network portion.
+- Remaining 8 bits = Host portion.
+
+Therefore, `/24` and `255.255.255.0` represent the same subnet mask.
+
+### How many devices can a subnet support?
+
+For a typical IPv4 subnet:
+
+\\[ \text{Usable Hosts} = 2^h - 2 \\]
+
+Here, `h` represents the number of host bits.
+
+For `/24`:
+
+- Total bits = 32
+- Network bits = 24
+- Host bits = 8
+
+\\[ 2^8 - 2 = 254 \\]
+
+Therefore, a `/24` subnet normally supports 254 usable host addresses.
+
+The two excluded addresses are the network address and broadcast address.
+
+## 6. CIDR (Classless Inter-Domain Routing)
+
+CIDR is a method of representing IP network addresses using a prefix length.
+
+It replaced the older class-based addressing system and allows more flexible IP address allocation.
+
+Example:
+
+`192.168.1.0/24`
+
+Here:
+
+- `192.168.1.0` = Network address.
+- `/24` = Number of bits used for the network portion.
+
+### Understanding CIDR Notation
+
+| CIDR | Subnet Mask     | Usable IPv4 Hosts |
+| ---- | --------------- | ----------------- |
+| /8   | 255.0.0.0       | 16,777,214        |
+| /16  | 255.255.0.0     | 65,534            |
+| /24  | 255.255.255.0   | 254               |
+| /25  | 255.255.255.128 | 126               |
+| /26  | 255.255.255.192 | 62                |
+| /27  | 255.255.255.224 | 30                |
+| /28  | 255.255.255.240 | 14                |
+| /29  | 255.255.255.248 | 6                 |
+| /30  | 255.255.255.252 | 2                 |
+
+Host counts assume ordinary IPv4 subnets, excluding the network and broadcast addresses.
+
+### Example: Understanding /26
+
+Suppose we have:
+
+`192.168.1.0/26`
+
+- Network bits = 26
+- Host bits = 6
+
+Total addresses:
+
+\\[ 2^6 = 64 \\]
+
+Usable addresses:
+
+\\[ 64-2=62 \\]
+
+The subnet has:
+
+| Property          | Value        |
+| ----------------- | ------------ |
+| Network address   | 192.168.1.0  |
+| First usable IP   | 192.168.1.1  |
+| Last usable IP    | 192.168.1.62 |
+| Broadcast address | 192.168.1.63 |
+| Total addresses   | 64           |
+| Usable hosts      | 62           |
+
+### CIDR and Subnetting Relationship
+
+CIDR makes subnetting flexible.
+
+For example, instead of assigning a whole `/24` network to a department that needs only 50 devices, you can allocate a `/26` subnet with 62 usable host addresses.
+
+This avoids wasting IP addresses.
+
+## 7. How MAC, IP, IPv4, IPv6 and Subnetting Work Together
+
+Let's understand this through a practical example.
+
+Imagine two computers connected to the same local network.
+
+## Example local network
+
+Wi-Fi Router
+
+192.168.1.1
+
+Laptop A
+
+IP: 192.168.1.10
+
+MAC: AA:BB:CC:11:22:33
+
+Computer B
+
+IP: 192.168.1.20
+
+MAC: DD:EE:FF:44:55:66
+
+Both devices belong to subnet 192.168.1.0/24.
+
+Suppose Laptop A wants to send data to Computer B.
+
+The process:
+
+1. Laptop A checks whether Computer B belongs to the same subnet.
+2. It determines that both devices are on the same local network.
+3. Laptop A uses ARP (Address Resolution Protocol) to discover Computer B's MAC address in IPv4.
+4. It creates a network packet with Computer B's IP address as the destination.
+5. It places that packet inside a network frame addressed to Computer B's MAC address.
+6. Computer B receives the frame and processes the packet.
+
+For communication between different networks, the laptop generally sends the frame to its default gateway (router), which forwards the IP packet towards its destination.
+
+In IPv6, Neighbor Discovery Protocol (NDP) performs the role of discovering neighboring devices instead of ARP.
+
+## 8. Cybersecurity Applications
+
+These concepts are especially important in ethical hacking and network penetration testing.
+
+| Concept     | Cybersecurity Application                           |
+| ----------- | --------------------------------------------------- |
+| MAC Address | MAC spoofing, device identification                 |
+| IP Address  | IP tracking, network reconnaissance                 |
+| IPv4        | Port scanning, host discovery                       |
+| IPv6        | IPv6 reconnaissance, firewall testing               |
+| Subnetting  | Network enumeration, identifying network boundaries |
+| CIDR        | Identifying IP ranges and scanning targets          |
+
+### Common tools used by security professionals
+
+[The Complete Guide to Nmap: Network Scanning Mastery | by Raj Bhatia | Medium](https://images.openai.com/static-rsc-4/BAZx9Rw3t--TV3IWEb7FlCCdUfd1h1N-PkBq6gCWws8ETx98B4RR7SyDEESmP1K0rpesUI_sZwPfQsAeroXjmxi6v-OMRLuDifNUTCORYKBrftflB8yg8kowjflh6yV3i5hU56F5gYf1vV1oDrcntlz414dd0aKKsnao_lq32d0?purpose=inline)
+
+Nmap
+
+Discovers hosts, open ports and services across IP ranges.
+
+[File:Wireshark icon.svg - Wikimedia Commons](https://images.openai.com/static-rsc-4/TgXYNHB3t05sISXAgT0bj24-DhsxKUVgJq5eSUIpzXgouGccBp_tICIeTXccP1sDVtzK-JCE9mu-TvRWdtmaKQNhnltvBfCsJfNmwrpZt14ZBJLdvz1gCVtq0R7d1MfwogHBaaM17OLD9cCdUJu3ITaaxBF46qeE4R4UUGs4_Fw?purpose=inline)
+
+Wireshark
+
+Captures and analyzes packets, MAC addresses and IP traffic.
+
+[File:Angry ip scan logo.svg - Wikimedia Commons](https://images.openai.com/static-rsc-4/vifm0fEPf_FI77tsJ5nPzPWbAWbisrjxjsXCkbAES1E7Jwy-spWR9zTDR9avYFqUtoa667yf-GWc8M11DsT3FCDyJfDedobGtK3sh61hZe1Q9KqRc9P9tQ6lrVCJ8sCEpTgDUpZK0_vQgtVUr0a-sDS7bmat0CpxGSIkdvJzKG0?purpose=inline)
+
+Angry IP Scanner
+
+Scans IP ranges to identify active hosts.
+
+[Linux Mint - Community](https://images.openai.com/static-rsc-4/pzmeC6U5sBnkWzxNWXdnpn_A8v65-vy5r5O_MWfxHM69OBmc0C3iMvAU1DVrRzUQfMVnTyk0kERcNVS0WfbWIHfqXHej11kk-_oGs3XudaFGjsraTH3apP32ZCy9nYMdigHWEv1a77OFVnHXlo48YycDq0kJMpAJzLsnkRlLU24?purpose=inline)
+
+IPCalc
+
+Calculates subnet masks, network addresses and host ranges.
+
+### Useful commands
+
+Windows:
+
+```
+# Display IP configuration
+ipconfig /all
+
+# Display MAC and IP addresses in ARP cache
+arp -a
+
+# Display routing table
+route print
+
+# Test connectivity
+ping 192.168.1.1
+```
+
+Linux:
+
+```
+# Display IP and MAC addresses
+ip addr
+
+# Display routing table
+ip route
+
+# Display neighbor table
+ip neigh
+
+# Test connectivity
+ping 192.168.1.1
+
+# Scan a local subnet (authorized network only)
+nmap -sn 192.168.1.0/24
+```
+
+## 9. Important Things to Remember
+
+1. MAC addresses identify network interfaces at Layer 2.
+2. IP addresses provide logical addressing at Layer 3.
+3. IPv4 uses 32-bit addresses.
+4. IPv6 uses 128-bit addresses.
+5. Subnetting divides networks into smaller networks.
+6. CIDR represents network prefixes using `/number` notation.
+7. ARP resolves IPv4 addresses into MAC addresses on a local network.
+8. NDP performs neighbor discovery in IPv6.
+9. Routers use IP addresses to forward packets between networks.
+10. MAC spoofing and IP spoofing are different techniques.
+
+## 10. Test Your Understanding
+
+Try answering these five questions to check whether you've understood the concepts.
+
+Networking knowledge check
+
+0/5 answered
+
+1\. Which OSI layer primarily uses MAC addresses?
+
+Physical Layer
+
+Data Link Layer
+
+Network Layer
+
+Transport Layer
+
+2\. How many bits does an IPv4 address contain?
+
+16 bits
+
+32 bits
+
+64 bits
+
+128 bits
+
+3\. How many usable host addresses are available in a /26 IPv4 subnet?
+
+30
+
+62
+
+126
+
+254
+
+4\. Which protocol resolves an IPv4 address to a MAC address on a local network?
+
+DNS
+
+DHCP
+
+ARP
+
+ICMP
+
+5\. What does /24 represent in CIDR notation?
+
+24 host bits
+
+24 network bits
+
+24 total addresses
+
+24 subnets
+
+Submit answers
+
+My recommendation for your cybersecurity roadmap: Don't just memorize these concepts. Practise subnet calculations, identify hosts in a network using Nmap, analyze ARP traffic in Wireshark, and learn to recognize IPv4/IPv6 misconfigurations. These practical skills will be especially valuable when you start network penetration testing.

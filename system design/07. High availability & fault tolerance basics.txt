@@ -1,0 +1,664 @@
+# 7. High Availability & Fault Tolerance Basics
+
+## 1. What Is High Availability?
+
+High Availability (HA) is the ability of a system to remain operational and accessible to users for as much time as possible, even when some components fail.
+
+In simple words, high availability means keeping your application running and accessible with minimal downtime.
+
+### Example
+
+Imagine you are building an e-commerce application like Amazon.
+
+- A user visits your website to purchase a product.
+- One of your application servers crashes.
+- If another server takes over and the website continues working, your system has high availability.
+
+Without high availability, a single server failure could make the entire website unavailable.
+
+### How is availability measured?
+
+Availability is usually expressed as a percentage.
+
+\[
+\text{Availability} = \frac{\text{Uptime}}{\text{Total Time}} \times 100
+\]
+
+Here, uptime is the time a system remains available, while downtime is the time it is unavailable.
+
+| Availability | Approximate downtime per year |
+|---|---:|
+| 99% | 3.65 days |
+| 99.9% | 8 hours 46 minutes |
+| 99.99% | 52 minutes 34 seconds |
+| 99.999% | 5 minutes 15 seconds |
+
+These values assume a 365-day year.
+
+Key takeaway: Higher availability means less downtime, but achieving it generally requires additional infrastructure, monitoring, and operational complexity.
+
+---
+
+## 2. What Is Fault Tolerance?
+
+Fault tolerance is the ability of a system to continue operating correctly even when one or more of its components fail.
+
+In simple words, fault tolerance means designing a system so that failures do not bring down the entire application.
+
+### Example
+
+Suppose your application uses three servers:
+
+- Server A
+- Server B
+- Server C
+
+If Server A fails, Servers B and C continue processing requests.
+
+If the system is designed to maintain its required functionality despite Server A's failure, it demonstrates fault tolerance.
+
+Fault tolerance can be achieved through redundancy, replication, failover mechanisms, and other techniques.
+
+### What happens without fault tolerance?
+
+Consider a system with only one database server.
+
+If that database crashes:
+- Users might be unable to log in.
+- Product information might become unavailable.
+- Orders might fail.
+- The application might return errors.
+
+A fault-tolerant design anticipates these failures and provides alternative ways to continue essential operations.
+
+Key takeaway: Fault tolerance focuses on surviving component failures without unacceptable loss of service or correctness.
+
+---
+
+## 3. High Availability vs. Fault Tolerance
+
+Although these concepts are closely related, they are not identical.
+
+| Aspect | High Availability | Fault Tolerance |
+|---|---|---|
+| Primary goal | Minimize downtime | Continue operating despite failures |
+| Main focus | Service availability | Handling component failures |
+| Failure response | May involve failover or recovery | Aims to tolerate failures without losing required functionality |
+| Interruption | Brief interruption may occur | Ideally, no interruption for the failures covered by the design |
+| Common techniques | Load balancing, health checks, failover | Redundancy, replication, independent components |
+| Cost and complexity | Varies with availability target | Can be higher when seamless operation is required |
+| Example | A backup server takes over after the primary fails | A redundant component handles a failure without interrupting the service |
+
+### Remember this distinction
+
+High availability: The system should be accessible most of the time.
+
+Fault tolerance: The system should continue functioning when specified failures occur.
+
+A fault-tolerant system can support high availability, but high availability does not necessarily mean that every failure is handled without interruption.
+
+---
+
+# 4. Key Techniques for High Availability
+
+## A. Redundancy
+
+Redundancy means having additional components available to replace or support components that fail.
+
+For example, instead of running your application on one server, you run it on three.
+
+If one server fails, the others can continue handling requests.
+
+Redundancy can apply to:
+- Application servers
+- Database servers
+- Network connections
+- Storage systems
+- Power supplies and other infrastructure
+
+Important: Redundancy helps only when the remaining components have sufficient capacity and do not share the same failure point.
+
+## B. Load Balancing
+
+A load balancer distributes incoming requests across multiple application servers.
+
+Consider this architecture:
+
+```text
+                 Users
+                   |
+                   v
+             Load Balancer
+              /    |    \
+             v     v     v
+          Server A Server B Server C
+```
+
+If Server A becomes unhealthy, the load balancer can stop sending requests to it and direct traffic to the healthy servers.
+
+Benefits:
+- Prevents a single server from handling all traffic.
+- Improves scalability.
+- Helps maintain availability when a server fails.
+
+However, the load balancer itself must also be protected against failure.
+
+## C. Health Checks
+
+Health checks determine whether a service or component is functioning correctly.
+
+For example:
+
+```text
+Load Balancer
+     |
+     |--- Health check: Server A → Healthy
+     |
+     |--- Health check: Server B → Unhealthy
+     |
+     |--- Health check: Server C → Healthy
+```
+
+The load balancer can route traffic only to healthy servers.
+
+Health checks may examine:
+- Whether a server responds.
+- Whether an application can accept requests.
+- Whether essential dependencies are accessible.
+
+A server responding to a network request does not necessarily mean the application is functioning correctly. Therefore, health checks should reflect the service's actual requirements.
+
+## D. Failover
+
+Failover means switching operations from a failed component to another available component.
+
+For example:
+
+```text
+Normal operation:
+
+Primary Database
+       |
+       v
+ Application
+
+
+After primary database failure:
+
+Standby Database
+       |
+       v
+ Application
+```
+
+A failover mechanism detects a problem and promotes or activates the standby component.
+
+Failover can be:
+- Automatic: The system switches components automatically.
+- Manual: An operator initiates the switch.
+
+Automatic failover can reduce recovery time, but incorrect failure detection or split-brain conditions can create serious problems.
+
+## E. Database Replication
+
+Replication means maintaining copies of data across multiple database instances.
+
+For example:
+
+```text
+       Primary Database
+              |
+       Replication
+          /       \
+         v         v
+      Replica A  Replica B
+```
+
+Replication can support:
+- Recovery from database failures.
+- Read scaling.
+- Disaster recovery.
+- Improved data availability.
+
+However, replication alone does not guarantee high availability.
+
+For example, replicas may lag behind the primary database, and a replica might not be immediately ready to accept writes after a failure.
+
+---
+
+# 5. Important Concepts You Should Know
+
+### A. Single Point of Failure (SPOF)
+
+A Single Point of Failure is a component whose failure can bring down an entire system or critical function.
+
+Example:
+
+```text
+Users
+  |
+  v
+Application Servers
+  |
+  v
+Single Database
+```
+
+Even if the application has five servers, the single database may still be a single point of failure.
+
+Solution: Identify critical dependencies and design appropriate redundancy and recovery mechanisms for them.
+
+### B. Failover vs. Failback
+
+| Term | Meaning |
+|---|---|
+| Failover | Switch from a failed or unhealthy component to a backup |
+| Failback | Return operations to the original or preferred component after recovery |
+
+Example:
+
+1. Primary database fails.
+2. Standby database takes over: failover.
+3. Original database is repaired and synchronized.
+4. Operations return to the original database: failback.
+
+Failback must be carefully planned to avoid data loss or conflicting writes.
+
+### C. Active-Active vs. Active-Passive
+
+These are two common redundancy architectures.
+
+Active-Active
+
+Multiple instances actively serve requests.
+
+```text
+           Load Balancer
+            /         \
+           v           v
+       Server A     Server B
+        Active       Active
+```
+
+Advantages:
+- Distributes traffic across instances.
+- Can improve resource utilization.
+- Allows healthy instances to continue serving requests when another fails.
+
+Challenges:
+- Requires careful coordination for shared state and data.
+- Remaining instances must handle increased traffic after a failure.
+
+Active-Passive
+
+One instance handles requests while another remains ready to take over.
+
+```text
+       Primary Server
+          Active
+             |
+       Standby Server
+          Passive
+```
+
+Advantages:
+- Can simplify certain application architectures.
+- Provides a backup for the active component.
+
+Challenges:
+- Standby resources may be underutilized.
+- Failover can introduce a short interruption.
+- The standby must be sufficiently synchronized and ready.
+
+---
+
+# 6. How High Availability Works in a Real System
+
+Consider a food delivery application.
+
+Its architecture might look like this:
+
+```text
+                  Customers
+                      |
+                      v
+                Load Balancer
+                      |
+             +--------+--------+
+             |        |        |
+             v        v        v
+          App A     App B     App C
+             |        |        |
+             +--------+--------+
+                      |
+                      v
+               Database Cluster
+                 /          \
+                v            v
+             Primary       Replica
+```
+
+Let's examine what happens during failures.
+
+### Scenario 1: An application server crashes
+
+1. Health checks detect that App A is unhealthy.
+2. The load balancer stops routing requests to App A.
+3. Apps B and C continue handling traffic.
+4. The failed server is restarted or replaced.
+
+Result: The application remains available if the remaining servers have sufficient capacity.
+
+### Scenario 2: The primary database fails
+
+1. Database monitoring detects the failure.
+2. The database cluster determines whether a replica can safely take over.
+3. A suitable replica is promoted, if supported by the database architecture.
+4. The application reconnects to the new primary.
+5. Normal database operations resume.
+
+Result: The database service can recover, but some requests may fail during the transition.
+
+### Scenario 3: An entire data center fails
+
+If all servers are hosted in one data center, local redundancy might not be enough.
+
+A stronger design distributes critical infrastructure across separate availability zones or regions.
+
+```text
+                Global Traffic Manager
+                          |
+                +---------+---------+
+                |                   |
+                v                   v
+           Region A             Region B
+         +-----------+         +-----------+
+         | App       |         | App       |
+         | Database  |         | Database  |
+         +-----------+         +-----------+
+```
+
+If Region A fails, traffic may be redirected to Region B.
+
+However, regional failover requires careful planning for database replication, data consistency, capacity, routing, and recovery.
+
+Important: Two regions do not automatically guarantee disaster recovery. The application and its data must be configured to survive the failures being considered.
+
+---
+
+# 7. RTO and RPO: Two Important Availability Metrics
+
+These metrics help organizations define how quickly they need to recover and how much data they can afford to lose.
+
+### RTO — Recovery Time Objective
+
+RTO is the target maximum time allowed to restore a service after a disruption.
+
+Example:
+
+If your RTO is 15 minutes, your recovery plan should aim to restore the service within 15 minutes of the disruption.
+
+### RPO — Recovery Point Objective
+
+RPO is the maximum acceptable amount of data loss measured in time.
+
+Example:
+
+If your RPO is 5 minutes, your recovery strategy should aim to limit lost data to the equivalent of no more than five minutes of updates.
+
+| Metric | Main question | Example |
+|---|---|---|
+| RTO | How quickly must the service recover? | 15 minutes |
+| RPO | How much recent data can we afford to lose? | 5 minutes |
+
+A low RTO usually requires a faster recovery process. A low RPO often requires frequent replication, reliable backups, or other mechanisms to protect recent data.
+
+Interview tip: RTO concerns recovery time; RPO concerns acceptable data loss.
+
+---
+
+# 8. Common Mistakes in High-Availability Design
+
+### Mistake 1: Assuming multiple servers guarantee availability
+
+If all servers depend on one database, one network connection, or one load balancer, that shared dependency may still cause an outage.
+
+Better approach: Analyze the complete dependency chain.
+
+### Mistake 2: Treating replication as a complete backup strategy
+
+Replication may copy accidental deletions or corrupted data to replicas.
+
+Better approach: Maintain appropriate backups and test restoration procedures.
+
+### Mistake 3: Ignoring capacity during failures
+
+Suppose three servers each handle 100 requests per second. Together, they handle 300 requests per second.
+
+If one fails, the remaining two can handle only 200 requests per second under the same assumptions.
+
+If traffic remains at 300 requests per second, overload may cause further failures.
+
+Better approach: Plan for sufficient capacity when one or more components are unavailable.
+
+### Mistake 4: Assuming automatic failover is always safe
+
+A network partition may cause two database nodes to believe they should accept writes.
+
+This is known as a split-brain problem and can lead to conflicting data.
+
+Better approach: Use appropriate leader election, fencing, quorum, and consistency mechanisms.
+
+### Mistake 5: Not testing recovery
+
+A backup or standby system that has never been tested may fail when needed.
+
+Better approach: Regularly test failover, backup restoration, and disaster-recovery procedures.
+
+---
+
+# 9. System Design Relevance
+
+High availability and fault tolerance are fundamental to designing reliable distributed systems.
+
+When designing a system, ask yourself:
+
+1. What happens if an application server fails?
+2. What happens if the database becomes unavailable?
+3. Is there a single point of failure?
+4. How will the system detect unhealthy components?
+5. Can traffic be redirected automatically?
+6. How will the system recover from an entire data-center outage?
+7. What are the required availability, RTO, and RPO targets?
+8. Can the remaining infrastructure handle the traffic after a failure?
+
+Your answers help determine the architecture, redundancy requirements, monitoring strategy, and recovery mechanisms.
+
+# 10. Cybersecurity Relevance
+
+High availability and fault tolerance also play an important role in cybersecurity.
+
+### A. Denial-of-Service (DoS and DDoS) attacks
+
+Attackers may overwhelm an application with traffic, making it unavailable to legitimate users.
+
+Defensive measures include:
+- Rate limiting.
+- DDoS protection.
+- Traffic filtering.
+- Capacity management.
+- Load balancing and autoscaling.
+
+Important: Load balancing alone does not prevent DDoS attacks.
+
+### B. Ransomware and data recovery
+
+Ransomware can encrypt critical application data or disrupt infrastructure.
+
+Defensive measures include:
+- Isolated or immutable backups.
+- Restricted backup permissions.
+- Tested restoration procedures.
+- Recovery plans that account for compromised systems.
+
+Replication alone is insufficient because ransomware-related changes can also replicate.
+
+### C. Redundancy and security
+
+Redundant systems can improve availability, but they also increase the number of components that must be secured.
+
+For example, an unsecured standby database could become an alternative path for unauthorized access.
+
+Defensive measures include:
+- Strong authentication.
+- Least-privilege access.
+- Encryption.
+- Secure configuration management.
+- Monitoring of primary and standby systems.
+
+### D. Disaster recovery
+
+A cybersecurity incident may affect an entire environment, not just an individual server.
+
+A disaster-recovery plan should account for:
+- Infrastructure failures.
+- Cyberattacks.
+- Data corruption.
+- Credential compromise.
+- Recovery of trusted application and database states.
+
+Key takeaway: Security protects systems against malicious activity, while high availability and fault tolerance help maintain service during failures. Effective architectures need all three.
+
+---
+
+# 11. Full-Stack Development Relevance
+
+High availability is not only a backend or infrastructure concern. Full-stack developers influence it through frontend behavior, backend design, database access, and integration with external services.
+
+### Frontend
+
+Frontend applications should handle temporary service failures gracefully.
+
+Examples:
+- Display a useful error when the API is unavailable.
+- Provide retry options where appropriate.
+- Avoid submitting the same payment or order multiple times after a timeout.
+- Show clear loading and recovery states.
+
+For important operations, the backend should support idempotency so that retries do not accidentally create duplicate transactions.
+
+### Backend
+
+Backend developers can improve availability by:
+- Building stateless services where appropriate.
+- Using timeouts for external requests.
+- Applying controlled retries with exponential backoff and jitter.
+- Using circuit breakers to limit repeated calls to failing dependencies.
+- Implementing health and readiness endpoints.
+- Handling graceful shutdowns.
+
+Retries must be bounded and used carefully; excessive retries can make an overloaded system worse.
+
+### Database
+
+Database design affects both availability and recovery.
+
+Developers should understand:
+- Transactions and consistency.
+- Replication.
+- Connection pooling.
+- Database failover.
+- Backup and restoration.
+- Query performance and resource limits.
+
+### External API integrations
+
+Suppose your application depends on an external payment service.
+
+If the payment service becomes unavailable, repeatedly calling it may cause delays and overload.
+
+A better approach may involve:
+- Explicit timeouts.
+- Limited retries.
+- Circuit breakers.
+- Idempotency keys for supported payment operations.
+- Durable queues for operations that can safely be processed asynchronously.
+- Clear handling of uncertain transaction outcomes.
+
+Full-stack takeaway: Reliable applications must handle failure at every layer, from the user interface to backend services and databases.
+
+---
+
+# 12. Interview Questions and Answers
+
+### Q1. What is high availability?
+
+High availability is the ability of a system to remain accessible with minimal downtime, commonly achieved through redundancy, monitoring, failover, and recovery mechanisms.
+
+### Q2. What is fault tolerance?
+
+Fault tolerance is the ability of a system to continue providing its required functionality despite specified component failures.
+
+### Q3. What is the difference between high availability and fault tolerance?
+
+High availability focuses on minimizing downtime, while fault tolerance focuses on continuing operation despite failures. Fault tolerance can support high availability, but some highly available systems may experience brief interruptions during recovery.
+
+### Q4. What is a single point of failure?
+
+A single point of failure is a component whose failure can make an entire system or critical service unavailable.
+
+### Q5. How does a load balancer improve availability?
+
+It distributes traffic across multiple servers and can stop routing requests to unhealthy instances, provided healthy instances and the load-balancing infrastructure remain available.
+
+### Q6. What is failover?
+
+Failover is the process of switching operations to a backup or alternative component when the primary component fails or becomes unhealthy.
+
+### Q7. What is the difference between active-active and active-passive?
+
+In active-active architectures, multiple instances serve traffic simultaneously. In active-passive architectures, one instance serves traffic while another remains ready to take over.
+
+### Q8. Does database replication guarantee high availability?
+
+No. Replication provides additional copies of data, but availability also depends on failure detection, promotion, connectivity, consistency, capacity, and recovery mechanisms.
+
+### Q9. What are RTO and RPO?
+
+RTO defines the target recovery time after a disruption. RPO defines the maximum acceptable data loss measured in time.
+
+### Q10. How would you design a highly available web application?
+
+I would deploy multiple application instances, distribute traffic through redundant load balancing, implement health checks, protect the database with an appropriate replication and failover strategy, eliminate single points of failure, monitor system health, and establish tested backup and disaster-recovery procedures.
+
+I would also define availability targets, RTO, RPO, and the failure scenarios the system must tolerate.
+
+---
+
+# 13. Quick Revision Notes
+
+| Concept | One-line definition |
+|---|---|
+| High Availability | Keep a system accessible with minimal downtime. |
+| Fault Tolerance | Continue operating despite specified component failures. |
+| Redundancy | Provide additional components to replace or support failed ones. |
+| Load Balancer | Distribute incoming requests across servers. |
+| Health Check | Determine whether a component is healthy enough to serve traffic. |
+| Failover | Switch operations to an alternative component. |
+| Failback | Return operations to a preferred component after recovery. |
+| SPOF | A component whose failure can disrupt a critical service. |
+| Active-Active | Multiple instances actively serve requests. |
+| Active-Passive | One instance serves requests while another stands by. |
+| RTO | Target time to restore service. |
+| RPO | Maximum acceptable data loss measured in time. |
+| Disaster Recovery | Restore services and data after a major disruption. |
+
+## Final takeaway
+
+High availability is about minimizing downtime. Fault tolerance is about surviving failures.
+
+To design reliable systems, combine redundancy, health checks, load balancing, failover, appropriate data replication, monitoring, and tested recovery procedures.
+
+As a full-stack developer, you should also build applications that handle timeouts, retries, duplicate requests, and dependency failures safely. From a cybersecurity perspective, you must ensure that these reliability mechanisms remain secure and that the system can recover from malicious attacks as well as accidental failures.
+
+Next topic to study: 8. Redundancy, replication, and failover strategies — these concepts build directly on the foundations covered here.
