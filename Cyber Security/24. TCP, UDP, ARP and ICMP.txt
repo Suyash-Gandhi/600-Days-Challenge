@@ -1,0 +1,295 @@
+# 24. TCP, UDP, ARP and ICMP
+
+These are four important networking protocols used for communication between devices in a network. Each has a different responsibility.
+
+- TCP: Ensures reliable communication between devices.
+- UDP: Provides fast communication without guaranteeing delivery.
+- ARP: Finds the MAC address associated with an IPv4 address.
+- ICMP: Helps report network errors and diagnose connectivity problems.
+
+Let's understand each one.
+
+## 1. TCP (Transmission Control Protocol)
+
+TCP is a connection-oriented protocol that allows two devices to communicate reliably over a network.
+
+It ensures that data reaches the destination correctly, in the proper order, and without missing parts.
+
+### How TCP works
+
+Before transferring data, TCP establishes a connection between the sender and receiver using a process called the Three-Way Handshake.
+
+[Handshake - Canda's Second Brain](https://images.openai.com/static-rsc-4/h6jYv5jZP3nZoURcO8zeu9DG3zhlY7ui6xbumHdWreFzRNXiW14pVM1wzdjZr4B49kTpV38pjWy-a2C6HPOhZXwvQ9AQG5Z8hF0wl7zFdQl5PSqRjKEkf5u8NwascrN54GEvceUmdgKBrFZcXMl6_dw402420WcNEN4SQbc7DLU?purpose=inline)
+
+[eduardocanda.github.io](https://eduardocanda.github.io/second-brain/01%20-%20Fundamentos/Redes/03%20-%20Protocolos/TCP/Handshake/?utm_source=chatgpt.com)
+
+The three steps are:
+
+1. SYN: The client sends a SYN packet to request a connection.
+2. SYN-ACK: The server responds with SYN-ACK to acknowledge the request.
+3. ACK: The client sends an ACK packet, completing the connection.
+
+After this, data transfer begins.
+
+### Important features of TCP
+
+- Reliable delivery: Ensures data reaches the destination.
+- Acknowledgements: The receiver confirms received data.
+- Retransmission: Lost packets are sent again.
+- Ordered delivery: Data is reconstructed in the correct order.
+- Flow control: Prevents a fast sender from overwhelming a slow receiver.
+- Congestion control: Adjusts transmission speed to avoid overloading the network.
+
+### Where is TCP used?
+
+- Web browsing (HTTP/HTTPS).
+- Email communication.
+- File transfers.
+- Remote server connections.
+- Database communication.
+
+Example: When downloading a PDF, you generally want every part of the file to arrive correctly. TCP helps ensure that.
+
+## 2. UDP (User Datagram Protocol)
+
+UDP is a connectionless protocol that allows devices to exchange data without establishing a connection first.
+
+Unlike TCP, UDP does not guarantee that data will reach the destination or arrive in the correct order.
+
+However, it is generally faster and has less communication overhead.
+
+[UDP vs TCP: Complete Guide to Network Protocols in 2026 | Pinggy Blog](https://images.openai.com/static-rsc-4/LSZKyagzqtEMlm9PzSn1t3MeVT-jP4Ki9h-4jt1Yobdodp_nVL-wIevfWKaYKQjQwFu_ikWjAN-ScBWqYtT_-Jx7m9TKWv4RNgG2sg5aWgBaMkpchommkDvOnZr9qOMGy-RB8mE4xOLaEOqVBJfluNrWNHIBzniY4dBxK52fXt0?purpose=inline)
+
+[pinggy.io](https://pinggy.io/blog/udp_vs_tcp_complete_guide/?utm_source=chatgpt.com)
+
+### Important features of UDP
+
+- Connectionless: No handshake is required.
+- Low latency: Data can be sent without waiting for acknowledgements.
+- No guaranteed delivery: Packets may be lost.
+- No retransmission by default: Lost packets are not automatically resent.
+- No ordering guarantee: Packets may arrive in a different order.
+- Low overhead: Has a smaller header than TCP (8 bytes).
+
+### Where is UDP used?
+
+- Online gaming.
+- Live video streaming.
+- Voice and video calls.
+- DNS queries.
+- Real-time communication.
+
+Example: During a video call, receiving the latest audio immediately is usually more important than retransmitting an old audio packet. UDP is useful in such situations.
+
+## 3. TCP vs UDP
+
+This is an important comparison for networking and cybersecurity interviews.
+
+| Feature            | TCP                 | UDP                            |
+| ------------------ | ------------------- | ------------------------------ |
+| Connection         | Connection-oriented | Connectionless                 |
+| Reliability        | Reliable            | No delivery guarantee          |
+| Speed              | Generally slower    | Generally faster               |
+| Handshake          | Yes                 | No                             |
+| Data ordering      | Maintained          | Not guaranteed                 |
+| Retransmission     | Supported           | Not automatic                  |
+| Header size        | 20–60 bytes         | 8 bytes                        |
+| Flow control       | Yes                 | No built-in flow control       |
+| Congestion control | Yes                 | No built-in congestion control |
+| Use cases          | Web, email, files   | Gaming, calls, streaming       |
+
+Important: UDP is not automatically better than TCP because it is faster. The choice depends on the application's requirements.
+
+## 4. ARP (Address Resolution Protocol)
+
+ARP is a protocol used in IPv4 networks to find the MAC address associated with a known IP address on the local network.
+
+Remember:
+
+- IP address identifies a device at the network layer.
+- MAC address identifies a network interface at the data link layer.
+
+### Why is ARP needed?
+
+Suppose your computer wants to communicate with another computer on the same local network.
+
+Your computer knows the destination's IP address but needs its MAC address to send an Ethernet frame.
+
+ARP solves this problem.
+
+### How ARP works
+
+[Arp Simple Explanation at Justin Northcote blog](https://images.openai.com/static-rsc-4/rhIfIWjxxaO3P455qJYYKl8HIosOpBNJvRpV9MeLSAFZnoCgFBPLYb9b41PKOu0z2erKz1mTyFZF-aDaOcEShHXifObM9dvDmNmnLKtX1g9Na7ZPMJUJNv4t7xVJonOqQZUb3L8XmgJCWn8gsaRbDmqIJb_XJMVNPnrkUox2avg?purpose=inline)
+
+[storage.googleapis.com](https://storage.googleapis.com/dupnwzqmkhakae/arp-simple-explanation.html?utm_source=chatgpt.com)
+
+Suppose:
+
+- Your computer IP: `192.168.1.10`
+- Destination IP: `192.168.1.20`
+- Destination MAC: Unknown.
+
+The process:
+
+1. Your computer checks its ARP cache to see whether it already knows the MAC address.
+2. If not, it broadcasts an ARP Request asking: "Who has 192.168.1.20?"
+3. All devices on the local network receive the request.
+4. The device with IP `192.168.1.20` responds with an ARP Reply containing its MAC address.
+5. Your computer stores this mapping in its ARP cache.
+6. Your computer can now send Ethernet frames to that MAC address.
+
+### Important ARP concepts
+
+ARP Cache: A temporary table that stores IP-to-MAC address mappings to avoid repeatedly sending ARP requests.
+
+ARP Request: A broadcast message asking for the MAC address associated with an IP address.
+
+ARP Reply: A response containing the requested MAC address.
+
+Gratuitous ARP: An ARP message sent by a device to announce or check its own IP-to-MAC mapping.
+
+### ARP in cybersecurity
+
+ARP can be abused by attackers through a technique called ARP Spoofing (ARP Poisoning).
+
+In this attack:
+
+1. An attacker sends fake ARP replies to devices on a local network.
+2. The attacker associates their own MAC address with another device's IP address, such as the default gateway.
+3. Victims may start sending network traffic to the attacker instead of the actual gateway.
+4. The attacker may intercept or manipulate traffic.
+
+This can enable a Man-in-the-Middle (MITM) attack.
+
+[ARP Spoofing on Public WiFi: How Attackers Intercept Your Traffic](https://images.openai.com/static-rsc-4/C32-HCBHIKIGpb5fetjdXw_Q1f8y6tYktnAlGtqtaXSUMuOMJt9QaW0GFmcDzuptKfxE50f3wJGdTuN7-mIyum-TqwKv4zO1z-MIrRky3a8f9WXplujXqZOEGIbBLFvZi3b9g-zuZEHEBVEHUhfotBlBTrzYjlF7Fv320p66m8g?purpose=inline)
+
+[cybersecuritycampaign.com.hk](https://cybersecuritycampaign.com.hk/public-wifi/arp-spoofing-public-wifi?utm_source=chatgpt.com)
+
+Prevention:
+
+- Dynamic ARP Inspection (DAI).
+- Static ARP entries where appropriate.
+- Network segmentation.
+- Encrypted communication using HTTPS and SSH.
+
+## 5. ICMP (Internet Control Message Protocol)
+
+ICMP is a network-layer protocol used by devices to communicate network errors and diagnostic information.
+
+It helps determine whether a destination is reachable and provides information about network problems.
+
+ICMP does not normally carry application data like TCP or UDP.
+
+### How ICMP works
+
+Suppose you want to check whether a server is reachable.
+
+You can use the `ping` command.
+
+[ICMP Protocol (Internet Control Message Protocol): A Guide | Okta](https://images.openai.com/static-rsc-4/scS8Coy-m1o-E1W073nBqRrIGa3cLkqVfk01uLcy3aTyqo04ReqMk-4vM9eCLRVaOrYDzkoQle4hVigaN_HQy_TyP2_o-FUd0PeY2M0H5mSRcCu3f2ePlHoh2uzQHFuA8Qr8U9ESnaOiiS-PQ9kmUlyqiIcVDtub95DHOcRl8Fs?purpose=inline)
+
+[okta.com](https://www.okta.com/en-au/identity-101/icmp/?utm_source=chatgpt.com)
+
+The process:
+
+1. Your computer sends an ICMP Echo Request to the destination.
+2. The destination receives the request.
+3. If it allows ICMP Echo Requests, it responds with an ICMP Echo Reply.
+4. Your computer calculates the round-trip time.
+
+### Important ICMP message types
+
+| ICMP Message            | Purpose                                         |
+| ----------------------- | ----------------------------------------------- |
+| Echo Request            | Checks whether a destination responds           |
+| Echo Reply              | Responds to an Echo Request                     |
+| Destination Unreachable | Indicates that a destination cannot be reached  |
+| Time Exceeded           | Indicates that a packet's TTL expired           |
+| Redirect                | Informs a host about a potentially better route |
+
+### Common tools that use ICMP
+
+1. Ping
+
+Checks whether a destination responds and measures round-trip time.
+
+```
+ping google.com
+```
+
+2. Traceroute / Tracert
+
+Helps identify the network path taken by packets to reach a destination.
+
+Linux:
+
+```
+traceroute google.com
+```
+
+Windows:
+
+```
+tracert google.com
+```
+
+Traceroute commonly uses TTL expiration and ICMP Time Exceeded messages to identify intermediate routers. Some implementations use UDP or TCP probes instead of ICMP probes.
+
+### ICMP in cybersecurity
+
+Attackers can misuse ICMP for different purposes:
+
+- Ping Flood: Sends a large number of ICMP Echo Requests to overwhelm a target.
+- ICMP Tunneling: Hides other types of data inside ICMP packets.
+- Network Reconnaissance: Uses ICMP responses to identify active devices.
+- Smurf Attack: Exploits ICMP broadcasts to generate large amounts of traffic toward a victim.
+
+Defenders can use firewall rules and network monitoring to control suspicious ICMP traffic. Blocking all ICMP traffic is not always recommended because some ICMP messages are important for normal network operation.
+
+## 6. Important Differences: TCP, UDP, ARP and ICMP
+
+| Protocol | Main purpose                               | Layer                         |
+| -------- | ------------------------------------------ | ----------------------------- |
+| TCP      | Reliable data transmission                 | Transport                     |
+| UDP      | Fast, connectionless data transmission     | Transport                     |
+| ARP      | Resolves IPv4 addresses into MAC addresses | Between Data Link and Network |
+| ICMP     | Network errors and diagnostics             | Network                       |
+
+Note: ARP is commonly associated with the Data Link layer, although it operates between the responsibilities of the network and data link layers. ICMP is generally classified at the Internet/Network layer.
+
+## 7. Practical Commands for Cybersecurity
+
+These commands help you understand and troubleshoot network communication.
+
+| Command                 | Purpose                                          |
+| ----------------------- | ------------------------------------------------ |
+| `ping google.com`       | Checks connectivity using ICMP                   |
+| `tracert google.com`    | Shows network path on Windows                    |
+| `traceroute google.com` | Shows network path on Linux                      |
+| `arp -a`                | Displays ARP cache                               |
+| `ip neigh`              | Displays neighbor mappings on Linux              |
+| `netstat -an`           | Displays network connections and listening ports |
+| `ss -tuln`              | Displays TCP/UDP listening sockets on Linux      |
+| `tcpdump`               | Captures and analyzes network packets            |
+| `Wireshark`             | Graphically analyzes network traffic             |
+
+## 8. What You Should Remember for Cybersecurity
+
+These protocols are important when performing network analysis, penetration testing, and incident investigations.
+
+- TCP: Understand connection establishment, three-way handshake, retransmission and TCP flags.
+- UDP: Understand connectionless communication and why attackers may use UDP for scanning and flooding.
+- ARP: Understand IP-to-MAC resolution and ARP poisoning.
+- ICMP: Understand ping, traceroute, reconnaissance and ICMP-based attacks.
+
+Quick revision
+
+- TCP = Reliable communication.
+- UDP = Fast, connectionless communication.
+- ARP = Finds MAC address using IPv4 address.
+- ICMP = Reports network errors and helps diagnose connectivity.
+- ARP Spoofing = Faking IP-to-MAC mappings.
+- Ping = Uses ICMP Echo Request and Echo Reply.
+- Three-Way Handshake = SYN → SYN-ACK → ACK.
+
+My recommendation: When studying these four protocols, practice capturing their packets in Wireshark. Seeing a TCP handshake, ARP request, UDP datagram and ICMP Echo Request in real traffic will make these concepts much easier to understand.

@@ -1,0 +1,402 @@
+# 23. Ports, Sockets and Network Communication
+
+## 1. What is Network Communication?
+
+Network communication is the process through which two or more devices exchange data over a network.
+
+For example:
+
+- Opening a website in your browser.
+- Sending a WhatsApp message.
+- Downloading a file.
+- Connecting to a remote server using SSH.
+
+When two devices communicate, they need to know:
+
+1. Source IP address: Where the data is coming from.
+2. Destination IP address: Where the data needs to go.
+3. Port number: Which application or service should receive the data.
+4. Protocol: How the data should be transmitted.
+
+For example, when you visit a website, your computer communicates with a web server using its IP address and a specific port.
+
+## 2. What are Ports?
+
+A port is a logical communication endpoint used to identify a particular application or service running on a device.
+
+Think of an IP address as a building address and ports as different room numbers inside that building.
+
+For example:
+
+- IP address identifies the server.
+- Port 80 identifies its HTTP web service.
+- Port 443 identifies its HTTPS web service.
+- Port 22 identifies its SSH service.
+
+Ports allow multiple applications to communicate over the same network connection without interfering with each other.
+
+Important points:
+
+- Port numbers range from 0 to 65535.
+- Ports are mainly used with TCP and UDP.
+- A port number does not represent a physical connection.
+- A service listens on a particular port to receive incoming communication.
+
+## 3. Types of Port Numbers
+
+Ports are divided into three main categories.
+
+| Port range  | Category              | Description                                   |
+| ----------- | --------------------- | --------------------------------------------- |
+| 0–1023      | Well-known ports      | Used by common services and protocols.        |
+| 1024–49151  | Registered ports      | Used by applications and registered services. |
+| 49152–65535 | Dynamic/Private ports | Commonly used as temporary client-side ports. |
+
+These ranges are defined by IANA (Internet Assigned Numbers Authority).
+
+## 4. Common Network Ports
+
+Knowing common ports is important in cybersecurity because attackers frequently scan systems to identify exposed services.
+
+| Port  | Protocol | Service    | Purpose                                  |
+| ----- | -------- | ---------- | ---------------------------------------- |
+| 20    | TCP      | FTP Data   | Transfers FTP data.                      |
+| 21    | TCP      | FTP        | Controls FTP communication.              |
+| 22    | TCP      | SSH        | Secure remote access.                    |
+| 23    | TCP      | Telnet     | Unencrypted remote access.               |
+| 25    | TCP      | SMTP       | Sends emails between mail servers.       |
+| 53    | TCP/UDP  | DNS        | Resolves domain names into IP addresses. |
+| 67/68 | UDP      | DHCP       | Assigns IP addresses automatically.      |
+| 80    | TCP      | HTTP       | Standard web communication.              |
+| 110   | TCP      | POP3       | Retrieves emails.                        |
+| 143   | TCP      | IMAP       | Accesses and manages emails.             |
+| 443   | TCP      | HTTPS      | Secure web communication.                |
+| 3306  | TCP      | MySQL      | MySQL database communication.            |
+| 3389  | TCP/UDP  | RDP        | Windows remote desktop.                  |
+| 5432  | TCP      | PostgreSQL | PostgreSQL database communication.       |
+| 27017 | TCP      | MongoDB    | MongoDB database communication.          |
+
+Cybersecurity note: Exposing unnecessary ports increases the attack surface of a system. For example, exposing port 3306 to the public internet can create security risks if the MySQL server is not properly protected.
+
+## 5. What is a Socket?
+
+A socket is an endpoint that allows two applications or processes to communicate over a network.
+
+It provides a way for applications to send and receive data.
+
+A socket is generally identified by:
+
+- IP address.
+- Port number.
+- Transport protocol (TCP or UDP).
+
+For example:
+
+```
+192.168.1.10:5000
+```
+
+Here:
+
+- `192.168.1.10` is the IP address.
+- `5000` is the port number.
+
+A socket allows an application to communicate with another application using the network.
+
+Simple analogy:
+
+Imagine sending a letter:
+
+- IP address = Building address.
+- Port = Room number.
+- Socket = Communication endpoint used to send and receive messages.
+
+## 6. Difference Between IP Address, Port and Socket
+
+| Concept    | Meaning                                            | Example                   |
+| ---------- | -------------------------------------------------- | ------------------------- |
+| IP Address | Identifies a device/interface on a network.        | 192.168.1.10              |
+| Port       | Identifies a communication endpoint for a service. | 443                       |
+| Socket     | Endpoint used by an application for communication. | 192.168.1.10:443 over TCP |
+
+Remember:
+
+- IP tells us which device to contact.
+- Port tells us which service or application endpoint to contact.
+- Socket provides the communication endpoint through which data is exchanged.
+
+## 7. What is TCP Communication?
+
+TCP stands for Transmission Control Protocol.
+
+It is a connection-oriented protocol that provides reliable data transmission.
+
+Before exchanging application data, TCP establishes a connection using a process called the Three-Way Handshake.
+
+[TCP 3-Way Handshake](https://images.openai.com/static-rsc-4/6gwA6gBGeNzuFPpuXdmiAs-vlhGCbPmLWBgI_4xJCZxasydLAwYwM8FCbvaLpPhutfzcMhfoVnohyupfP_Nzx5KP3BexROJjP8T2Ai6setOQ53pzUai8U3spaoDWIONhaiEVa9wLnsHUh8d2wIsoUNo_L2cSoErWphUHRcaQFPA?purpose=inline)
+
+[blog.jargoniseasy.com](https://blog.jargoniseasy.com/tcp-3-way-handshake?utm_source=chatgpt.com)
+
+The three steps are:
+
+1. SYN: The client sends a request to establish a connection.
+2. SYN-ACK: The server acknowledges the request and responds.
+3. ACK: The client acknowledges the server's response.
+
+After this process, the connection is established and data can be exchanged.
+
+Features of TCP:
+
+- Reliable data delivery.
+- Error detection.
+- Data retransmission when necessary.
+- Maintains data order.
+- Connection-oriented communication.
+
+Example: HTTPS, SSH, FTP and database connections commonly use TCP.
+
+## 8. What is UDP Communication?
+
+UDP stands for User Datagram Protocol.
+
+Unlike TCP, UDP is connectionless. It sends data without establishing a connection through a handshake.
+
+[UDP vs TCP: Complete Guide to Network Protocols in 2026 | Pinggy Blog](https://images.openai.com/static-rsc-4/LSZKyagzqtEMlm9PzSn1t3MeVT-jP4Ki9h-4jt1Yobdodp_nVL-wIevfWKaYKQjQwFu_ikWjAN-ScBWqYtT_-Jx7m9TKWv4RNgG2sg5aWgBaMkpchommkDvOnZr9qOMGy-RB8mE4xOLaEOqVBJfluNrWNHIBzniY4dBxK52fXt0?purpose=inline)
+
+[pinggy.io](https://pinggy.io/blog/udp_vs_tcp_complete_guide/?utm_source=chatgpt.com)
+
+Features of UDP:
+
+- Faster and lightweight communication.
+- No connection establishment.
+- No guarantee of delivery.
+- No guarantee of packet ordering.
+- No automatic retransmission.
+
+Examples:
+
+- Online gaming.
+- Live video streaming.
+- Voice and video calls.
+- DNS queries (commonly).
+
+UDP is useful when speed and low latency are more important than guaranteed delivery.
+
+## 9. Difference Between TCP and UDP
+
+| Feature        | TCP                  | UDP                        |
+| -------------- | -------------------- | -------------------------- |
+| Connection     | Connection-oriented  | Connectionless             |
+| Reliability    | Reliable delivery    | No delivery guarantee      |
+| Speed          | Generally slower     | Generally faster           |
+| Handshake      | Three-way handshake  | No handshake               |
+| Ordering       | Maintains data order | No ordering guarantee      |
+| Retransmission | Supported            | Not provided by UDP itself |
+| Header size    | Minimum 20 bytes     | 8 bytes                    |
+| Examples       | HTTPS, SSH, FTP      | DNS, gaming, VoIP          |
+
+Example:
+
+Imagine downloading a PDF document.
+
+You need every part of the file to arrive correctly, so TCP is suitable.
+
+Now imagine a live video call. If one small packet is lost, receiving the next packet quickly is usually more useful than waiting for the missing packet. UDP is often suitable.
+
+## 10. How Does Network Communication Actually Work?
+
+Let's understand what happens when you open a website.
+
+Suppose you visit:
+
+`https://example.com`
+
+[From Browser to Server: What Really Happens When You Type a URL | by Satyam Singh | Medium](https://images.openai.com/static-rsc-4/rrLAoQ4LKHWje3eLKV9Ox9vPlXDeHj_yls9Tfhd2xjsZX9JsHqV9qi_hjB6M7MpRoVGhqOtaEoMZdon11_k4CfP1z94jPW_XUT4uYjkljjghq64FGdgSaOgn_Pm1SnZ6cOta93YPtDwf2VF8Y0Ibk6uNzX9T8QorJfd9zJK0oW8?purpose=inline)
+
+[medium.com](https://medium.com/%40thesamventure/from-browser-to-server-what-really-happens-when-you-type-a-url-93187c1e9454?utm_source=chatgpt.com)
+
+The process generally works like this:
+
+1. You enter the website URL in your browser.
+2. Your computer performs a DNS lookup to find the server's IP address.
+3. The browser establishes a TCP connection with the server, typically on port 443.
+4. A TLS handshake establishes encryption and authenticates the server.
+5. The browser sends an HTTPS request.
+6. The server processes the request.
+7. The server sends an HTTP response.
+8. The browser displays the website.
+
+Modern HTTP/3 is an exception to the traditional TCP-based HTTPS flow because it uses QUIC over UDP.
+
+## 11. What is a Listening Port?
+
+A listening port is a port on which a service waits for incoming network connections or data.
+
+For example, when you start a web server on port 3000:
+
+```
+const express = require("express");
+
+const app = express();
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+```
+
+Your Express application starts listening on port 3000.
+
+A client can connect to the server using:
+
+```
+http://localhost:3000
+```
+
+In cybersecurity, attackers often search for listening ports to discover services running on a target system.
+
+## 12. What is an Ephemeral Port?
+
+An ephemeral port is a temporary port generally assigned by the operating system to a client application when it initiates a network connection.
+
+For example, when your browser connects to a web server:
+
+```
+Client:
+192.168.1.10:52341
+
+Server:
+142.250.183.14:443
+```
+
+Here:
+
+- `52341` is the client's temporary source port.
+- `443` is the server's HTTPS destination port.
+
+The operating system uses the temporary port to identify the connection and correctly deliver the returning data to the browser.
+
+## 13. What is a Five-Tuple in Network Communication?
+
+A five-tuple is a combination of five values used to uniquely identify a network flow in a given networking context.
+
+It contains:
+
+1. Source IP address.
+2. Destination IP address.
+3. Source port.
+4. Destination port.
+5. Transport protocol.
+
+Example:
+
+```
+Source IP:       192.168.1.10
+Destination IP:  142.250.183.14
+Source Port:     52341
+Destination Port: 443
+Protocol:        TCP
+```
+
+Network firewalls, monitoring systems and intrusion detection systems use this information to track network connections.
+
+## 14. What is Port Scanning?
+
+Port scanning is a technique used to identify open, closed or filtered ports on a target system.
+
+Security professionals use port scanning to discover exposed services and identify potential vulnerabilities.
+
+Attackers also use it during reconnaissance to find possible entry points into a system.
+
+Common port scanning tools include:
+
+- Nmap: Used to discover hosts, open ports and running services.
+- Masscan: Performs high-speed port scanning.
+- Netcat: Used for network connections, port testing and troubleshooting.
+
+Example using Nmap:
+
+```
+nmap -sV 192.168.1.10
+```
+
+This command scans the target and attempts to identify the services and their versions.
+
+Common port states:
+
+| State    | Meaning                                                                               |
+| -------- | ------------------------------------------------------------------------------------- |
+| Open     | A service is accepting connections.                                                   |
+| Closed   | The target is reachable, but no service is listening on that port.                    |
+| Filtered | A firewall or network filter prevents Nmap from determining whether the port is open. |
+
+Only scan systems you own or have explicit permission to test.
+
+## 15. Security Risks Associated with Ports
+
+Open ports are not automatically dangerous. The risk depends on the service running on them and how securely it is configured.
+
+Common risks include:
+
+1. Exposed services: Unnecessary services may provide attackers with additional entry points.
+
+2. Weak authentication: Services such as SSH and RDP can be targeted using password attacks.
+
+3. Outdated software: Vulnerable versions of services may allow attackers to exploit known security flaws.
+
+4. Database exposure: Publicly accessible MySQL, MongoDB or PostgreSQL services can expose sensitive information.
+
+5. Misconfigured firewalls: Incorrect firewall rules may allow unauthorized network traffic.
+
+Security best practices:
+
+- Close unnecessary ports.
+- Use firewalls to restrict incoming connections.
+- Keep network services updated.
+- Use strong authentication.
+- Avoid exposing databases directly to the internet.
+- Monitor network traffic and suspicious connections.
+
+## 16. Practical Commands to Understand Ports and Sockets
+
+These commands are useful for cybersecurity practice.
+
+| Command                                   | Purpose                                                                                                 |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `netstat -ano`                            | Displays network connections and listening ports on Windows.                                            |
+| `netstat -tulnp`                          | Displays listening TCP/UDP ports on Linux (typically requires elevated privileges for process details). |
+| `ss -tulnp`                               | Displays socket information on Linux.                                                                   |
+| `Get-NetTCPConnection`                    | Displays TCP connections in PowerShell.                                                                 |
+| `nmap -sV 127.0.0.1`                      | Scans local ports and identifies services.                                                              |
+| `Test-NetConnection google.com -Port 443` | Tests connectivity to a specific port using PowerShell.                                                 |
+
+## 17. Important Interview Questions
+
+1. What is a port in networking?
+2. What is the difference between an IP address and a port?
+3. What is a socket?
+4. What is the difference between a socket and a port?
+5. What are well-known, registered and dynamic ports?
+6. Why does HTTPS use port 443?
+7. What is the difference between TCP and UDP?
+8. Explain the TCP three-way handshake.
+9. What is a listening port?
+10. What is an ephemeral port?
+11. What is port scanning?
+12. What is the difference between open, closed and filtered ports?
+13. What is a five-tuple?
+14. Why is exposing database ports to the internet dangerous?
+15. How can a firewall control network communication?
+
+## 18. Key Takeaways
+
+- IP address: Identifies a device or network interface.
+- Port: Identifies a communication endpoint for an application or service.
+- Socket: Provides an endpoint for network communication.
+- TCP: Reliable, connection-oriented communication.
+- UDP: Connectionless, lightweight communication.
+- Listening port: Waits for incoming connections or data.
+- Ephemeral port: Temporary port generally assigned to a client.
+- Port scanning: Identifies accessible ports and services.
+- Firewall: Controls which network connections are allowed.
+
+Cybersecurity importance: Understanding ports and sockets is essential for network reconnaissance, vulnerability assessment, firewall configuration, intrusion detection and penetration testing.
